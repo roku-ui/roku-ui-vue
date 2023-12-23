@@ -12,7 +12,7 @@ function toggleSideBar() {
 
 <template>
   <RokuProvider>
-    <div class="fixed h-12 w-100vw flex items-center gap-2 border-b border-neutral-8 bg-neutral-9 pl-2 pr-2 md:pl-[calc(33vw-256px+32px)]">
+    <div class="fixed h-12 w-100vw flex items-center gap-2 border-b border-neutral-8 bg-neutral-9 pl-2 pr-2 md:pl-[calc(33vw-256px+32px)]!">
       <Btn
         icon
         :class="{

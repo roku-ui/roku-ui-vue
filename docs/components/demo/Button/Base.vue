@@ -6,17 +6,8 @@ type Variant = 'default' | 'filled'
 const size = ref<Size>('md')
 
 function code(props: { size?: Size, variant?: Variant } = {}) {
-  // props to string
-  const propsString = Object.entries(props)
-    .map(([key, value]) => {
-      if (typeof value === 'string') {
-        return ` ${key}="${value}"`
-      }
-      return ` ${key}={${JSON.stringify(value)}}`
-    })
-    .join(' ')
   return `<template>
-  <Btn${propsString}> // [!code highlight]
+  <Btn${getpropsString(props)}> // [!code highlight]
     Button // [!code highlight]
   </Btn> // [!code highlight]
 </template>`
@@ -31,20 +22,20 @@ const variant = ref<Variant>('default')
       <div class="flex flex-col gap-6">
         <div>
           <div class="text-neutral-3">
-            Size
-          </div>
-          <Slider
-            v-model="size"
-            :options="['sm', 'md', 'lg']"
-          />
-        </div>
-        <div>
-          <div class="text-neutral-3">
             Variant
           </div>
           <Select
             v-model="variant"
             :options="variants"
+          />
+        </div>
+        <div>
+          <div class="text-neutral-3">
+            Size
+          </div>
+          <Slider
+            v-model="size"
+            :options="['sm', 'md', 'lg']"
           />
         </div>
       </div>
