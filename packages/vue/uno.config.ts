@@ -1,92 +1,45 @@
-import type {
-  CSSObject,
-} from 'unocss'
 import {
   defineConfig,
   presetIcons,
   presetTypography,
   presetUno,
 } from 'unocss'
+import type { ThemeColorsColors } from './src/utils/theme'
+import { themeColors } from './src/utils/theme'
 
-const themeVariants = [
-  'primary',
-  'secondary',
-  'tertiary',
-  'error',
-]
+const colorKeys = Object.keys(themeColors) as (keyof ThemeColorsColors)[]
+const colors = colorKeys.reduce((colors, key) => {
+  colors[key] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(c => `rgb(var(--r-color-${key}-${c}))`)
+  return colors
+}, {})
 
-const themeColorVariants = [
-  'base',
-  'variant',
-]
-const themePositionVariants = [
-  'on',
-  'outline',
-  'container',
-]
-
-const rules: [string, CSSObject][] = themeVariants.flatMap((themeVariant) => {
-  return themePositionVariants.flatMap((themePositionVariant) => {
-    return themeColorVariants.map((themeColorVariant) => {
-      function getType(v: string) {
-        switch (v) {
-          case 'on':
-            return 'color'
-          case 'outline':
-            return 'border-color'
-          case 'container':
-            return 'background-color'
-        }
-      }
-      return [
-        `${themeVariant}-${themePositionVariant}-${themeColorVariant}`,
-        {
-          [getType(themePositionVariant)]: `var(--r-color-${themeVariant}-${themePositionVariant}-${themeColorVariant})`,
-        },
-      ] as [string, CSSObject]
-    })
-  })
-})
+const shortcuts = colorKeys.filter(d => d !== 'surface').reduce((shortcuts, key) => {
+  shortcuts[`container-filled-${key}`] = `bg-${key}-7`
+  shortcuts[`btn-filled-${key}`] = `container-filled-${key} enabled:hover:bg-${key}-8 text-${key}-1`
+  shortcuts[`container-light-${key}`] = `bg-${key}-6/20`
+  shortcuts[`btn-light-${key}`] = `container-light-${key} hover:bg-${key}-6/25 text-${key}-3`
+  shortcuts[`container-outline-${key}`] = `border-${key}-6 border text-${key}-6`
+  shortcuts[`btn-outline-${key}`] = `container-outline-${key} hover:bg-${key}-6/10 text-${key}-6`
+  shortcuts[`container-subtle-${key}`] = `bg-${key}-6/0`
+  shortcuts[`btn-subtle-${key}`] = `container-subtle-${key} hover:bg-${key}-6/10 text-${key}-6`
+  shortcuts[`container-transparent-${key}`] = `bg-transparent text-${key}-6`
+  shortcuts[`btn-transparent-${key}`] = `container-transparent-${key} hover:text-${key}-4`
+  shortcuts[`container-constrast-${key}`] = `text-${key}-6`
+  shortcuts[`btn-constrast-${key}`] = `container-constrast-${key} hover:text-surface-9 hover:bg-${key}-7`
+  return shortcuts
+}, {})
 
 export default defineConfig({
-  shortcuts: {
-    'container-priamry-focus': 'cursor-pointer focus:primary-outline-base',
-    'container-secondary-focus': 'cursor-pointer focus:secondary-outline-base',
-    'container-tertiary-focus': 'cursor-pointer focus:tertiary-outline-base',
-    'container-error-focus': 'cursor-pointer focus:error-outline-base',
-    'container-default': 'surface-outline-base surface-container-base surface-on-base border',
-    'container-primary': 'primary-outline-base primary-container-base primary-on-base hover:primary-container-variant',
-    'container-secondary': 'secondary-outline-base secondary-container-base secondary-on-base hover:secondary-container-variant',
-    'container-tertiary': 'tertiary-outline-base tertiary-container-base tertiary-on-base hover:tertiary-container-variant',
-    'container-error': 'error-outline-base error-container-base error-on-base hover:error-container-variant',
+  theme: {
+    colors: {
+      ...colors,
+    },
   },
-  rules: [
-    ...rules,
-    [
-      /^surface-container-(low|base|high)$/,
-      ([_, v]) => {
-        return {
-          'background-color': `var(--r-color-surface-container-${v})`,
-        }
-      },
-    ],
-    [
-      /^surface-on-(base|variant)$/,
-      ([_, v]) => {
-        return {
-          color: `var(--r-color-surface-on-${v})`,
-        }
-      },
-    ],
-    [
-      /^surface-outline-(base|variant)$/,
-      ([_, v]) => {
-        return {
-          'border-color': `var(--r-color-surface-outline-${v})`,
-        }
-      },
-    ],
-  ],
+  shortcuts: {
+    ...shortcuts,
+    'container-default': 'bg-surface-8 border-surface-7 border',
+    'btn-default': 'container-default text-surface-1 enabled:hover:bg-surface-7',
+  },
   presets: [
     presetUno(),
     presetTypography(),

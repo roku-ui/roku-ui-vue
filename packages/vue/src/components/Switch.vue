@@ -7,10 +7,15 @@ const props = withDefaults(
     options?: string[]
     label?: string
     id?: string
+    rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full'
+    color?: 'primary' | 'secondary' | 'tertiary' | 'error'
+    disabled?: boolean
   }>(),
   {
     size: 'md',
+    rounded: 'full',
     animate: true,
+    color: 'primary',
   },
 )
 const emit = defineEmits(['update:modelValue'])
@@ -76,14 +81,41 @@ function useId() {
   })
   return id
 }
-
 const id = useId()
 
 const colorCls = computed(() => {
+  let c = 'bg-primary-5'
+  switch (props.color) {
+    case 'secondary':
+      c = 'bg-secondary-5'
+      break
+    case 'tertiary':
+      c = 'bg-tertiary-5'
+      break
+    case 'error':
+      c = 'bg-error-5'
+      break
+    case 'primary':
+    default:
+  }
   return {
-    wrapper: value.value ? 'primary-container-base border border-transparent' : 'surface-container-high border surface-outline-base',
+    wrapper: value.value ? `border border-transparent ${c}` : 'bg-surface-8 border border-surface-7',
     // wrapper: value.value ? 'primary-container-base border-transparent border' : 'surface-container-high border surface-outline-base',
-    indicator: 'bg-white',
+    indicator: props.disabled ? 'bg-surface-7' : 'bg-white',
+  }
+})
+const roundedCls = computed(() => {
+  switch (props.rounded) {
+    case 'none':
+      return ''
+    case 'sm':
+      return 'rounded-sm'
+    case 'md':
+      return 'rounded-md'
+    case 'lg':
+      return 'rounded-lg'
+    default:
+      return 'rounded-full'
   }
 })
 </script>
@@ -92,6 +124,9 @@ const colorCls = computed(() => {
   <div
     role="switch"
     class="relative flex items-center gap-2"
+    :class="{
+      'pointer-events-none filter-grayscale': props.disabled,
+    }"
   >
     <input
       :id="id"
@@ -105,16 +140,16 @@ const colorCls = computed(() => {
     >
       <div
         ref="wrapper"
-        :class="[sizeCls.wrapper, colorCls.wrapper]"
-        class="relative inline-block rounded-full transition-all"
+        :class="[sizeCls.wrapper, colorCls.wrapper, roundedCls]"
+        class="relative inline-block transition-all"
         @pointerdown="isActivated = true"
         @pointerup="isActivated = false"
         @pointerleave="isActivated = false"
         @pointerenter="$event.buttons === 1 && (isActivated = true)"
       >
         <div
-          class="absolute top-50% rounded-full -translate-y-50%"
-          :class="[sizeCls.indicator, colorCls.indicator, animateCls.indicator, value ? sizeCls.active : sizeCls.inactive]"
+          class="absolute top-50% -translate-y-50%"
+          :class="[sizeCls.indicator, colorCls.indicator, animateCls.indicator, value ? sizeCls.active : sizeCls.inactive, roundedCls]"
         />
       </div>
     </label>

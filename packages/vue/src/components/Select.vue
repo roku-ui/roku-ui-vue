@@ -149,7 +149,7 @@ const sizeCls = computed(() => {
     <div
       v-if="focused"
       :class="sizeCls.dropdown"
-      class="r-select-list absolute z-1 mt-2 w-full flex-col overflow-hidden border rounded p-1 surface-container-base surface-outline-base"
+      class="r-select-list surface-container-base surface-outline-base absolute z-1 mt-2 w-full flex-col overflow-hidden border rounded p-1"
     >
       <div
         v-for="option, i in options"

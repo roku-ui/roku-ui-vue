@@ -1,6 +1,7 @@
 export interface BaseVariant {
+  light: string
   base: string
-  variant: string
+  dark: string
 }
 export interface BaseColorSet {
   container: BaseVariant
@@ -9,9 +10,9 @@ export interface BaseColorSet {
 }
 
 export interface SurfaceVariant {
-  low: string
+  light: string
   base: string
-  high: string
+  dark: string
 }
 
 export interface SurfaceColorSet {
@@ -20,84 +21,27 @@ export interface SurfaceColorSet {
   outline: BaseVariant
 }
 
-export interface ThemeData {
-  primary: BaseColorSet
-  secondary: BaseColorSet
-  tertiary: BaseColorSet
-  error: BaseColorSet
-  surface: SurfaceColorSet
+export interface ThemeColorsColors {
+  primary: string[]
+  secondary: string[]
+  tertiary: string[]
+  error: string[]
+  surface: string[]
 }
 
+export interface ThemeData {
+  theme: 'light' | 'dark'
+  colors: ThemeColorsColors
+}
+
+export const themeColors: ThemeColorsColors = {
+  primary: ['#f0f9ff', '#e0f2fe', '#bae6fd', '#7dd3fc', '#38bdf8', '#0ea5e9', '#0284c7', '#0369a1', '#075985', '#0c4a6e', '#082f49'],
+  secondary: ['#f0fdf4', '#dcfce7', '#bbf7d0', '#86efac', '#4ade80', '#22c55e', '#059669', '#047857', '#065f46', '#064e3b', '#033d2f'],
+  tertiary: ['#fffbeb', '#fef3c7', '#fde68a', '#fcd34d', '#fbbf24', '#f59e0b', '#d97706', '#b45309', '#92400e', '#78350f', '#572508'],
+  error: ['#fff5f5', '#fed7d7', '#feb2b2', '#fc8181', '#f56565', '#e53e3e', '#9b2c2c', '#7c1d1d', '#6b1616', '#581414', '#450a0a'],
+  surface: ['#fafafa', '#f5f5f5', '#e5e5e5', '#d4d4d4', '#a3a3a3', '#737373', '#525252', '#404040', '#262626', '#171717', '#0a0a0a'],
+}
 export const darkTheme: ThemeData = {
-  primary: {
-    container: {
-      base: '#0284c7',
-      variant: '#0369a1',
-    },
-    on: {
-      base: '#f0f9ff',
-      variant: '#bae6fd',
-    },
-    outline: {
-      base: '#0369a1',
-      variant: '#0284c7',
-    },
-  },
-  secondary: { // green
-    container: {
-      base: '#059669', // 600
-      variant: '#047857', // 800
-    },
-    on: {
-      base: '#f0fdf4', // 50
-      variant: '#c6f6d5', // 100
-    },
-    outline: {
-      base: '#047857', // 800
-      variant: '#065f46', // 900
-    },
-  },
-  tertiary: { // yellow
-    container: {
-      base: '#d97706', // 600
-      variant: '#9c4221', // 800
-    },
-    on: {
-      base: '#fffbeb', // 50
-      variant: '#fcd9bd', // 100
-    },
-    outline: {
-      base: '#9c4221', // 800
-      variant: '#7b341e', // 900
-    },
-  },
-  error: {
-    container: {
-      base: '#9b2c2c', // 600
-      variant: '#7c1d1d', // 800
-    },
-    on: {
-      base: '#fff5f5', // 50
-      variant: '#fed7d7', // 100
-    },
-    outline: {
-      base: '#7c1d1d', // 800
-      variant: '#6b1616', // 900
-    },
-  },
-  surface: {
-    container: {
-      low: '#09090b',
-      base: '#18181b',
-      high: '#27272a',
-    },
-    on: {
-      base: '#e4e4e7',
-      variant: '#a1a1aa',
-    },
-    outline: {
-      base: '#3f3f46',
-      variant: '#52525b',
-    },
-  },
+  theme: 'dark',
+  colors: themeColors,
 }

@@ -90,6 +90,9 @@ importers:
       '@vueuse/core':
         specifier: ^10.5.0
         version: 10.7.0(vue@3.3.12)
+      tinycolor2:
+        specifier: ^1.6.0
+        version: 1.6.0
       vue:
         specifier: ^3.3.7
         version: 3.3.12(typescript@5.3.3)
@@ -100,6 +103,9 @@ importers:
       '@iconify-json/tabler':
         specifier: ^1.1.102
         version: 1.1.102
+      '@types/tinycolor2':
+        specifier: ^1.4.6
+        version: 1.4.6
       '@unocss/eslint-config':
         specifier: ^0.58.0
         version: 0.58.0(eslint@8.56.0)(typescript@5.3.3)
@@ -2260,6 +2266,10 @@ packages:
 
   /@types/semver@7.5.6:
     resolution: {integrity: sha512-dn1l8LaMea/IjDoHNd9J52uBbInB796CDffS6VdIxvqYCPSG0V0DzHp76GpaWnlhg88uYyPbXCDIowa86ybd5A==}
+    dev: true
+
+  /@types/tinycolor2@1.4.6:
+    resolution: {integrity: sha512-iEN8J0BoMnsWBqjVbWH/c0G0Hh7O21lpR2/+PrvAVgWdzL7eexIFm4JN/Wn10PTcmNdtS6U67r499mlWMXOxNw==}
     dev: true
 
   /@types/unist@2.0.10:
@@ -8256,6 +8266,10 @@ packages:
   /tinybench@2.5.1:
     resolution: {integrity: sha512-65NKvSuAVDP/n4CqH+a9w2kTlLReS9vhsAP06MWx+/89nMinJyB2icyl58RIcqCmIggpojIGeuJGhjU1aGMBSg==}
     dev: true
+
+  /tinycolor2@1.6.0:
+    resolution: {integrity: sha512-XPaBkWQJdsf3pLKJV9p4qN/S+fm2Oj8AIPo1BTUhg5oxkvm9+SVEGFdhyOz7tTdUTfvxMiAs4sp6/eZO2Ew+pw==}
+    dev: false
 
   /tinypool@0.7.0:
     resolution: {integrity: sha512-zSYNUlYSMhJ6Zdou4cJwo/p7w5nmAH17GRfU/ui3ctvjXFErXXkruT4MWW6poDeXgCaIBlGLrfU6TbTXxyGMww==}
