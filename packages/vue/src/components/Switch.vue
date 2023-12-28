@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useRounded } from '../utils/classGenerator'
+
 const props = withDefaults(
   defineProps<{
     modelValue?: any
@@ -7,7 +9,7 @@ const props = withDefaults(
     options?: string[]
     label?: string
     id?: string
-    rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full'
+    rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full' | string | number
     color?: 'primary' | 'secondary' | 'tertiary' | 'error'
     disabled?: boolean
   }>(),
@@ -84,40 +86,26 @@ function useId() {
 const id = useId()
 
 const colorCls = computed(() => {
-  let c = 'bg-primary-5'
+  let c = 'bg-primary-7'
   switch (props.color) {
     case 'secondary':
-      c = 'bg-secondary-5'
+      c = 'bg-secondary-7'
       break
     case 'tertiary':
-      c = 'bg-tertiary-5'
+      c = 'bg-tertiary-7'
       break
     case 'error':
-      c = 'bg-error-5'
+      c = 'bg-error-7'
       break
     case 'primary':
     default:
   }
   return {
     wrapper: value.value ? `border border-transparent ${c}` : 'bg-surface-8 border border-surface-7',
-    // wrapper: value.value ? 'primary-container-base border-transparent border' : 'surface-container-high border surface-outline-base',
     indicator: props.disabled ? 'bg-surface-7' : 'bg-white',
   }
 })
-const roundedCls = computed(() => {
-  switch (props.rounded) {
-    case 'none':
-      return ''
-    case 'sm':
-      return 'rounded-sm'
-    case 'md':
-      return 'rounded-md'
-    case 'lg':
-      return 'rounded-lg'
-    default:
-      return 'rounded-full'
-  }
-})
+const rounded = useRounded(props)
 </script>
 
 <template>
@@ -140,7 +128,8 @@ const roundedCls = computed(() => {
     >
       <div
         ref="wrapper"
-        :class="[sizeCls.wrapper, colorCls.wrapper, roundedCls]"
+        :class="[sizeCls.wrapper, colorCls.wrapper, rounded.class]"
+        :style="[rounded.style]"
         class="relative inline-block transition-all"
         @pointerdown="isActivated = true"
         @pointerup="isActivated = false"
@@ -149,10 +138,11 @@ const roundedCls = computed(() => {
       >
         <div
           class="absolute top-50% -translate-y-50%"
-          :class="[sizeCls.indicator, colorCls.indicator, animateCls.indicator, value ? sizeCls.active : sizeCls.inactive, roundedCls]"
+          :style="[rounded.style]"
+          :class="[sizeCls.indicator, colorCls.indicator, animateCls.indicator, value ? sizeCls.active : sizeCls.inactive, rounded.class]"
         />
       </div>
-    </label>
+  </label>
     <label
       v-if="label"
       :for="id"
