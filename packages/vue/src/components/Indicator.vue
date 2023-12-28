@@ -27,7 +27,11 @@ const sizeCls = computed(() => {
       return props.size
   }
 })
+const slots = useSlots()
 const labelCls = computed(() => {
+  if (!slots.label) {
+    return ''
+  }
   switch (props.size) {
     case 'sm':
       return 'text-sm children:px-1.5'
