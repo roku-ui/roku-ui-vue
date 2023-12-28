@@ -27,7 +27,16 @@ const sizeCls = computed(() => {
       return props.size
   }
 })
-
+const labelCls = computed(() => {
+  switch (props.size) {
+    case 'sm':
+      return 'text-sm children:px-1.5'
+    case 'md':
+      return 'text-md children:px-2'
+    case 'lg':
+      return 'text-lg children:px-2.5'
+  }
+})
 const posCls = computed(() => {
   switch (props.position) {
     case 'top-left':
@@ -60,18 +69,38 @@ const colorCls = computed(() => {
     class="relative"
   >
     <div
-      :class="[posCls]"
-      class="absolute"
+      :class="[posCls, labelCls]"
+      class="absolute z-1"
     >
       <div
         v-if="props.ping"
         class="absolute animate-ping rounded-full"
-        :class="[sizeCls, colorCls]"
-      />
+        :class="[
+          {
+            [sizeCls]: !$slots.label,
+          },
+          colorCls,
+        ]"
+      >
+        <slot
+          v-if="$slots.label"
+          name="label"
+        />
+      </div>
       <div
         class="top-0 rounded-full"
-        :class="[sizeCls, colorCls]"
-      />
+        :class="[
+          {
+            [sizeCls]: !$slots.label,
+          },
+          colorCls,
+        ]"
+      >
+        <slot
+          v-if="$slots.label"
+          name="label"
+        />
+      </div>
     </div>
     <slot />
   </div>
