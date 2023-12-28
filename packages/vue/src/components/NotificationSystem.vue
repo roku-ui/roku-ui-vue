@@ -8,11 +8,13 @@ const notifications = useNotifications()
 <template>
   <div
     v-auto-animate
-    class="absolute flex flex-col gap-2 p-2"
+    class="absolute z-20 flex flex-col gap-2 p-2"
   >
     <Notification
       v-for="notification in notifications"
       :key="notification.hash"
+
+      with-border
       closeable
       :title="notification.title"
       :message="notification.message"

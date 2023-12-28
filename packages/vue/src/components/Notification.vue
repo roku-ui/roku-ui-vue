@@ -5,7 +5,7 @@ const props = withDefaults(
     message?: string
     icon?: string
     loading?: boolean
-    border?: boolean
+    withBorder?: boolean
     closeable?: boolean
     color?: 'primary' | 'secondary' | 'tertiary' | 'error'
   }>(),
@@ -49,7 +49,7 @@ const textColorCls = computed(() => {
   <div
     class="relative max-w-100 min-h-16 min-w-80 w-full flex items-center gap-2 container-default rounded p-3"
     :class="[
-      { 'border-0': !border },
+      { 'border-0': !withBorder },
     ]"
   >
     <div
@@ -64,6 +64,7 @@ const textColorCls = computed(() => {
       <i
         v-else
         class="h-5 w-5 shrink-0"
+        :class="icon"
       />
     </div>
     <div
