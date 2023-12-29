@@ -5,5 +5,12 @@ import RokuProvider from './RokuProvider.vue'
 import Select from './Select.vue'
 import TextField from './TextField.vue'
 import Notification from './Notification.vue'
+import Modal from './Modal.vue'
+import NotificationSystem from './NotificationSystem.vue'
+import PinInput from './PinInput.vue'
+import Progress from './Progress.vue'
+import Indicator from './Indicator.vue'
+import Chip from './Chip.vue'
+import Avatar from './Avatar.vue'
 
-export { Btn, RokuProvider, Slider, Switch, Select, TextField, Notification }
+export { Avatar, Chip, Indicator, PinInput, Progress, NotificationSystem, Modal, Btn, RokuProvider, Slider, Switch, Select, TextField, Notification }
