@@ -6,9 +6,9 @@ type Option = {
 
 const props = withDefaults(defineProps<{
   options?: Option[]
-  modelValue?: string | symbol | number
   size?: 'sm' | 'md' | 'lg'
   noneText?: string
+  placeholder?: string
 }>(), {
   modelValue: undefined,
   options() {
@@ -16,24 +16,18 @@ const props = withDefaults(defineProps<{
   },
   size: 'md',
   noneText: 'No options',
+  placeholder: '',
 })
 
-const emit = defineEmits(['update:modelValue', 'change'])
+const emit = defineEmits(['change'])
 
-const value = computed({
-  get() {
-    return props.modelValue
-  },
-  set(value) {
-    emit('update:modelValue', value)
-  },
-})
+const model = defineModel<string | symbol | number | undefined>({ default: undefined })
 
 const inputRef = ref(null)
 const wrapperRef = ref(null)
 
 const { focused } = useFocus(inputRef)
-const index = computed(() => props.options.map((d => getId(d))).indexOf(value.value))
+const index = computed(() => props.options.map((d => getId(d))).indexOf(model.value))
 
 const hoverIndex = ref(-1)
 const keyboardIndex = ref(-1)
@@ -45,11 +39,11 @@ watchEffect(() => {
 })
 
 watchEffect(() => {
-  value.value = getId(props.options[index.value])
+  model.value = getId(props.options[index.value])
 })
 
-watch(value, () => {
-  emit('change', value.value)
+watch(model, () => {
+  emit('change', model.value)
 })
 
 const options = props.options
@@ -92,7 +86,7 @@ onKeyStroke('ArrowUp', (e) => {
 
 onKeyStroke('Enter', () => {
   if (focused.value && keyboardIndex.value !== -1) {
-    value.value = getId(options[keyboardIndex.value])
+    model.value = getId(options[keyboardIndex.value])
     focused.value = false
   }
 })
@@ -101,7 +95,7 @@ function onItemPointerDown(option: Option) {
     focused.value = true
     return
   }
-  value.value = getId(option)
+  model.value = getId(option)
   focused.value = false
 }
 const colorCls = computed(() => {
@@ -140,7 +134,7 @@ const sizeCls = computed(() => {
         ref="inputRef"
         :class="[colorCls.input, sizeCls.wrapper]"
         class="r-select-input cursor-pointer border rounded outline-none"
-        placeholder="Select"
+        :placeholder="placeholder"
         readonly
         :value="currentLabel"
         aria-haspopup="listbox"

@@ -2,30 +2,19 @@
 import { computed } from 'vue'
 
 const props = withDefaults(defineProps<{
-  modelValue: boolean
   persistent?: boolean
   blur?: 'sm' | 'md' | 'lg' | boolean
 }>(), {
-  modelValue: false,
   persistent: false,
 })
 
-const emit = defineEmits(['update:modelValue'])
-
-const value = computed({
-  get() {
-    return props.modelValue
-  },
-  set(value) {
-    emit('update:modelValue', value)
-  },
-})
+const model = defineModel<boolean>()
 
 const wrapperRef = ref(null)
 function onClick(event: any) {
   if (!props.persistent) {
     if (event.target === wrapperRef.value) {
-      value.value = false
+      model.value = false
     }
   }
 }
@@ -44,7 +33,7 @@ const blurCls = computed(() => {
   }
 })
 watchEffect(() => {
-  if (props.modelValue) {
+  if (model.value) {
     document.body.style.overflow = 'hidden'
     document.body.style.marginRight = '15px'
   }
@@ -63,8 +52,8 @@ watchEffect(() => {
       ref="wrapperRef"
       class="fixed left-0 top-0 z-100 h-full w-full flex items-end justify-center bg-surface-10/50 transition-all duration-300 md:items-center"
       :class="[blurCls, {
-        ['opacity-0 pointer-events-none']: !value,
-        ['opacity-100']: value,
+        ['opacity-0 pointer-events-none']: !model,
+        ['opacity-100']: model,
       }]"
       @click="onClick"
     >
@@ -76,7 +65,7 @@ watchEffect(() => {
         enter-active-class="transition ease-out duration-300"
         leave-active-class="transition ease-in duration-200"
       >
-        <slot v-if="value" />
+        <slot v-if="model" />
       </Transition>
     </div>
   </Teleport>

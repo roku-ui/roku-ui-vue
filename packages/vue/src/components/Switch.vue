@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { useRounded } from '../utils/classGenerator'
 
+defineOptions({
+  inheritAttrs: false,
+})
+
 const props = withDefaults(
   defineProps<{
-    modelValue?: any
     size?: 'sm' | 'md' | 'lg'
     animate?: boolean
     options?: string[]
@@ -20,8 +23,7 @@ const props = withDefaults(
     color: 'primary',
   },
 )
-const emit = defineEmits(['update:modelValue'])
-
+const model = defineModel<boolean>()
 const wrapper = ref<HTMLElement | null>(null)
 const isActivated = ref(false)
 const sizeCls = computed(() => {
@@ -60,17 +62,6 @@ const animateCls = computed(() => props.animate
       progress: '',
     })
 
-const value = props.modelValue !== undefined
-  ? computed({
-    get() {
-      return props.modelValue
-    },
-    set(val) {
-      emit('update:modelValue', val)
-    },
-  })
-  : ref(false)
-
 function useId() {
   const id = ref('')
   onMounted(() => {
@@ -101,7 +92,7 @@ const colorCls = computed(() => {
     default:
   }
   return {
-    wrapper: value.value ? `border border-transparent ${c}` : 'bg-surface-8 border border-surface-7',
+    wrapper: model.value ? `border border-transparent ${c}` : 'bg-surface-8 border border-surface-7',
     indicator: props.disabled ? 'bg-surface-7' : 'bg-white',
   }
 })
@@ -118,7 +109,8 @@ const rounded = useRounded(props)
   >
     <input
       :id="id"
-      v-model="value"
+      v-model="model"
+      v-bind="$attrs"
       class="hidden"
       type="checkbox"
     >
@@ -139,10 +131,10 @@ const rounded = useRounded(props)
         <div
           class="absolute top-50% -translate-y-50%"
           :style="[rounded.style]"
-          :class="[sizeCls.indicator, colorCls.indicator, animateCls.indicator, value ? sizeCls.active : sizeCls.inactive, rounded.class]"
+          :class="[sizeCls.indicator, colorCls.indicator, animateCls.indicator, model ? sizeCls.active : sizeCls.inactive, rounded.class]"
         />
       </div>
-  </label>
+    </label>
     <label
       v-if="label"
       :for="id"

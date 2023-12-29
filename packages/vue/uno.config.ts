@@ -37,8 +37,8 @@ export default defineConfig({
   },
   shortcuts: {
     ...shortcuts,
-    'container-default': 'bg-surface-8 border-surface-7 border',
-    'btn-default': 'container-default text-surface-1 enabled:hover:bg-surface-7',
+    'container-default': 'bg-surface-8 border-surface-7 border text-surface-3',
+    'btn-default': 'container-default enabled:hover:bg-surface-7',
   },
   presets: [
     presetUno(),
@@ -51,4 +51,11 @@ export default defineConfig({
       },
     }),
   ],
+  content: {
+    pipeline: {
+      include: [
+        'src/**/*',
+      ],
+    },
+  },
 })

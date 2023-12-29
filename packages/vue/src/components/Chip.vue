@@ -8,7 +8,6 @@ const props = withDefaults(
     size?: 'sm' | 'md' | 'lg' | string | number
     style?: any
     class?: any
-    modelValue?: boolean
     rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full' | string | number
   }>(),
   {
@@ -17,15 +16,7 @@ const props = withDefaults(
     rounded: 'full',
   },
 )
-const emit = defineEmits(['update:modelValue'])
-const value = computed({
-  get() {
-    return props.modelValue
-  },
-  set(value) {
-    emit('update:modelValue', value)
-  },
-})
+const model = defineModel<boolean>({ default: undefined })
 const rounded = useRounded(props)
 const sizeCls = computed(() => {
   switch (props.size) {
@@ -38,7 +29,7 @@ const sizeCls = computed(() => {
   }
 })
 const colorCls = computed(() => {
-  if (value.value) {
+  if (model.value) {
     return 'container-filled-primary'
   }
   else {
@@ -46,7 +37,7 @@ const colorCls = computed(() => {
   }
 })
 const checkable = computed(() => {
-  return value.value !== undefined
+  return model.value !== undefined
 })
 const checkableCls = computed(() => {
   if (checkable.value) {
@@ -63,7 +54,7 @@ const checkableCls = computed(() => {
     class="inline-flex items-center gap-1"
     :class="[rounded.class, sizeCls, colorCls, checkableCls]"
     :style="[rounded.style]"
-    @pointerup="$emit('update:modelValue', !modelValue)"
+    @pointerup="checkable && (model = !model)"
   >
     <slot
       v-if="$slots.leftSection"
@@ -76,4 +67,3 @@ const checkableCls = computed(() => {
     />
   </span>
 </template>
-useRoundedStyleuseRoundedStyle
