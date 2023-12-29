@@ -5,14 +5,17 @@ type Option = {
 } | string | symbol | number
 
 const props = withDefaults(defineProps<{
-  modelValue: string | symbol | number | undefined
-  options: Option[]
+  options?: Option[]
+  modelValue?: string | symbol | number
   size?: 'sm' | 'md' | 'lg'
+  noneText?: string
 }>(), {
   modelValue: undefined,
   options() {
     return []
   },
+  size: 'md',
+  noneText: 'No options',
 })
 
 const emit = defineEmits(['update:modelValue', 'change'])
@@ -103,7 +106,7 @@ function onItemPointerDown(option: Option) {
 }
 const colorCls = computed(() => {
   return {
-    input: 'container-default container-priamry-focus',
+    input: 'container-default focus:border-primary-7',
   }
 })
 const sizeCls = computed(() => {
@@ -149,24 +152,32 @@ const sizeCls = computed(() => {
     <div
       v-if="focused"
       :class="sizeCls.dropdown"
-      class="r-select-list surface-container-base surface-outline-base absolute z-1 mt-2 w-full flex-col overflow-hidden border rounded p-1"
+      class="absolute z-1 mt-2 w-full flex-col overflow-hidden border container-default rounded p-1"
     >
       <div
-        v-for="option, i in options"
-        :key="getId(option)"
-        :class="{
-          'hover:surface-container-high': keyboardIndex !== i,
-          'primary-container-base': keyboardIndex === i,
-        }"
-        class="r-select-item flex cursor-pointer items-center justify-between gap-2 rounded p-1 px-2"
-        @pointerdown="onItemPointerDown(option)"
-        @hover="hoverIndex = i"
+        v-if="options.length === 0"
+        class="flex cursor-default items-center justify-between gap-2 rounded p-1 px-2"
       >
-        {{ getLabel(option) }}
-        <div v-if="option === currentOption">
-          <i class="i-tabler-check h-3 w-3" />
-        </div>
+        {{ noneText }}
       </div>
+      <template v-else>
+        <div
+          v-for="option, i in options"
+          :key="getId(option)"
+          :class="{
+            'hover:bg-surface-7': keyboardIndex !== i,
+            'container-filled-primary': keyboardIndex === i,
+          }"
+          class="flex cursor-pointer items-center justify-between gap-2 rounded p-1 px-2"
+          @pointerdown="onItemPointerDown(option)"
+          @hover="hoverIndex = i"
+        >
+          {{ getLabel(option) }}
+          <div v-if="option === currentOption">
+            <i class="i-tabler-check h-3 w-3" />
+          </div>
+        </div>
+      </template>
     </div>
   </div>
 </template>
