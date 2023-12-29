@@ -1,6 +1,6 @@
-import antfu, { GLOB_SRC, GLOB_VUE } from '@antfu/eslint-config'
+import jannchie from '@jannchie/eslint-config'
 
-export default antfu(
+export default jannchie(
   {
     vue: true,
     css: true,
@@ -11,26 +11,4 @@ export default antfu(
       markdown: true,
     },
   },
-  [
-    {
-      files: [GLOB_VUE],
-      name: 'jannchie:vue',
-      rules: {
-        'vue/max-attributes-per-line': ['error', {
-          multiline: {
-            max: 1,
-          },
-        }],
-      },
-    },
-    {
-      files: [GLOB_SRC, GLOB_VUE],
-      name: 'jannchie:src',
-      rules: {
-        'curly': ['error', 'multi-line'],
-        'import/no-mutable-exports': 'off',
-        'style/brace-style': ['error', 'stroustrup', { allowSingleLine: false }],
-      },
-    },
-  ],
 )
