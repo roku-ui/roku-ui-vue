@@ -1,26 +1,70 @@
 <script setup lang="ts">
 const props = withDefaults(
   defineProps<{
-    modelValue?: any
     size?: 'sm' | 'md' | 'lg'
     animate?: boolean
-    options: any[]
     width?: number
+    options?: any[]
+    min?: number
+    max?: number
+    step?: number
+    tickNum?: number
   }>(),
   {
     size: 'md',
-    animate: true,
+    animate: false,
     width: 12,
+    min: 0,
+    max: 100,
+    step: 1,
   },
 )
 
-const emit = defineEmits(['update:modelValue'])
+function minMaxStepToOptions(min: number, max: number, step: number) {
+  const options = []
+  for (let i = min; i <= max; i += step) {
+    options.push(i)
+  }
+  if (options[options.length - 1] !== max) {
+    options.push(max)
+  }
+  return options
+}
 
-const length = computed(() => props.options.length ?? 0)
-const currentIndex = ref(!props.options.includes(props.modelValue) ? 0 : props.options.indexOf(props.modelValue))
+function getTicks(tickNum: number, options: any[]) {
+  const ticks = []
+  ticks.push(options[0])
+  const step = (options.length - 1) / (tickNum - 1)
+  for (let i = 1; i < tickNum - 1; i++) {
+    ticks.push(options[Math.round(i * step)])
+  }
+  ticks.push(options[options.length - 1])
+  return ticks
+}
+
+const tickNum = computed(() => {
+  if (props.options) {
+    return props.options.length
+  }
+  else {
+    return props.tickNum ?? 0
+  }
+})
+const options = computed(() => props.options === undefined ? minMaxStepToOptions(props.min, props.max, props.step) : props.options)
+const ticks = computed(() => getTicks(tickNum.value, options.value))
+
+const model = defineModel<any>({
+  default: undefined,
+})
+const length = computed(() => options.value.length ?? 0)
+const currentIndex = ref(!options.value.includes(model.value) ? 0 : options.value.indexOf(model.value))
+
+function optionToIndex(option: any) {
+  return options.value.indexOf(option)
+}
 
 watchEffect(() => {
-  emit('update:modelValue', props.options[currentIndex.value])
+  model.value = options.value[currentIndex.value]
 })
 
 const wrapper = ref<HTMLElement>()
@@ -128,10 +172,10 @@ const animateCls = computed(() => props.animate
           }"
         >
           <div
-            v-for="option, i in options"
+            v-for="option in ticks"
             :key="option"
             :style="{
-              left: `${(i / (length - 1)) * 100}%`,
+              left: `${(optionToIndex(option) / (length - 1)) * 100}%`,
             }"
             class="absolute top-50% rounded-full bg-white"
             :class="sizeCls.tick"
@@ -166,10 +210,10 @@ const animateCls = computed(() => props.animate
       }"
     >
       <div
-        v-for="option, i in options"
-        :key="option"
+        v-for="option, i in ticks"
+        :key="i"
         :style="{
-          left: `${(i / (length - 1)) * 100}%`,
+          left: `${(optionToIndex(option) / (length - 1)) * 100}%`,
         }"
         class="absolute w-auto flex rounded-full -translate-x-50%"
         :class="sizeCls.tick"
