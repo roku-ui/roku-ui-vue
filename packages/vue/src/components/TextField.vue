@@ -25,14 +25,14 @@ const colorCls = computed(() => {
   }
   switch (props.color) {
     case 'secondary':
-      return 'text-surface-on bg-surface-base border-surface-high focus:border-secondary-5'
+      return 'text-surface-on bg-surface-base border-surface-border focus:border-secondary-5'
     case 'tertiary':
-      return 'text-surface-on bg-surface-base border-surface-high focus:border-tertiary-5'
+      return 'text-surface-on bg-surface-base border-surface-border focus:border-tertiary-5'
     case 'error':
-      return 'text-surface-on bg-surface-base border-surface-high focus:border-error-5'
+      return 'text-surface-on bg-surface-base border-surface-border focus:border-error-5'
     case 'primary':
     default:
-      return 'text-surface-on bg-surface-base border-surface-high focus:border-primary-5'
+      return 'text-surface-on bg-surface-base border-surface-border focus:border-primary-5'
   }
 })
 

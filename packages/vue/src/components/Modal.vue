@@ -38,8 +38,11 @@ watchEffect(() => {
   }
   else {
     setTimeout(() => {
-      document.body.style.overflow = ''
-      document.body.style.marginRight = ''
+      // if all modals are closed
+      if (!document.querySelector('.modal-wrapper.op100')) {
+        document.body.style.overflow = ''
+        document.body.style.marginRight = ''
+      }
     }, 300)
   }
 })
@@ -49,10 +52,10 @@ watchEffect(() => {
   <Teleport to="body">
     <div
       ref="wrapperRef"
-      class="fixed left-0 top-0 z-100 h-full w-full flex items-end justify-center bg-surface-lowest/50 transition-all duration-300 md:items-center"
+      class="modal-wrapper fixed left-0 top-0 z-100 h-full w-full flex items-end justify-center bg-surface-lowest/50 transition-all duration-300 md:items-center"
       :class="[blurCls, {
-        ['opacity-0 pointer-events-none']: !model,
-        ['opacity-100']: model,
+        ['op0 pointer-events-none']: !model,
+        ['op100']: model,
       }]"
       @click="onClick"
     >
