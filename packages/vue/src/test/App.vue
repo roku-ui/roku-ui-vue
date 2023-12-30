@@ -17,6 +17,7 @@ watchEffect(() => {
   document.documentElement.dataset.theme = theme.value
 })
 const isDark = computed({ get: () => theme.value === 'dark', set: v => theme.value = v ? 'dark' : 'light' })
+const slider = ref(47)
 </script>
 
 <template>
@@ -123,7 +124,13 @@ const isDark = computed({ get: () => theme.value === 'dark', set: v => theme.val
         </Indicator>
       </div>
       <div class="flex flex-wrap gap-2">
-        <Slider />
+        <Slider v-model="slider" />
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <Slider
+          v-model="slider"
+          color="tertiary"
+        />
       </div>
       <div class="flex flex-wrap gap-2">
         <Slider

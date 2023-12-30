@@ -92,7 +92,7 @@ const colorCls = computed(() => {
     default:
   }
   return {
-    wrapper: model.value ? `border border-transparent ${c}` : 'bg-surface-low border border-surface-high',
+    wrapper: model.value ? `border border-transparent ${c}` : 'bg-surface-lowest border border-surface-border',
     indicator: props.disabled ? 'bg-surface-high' : 'bg-white',
   }
 })
@@ -104,7 +104,7 @@ const rounded = useRounded(props)
     role="switch"
     class="relative flex items-center gap-2"
     :class="{
-      'pointer-events-none filter-grayscale': props.disabled,
+      'pointer-events-none filter-grayscale op60': props.disabled,
     }"
   >
     <input
