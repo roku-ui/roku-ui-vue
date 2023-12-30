@@ -21,18 +21,18 @@ const props = withDefaults(
 const emit = defineEmits(['change', 'update:modelValue', 'input', 'click', 'pointerdown', 'pointerup'])
 const colorCls = computed(() => {
   if (props.error) {
-    return 'text-error-5 bg-error-10 border-error-5 focus:border-error-5'
+    return 'text-error-container bg-surface-base border-error-5 focus:border-error-5'
   }
   switch (props.color) {
     case 'secondary':
-      return 'text-surface-2 bg-surface-8 border-surface-6 focus:border-secondary-5'
+      return 'text-surface-on bg-surface-base border-surface-high focus:border-secondary-5'
     case 'tertiary':
-      return 'text-surface-2 bg-surface-8 border-surface-6 focus:border-tertiary-5'
+      return 'text-surface-on bg-surface-base border-surface-high focus:border-tertiary-5'
     case 'error':
-      return 'text-surface-2 bg-surface-8 border-surface-6 focus:border-error-5'
+      return 'text-surface-on bg-surface-base border-surface-high focus:border-error-5'
     case 'primary':
     default:
-      return 'text-surface-2 bg-surface-8 border-surface-6 focus:border-primary-5'
+      return 'text-surface-on bg-surface-base border-surface-high focus:border-primary-5'
   }
 })
 

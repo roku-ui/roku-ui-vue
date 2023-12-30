@@ -32,7 +32,7 @@ const sizeCls = computed(() => {
 const colorCls = computed(() => {
   switch (props.color) {
     case 'primary':
-      return 'bg-primary-7'
+      return 'bg-primary-container'
     case 'secondary':
       return 'bg-secondary-7'
     case 'tertiary':
@@ -47,7 +47,7 @@ const rounded = useRounded(props)
 
 <template>
   <div
-    class="relative w-full self-center overflow-hidden bg-surface-7"
+    class="relative w-full self-center overflow-hidden bg-surface-high"
     :class="[sizeCls, rounded.class]"
     :style="[rounded.style]"
   >

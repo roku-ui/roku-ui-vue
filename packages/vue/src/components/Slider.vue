@@ -59,6 +59,8 @@ const model = defineModel<any>({
 const length = computed(() => options.value.length ?? 0)
 const currentIndex = ref(!options.value.includes(model.value) ? 0 : options.value.indexOf(model.value))
 
+const currentTheme = useCurrentTheme()
+
 function optionToIndex(option: any) {
   return options.value.indexOf(option)
 }
@@ -161,7 +163,7 @@ const animateCls = computed(() => props.animate
       @touchmove.prevent
     >
       <div
-        class="rounded-full bg-neutral-7"
+        class="rounded-full bg-surface-high"
         :class="sizeCls.innerWrapper"
       >
         <div
@@ -182,15 +184,21 @@ const animateCls = computed(() => props.animate
           />
           <div
             ref="indicator"
-            class="absolute top-50% cursor-pointer rounded-full bg-white"
-            :class="[sizeCls.indicator, animateCls.indicator]"
+            class="absolute top-50% cursor-pointer rounded-full"
+            :class="[sizeCls.indicator, animateCls.indicator, {
+              'bg-white': currentTheme === 'dark',
+              'bg-sky-5': currentTheme === 'light',
+            }]"
             :style="{
               left: `${(currentIndex / (length - 1)) * 100}%`,
             }"
           >
             <div
-              class="pointer-events-none absolute left-50% top-50% rounded-full bg-sky-5"
-              :class="sizeCls.indicatorInner"
+              class="pointer-events-none absolute left-50% top-50% rounded-full"
+              :class="[sizeCls.indicatorInner, {
+                'bg-sky-5': currentTheme === 'dark',
+                'bg-white': currentTheme === 'light',
+              }]"
             />
           </div>
           <div
@@ -204,7 +212,7 @@ const animateCls = computed(() => props.animate
       </div>
     </div>
     <div
-      class="relative mx-1 h-1em text-xs op56"
+      class="relative mx-1 h-1em text-xs text-surface-onlow"
       :style="{
         width: `${props.width}rem`,
       }"

@@ -77,7 +77,7 @@ function useId() {
 const id = useId()
 
 const colorCls = computed(() => {
-  let c = 'bg-primary-7'
+  let c = 'bg-primary-container'
   switch (props.color) {
     case 'secondary':
       c = 'bg-secondary-7'
@@ -92,8 +92,8 @@ const colorCls = computed(() => {
     default:
   }
   return {
-    wrapper: model.value ? `border border-transparent ${c}` : 'bg-surface-8 border border-surface-7',
-    indicator: props.disabled ? 'bg-surface-7' : 'bg-white',
+    wrapper: model.value ? `border border-transparent ${c}` : 'bg-surface-low border border-surface-high',
+    indicator: props.disabled ? 'bg-surface-high' : 'bg-white',
   }
 })
 const rounded = useRounded(props)

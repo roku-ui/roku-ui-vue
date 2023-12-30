@@ -25,3 +25,5 @@ dist-ssr
 
 auto-import.d.ts
 components.d.ts
+
+/uno.config.ts

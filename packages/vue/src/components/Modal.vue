@@ -50,7 +50,7 @@ watchEffect(() => {
   <Teleport to="body">
     <div
       ref="wrapperRef"
-      class="fixed left-0 top-0 z-100 h-full w-full flex items-end justify-center bg-surface-10/50 transition-all duration-300 md:items-center"
+      class="fixed left-0 top-0 z-100 h-full w-full flex items-end justify-center bg-surface-lowest/50 transition-all duration-300 md:items-center"
       :class="[blurCls, {
         ['opacity-0 pointer-events-none']: !model,
         ['opacity-100']: model,

@@ -12,12 +12,23 @@ const modal3 = ref(false)
 const modal4 = ref(false)
 const modal5 = ref(false)
 const select = ref()
+const theme = ref<'light' | 'dark'>('dark')
+watchEffect(() => {
+  document.documentElement.dataset.theme = theme.value
+})
+const isDark = computed({ get: () => theme.value === 'dark', set: v => theme.value = v ? 'dark' : 'light' })
 </script>
 
 <template>
   <RokuProvider>
     <NotificationSystem />
     <div class="flex flex-col items-center gap-2">
+      <div class="flex items-center gap-2">
+        <Switch
+          v-model="isDark"
+          color="secondary"
+        />
+      </div>
       <div class="flex items-center gap-2">
         <Avatar
           size="sm"
@@ -112,8 +123,25 @@ const select = ref()
         </Indicator>
       </div>
       <div class="flex flex-wrap gap-2">
+        <Slider />
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <Slider
+          :min="2"
+          :max="5"
+        />
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <Slider :tick-num="5" />
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <Slider :options="['A', 'B', 'C']" />
+      </div>
+
+      <div class="flex flex-wrap gap-2">
         <Select
           v-model="select"
+          placeholder="Select a fruit"
           :options="['apple', 'banana', 'orange']"
         />
         <Select />

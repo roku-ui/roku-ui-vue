@@ -159,7 +159,7 @@ const sizeCls = computed(() => {
           v-for="option, i in options"
           :key="getId(option)"
           :class="{
-            'hover:bg-surface-7': keyboardIndex !== i,
+            'hover:bg-surface-high': keyboardIndex !== i,
             'container-filled-primary': keyboardIndex === i,
           }"
           class="flex cursor-pointer items-center justify-between gap-2 rounded p-1 px-2"

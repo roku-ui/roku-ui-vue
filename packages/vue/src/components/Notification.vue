@@ -27,7 +27,7 @@ const bgColorCls = computed(() => {
     case 'error':
       return 'bg-error-5'
     default:
-      return 'bg-primary-5'
+      return 'bg-primary-container'
   }
 })
 
@@ -87,7 +87,7 @@ const textColorCls = computed(() => {
       </div>
       <div
         v-if="message"
-        class="text-sm text-surface-4"
+        class="text-sm text-surface-5"
       >
         {{ message }}
       </div>
@@ -96,7 +96,7 @@ const textColorCls = computed(() => {
       v-if="closeable"
       icon
       variant="transparent"
-      class="text-white hover:text-white"
+      class="text-surface-on hover:text-surface-on"
       @click="$emit('close')"
     >
       <i class="i-tabler-x" />

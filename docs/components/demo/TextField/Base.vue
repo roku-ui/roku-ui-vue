@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Slider, Switch, TextField } from '@roku-ui/vue'
+import { Slider, TextField } from '@roku-ui/vue'
 
 type Size = 'sm' | 'md' | 'lg'
 const size = ref<Size>('md')
