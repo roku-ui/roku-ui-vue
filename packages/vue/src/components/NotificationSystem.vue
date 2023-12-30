@@ -8,7 +8,7 @@ const notifications = useNotifications()
 <template>
   <div
     v-auto-animate
-    class="absolute z-20 flex flex-col gap-2 p-2"
+    class="fixed z-20 flex flex-col gap-2 p-2"
   >
     <Notification
       v-for="notification in notifications"

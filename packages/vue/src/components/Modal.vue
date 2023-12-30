@@ -35,7 +35,6 @@ const blurCls = computed(() => {
 watchEffect(() => {
   if (model.value) {
     document.body.style.overflow = 'hidden'
-    document.body.style.marginRight = '15px'
   }
   else {
     setTimeout(() => {

@@ -213,11 +213,7 @@ const slider = ref(47)
           </Paper>
         </Modal>
       </div>
-      <Progress
-        color="error"
-        :value="99"
-        class="max-w-md"
-      />
+
       <Progress
         class="max-w-md"
         loading
@@ -225,6 +221,21 @@ const slider = ref(47)
       <Progress
         class="max-w-md"
         :value="30"
+      />
+      <Progress
+        color="error"
+        :value="99"
+        class="max-w-md"
+      />
+      <Progress
+        size="sm"
+        :value="47"
+        class="max-w-md"
+      />
+      <Progress
+        size="lg"
+        :value="47"
+        class="max-w-md"
       />
       <PinInput />
       <PinInput password />

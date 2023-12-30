@@ -32,6 +32,7 @@ const colorVars = Object.keys(darkTheme.colors).map((key) => {
   }
 }, {} as Record<string, string>)
 
+const outProvider = inject('theme', null)
 const themeStyles = {
   '--r-color-theme': darkTheme.theme,
   ...colorVars,
@@ -39,7 +40,7 @@ const themeStyles = {
   'font-family': '\'Roboto\', sans-serif',
   'background-color': 'rgb(var(--r-color-surface-low))',
 }
-const outProvider = inject('theme', null)
+
 if (!outProvider) {
   document.documentElement.style.cssText = Object.keys(themeStyles).map((key) => {
     return `${key}: ${(themeStyles as any)[key]}`
@@ -49,12 +50,37 @@ watchEffect(() => {
   document.documentElement.dataset.theme = props.theme.name
 })
 provide('theme', props.theme)
+
+// ------------------------------
+// Calculate scrollbar width, and keep it updated
+const scrollbarWidth = ref(0)
+const currentScrollbar = ref(0)
+const resizeObserver = new ResizeObserver(() => {
+  const curWidth = window.innerWidth - document.body.clientWidth
+  if (curWidth !== 0) {
+    scrollbarWidth.value = curWidth
+  }
+  currentScrollbar.value = curWidth
+})
+
+const paddingRight = computed(() => {
+  if (currentScrollbar.value === scrollbarWidth.value) {
+    return `0px`
+  }
+  else {
+    return `${scrollbarWidth.value}px`
+  }
+})
+resizeObserver.observe(document.body)
+// ------------------------------
 </script>
 
 <template>
   <component
     :is="is"
-    :style="themeStyles"
+    :style="[themeStyles, {
+      'padding-right': paddingRight,
+    }]"
   >
     <slot />
   </component>
