@@ -64,11 +64,12 @@
     --r-color-surface-onlow: var(--r-color-surface-4);
     --r-color-surface-onlowinverted: var(--r-color-surface-7);
 
-    --r-color-surface-lowest: var(--r-color-surface-10);
+    --r-color-surface-lowest: var(--r-color-surface-9);
     --r-color-surface-low: var(--r-color-surface-9);
     --r-color-surface-base: var(--r-color-surface-8);
     --r-color-surface-high: var(--r-color-surface-7);
     --r-color-surface-highest: var(--r-color-surface-6);
+    --r-color-surface-border: var(--r-color-surface-7);
 
     --r-color-primary-container: var(--r-color-primary-8);
     --r-color-secondary-container: var(--r-color-secondary-8);
@@ -92,11 +93,12 @@
     --r-color-surface-onlow: var(--r-color-surface-6);
     --r-color-surface-onlowinverted: var(--r-color-surface-3);
 
-    --r-color-surface-lowest: var(--r-color-surface-2);
-    --r-color-surface-low: var(--r-color-surface-1);
-    --r-color-surface-base: var(--r-color-surface-0);
-    --r-color-surface-high: var(--r-color-surface-2);
-    --r-color-surface-highest: var(--r-color-surface-3);
+    --r-color-surface-lowest: var(--r-color-surface-3);
+    --r-color-surface-low: var(--r-color-surface-2);
+    --r-color-surface-base: var(--r-color-surface-1);
+    --r-color-surface-high: var(--r-color-surface-0);
+    --r-color-surface-highest: var(--r-color-surface-0);
+    --r-color-surface-border: var(--r-color-surface-4);
 
     --r-color-primary-container: var(--r-color-primary-6);
     --r-color-secondary-container: var(--r-color-secondary-6);

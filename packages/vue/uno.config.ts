@@ -16,7 +16,7 @@ const colors = colorKeys.reduce((colors, key) => {
   }, {})
 
   if (key === 'surface') {
-    ['lowest', 'low', 'base', 'high', 'highest', 'on', 'oninverted', 'onlow', 'onlowinverted'].forEach((k) => {
+    ['lowest', 'low', 'base', 'high', 'highest', 'on', 'oninverted', 'onlow', 'onlowinverted', 'border'].forEach((k) => {
       colors[key][k] = `rgb(var(--r-color-${key}-${k}))`
     })
   }
@@ -53,7 +53,7 @@ export default defineConfig({
   },
   shortcuts: {
     ...shortcuts,
-    'container-default': 'bg-surface-base border-surface-high border text-surface-on',
+    'container-default': 'bg-surface-base border-surface-border border text-surface-on',
     'btn-default': 'container-default enabled:hover:bg-surface-high',
   },
   presets: [
