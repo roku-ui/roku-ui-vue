@@ -28,6 +28,8 @@ const slider = ref(47)
         <Switch
           v-model="isDark"
           color="secondary"
+          on-icon="i-tabler-moon"
+          off-icon="i-tabler-sun"
         />
       </div>
       <div class="flex items-center gap-2">

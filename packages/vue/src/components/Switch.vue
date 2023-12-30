@@ -15,6 +15,8 @@ const props = withDefaults(
     rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full' | string | number
     color?: 'primary' | 'secondary' | 'tertiary' | 'error'
     disabled?: boolean
+    offIcon?: string
+    onIcon?: string
   }>(),
   {
     size: 'md',
@@ -30,6 +32,7 @@ const sizeCls = computed(() => {
   switch (props.size) {
     case 'sm':
       return {
+        icon: 'text-xs mx-0.5',
         wrapper: 'h-4 w-8',
         indicator: isActivated.value ? 'h-3 w-4' : 'h-3 w-3',
         inactive: 'left-[calc(0.125rem-1px)]',
@@ -37,6 +40,7 @@ const sizeCls = computed(() => {
       }
     case 'md':
       return {
+        icon: 'text-sm mx-1',
         wrapper: 'h-6 w-12',
         indicator: isActivated.value ? 'h-4 w-5' : 'h-4 w-4',
         inactive: 'left-[calc(0.25rem-1px)]',
@@ -44,6 +48,7 @@ const sizeCls = computed(() => {
       }
     case 'lg':
       return {
+        icon: 'text-lg mx-2',
         wrapper: 'h-8 w-16',
         indicator: isActivated.value ? 'h-6 w-8' : 'h-6 w-6',
         inactive: 'left-[calc(0.25rem-1px)]',
@@ -93,7 +98,7 @@ const colorCls = computed(() => {
   }
   return {
     wrapper: model.value ? `border border-transparent ${c}` : 'bg-surface-lowest border border-surface-border',
-    indicator: props.disabled ? 'bg-surface-high' : 'bg-white',
+    indicator: props.disabled ? 'bg-surface-high' : 'bg-white text-primary-container',
   }
 })
 const rounded = useRounded(props)
@@ -132,6 +137,15 @@ const rounded = useRounded(props)
           class="absolute top-50% -translate-y-50%"
           :style="[rounded.style]"
           :class="[sizeCls.indicator, colorCls.indicator, animateCls.indicator, model ? sizeCls.active : sizeCls.inactive, rounded.class]"
+        />
+        <i
+          class="absolute top-1/2 -translate-y-50%"
+          :class="[sizeCls.icon, {
+            [`left-0 text-${color}-on`]: model,
+            'right-0 text-surface-on ': !model,
+            [onIcon ?? '']: model && onIcon,
+            [offIcon ?? '']: !model && offIcon,
+          }]"
         />
       </div>
     </label>
