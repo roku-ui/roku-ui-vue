@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Notifications } from '..'
+import { Notifications, generateColors } from '..'
 
 const isLoading = refAutoReset(false, 3000)
 onMounted(() => {
@@ -18,6 +18,7 @@ watchEffect(() => {
 })
 const isDark = computed({ get: () => theme.value === 'dark', set: v => theme.value = v ? 'dark' : 'light' })
 const slider = ref(47)
+const colors = generateColors('#5474B4')
 </script>
 
 <template>
@@ -57,6 +58,13 @@ const slider = ref(47)
         class="h-16 w-16"
         src="https://avatars.githubusercontent.com/u/29743310?v=4"
       />
+      <div class="flex flex-wrap gap-2">
+        <ColorSwatch
+          v-for="color in colors"
+          :key="color"
+          :color="color"
+        />
+      </div>
       <div class="flex flex-wrap gap-2">
         <Indicator size="lg">
           <template #label>

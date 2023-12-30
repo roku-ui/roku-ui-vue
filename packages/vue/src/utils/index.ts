@@ -3,8 +3,8 @@ import tinycolor from 'tinycolor2'
 export * from './theme'
 export * from './notifications'
 
-const LIGHTNESS_MAP = [0.96, 0.907, 0.805, 0.697, 0.605, 0.547, 0.518, 0.445, 0.395, 0.34]
-const SATURATION_MAP = [0.32, 0.16, 0.08, 0.04, 0, 0, 0.04, 0.08, 0.16, 0.32]
+const LIGHTNESS_MAP = [0.96, 0.907, 0.805, 0.697, 0.605, 0.547, 0.518, 0.445, 0.395, 0.34, 0.28]
+const SATURATION_MAP = [0.32, 0.16, 0.08, 0.04, 0, 0, 0.04, 0.08, 0.16, 0.32, 0.64]
 
 function getClosestLightness(color: string | tinycolor.ColorFormats.PRGB | tinycolor.ColorFormats.RGB | tinycolor.ColorFormats.HSL | tinycolor.ColorFormats.HSV | tinycolor.Instance | undefined) {
   const lightnessGoal = tinycolor(color).toHsl().l
@@ -34,6 +34,7 @@ export function generateColorsMap(color: tinycolor.ColorInput | undefined) {
 }
 
 export type ColorsTuple = readonly [
+  string,
   string,
   string,
   string,
