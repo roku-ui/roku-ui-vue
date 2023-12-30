@@ -9,6 +9,7 @@ const props = withDefaults(
     max?: number
     step?: number
     tickNum?: number
+    color?: 'primary' | 'secondary' | 'tertiary' | 'error'
   }>(),
   {
     size: 'md',
@@ -17,6 +18,7 @@ const props = withDefaults(
     min: 0,
     max: 100,
     step: 1,
+    color: 'primary',
   },
 )
 
@@ -96,6 +98,23 @@ function pointEventCallback(event: PointerEvent) {
   }
   currentIndex.value = index
 }
+
+watchEffect(() => {
+  currentIndex.value = optionToIndex(model.value)
+})
+
+const colorCls = computed(() => {
+  switch (props.color) {
+    case 'primary':
+      return 'bg-primary-container'
+    case 'secondary':
+      return 'bg-secondary-container'
+    case 'tertiary':
+      return 'bg-tertiary-container'
+    case 'error':
+      return 'bg-error-container'
+  }
+})
 
 function pointDownEventCallback(event: PointerEvent) {
   event.preventDefault()
@@ -187,7 +206,7 @@ const animateCls = computed(() => props.animate
             class="absolute top-50% cursor-pointer rounded-full"
             :class="[sizeCls.indicator, animateCls.indicator, {
               'bg-white': currentTheme === 'dark',
-              'bg-sky-5': currentTheme === 'light',
+              [colorCls]: currentTheme === 'light',
             }]"
             :style="{
               left: `${(currentIndex / (length - 1)) * 100}%`,
@@ -196,14 +215,14 @@ const animateCls = computed(() => props.animate
             <div
               class="pointer-events-none absolute left-50% top-50% rounded-full"
               :class="[sizeCls.indicatorInner, {
-                'bg-sky-5': currentTheme === 'dark',
+                [colorCls]: currentTheme === 'dark',
                 'bg-white': currentTheme === 'light',
               }]"
             />
           </div>
           <div
-            class="pointer-events-none h-full rounded-full bg-sky-5"
-            :class="[sizeCls.progress, animateCls.progress]"
+            class="pointer-events-none h-full rounded-full"
+            :class="[sizeCls.progress, animateCls.progress, colorCls]"
             :style="{
               width: `${(currentIndex / (length - 1)) * 100}%`,
             }"
@@ -212,7 +231,7 @@ const animateCls = computed(() => props.animate
       </div>
     </div>
     <div
-      class="relative mx-1 h-1em text-xs text-surface-onlow"
+      class="text-surface-onlow relative mx-1 h-1em text-xs"
       :style="{
         width: `${props.width}rem`,
       }"
