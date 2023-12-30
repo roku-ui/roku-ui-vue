@@ -81,6 +81,7 @@ resizeObserver.observe(document.body)
     :style="[themeStyles, {
       'padding-right': paddingRight,
     }]"
+    class="transition-background-color,border-color,color"
   >
     <slot />
   </component>

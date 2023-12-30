@@ -53,8 +53,8 @@ export default defineConfig({
   },
   shortcuts: {
     ...shortcuts,
-    'container-default': 'bg-surface-base border-surface-border border text-surface-on',
-    'btn-default': 'container-default enabled:hover:bg-surface-high',
+    'container-default': 'bg-surface-base border-surface-border border text-surface-on transition-background-color,border-color,color',
+    'btn-default': 'container-default enabled:hover:bg-surface-high transition-background-color,border-color,color',
   },
   presets: [
     presetUno(),

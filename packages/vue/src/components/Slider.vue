@@ -182,7 +182,7 @@ const animateCls = computed(() => props.animate
       @touchmove.prevent
     >
       <div
-        class="rounded-full bg-surface-high"
+        class="rounded-full bg-surface-high transition-background-color,border-color,color"
         :class="sizeCls.innerWrapper"
       >
         <div
@@ -203,7 +203,7 @@ const animateCls = computed(() => props.animate
           />
           <div
             ref="indicator"
-            class="absolute top-50% cursor-pointer rounded-full"
+            class="absolute top-50% cursor-pointer rounded-full transition-background-color,border-color,color"
             :class="[sizeCls.indicator, animateCls.indicator, {
               'bg-white': currentTheme === 'dark',
               [colorCls]: currentTheme === 'light',
@@ -213,7 +213,7 @@ const animateCls = computed(() => props.animate
             }"
           >
             <div
-              class="pointer-events-none absolute left-50% top-50% rounded-full"
+              class="pointer-events-none absolute left-50% top-50% rounded-full transition-background-color,border-color,color"
               :class="[sizeCls.indicatorInner, {
                 [colorCls]: currentTheme === 'dark',
                 'bg-white': currentTheme === 'light',

@@ -47,7 +47,7 @@ const rounded = useRounded(props)
 
 <template>
   <div
-    class="relative w-full self-center overflow-hidden bg-surface-high"
+    class="relative w-full self-center overflow-hidden bg-surface-high transition-background-color,border-color,color"
     :class="[sizeCls, rounded.class]"
     :style="[rounded.style]"
   >

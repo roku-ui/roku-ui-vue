@@ -60,7 +60,7 @@ defineExpose({
   <input
     ref="input"
     :value="modelValue"
-    class="bg-back-2 border px-2 py-1 outline-none"
+    class="bg-back-2 border px-2 py-1 outline-none transition-background-color,border-color,color"
     :class="[colorCls, disabledCls, rounded.class]"
     :style="[rounded.style]"
     :placeholder="placeholder"
