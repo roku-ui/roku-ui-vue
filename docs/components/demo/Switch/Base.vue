@@ -3,9 +3,13 @@ import { Slider, Switch } from '@roku-ui/vue'
 
 type Size = 'sm' | 'md' | 'lg'
 const size = ref<Size>('md')
-const code = computed(() => `<template>
-  <Switch${getpropsString({ size: size.value })} /> // [!code highlight]
+const code = computed(() => `<script setup>
+const value = ref(false)
+<\/script> 
+<template>
+  <Switch v-model="value"${getpropsString({ size: size.value })} /> // [!code highlight]
 </template>`)
+const value = ref(false)
 </script>
 
 <template>
@@ -24,7 +28,10 @@ const code = computed(() => `<template>
       </div>
     </template>
     <template #preview>
-      <Switch :size="size" />
+      <Switch
+        v-model="value"
+        :size="size"
+      />
     </template>
   </Demo>
 </template>

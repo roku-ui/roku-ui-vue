@@ -55,11 +55,11 @@ const colors = generateColors('#5474B4')
           :color="color"
         />
       </div>
-      <RokuProvider :theme="lightTheme">
+      <ThemeProvider :theme="lightTheme">
         <div>
           123
         </div>
-      </RokuProvider>
+      </ThemeProvider>
 
       <div class="flex flex-wrap gap-2">
         <Indicator size="lg">

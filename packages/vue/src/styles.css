@@ -6,7 +6,7 @@
     color-scheme: light;
 }
 
-[data-theme="dark"] * {
+[data-theme="dark"] *, [data-theme="dark"]  {
     color-scheme: dark;
     --r-color-surface-on: var(--r-color-surface-3);
     --r-color-surface-oninverted: var(--r-color-surface-8);
@@ -36,7 +36,7 @@
     --r-color-error-containerl: var(--r-color-error-6);
 }
 
-[data-theme="light"] * {
+[data-theme="light"] *, [data-theme="light"] {
     color-scheme: light;
     --r-color-surface-on: var(--r-color-surface-7);
     --r-color-surface-oninverted: var(--r-color-surface-2);

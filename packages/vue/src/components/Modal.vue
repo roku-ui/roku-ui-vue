@@ -46,29 +46,32 @@ watchEffect(() => {
     }, 300)
   }
 })
+const currentTheme = useCurrentTheme()
 </script>
 
 <template>
   <Teleport to="body">
-    <div
-      ref="wrapperRef"
-      class="modal-wrapper fixed left-0 top-0 z-100 h-full w-full flex items-end justify-center bg-surface-lowest/50 transition-all duration-300 md:items-center"
-      :class="[blurCls, {
-        ['op0 pointer-events-none']: !model,
-        ['op100']: model,
-      }]"
-      @click="onClick"
-    >
-      <Transition
-        enter-from-class="translate-y-1/2"
-        enter-to-class="translate-y-0"
-        leave-from-class="translate-y-0"
-        leave-to-class="translate-y-1/2"
-        enter-active-class="transition ease-out duration-300"
-        leave-active-class="transition ease-in duration-200"
+    <ThemeProvider :theme="currentTheme">
+      <div
+        ref="wrapperRef"
+        class="modal-wrapper fixed left-0 top-0 z-100 h-full w-full flex items-end justify-center bg-surface-lowest/50 transition-all duration-300 md:items-center"
+        :class="[blurCls, {
+          ['op0 pointer-events-none']: !model,
+          ['op100']: model,
+        }]"
+        @click="onClick"
       >
-        <slot v-if="model" />
-      </Transition>
-    </div>
+        <Transition
+          enter-from-class="translate-y-1/2"
+          enter-to-class="translate-y-0"
+          leave-from-class="translate-y-0"
+          leave-to-class="translate-y-1/2"
+          enter-active-class="transition ease-out duration-300"
+          leave-active-class="transition ease-in duration-200"
+        >
+          <slot v-if="model" />
+        </Transition>
+      </div>
+    </ThemeProvider>
   </Teleport>
 </template>

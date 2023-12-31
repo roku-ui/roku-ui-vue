@@ -9,16 +9,33 @@ const props = withDefaults(
     error?: boolean
     disabled?: boolean
     rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full' | string | number
+    size?: 'sm' | 'md' | 'lg'
     password?: boolean
     placeholder?: string
   }>(),
   {
     color: 'primary',
     rounded: 'md',
+    size: 'md',
   },
 )
-
 const emit = defineEmits(['change', 'update:modelValue', 'input', 'click', 'pointerdown', 'pointerup'])
+const sizeCls = computed(() => {
+  switch (props.size) {
+    case 'sm':
+      return {
+        base: 'h-6 px-2 py-1 text-xs',
+      }
+    case 'md':
+      return {
+        base: 'h-8 px-3 py-1 text-sm',
+      }
+    case 'lg':
+      return {
+        base: 'h-10 px-4 py-2 text-base',
+      }
+  }
+})
 const colorCls = computed(() => {
   if (props.error) {
     return 'text-error-container bg-surface-base border-error-5 focus:border-error-5'
@@ -61,7 +78,7 @@ defineExpose({
     ref="input"
     :value="modelValue"
     class="bg-back-2 border px-2 py-1 outline-none transition-background-color,border-color,color"
-    :class="[colorCls, disabledCls, rounded.class]"
+    :class="[colorCls, disabledCls, rounded.class, sizeCls.base]"
     :style="[rounded.style]"
     :placeholder="placeholder"
     :type="props.password ? 'password' : 'text'"
