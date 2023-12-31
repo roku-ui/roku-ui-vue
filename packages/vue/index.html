@@ -5,19 +5,18 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Max Min Vue</title>
-    <script>
-      if (
-        window.matchMedia &&
-        window.matchMedia('(prefers-color-scheme: dark)').matches
-      ) {
-        document.documentElement.dataset.theme = 'dark'
-      } else {
-        document.documentElement.dataset.theme = 'light'
-      }
-    </script>
   </head>
 
   <body>
+    <script>
+      var e =
+        window.matchMedia &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches
+      t = localStorage.getItem('theme') || 'auto'
+      'dark' === t || (e && 'light' !== t)
+        ? (document.documentElement.dataset.theme = 'dark')
+        : (document.documentElement.dataset.theme = 'light')
+    </script>
     <div id="app"></div>
     <script type="module" src="/src/test.ts"></script>
   </body>

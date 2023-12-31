@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Notifications, generateColors } from '..'
+import { Notifications, generateColors, lightTheme } from '..'
 
 const isLoading = refAutoReset(false, 3000)
 onMounted(() => {
@@ -12,11 +12,6 @@ const modal3 = ref(false)
 const modal4 = ref(false)
 const modal5 = ref(false)
 const select = ref()
-const theme = ref<'light' | 'dark'>('dark')
-watchEffect(() => {
-  document.documentElement.dataset.theme = theme.value
-})
-const isDark = computed({ get: () => theme.value === 'dark', set: v => theme.value = v ? 'dark' : 'light' })
 const slider = ref(47)
 const colors = generateColors('#5474B4')
 </script>
@@ -26,12 +21,7 @@ const colors = generateColors('#5474B4')
     <NotificationSystem />
     <div class="flex flex-col items-center gap-2">
       <div class="flex items-center gap-2">
-        <Switch
-          v-model="isDark"
-          color="secondary"
-          on-icon="i-tabler-moon"
-          off-icon="i-tabler-sun"
-        />
+        <ThemeSwitch />
       </div>
       <div class="flex items-center gap-2">
         <Avatar
@@ -65,6 +55,12 @@ const colors = generateColors('#5474B4')
           :color="color"
         />
       </div>
+      <RokuProvider :theme="lightTheme">
+        <div>
+          123
+        </div>
+      </RokuProvider>
+
       <div class="flex flex-wrap gap-2">
         <Indicator size="lg">
           <template #label>

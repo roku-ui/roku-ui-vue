@@ -31,7 +31,7 @@ export interface ThemeColorsColors {
 
 export interface ThemeData {
   name: string
-  theme: 'light' | 'dark'
+  scheme: 'light' | 'dark'
   colors: ThemeColorsColors
 }
 
@@ -44,12 +44,12 @@ export const themeColors: ThemeColorsColors = {
 }
 export const darkTheme: ThemeData = {
   name: 'dark',
-  theme: 'dark',
+  scheme: 'dark',
   colors: themeColors,
 }
 
 export const lightTheme: ThemeData = {
   name: 'light',
-  theme: 'light',
+  scheme: 'light',
   colors: themeColors,
 }

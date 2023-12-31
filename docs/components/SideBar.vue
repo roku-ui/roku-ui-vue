@@ -36,7 +36,7 @@ const navData = [
       '-translate-x-100%': !isOpen,
       'translate-x-0': isOpen,
     }"
-    class="fixed top-12 z-10 h-100vh min-w-64 w-33vw flex flex-col items-end gap-2 bg-neutral-900 transition-transform md:translate-x-0"
+    class="fixed top-12 z-10 h-100vh min-w-64 w-33vw flex flex-col items-end gap-2 bg-surface-low transition-transform md:translate-x-0"
   >
     <div class="w-64 flex flex-col gap-8 px-8 py-6">
       <div>
@@ -53,7 +53,7 @@ const navData = [
           :key="nav.to"
           :to="nav.to"
           :text="nav.text"
-          class="block text-sm text-neutral-4 hover:text-sky-4"
+          class="block text-sm hover:text-primary-5"
         >
           {{ nav.text }}
         </NuxtLink>

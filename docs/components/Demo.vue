@@ -27,13 +27,13 @@ const codeHtml = computed(() => highlighter.codeToHtml(props.code, {
 </script>
 
 <template>
-  <div class="border border-neutral-700 rounded-xl bg-neutral-900">
-    <div class="flex border-b border-neutral-700">
+  <div class="border border-surface-border rounded-xl bg-surface-base">
+    <div class="flex border-b border-surface-border">
       <div
         :class="{
           'border-r': $slots.form,
         }"
-        class="gird-paper-background min-h-56 w-full flex flex-grow items-center justify-center border-neutral-700"
+        class="gird-paper-background min-h-56 w-full flex flex-grow items-center justify-center border-surface-border"
       >
         <slot name="preview" />
       </div>
@@ -45,7 +45,7 @@ const codeHtml = computed(() => highlighter.codeToHtml(props.code, {
       </div>
     </div>
     <div
-      class="not-prose overflow-hidden rounded-xl text-sm children:overflow-auto children:p-2"
+      class="not-prose overflow-hidden rounded-b-xl text-sm children:overflow-auto children:p-2"
       v-html="codeHtml"
     />
   </div>

@@ -4,6 +4,7 @@ import {
   presetTypography,
   presetUno,
 } from 'unocss'
+import { rokuPreset } from '@roku-ui/vue'
 
 export default defineConfig({
   content: {
@@ -12,7 +13,13 @@ export default defineConfig({
     },
   },
   presets: [
-    presetUno(),
+    rokuPreset,
+    presetUno({
+      dark: {
+        dark: '[data-theme="dark"]',
+        light: '[data-theme="light"]',
+      },
+    }),
     presetTypography(),
     presetIcons({
       scale: 1.2,

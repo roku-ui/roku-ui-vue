@@ -61,11 +61,39 @@ const model = defineModel<any>({
 const length = computed(() => options.value.length ?? 0)
 const currentIndex = ref(!options.value.includes(model.value) ? 0 : options.value.indexOf(model.value))
 
-const currentTheme = useCurrentTheme()
-
 function optionToIndex(option: any) {
   return options.value.indexOf(option)
 }
+
+const colorCls = computed(() => {
+  switch (props.color) {
+    case 'primary':
+      return 'bg-primary-container'
+    case 'secondary':
+      return 'bg-secondary-container'
+    case 'tertiary':
+      return 'bg-tertiary-container'
+    case 'error':
+      return 'bg-error-container'
+  }
+})
+
+const indicatorOuterCls = computed(() => {
+  return `dark:bg-white bg-${props.color}-container`
+})
+
+const indicatorInnerCls = computed(() => {
+  switch (props.color) {
+    case 'primary':
+      return 'dark:bg-primary-container bg-white'
+    case 'secondary':
+      return 'dark:bg-secondary-container bg-white'
+    case 'tertiary':
+      return 'dark:bg-tertiary-container bg-white'
+    case 'error':
+      return 'dark:bg-error-container bg-white'
+  }
+})
 
 watchEffect(() => {
   model.value = options.value[currentIndex.value]
@@ -103,19 +131,6 @@ watchEffect(() => {
   currentIndex.value = optionToIndex(model.value)
 })
 
-const colorCls = computed(() => {
-  switch (props.color) {
-    case 'primary':
-      return 'bg-primary-container'
-    case 'secondary':
-      return 'bg-secondary-container'
-    case 'tertiary':
-      return 'bg-tertiary-container'
-    case 'error':
-      return 'bg-error-container'
-  }
-})
-
 function pointDownEventCallback(event: PointerEvent) {
   event.preventDefault()
   event.stopPropagation()
@@ -126,6 +141,7 @@ function pointDownEventCallback(event: PointerEvent) {
 useEventListener(wrapper, 'pointerdown', pointDownEventCallback)
 onMounted(() => {
   useEventListener(document, 'pointermove', pointEventCallback)
+  currentIndex.value = Math.max(0, optionToIndex(model.value))
 })
 const sizeCls = computed(() => {
   switch (props.size) {
@@ -204,20 +220,14 @@ const animateCls = computed(() => props.animate
           <div
             ref="indicator"
             class="absolute top-50% cursor-pointer rounded-full transition-background-color,border-color,color"
-            :class="[sizeCls.indicator, animateCls.indicator, {
-              'bg-white': currentTheme === 'dark',
-              [colorCls]: currentTheme === 'light',
-            }]"
+            :class="[sizeCls.indicator, animateCls.indicator, indicatorOuterCls]"
             :style="{
               left: `${(currentIndex / (length - 1)) * 100}%`,
             }"
           >
             <div
               class="pointer-events-none absolute left-50% top-50% rounded-full transition-background-color,border-color,color"
-              :class="[sizeCls.indicatorInner, {
-                [colorCls]: currentTheme === 'dark',
-                'bg-white': currentTheme === 'light',
-              }]"
+              :class="[sizeCls.indicatorInner, indicatorInnerCls]"
             />
           </div>
           <div
@@ -231,7 +241,7 @@ const animateCls = computed(() => props.animate
       </div>
     </div>
     <div
-      class="text-surface-onlow relative mx-1 h-1em text-xs"
+      class="relative mx-1 h-1em text-xs text-surface-onlow"
       :style="{
         width: `${props.width}rem`,
       }"

@@ -2,8 +2,8 @@
 withDefaults(
   defineProps<{
     color: string
-    is: string
-    withBorder: boolean
+    is?: string
+    withBorder?: boolean
   }>(),
   {
     is: 'div',

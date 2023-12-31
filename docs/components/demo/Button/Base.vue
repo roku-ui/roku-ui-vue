@@ -21,7 +21,7 @@ const variant = ref<Variant>('default')
     <template #form>
       <div class="flex flex-col gap-6">
         <div>
-          <div class="text-neutral-3">
+          <div class="text-surface-onlow">
             Variant
           </div>
           <Select
@@ -30,7 +30,7 @@ const variant = ref<Variant>('default')
           />
         </div>
         <div>
-          <div class="text-neutral-3">
+          <div class="text-surface-onlow">
             Size
           </div>
           <Slider

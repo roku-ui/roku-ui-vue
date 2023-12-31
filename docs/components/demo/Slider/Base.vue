@@ -17,6 +17,7 @@ function code(props: { size?: Size, animate?: boolean } = {}) {
   </Slider>
 </template>`
 }
+const option = ref('Apple')
 </script>
 
 <template>
@@ -24,7 +25,7 @@ function code(props: { size?: Size, animate?: boolean } = {}) {
     <template #form>
       <div class="flex flex-col gap-6">
         <div>
-          <div class="texttext-neutral-3">
+          <div class="texttext-surface-onlow">
             Size
           </div>
           <Slider
@@ -42,6 +43,7 @@ function code(props: { size?: Size, animate?: boolean } = {}) {
     </template>
     <template #preview>
       <Slider
+        v-model="option"
         :options="['Apple', 'Banana', 'Lemon']"
         :size="size"
         :animate="animate"

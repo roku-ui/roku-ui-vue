@@ -12,5 +12,6 @@ import Progress from './Progress.vue'
 import Indicator from './Indicator.vue'
 import Chip from './Chip.vue'
 import Avatar from './Avatar.vue'
+import ThemeSwitch from './ThemeSwitch.vue'
 
-export { Avatar, Chip, Indicator, PinInput, Progress, NotificationSystem, Modal, Btn, RokuProvider, Slider, Switch, Select, TextField, Notification }
+export { ThemeSwitch, Avatar, Chip, Indicator, PinInput, Progress, NotificationSystem, Modal, Btn, RokuProvider, Slider, Switch, Select, TextField, Notification }
