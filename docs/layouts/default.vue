@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Btn, RokuProvider, ThemeSwitch } from '@roku-ui/vue'
+import 'virtual:uno.css'
 
 useSeoMeta({
   title: 'Roku UI',
