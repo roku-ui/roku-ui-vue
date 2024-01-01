@@ -6,8 +6,7 @@
     "build": "nuxt prepare && nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt prepare && nuxt generate",
-    "preview": "nuxt preview",
-    "prepare": "nuxt prepare"
+    "preview": "nuxt preview"
   },
   "dependencies": {
     "@roku-ui/preset": "workspace:^",
