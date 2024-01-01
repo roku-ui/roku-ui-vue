@@ -1,0 +1,54 @@
+{
+  "name": "@roku-ui/preset",
+  "type": "module",
+  "version": "0.1.0",
+  "author": "Jianqi Pan <jannchie@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/roku-ui/roku-ui-vue"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./package.json": "./package.json",
+    "./index.d.ts": "./dist/index.d.ts"
+  },
+  "main": "dist/index.mjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rollup --config"
+  },
+  "dependencies": {
+    "@formkit/auto-animate": "^0.8.1",
+    "@unocss/reset": "^0.58.2",
+    "@vueuse/core": "^10.7.1",
+    "tinycolor2": "^1.6.0",
+    "unbuild": "^2.0.0",
+    "vue": "^3.4.0"
+  },
+  "devDependencies": {
+    "@jannchie/eslint-config": "^3.0.0",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-typescript": "^11.1.5",
+    "@unocss/preset-icons": "^0.58.2",
+    "@vitejs/plugin-vue": "^5.0.0",
+    "eslint": "^8.56.0",
+    "eslint-plugin-format": "^0.1.0",
+    "rollup": "^4.9.2",
+    "rollup-plugin-import-css": "^3.3.5",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-string": "^3.0.0",
+    "typescript": "^5.3.3",
+    "unocss": "^0.58.2"
+  }
+}

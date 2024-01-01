@@ -52,6 +52,14 @@ function rokuPreset() {
     presets: [
 
     ],
+    content: {
+      pipeline: {
+        include: [
+          /\.(vue|svelte|[jt]sx|mdx?|astro|elm|php|phtml|html)($|\?)/,
+          /@roku-ui/,
+        ],
+      },
+    },
   }
 }
 export { rokuPreset }

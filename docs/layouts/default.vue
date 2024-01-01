@@ -3,14 +3,14 @@ import { Btn, RokuProvider, ThemeSwitch } from '@roku-ui/vue'
 
 useSeoMeta({
   title: 'Roku UI',
-  description: 'Roku UI is a Vue 3 component library for Roku UI.',
-  ogTitle: '[og:title]',
-  ogDescription: '[og:description]',
-  ogImage: '[og:image]',
-  ogUrl: '[og:url]',
-  twitterTitle: '[twitter:title]',
-  twitterDescription: '[twitter:description]',
-  twitterImage: '[twitter:image]',
+  description: 'Roku UI is a Vue 3 component library.',
+  ogTitle: 'Roku UI',
+  ogDescription: 'Roku UI is a Vue 3 component library.',
+  ogImage: '/icon.png',
+  ogUrl: 'https://roku-ui.vercel.app/',
+  twitterTitle: 'Roku UI',
+  twitterDescription: 'Roku UI is a Vue 3 component library.',
+  twitterImage: '/icon.png',
   twitterCard: 'summary',
 })
 
@@ -22,7 +22,7 @@ useHead({
     {
       rel: 'icon',
       type: 'image/png',
-      href: '/favicon.png',
+      href: '/icon.png',
     },
   ],
 })
@@ -49,9 +49,10 @@ function toggleSideBar() {
         >
           <i class="i-tabler-menu" />
         </Btn>
-        <div>
-          Logo
-        </div>
+        <img
+          class="h-6 w-6"
+          src="/icon.png"
+        >
       </div>
       <div>
         <ThemeSwitch />
