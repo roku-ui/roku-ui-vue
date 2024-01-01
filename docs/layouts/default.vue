@@ -29,8 +29,6 @@ useHead({
 })
 
 const sideBarOpen = ref(false)
-const size = useWindowSize()
-const ltMd = computed(() => size.width.value < 768)
 function toggleSideBar() {
   sideBarOpen.value = !sideBarOpen.value
 }
@@ -42,9 +40,7 @@ function toggleSideBar() {
       <div>
         <Btn
           icon
-          :class="{
-            '!hidden': !ltMd,
-          }"
+          class="!hidden"
           size="sm"
           @click="toggleSideBar"
         >

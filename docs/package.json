@@ -3,10 +3,11 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "nuxt build",
+    "build": "nuxt prepare && nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt prepare && nuxt generate",
-    "preview": "nuxt preview"
+    "preview": "nuxt preview",
+    "prepare": "nuxt prepare"
   },
   "dependencies": {
     "@roku-ui/preset": "workspace:^",
