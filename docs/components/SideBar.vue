@@ -53,7 +53,7 @@ const navData = [
           :key="nav.to"
           :to="nav.to"
           :text="nav.text"
-          class="block text-sm hover:text-primary-5"
+          class="block text-sm hover:text-primary-container"
         >
           {{ nav.text }}
         </NuxtLink>
