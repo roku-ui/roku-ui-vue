@@ -21,11 +21,11 @@ const props = withDefaults(defineProps<{
 const sizeCls = computed(() => {
   switch (props.size) {
     case 'sm':
-      return 'h-0.5'
+      return 'h-0.25'
     case 'md':
-      return 'h-1'
+      return 'h-0.5'
     case 'lg':
-      return 'h-2'
+      return 'h-1'
   }
 })
 

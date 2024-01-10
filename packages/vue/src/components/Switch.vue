@@ -97,7 +97,7 @@ const colorCls = computed(() => {
     default:
   }
   return {
-    wrapper: model.value ? `border border-transparent ${c}` : 'bg-surface-lowest border border-surface-border',
+    wrapper: model.value ? `border border-transparent ${c}` : 'bg-surface-lowest border border-surface-border-low',
     indicator: props.disabled ? 'bg-surface-high' : 'bg-white text-primary-container',
   }
 })

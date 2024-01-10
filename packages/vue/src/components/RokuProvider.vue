@@ -14,7 +14,7 @@ const props = withDefaults(
       if (typeof window === 'undefined') {
         return darkTheme
       }
-      return document.documentElement.dataset.theme === 'dark' ? darkTheme : lightTheme
+      return document.documentElement.dataset.scheme === 'dark' ? darkTheme : lightTheme
     },
   },
 )
@@ -43,7 +43,6 @@ const paddingRight = computed(() => {
   }
 })
 // ------------------------------
-
 const styles = useThemeStyles(props.theme)
 </script>
 

@@ -5,19 +5,19 @@ const isDark = ref<boolean | undefined>(undefined)
 watchEffect(() => {
   if (isClient) {
     if (isDark.value === true) {
-      document.documentElement.setAttribute('data-theme', 'dark')
-      localStorage.setItem('theme', 'dark')
+      document.documentElement.setAttribute('data-scheme', 'dark')
+      localStorage.setItem('scheme', 'dark')
     }
     else if (isDark.value === false) {
-      document.documentElement.setAttribute('data-theme', 'light')
+      document.documentElement.setAttribute('data-scheme', 'light')
 
-      localStorage.setItem('theme', 'light')
+      localStorage.setItem('scheme', 'light')
     }
   }
 })
 onMounted(() => {
   if (isClient) {
-    const theme = localStorage.getItem('theme')
+    const theme = localStorage.getItem('scheme')
     if (theme === 'dark') {
       isDark.value = true
     }

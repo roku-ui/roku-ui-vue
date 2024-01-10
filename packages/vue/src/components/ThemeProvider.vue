@@ -8,7 +8,11 @@ const styles = useThemeStyles(props.theme, false)
 </script>
 
 <template>
-  <div :style="[styles]">
+  <div
+    :style="[styles]"
+    :data-scheme="theme.scheme"
+    :data-theme="theme.name"
+  >
     <slot />
   </div>
 </template>

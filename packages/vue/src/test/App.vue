@@ -20,10 +20,10 @@ const colors = generateColors('#5474B4')
   <RokuProvider>
     <NotificationSystem />
     <div class="flex flex-col items-center gap-2">
-      <div class="flex items-center gap-2">
+      <Paper class="flex items-center gap-2">
         <ThemeSwitch />
-      </div>
-      <div class="flex items-center gap-2">
+      </Paper>
+      <Paper class="flex items-center gap-2">
         <Avatar
           size="sm"
           src="https://avatars.githubusercontent.com/u/29743310?v=4"
@@ -43,25 +43,25 @@ const colors = generateColors('#5474B4')
           size="86px"
           src="https://avatars.githubusercontent.com/u/29743310?v=4"
         />
-      </div>
+      </Paper>
       <Image
         class="h-16 w-16"
         src="https://avatars.githubusercontent.com/u/29743310?v=4"
       />
-      <div class="flex flex-wrap gap-2">
+      <Paper class="flex flex-wrap gap-2">
         <ColorSwatch
           v-for="color in colors"
           :key="color"
           :color="color"
         />
-      </div>
+      </Paper>
       <ThemeProvider :theme="lightTheme">
-        <div>
-          123
-        </div>
+        <Paper class="m-4">
+          Other Theme
+        </Paper>
       </ThemeProvider>
 
-      <div class="flex flex-wrap gap-2">
+      <Paper class="flex flex-wrap gap-2">
         <Indicator size="lg">
           <template #label>
             1
@@ -89,8 +89,8 @@ const colors = generateColors('#5474B4')
             src="https://avatars.githubusercontent.com/u/29743310?v=4"
           />
         </indicator>
-      </div>
-      <div class="flex flex-wrap gap-2">
+      </Paper>
+      <Paper class="flex flex-wrap gap-2">
         <Indicator>
           <Image
             class="h-16 w-16"
@@ -128,46 +128,46 @@ const colors = generateColors('#5474B4')
             src="https://avatars.githubusercontent.com/u/29743310?v=4"
           />
         </Indicator>
-      </div>
-      <div class="flex flex-wrap gap-2">
+      </Paper>
+      <Paper class="flex flex-wrap gap-2">
         <Slider v-model="slider" />
-      </div>
-      <div class="flex flex-wrap gap-2">
+      </Paper>
+      <Paper class="flex flex-wrap gap-2">
         <Slider
           v-model="slider"
           color="tertiary"
         />
-      </div>
-      <div class="flex flex-wrap gap-2">
+      </Paper>
+      <Paper class="flex flex-wrap gap-2">
         <Slider
           :min="2"
           :max="5"
         />
-      </div>
-      <div class="flex flex-wrap gap-2">
+      </Paper>
+      <Paper class="flex flex-wrap gap-2">
         <Slider :tick-num="5" />
-      </div>
-      <div class="flex flex-wrap gap-2">
+      </Paper>
+      <Paper class="flex flex-wrap gap-2">
         <Slider :options="['A', 'B', 'C']" />
-      </div>
+      </Paper>
 
-      <div class="flex flex-wrap gap-2">
+      <Paper class="flex flex-wrap gap-2">
         <Select
           v-model="select"
           placeholder="Select a fruit"
           :options="['apple', 'banana', 'orange']"
         />
         <Select />
-      </div>
-      <div class="flex flex-wrap gap-2">
+      </Paper>
+      <Paper class="flex flex-wrap gap-2">
         <Btn @click="modal1 = !modal1">
           Open Model
         </Btn>
         <Modal v-model="modal1">
           <Paper class="h-16 w-full flex items-center justify-center md:w-md">
-            <div>
+            <Paper>
               Basic Modal
-            </div>
+            </Paper>
           </Paper>
         </Modal>
 
@@ -179,9 +179,9 @@ const colors = generateColors('#5474B4')
           blur="lg"
         >
           <Paper class="h-16 w-full flex items-center justify-center md:w-md">
-            <div>
+            <Paper>
               Blur Modal
-            </div>
+            </Paper>
           </Paper>
         </Modal>
 
@@ -218,7 +218,7 @@ const colors = generateColors('#5474B4')
             Inner Modal
           </Paper>
         </Modal>
-      </div>
+      </Paper>
 
       <Progress
         class="max-w-md"
@@ -245,12 +245,12 @@ const colors = generateColors('#5474B4')
       />
       <PinInput />
       <PinInput password />
-      <div class="flex flex-wrap gap-2">
+      <Paper class="flex flex-wrap gap-2">
         <Chip v-model="chip">
           Checkable Chip
         </Chip>
-      </div>
-      <div class="flex flex-wrap gap-2">
+      </Paper>
+      <Paper class="flex flex-wrap gap-2">
         <Chip size="sm">
           Chip
         </Chip>
@@ -260,8 +260,8 @@ const colors = generateColors('#5474B4')
         <Chip size="lg">
           Chip
         </Chip>
-      </div>
-      <div class="flex flex-wrap gap-2">
+      </Paper>
+      <Paper class="flex flex-wrap gap-2">
         <Chip rounded="none">
           Chip
         </Chip>
@@ -271,38 +271,38 @@ const colors = generateColors('#5474B4')
         <Chip rounded="full">
           Chip
         </Chip>
-      </div>
-      <div class="flex flex-wrap gap-2">
+      </Paper>
+      <Paper class="flex flex-wrap gap-2">
         <TextField placeholder="Placeholder" />
-      </div>
-      <div class="flex flex-wrap gap-2">
+      </Paper>
+      <Paper class="flex flex-wrap gap-2">
         <TextField rounded="none" />
         <TextField rounded="lg" />
         <TextField rounded="full" />
         <TextField rounded="0.5rem" />
-      </div>
-      <div class="flex flex-wrap gap-2">
+      </Paper>
+      <Paper class="flex flex-wrap gap-2">
         <TextField disabled />
         <TextField
 
           disabled
           error
         />
-      </div>
-      <div class="flex flex-wrap gap-2">
+      </Paper>
+      <Paper class="flex flex-wrap gap-2">
         <TextField error />
         <TextField color="tertiary" />
         <TextField color="secondary" />
         <TextField color="error" />
         <TextField />
-      </div>
+      </Paper>
       <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}` })">
         Push Notification
       </Btn>
-      <div class="flex flex-wrap gap-2">
+      <Paper class="flex flex-wrap gap-2">
         <Switch disabled />
-      </div>
-      <div class="flex flex-wrap gap-2">
+      </Paper>
+      <Paper class="flex flex-wrap gap-2">
         <Switch />
         <Switch color="error" />
         <Switch
@@ -311,8 +311,8 @@ const colors = generateColors('#5474B4')
         <Switch
           size="lg"
         />
-      </div>
-      <div class="flex flex-wrap gap-2">
+      </Paper>
+      <Paper class="flex flex-wrap gap-2">
         <Switch
           rounded="none"
         />
@@ -325,7 +325,7 @@ const colors = generateColors('#5474B4')
         <Switch
           rounded="lg"
         />
-      </div>
+      </Paper>
       <div class="flex flex-col gap-2">
         <Notification
           title="Notification Title"
@@ -356,10 +356,10 @@ const colors = generateColors('#5474B4')
           :loading="isLoading"
         />
       </div>
-      <div class="flex flex-wrap gap-2">
+      <Paper class="flex flex-wrap gap-2">
         <Btn>Button</Btn>
-      </div>
-      <div class="flex flex-wrap gap-2">
+      </Paper>
+      <Paper class="flex flex-wrap gap-2">
         <Btn rounded="none">
           Button
         </Btn>
@@ -375,8 +375,8 @@ const colors = generateColors('#5474B4')
         <Btn rounded="full">
           Button
         </Btn>
-      </div>
-      <div class="flex flex-wrap gap-2">
+      </Paper>
+      <Paper class="flex flex-wrap gap-2">
         <Btn
           variant="filled"
           color="secondary"
@@ -395,8 +395,8 @@ const colors = generateColors('#5474B4')
         >
           Button
         </Btn>
-      </div>
-      <div class="flex flex-wrap gap-2">
+      </Paper>
+      <Paper class="flex flex-wrap gap-2">
         <Btn
           variant="filled"
           color="error"
@@ -411,8 +411,8 @@ const colors = generateColors('#5474B4')
         >
           Button
         </Btn>
-      </div>
-      <div class="flex flex-wrap gap-2">
+      </Paper>
+      <Paper class="flex flex-wrap gap-2">
         <Btn
           variant="filled"
           color="primary"
@@ -433,8 +433,8 @@ const colors = generateColors('#5474B4')
         >
           Button
         </Btn>
-      </div>
-      <div class="flex flex-wrap gap-2">
+      </Paper>
+      <Paper class="flex flex-wrap gap-2">
         <Btn
           variant="light"
           color="primary"
@@ -447,8 +447,8 @@ const colors = generateColors('#5474B4')
         >
           Button
         </Btn>
-      </div>
-      <div class="flex flex-wrap gap-2">
+      </Paper>
+      <Paper class="flex flex-wrap gap-2">
         <Btn
           variant="outline"
           color="primary"
@@ -461,8 +461,8 @@ const colors = generateColors('#5474B4')
         >
           Button
         </Btn>
-      </div>
-      <div class="flex flex-wrap gap-2">
+      </Paper>
+      <Paper class="flex flex-wrap gap-2">
         <Btn
           variant="subtle"
           color="primary"
@@ -475,8 +475,8 @@ const colors = generateColors('#5474B4')
         >
           Button
         </Btn>
-      </div>
-      <div class="flex flex-wrap gap-2">
+      </Paper>
+      <Paper class="flex flex-wrap gap-2">
         <Btn
           variant="transparent"
           color="primary"
@@ -489,8 +489,8 @@ const colors = generateColors('#5474B4')
         >
           Button
         </Btn>
-      </div>
-      <div class="flex flex-wrap gap-2">
+      </Paper>
+      <Paper class="flex flex-wrap gap-2">
         <Btn
           variant="constrast"
           color="primary"
@@ -503,7 +503,7 @@ const colors = generateColors('#5474B4')
         >
           Button
         </Btn>
-      </div>
+      </Paper>
     </div>
   </RokuProvider>
 </template>

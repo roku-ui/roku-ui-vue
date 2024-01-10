@@ -38,18 +38,18 @@ const sizeCls = computed(() => {
 })
 const colorCls = computed(() => {
   if (props.error) {
-    return 'text-error-container bg-surface-base border-error-5 focus:border-error-5'
+    return 'text-error-container bg-surface-base border-error-container focus:border-error-container'
   }
   switch (props.color) {
     case 'secondary':
-      return 'text-surface-on bg-surface-base border-surface-border focus:border-secondary-5'
+      return 'text-surface-on bg-surface-base border-surface-border-base focus:border-secondary-container'
     case 'tertiary':
-      return 'text-surface-on bg-surface-base border-surface-border focus:border-tertiary-5'
+      return 'text-surface-on bg-surface-base border-surface-border-base focus:border-tertiary-container'
     case 'error':
-      return 'text-surface-on bg-surface-base border-surface-border focus:border-error-5'
+      return 'text-surface-on bg-surface-base border-surface-border-base focus:border-error-container'
     case 'primary':
     default:
-      return 'text-surface-on bg-surface-base border-surface-border focus:border-primary-5'
+      return 'text-surface-on bg-surface-base border-surface-border-base focus:border-primary-container'
   }
 })
 

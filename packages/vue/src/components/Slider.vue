@@ -198,7 +198,7 @@ const animateCls = computed(() => props.animate
       @touchmove.prevent
     >
       <div
-        class="rounded-full bg-surface-high transition-background-color,border-color,color"
+        class="rounded-full bg-surface-lowest transition-background-color,border-color,color"
         :class="sizeCls.innerWrapper"
       >
         <div

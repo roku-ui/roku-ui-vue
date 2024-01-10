@@ -7,6 +7,7 @@ export function useRounded(props: { rounded: 'none' | 'sm' | 'md' | 'lg' | 'full
 }
 
 function getRoundedStyle(rounded: 'none' | 'sm' | 'md' | 'lg' | 'full' | string | number) {
+  const regex = /^-?\d*\.?\d+(px|em|rem|vh|vw|in|cm|mm|pt|pc|%)?$/
   switch (rounded) {
     case 'none':
       return '--r-rounded: 0'
@@ -19,6 +20,9 @@ function getRoundedStyle(rounded: 'none' | 'sm' | 'md' | 'lg' | 'full' | string 
     case 'full':
       return '--r-rounded: 9999px'
     default:
+      if (typeof rounded === 'string' && regex.test(rounded)) {
+        return `--r-rounded: ${rounded};`
+      }
       if (typeof rounded === 'number' || !Number.isNaN(Number(rounded))) {
         return `--r-rounded: ${rounded}rem;`
       }

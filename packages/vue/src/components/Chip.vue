@@ -30,10 +30,10 @@ const sizeCls = computed(() => {
 })
 const colorCls = computed(() => {
   if (model.value) {
-    return 'container-filled-primary'
+    return 'container-filled-primary border-transparent'
   }
   else {
-    return 'container-default'
+    return 'container-base'
   }
 })
 const checkable = computed(() => {

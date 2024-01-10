@@ -100,7 +100,7 @@ function onItemPointerDown(option: Option) {
 }
 const colorCls = computed(() => {
   return {
-    input: 'container-default focus:border-primary-7',
+    input: 'container-base focus:border-primary-container',
   }
 })
 const sizeCls = computed(() => {
@@ -146,7 +146,7 @@ const sizeCls = computed(() => {
     <div
       v-if="focused"
       :class="sizeCls.dropdown"
-      class="absolute z-1 mt-2 w-full flex-col overflow-hidden border container-default rounded p-1"
+      class="absolute z-1 mt-2 w-full flex-col overflow-hidden border container-base rounded p-1"
     >
       <div
         v-if="options.length === 0"

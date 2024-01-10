@@ -17,7 +17,7 @@ withDefaults(
     :is="is"
     class="h-6 w-6 border rounded-full"
     :class="[{
-      ['border border-surface-border']: withBorder,
+      ['border border-surface-border-base']: withBorder,
       ['border border-transparent']: !withBorder,
     }]"
     :style="{

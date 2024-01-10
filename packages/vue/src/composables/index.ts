@@ -5,17 +5,17 @@ export function useRootTheme() {
   if (typeof window === 'undefined') {
     return ref('dark')
   }
-  const theme = ref(document.documentElement.dataset.theme)
+  const theme = ref(document.documentElement.dataset.scheme)
   const observer = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
-      if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
-        theme.value = document.documentElement.dataset.theme
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-scheme') {
+        theme.value = document.documentElement.dataset.scheme
       }
     })
   })
   observer.observe(document.documentElement, {
     attributes: true,
-    attributeFilter: ['data-theme'],
+    attributeFilter: ['data-scheme'],
   })
   return theme
 }
@@ -62,7 +62,7 @@ export function useThemeStyles(theme: ThemeData, root: boolean = true) {
   const themeStyles = {
     'color-scheme': currentThemeScheme.value,
     'font-family': '\'Roboto\', sans-serif',
-    'background-color': 'rgb(var(--r-color-surface-low))',
+    'background-color': 'rgb(var(--r-color-surface-lowest))',
     'color': 'rgb(var(--r-color-surface-on))',
   }
 
@@ -79,7 +79,7 @@ export function useThemeStyles(theme: ThemeData, root: boolean = true) {
           '--r-color-surface-oninverted': 'var(--r-color-surface-8)',
           '--r-color-surface-onlow': 'var(--r-color-surface-4)',
           '--r-color-surface-onlowinverted': 'var(--r-color-surface-7)',
-          '--r-color-surface-lowest': 'var(--r-color-surface-9)',
+          '--r-color-surface-lowest': 'var(--r-color-surface-10)',
           '--r-color-surface-low': 'var(--r-color-surface-9)',
           '--r-color-surface-base': 'var(--r-color-surface-8)',
           '--r-color-surface-high': 'var(--r-color-surface-7)',

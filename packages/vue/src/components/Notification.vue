@@ -21,11 +21,11 @@ defineEmits(['close'])
 const bgColorCls = computed(() => {
   switch (props.color) {
     case 'secondary':
-      return 'bg-secondary-5'
+      return 'bg-secondary-container'
     case 'tertiary':
-      return 'bg-tertiary-5'
+      return 'bg-tertiary-container'
     case 'error':
-      return 'bg-error-5'
+      return 'bg-error-container'
     default:
       return 'bg-primary-container'
   }
@@ -34,20 +34,20 @@ const bgColorCls = computed(() => {
 const textColorCls = computed(() => {
   switch (props.color) {
     case 'secondary':
-      return 'text-secondary-5'
+      return 'text-secondary-container'
     case 'tertiary':
-      return 'text-tertiary-5'
+      return 'text-tertiary-container'
     case 'error':
-      return 'text-error-5'
+      return 'text-error-container'
     default:
-      return 'text-primary-5'
+      return 'text-primary-container'
   }
 })
 </script>
 
 <template>
   <div
-    class="relative max-w-100 min-h-16 min-w-80 w-full flex items-center gap-2 container-default rounded p-3"
+    class="relative max-w-100 min-h-16 min-w-80 w-full flex items-center gap-2 container-low rounded p-3"
     :class="[
       { 'border-0': !withBorder },
     ]"
@@ -59,11 +59,11 @@ const textColorCls = computed(() => {
     >
       <i
         v-if="loading"
-        class="i-tabler-loader-2 h-5 w-5 shrink-0 animate-spin"
+        class="i-tabler-loader-2 h-container w-container shrink-0 animate-spin"
       />
       <i
         v-else
-        class="h-5 w-5 shrink-0"
+        class="h-container w-container shrink-0"
         :class="icon"
       />
     </div>
@@ -87,7 +87,7 @@ const textColorCls = computed(() => {
       </div>
       <div
         v-if="message"
-        class="text-sm text-surface-5"
+        class="text-sm text-surface-container"
       >
         {{ message }}
       </div>
