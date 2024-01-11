@@ -6,18 +6,21 @@ const props = withDefaults(
     size?: 'sm' | 'md' | 'lg' | string | number
     rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full' | string | number
     withBorder?: boolean
+    is?: string | Component
   }>(),
   {
     size: 'md',
     rounded: 'md',
     withBorder: false,
+    is: 'div',
   },
 )
 const roundedCls = useRounded(props)
 </script>
 
 <template>
-  <div
+  <component
+    :is="is"
     class="container-low rounded-lg p-4"
     :class="[
       {
@@ -28,5 +31,5 @@ const roundedCls = useRounded(props)
     :style="[roundedCls.style]"
   >
     <slot />
-  </div>
+  </component>
 </template>

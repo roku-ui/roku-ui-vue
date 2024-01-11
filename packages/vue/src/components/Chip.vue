@@ -3,7 +3,7 @@ import { useRounded } from '../utils/classGenerator'
 
 const props = withDefaults(
   defineProps<{
-    is?: string
+    is?: string | Component
     src?: string
     size?: 'sm' | 'md' | 'lg' | string | number
     style?: any

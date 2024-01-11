@@ -3,12 +3,11 @@ const props = withDefaults(
   defineProps<{
     type?: 'button' | 'submit' | 'reset'
     size?: 'sm' | 'md' | 'lg'
-    is?: string
+    is?: string | Component
     icon?: boolean
     pressEffect?: 'translate' | 'scale'
     variant?: 'filled' | 'default' | 'light' | 'outline' | 'subtle' | 'transparent' | 'ghost' | 'constrast'
     color?: 'primary' | 'secondary' | 'tertiary' | 'error'
-    disabled?: boolean
     animate?: boolean
     rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full'
   }>(),
@@ -130,6 +129,7 @@ const colorCls = computed(() => {
       return 'btn-default'
   }
 })
+const attrs = useAttrs()
 </script>
 
 <template>
@@ -143,13 +143,13 @@ const colorCls = computed(() => {
       rounedCls,
       icon ? sizeCls.iconContent : sizeCls.normalContent,
       {
-        'filter-grayscale': disabled,
-        'active:translate-y-0.25': !disabled && pressEffect === 'translate',
-        'active:scale-98': !disabled && pressEffect === 'scale',
+        'filter-grayscale': attrs.disabled,
+        'active:translate-y-0.25': !attrs.disabled && pressEffect === 'translate',
+        'active:scale-98': !attrs.disabled && pressEffect === 'scale',
         'transition-all': animate,
       },
     ]"
-    :disabled="disabled"
+    v-bind="$attrs"
   >
     <slot
       v-if="$slots.leftSection"

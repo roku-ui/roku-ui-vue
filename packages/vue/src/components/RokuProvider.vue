@@ -5,7 +5,7 @@ import type { ThemeData } from '../utils'
 
 const props = withDefaults(
   defineProps<{
-    is?: string
+    is?: string | Component
     theme?: ThemeData
   }>(),
   {

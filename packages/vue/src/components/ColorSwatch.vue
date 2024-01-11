@@ -2,7 +2,7 @@
 withDefaults(
   defineProps<{
     color: string
-    is?: string
+    is?: string | Component
     withBorder?: boolean
   }>(),
   {

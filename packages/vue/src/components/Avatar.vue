@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import type { Component } from 'vue'
+
 const props = withDefaults(
   defineProps<{
-    is?: string
+    is?: string | Component
     src?: string
     size?: 'sm' | 'md' | 'lg' | string | number
     style?: any
@@ -29,22 +31,33 @@ const sizeStyle = computed(() => {
   }
 })
 const loaded = ref(false)
+const img = ref<HTMLImageElement | null>(null)
+function onload() {
+  loaded.value = true
+}
+onMounted(() => {
+  if (img.value?.complete) {
+    onload()
+  }
+})
 </script>
 
 <template>
   <component
     :is="is"
     v-if="src"
+    ref="img"
     :style="[style, sizeStyle]"
     placeholder
     :src="src"
     class="h-[var(--size)] w-[var(--size)] rounded-full object-cover"
     :class="[{ hidden: !loaded }, props.class]"
-    @load="loaded = true"
+    v-bind="$attrs"
+    @load="onload"
   />
-  <img
+  <div
     v-if="!loaded"
-    class="h-[var(--size)] w-[var(--size)] animate-pulse rounded-full bg-surface-5 object-cover"
+    class="h-[var(--size)] w-[var(--size)] animate-pulse rounded-full bg-surface-high object-cover border-transparent"
     :style="[style, sizeStyle]"
-  >
+  />
 </template>
