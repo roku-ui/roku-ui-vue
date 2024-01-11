@@ -9,6 +9,7 @@
     "preview": "nuxt preview"
   },
   "dependencies": {
+    "@nuxt/image": "^1.1.0",
     "@roku-ui/preset": "workspace:^",
     "@roku-ui/vue": "workspace:^"
   },

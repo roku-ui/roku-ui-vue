@@ -27,6 +27,10 @@ const navData = [
     to: '/select',
     text: 'Select',
   },
+  {
+    to: '/avatar',
+    text: 'Avatar',
+  },
 ]
 </script>
 

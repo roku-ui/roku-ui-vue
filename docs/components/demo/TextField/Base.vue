@@ -3,8 +3,9 @@ import { Slider, TextField } from '@roku-ui/vue'
 
 type Size = 'sm' | 'md' | 'lg'
 const size = ref<Size>('md')
+const placeholder = ref<string>('Placeholder')
 const code = computed(() => `<template>
-  <Switch${getpropsString({ size: size.value })} /> // [!code highlight]
+  <TextField${getpropsString({ size: size.value, placeholder: placeholder.value })} /> // [!code highlight]
 </template>`)
 </script>
 
@@ -12,8 +13,8 @@ const code = computed(() => `<template>
   <Demo :code="code">
     <template #form>
       <div class="flex flex-col gap-6">
-        <div>
-          <div class="texttext-surface-onlow">
+        <div class="flex flex-col gap-1">
+          <div class="text-surface-onlow">
             Size
           </div>
           <Slider
@@ -21,10 +22,22 @@ const code = computed(() => `<template>
             :options="['sm', 'md', 'lg']"
           />
         </div>
+        <div class="flex flex-col gap-1">
+          <div class="text-surface-onlow">
+            Placeholder
+          </div>
+          <TextField
+            v-model="placeholder"
+            placeholder="Placeholder"
+          />
+        </div>
       </div>
     </template>
     <template #preview>
-      <TextField :size="size" />
+      <TextField
+        :size="size"
+        :placeholder="placeholder"
+      />
     </template>
   </Demo>
 </template>

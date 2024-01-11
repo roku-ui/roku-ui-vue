@@ -11,6 +11,7 @@ declare module 'vue' {
     Btn: typeof import('./components/Btn.vue')['default']
     Chip: typeof import('./components/Chip.vue')['default']
     ColorSwatch: typeof import('./components/ColorSwatch.vue')['default']
+    Dragzone: typeof import('./components/Dragzone.vue')['default']
     Image: typeof import('./components/Image.vue')['default']
     Indicator: typeof import('./components/Indicator.vue')['default']
     Modal: typeof import('./components/Modal.vue')['default']

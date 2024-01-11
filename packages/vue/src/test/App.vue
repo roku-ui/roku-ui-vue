@@ -14,6 +14,22 @@ const modal5 = ref(false)
 const select = ref()
 const slider = ref(47)
 const colors = generateColors('#5474B4')
+const file = ref<File | null>(null)
+function onDrop(files: File[] | null) {
+  if (files) {
+    file.value = files[0]
+    Notifications.show({
+      title: 'Files dropped',
+      message: files.map(file => file.name).join(', '),
+    })
+  }
+  else {
+    Notifications.show({
+      title: 'Files dropped',
+      message: 'No files dropped',
+    })
+  }
+}
 </script>
 
 <template>
@@ -43,6 +59,16 @@ const colors = generateColors('#5474B4')
           size="86px"
           src="https://avatars.githubusercontent.com/u/29743310?v=4"
         />
+      </Paper>
+      <Paper class="w-128 h-72">
+        <Dragzone @drop="onDrop">
+          <div v-if="file">
+            {{ file.name }}
+          </div>
+          <div v-else>
+            Files drop here
+          </div>
+        </Dragzone>
       </Paper>
       <Image
         class="h-16 w-16"

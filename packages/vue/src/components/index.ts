@@ -15,5 +15,6 @@ import Avatar from './Avatar.vue'
 import ThemeSwitch from './ThemeSwitch.vue'
 import ThemeProvider from './ThemeProvider.vue'
 import Paper from './Paper.vue'
+import Dragzone from './Dragzone.vue'
 
-export { Paper, ThemeProvider, ThemeSwitch, Avatar, Chip, Indicator, PinInput, Progress, NotificationSystem, Modal, Btn, RokuProvider, Slider, Switch, Select, TextField, Notification }
+export { Dragzone, Paper, ThemeProvider, ThemeSwitch, Avatar, Chip, Indicator, PinInput, Progress, NotificationSystem, Modal, Btn, RokuProvider, Slider, Switch, Select, TextField, Notification }
