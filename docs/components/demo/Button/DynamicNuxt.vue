@@ -3,7 +3,7 @@ import { Btn } from '@roku-ui/vue'
 import { NuxtLink } from '#components'
 
 const code = `<template>
-  <Btn is="a" href="https://jannchie.com" target="_blank"> // [!code highlight]
+  <Btn :is="NuxtLink" href="https://jannchie.com" target="_blank"> // [!code highlight]
     To Jannchie's Blog
   </Btn>
 </template>`
@@ -13,7 +13,7 @@ const code = `<template>
   <Demo :code="code">
     <template #preview>
       <Btn
-        is="a"
+        :is="NuxtLink"
         href="https://jannchie.com"
         target="_blank"
       >

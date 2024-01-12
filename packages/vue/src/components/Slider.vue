@@ -218,6 +218,7 @@ const animateCls = computed(() => props.animate
             :class="sizeCls.tick"
           />
           <div
+            v-if="currentIndex !== -1"
             ref="indicator"
             class="absolute top-50% cursor-pointer rounded-full transition-background-color,border-color,color"
             :class="[sizeCls.indicator, animateCls.indicator, indicatorOuterCls]"

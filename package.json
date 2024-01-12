@@ -15,8 +15,8 @@
     "dev": "pnpm --filter @roku-ui/docs dev"
   },
   "devDependencies": {
-    "@unocss/eslint-config": "^0.58.2",
-    "@unocss/eslint-plugin": "^0.58.2",
+    "@unocss/eslint-config": "^0.58.3",
+    "@unocss/eslint-plugin": "^0.58.3",
     "eslint": "^8.56.0",
     "eslint-plugin-format": "^0.1.0"
   },

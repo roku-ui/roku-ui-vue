@@ -1,12 +1,23 @@
 <script setup lang="ts">
 import { useDropZone } from '@vueuse/core'
 
+const props = withDefaults(
+  defineProps<{
+    dashed?: boolean
+    accept?: string
+  }>(),
+  {
+    dashed: true,
+    accept: '*',
+  },
+)
+
 const emits = defineEmits<{
   drop: [files: File[] | null]
 }>()
 const dropZoneRef = ref<HTMLDivElement>()
 const { onChange, open } = useFileDialog({
-  accept: 'image/*',
+  accept: props.accept,
 })
 
 onChange((files) => {
@@ -29,10 +40,11 @@ const { isOverDropZone } = useDropZone(dropZoneRef, {
   <div
     ref="dropZoneRef"
     :class="{
-      'bg-primary-container/10 border-primary-container/40 border text-primary-on': isOverDropZone,
-      'btn-default hover:bg-surface-high': !isOverDropZone,
+      '': isOverDropZone,
+      ' bg-surface-low': !isOverDropZone,
+      'border-dashed': dashed,
     }"
-    class="w-full h-full flex items-center justify-center cursor-pointer rounded border-dotted"
+    class="w-full h-full flex items-center justify-center cursor-pointer rounded"
     @pointerup="() => open()"
   >
     <slot />

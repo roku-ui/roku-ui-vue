@@ -60,7 +60,6 @@ export function useThemeStyles(theme: ThemeData, root: boolean = true) {
     ...colorVars,
   }
   const themeStyles = {
-    'color-scheme': currentThemeScheme.value,
     'font-family': '\'Roboto\', sans-serif',
     'background-color': 'rgb(var(--r-color-surface-lowest))',
     'color': 'rgb(var(--r-color-surface-on))',
@@ -70,7 +69,7 @@ export function useThemeStyles(theme: ThemeData, root: boolean = true) {
     if (root) {
       return {}
     }
-    const scheme = theme.scheme
+    const { scheme } = theme
     switch (scheme) {
       case 'dark':
         return {
@@ -126,10 +125,9 @@ export function useThemeStyles(theme: ThemeData, root: boolean = true) {
         }
     }
   })
-  const styles = {
+  return {
     ...colorStyles,
     ...themeStyles,
     ...schemeStyles.value,
   }
-  return styles
 }

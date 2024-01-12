@@ -139,6 +139,7 @@ const sizeCls = computed(() => {
         :value="currentLabel"
         aria-haspopup="listbox"
         autocomplete="off"
+        tabindex="-1"
         @focus="focused = true"
       >
       <i class="i-tabler-chevron-down pointer-events-none absolute right-2" />

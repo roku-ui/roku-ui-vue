@@ -60,18 +60,56 @@ function onDrop(files: File[] | null) {
           src="https://avatars.githubusercontent.com/u/29743310?v=4"
         />
       </Paper>
+      <ChatContainer class="w-full max-w-lg py-8">
+        <ChatMessage
+          position="right"
+          avatar="https://avatars.githubusercontent.com/u/29743310?v=4"
+        >
+          Hello, world!
+        </ChatMessage>
+        <ChatMessage
+          position="right"
+          variant="transparent"
+          avatar="https://avatars.githubusercontent.com/u/29743310?v=4"
+        >
+          Hello, world!
+        </ChatMessage>
+        <ChatMessage
+          position="right"
+          variant="fill"
+          avatar="https://avatars.githubusercontent.com/u/29743310?v=4"
+        >
+          Hello, world!
+        </ChatMessage>
+        <ChatSystem>
+          You have said hello 3 times
+        </ChatSystem>
+        <ChatMessage
+          avatar="https://avatars.githubusercontent.com/u/1?v=4"
+        >
+          <div>
+            Hello, Jannchie!
+          </div>
+          <!-- hello image -->
+          <Image
+            height="312px"
+            width="312px"
+            src="https://source.unsplash.com/random/512x512"
+          />
+        </ChatMessage>
+      </ChatContainer>
       <Paper class="w-128 h-72">
-        <Dragzone @drop="onDrop">
+        <Dropzone @drop="onDrop">
           <div v-if="file">
             {{ file.name }}
           </div>
           <div v-else>
             Files drop here
           </div>
-        </Dragzone>
+        </Dropzone>
       </Paper>
       <Image
-        class="h-16 w-16"
+        style="height: 4rem; width: 4rem"
         src="https://avatars.githubusercontent.com/u/29743310?v=4"
       />
       <Paper class="flex flex-wrap gap-2">
@@ -93,7 +131,7 @@ function onDrop(files: File[] | null) {
             1
           </template>
           <Image
-            class="h-16 w-16"
+            style="height: 4rem; width: 4rem"
             src="https://avatars.githubusercontent.com/u/29743310?v=4"
           />
         </indicator>
@@ -102,7 +140,7 @@ function onDrop(files: File[] | null) {
             1
           </template>
           <Image
-            class="h-16 w-16"
+            style="height: 4rem; width: 4rem"
             src="https://avatars.githubusercontent.com/u/29743310?v=4"
           />
         </Indicator>
@@ -111,7 +149,7 @@ function onDrop(files: File[] | null) {
             1
           </template>
           <Image
-            class="h-16 w-16"
+            style="height: 4rem; width: 4rem"
             src="https://avatars.githubusercontent.com/u/29743310?v=4"
           />
         </indicator>
@@ -119,13 +157,13 @@ function onDrop(files: File[] | null) {
       <Paper class="flex flex-wrap gap-2">
         <Indicator>
           <Image
-            class="h-16 w-16"
+            style="height: 4rem; width: 4rem"
             src="https://avatars.githubusercontent.com/u/29743310?v=4"
           />
         </Indicator>
         <Indicator ping>
           <Image
-            class="h-16 w-16"
+            style="height: 4rem; width: 4rem"
             src="https://avatars.githubusercontent.com/u/29743310?v=4"
           />
         </Indicator>
@@ -134,7 +172,7 @@ function onDrop(files: File[] | null) {
           position="bottom-left"
         >
           <Image
-            class="h-16 w-16"
+            style="height: 4rem; width: 4rem"
             src="https://avatars.githubusercontent.com/u/29743310?v=4"
           />
         </Indicator>
@@ -142,7 +180,7 @@ function onDrop(files: File[] | null) {
           size="sm"
         >
           <Image
-            class="h-16 w-16"
+            style="height: 4rem; width: 4rem"
             src="https://avatars.githubusercontent.com/u/29743310?v=4"
           />
         </Indicator>
@@ -150,7 +188,7 @@ function onDrop(files: File[] | null) {
           size="lg"
         >
           <Image
-            class="h-16 w-16"
+            style="height: 4rem; width: 4rem"
             src="https://avatars.githubusercontent.com/u/29743310?v=4"
           />
         </Indicator>

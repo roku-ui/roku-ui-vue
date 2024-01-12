@@ -31,6 +31,14 @@ const navData = [
     to: '/avatar',
     text: 'Avatar',
   },
+  {
+    to: '/pin-input',
+    text: 'Pin Input',
+  },
+  {
+    to: '/paper',
+    text: 'Paper',
+  },
 ]
 </script>
 
@@ -57,7 +65,7 @@ const navData = [
           :key="nav.to"
           :to="nav.to"
           :text="nav.text"
-          class="block text-sm hover:text-primary-container"
+          class="block text-sm hover:text-primary-containerl"
         >
           {{ nav.text }}
         </NuxtLink>

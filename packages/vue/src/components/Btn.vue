@@ -10,6 +10,7 @@ const props = withDefaults(
     color?: 'primary' | 'secondary' | 'tertiary' | 'error'
     animate?: boolean
     rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full'
+    disabled?: boolean
   }>(),
   {
     rounded: 'md',
@@ -18,6 +19,7 @@ const props = withDefaults(
     is: 'button',
     icon: false,
     pressEffect: 'translate',
+    disabled: false,
   },
 )
 
@@ -129,7 +131,6 @@ const colorCls = computed(() => {
       return 'btn-default'
   }
 })
-const attrs = useAttrs()
 </script>
 
 <template>
@@ -143,13 +144,14 @@ const attrs = useAttrs()
       rounedCls,
       icon ? sizeCls.iconContent : sizeCls.normalContent,
       {
-        'filter-grayscale': attrs.disabled,
-        'active:translate-y-0.25': !attrs.disabled && pressEffect === 'translate',
-        'active:scale-98': !attrs.disabled && pressEffect === 'scale',
+        'filter-grayscale pointer-events-none': disabled,
+        'active:translate-y-0.25': pressEffect === 'translate',
+        'active:scale-98': pressEffect === 'scale',
         'transition-all': animate,
       },
     ]"
     v-bind="$attrs"
+    tabindex="-1"
   >
     <slot
       v-if="$slots.leftSection"

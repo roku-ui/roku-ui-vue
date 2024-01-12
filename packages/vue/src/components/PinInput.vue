@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { TextField } from '.'
+import TextField from './TextField.vue'
 
 const props = withDefaults(
   defineProps<{
@@ -61,7 +61,8 @@ function onBackspace(e: KeyboardEvent) {
       v-for="i in props.length"
       ref="inputs"
       :key="i"
-      class="h-8 w-8 text-center"
+      class="w-8 text-center"
+      style="padding: 0;"
       :password="props.password"
       @pointerup="$event.target.select()"
       @input.stop.prevent="onInput"

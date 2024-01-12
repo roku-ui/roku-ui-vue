@@ -9,7 +9,7 @@
     "preview": "nuxt preview"
   },
   "dependencies": {
-    "@nuxt/image": "^1.1.0",
+    "@nuxt/image": "^1.2.0",
     "@roku-ui/preset": "workspace:^",
     "@roku-ui/vue": "workspace:^"
   },
@@ -28,7 +28,7 @@
     "nuxt": "^3.9.1",
     "shikiji": "^0.9.18",
     "shikiji-transformers": "^0.9.18",
-    "vue": "^3.4.7",
+    "vue": "^3.4.9",
     "vue-router": "^4.2.5"
   }
 }

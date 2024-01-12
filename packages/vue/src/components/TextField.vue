@@ -77,6 +77,7 @@ defineExpose({
   <input
     ref="input"
     :value="modelValue"
+    tabindex="-1"
     class="bg-back-2 border px-2 py-1 outline-none transition-background-color,border-color,color"
     :class="[colorCls, disabledCls, rounded.class, sizeCls.base]"
     :style="[rounded.style]"

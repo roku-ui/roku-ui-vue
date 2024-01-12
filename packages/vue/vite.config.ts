@@ -3,6 +3,7 @@ import vue from '@vitejs/plugin-vue'
 import UnoCSS from 'unocss/vite'
 import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
+import AutoExport from 'unplugin-auto-export/vite'
 import dts from 'vite-plugin-dts'
 
 // https://vitejs.dev/config/
@@ -25,6 +26,10 @@ export default defineConfig({
         './src/locale',
       ],
       dts: './src/auto-import.d.ts',
+    }),
+    AutoExport({
+      path: ['./src/components/**/*'],
+      extname: 'ts',
     }),
   ],
   build: {

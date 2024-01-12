@@ -69,8 +69,9 @@ const codeHtml = computed(() => highlighter.codeToHtml(props.code, {
 
 .gird-paper-background {
   --size: 0.25rem;
-  --color: #3332;
+  --color: #33333318;
   background-color: transparent;
+  border-radius: 0.5rem;
   background-image:
     linear-gradient(var(--color) 1px, transparent 1px),
     linear-gradient(90deg, var(--color) 1px, transparent 1px),
