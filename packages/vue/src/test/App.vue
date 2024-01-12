@@ -13,10 +13,11 @@ const modal4 = ref(false)
 const modal5 = ref(false)
 const select = ref()
 const slider = ref(47)
-const colors = generateColors('#5474B4')
+const color = ref('#5474B4')
+const colors = computed(() => generateColors(color.value))
 const file = ref<File | null>(null)
 function onDrop(files: File[] | null) {
-  if (files) {
+  if (files && files.length) {
     file.value = files[0]
     Notifications.show({
       title: 'Files dropped',
@@ -112,11 +113,14 @@ function onDrop(files: File[] | null) {
         style="height: 4rem; width: 4rem"
         src="https://avatars.githubusercontent.com/u/29743310?v=4"
       />
+      <Paper class="flex items-center gap-2">
+        <ColorInput v-model="color" />
+      </Paper>
       <Paper class="flex flex-wrap gap-2">
         <ColorSwatch
-          v-for="color in colors"
-          :key="color"
-          :color="color"
+          v-for="c in colors"
+          :key="c"
+          :color="c"
         />
       </Paper>
       <ThemeProvider :theme="lightTheme">

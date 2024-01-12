@@ -13,6 +13,8 @@ declare module 'vue' {
     ChatMessage: typeof import('./components/ChatMessage.vue')['default']
     ChatSystem: typeof import('./components/ChatSystem.vue')['default']
     Chip: typeof import('./components/Chip.vue')['default']
+    ColorInput: typeof import('./components/ColorInput.vue')['default']
+    Colorpicker: typeof import('./components/Colorpicker.vue')['default']
     ColorSwatch: typeof import('./components/ColorSwatch.vue')['default']
     Container: typeof import('./components/Chat/Container.vue')['default']
     copy: typeof import('./components/Avatar copy.vue')['default']

@@ -131,3 +131,16 @@ export function useThemeStyles(theme: ThemeData, root: boolean = true) {
     ...schemeStyles.value,
   }
 }
+
+export function useId(props: { id?: string }) {
+  const id = ref('')
+  onMounted(() => {
+    if (props.id) {
+      id.value = props.id
+    }
+    else {
+      id.value = `switch-${Math.random().toString(36).slice(2)}-${Date.now().toString(36)}`
+    }
+  })
+  return id
+}

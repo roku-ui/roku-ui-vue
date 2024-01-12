@@ -67,19 +67,7 @@ const animateCls = computed(() => props.animate
       progress: '',
     })
 
-function useId() {
-  const id = ref('')
-  onMounted(() => {
-    if (props.id) {
-      id.value = props.id
-    }
-    else {
-      id.value = `switch-${Math.random().toString(36).slice(2)}-${Date.now().toString(36)}`
-    }
-  })
-  return id
-}
-const id = useId()
+const id = useId(props)
 
 const colorCls = computed(() => {
   let c = 'bg-primary-container'
