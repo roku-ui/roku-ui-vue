@@ -11,6 +11,8 @@ const modal2 = ref(false)
 const modal3 = ref(false)
 const modal4 = ref(false)
 const modal5 = ref(false)
+const drawerLeft = ref(false)
+const drawerRight = ref(false)
 const select = ref()
 const slider = ref(47)
 const color = ref('#5474B4')
@@ -312,7 +314,29 @@ function onDrop(files: File[] | null) {
           </Paper>
         </Modal>
       </Paper>
-
+      <Paper>
+        <Btn @click="drawerLeft = !drawerLeft">
+          Open left drawer
+        </Btn>
+        <Drawer v-model="drawerLeft">
+          <div>
+            Test Drawer
+          </div>
+        </Drawer>
+      </Paper>
+      <Paper>
+        <Btn @click="drawerRight = !drawerRight">
+          Open right drawer
+        </Btn>
+        <Drawer
+          v-model="drawerRight"
+          position="right"
+        >
+          <div>
+            Test Drawer
+          </div>
+        </Drawer>
+      </Paper>
       <Progress
         class="max-w-md"
         loading
