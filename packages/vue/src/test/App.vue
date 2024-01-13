@@ -224,6 +224,9 @@ function onDrop(files: File[] | null) {
           />
         </Indicator>
       </Paper>
+      <Paper class="flex flex-wrap gap-2 w-80">
+        <Slider v-model="slider" />
+      </Paper>
       <Paper class="flex flex-wrap gap-2">
         <Slider v-model="slider" />
       </Paper>

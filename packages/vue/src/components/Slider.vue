@@ -10,15 +10,16 @@ const props = withDefaults(
     step?: number
     tickNum?: number
     color?: 'primary' | 'secondary' | 'tertiary' | 'error'
+    minWidth?: number
   }>(),
   {
     size: 'md',
     animate: false,
-    width: 12,
     min: 0,
     max: 100,
     step: 1,
     color: 'primary',
+    minWidth: 12,
   },
 )
 
@@ -189,16 +190,16 @@ const animateCls = computed(() => props.animate
 </script>
 
 <template>
-  <div class="relative inline-block">
+  <div class="relative inline-block w-full">
     <div
       ref="wrapper"
       type="size"
-      class="flex cursor-pointer items-center"
+      class="flex w-full cursor-pointer items-center"
       :class="sizeCls.wrapper"
       @touchmove.prevent
     >
       <div
-        class="rounded-full bg-surface-lowest transition-background-color,border-color,color"
+        class="rounded-full w-full bg-surface-lowest transition-background-color,border-color,color"
         :class="sizeCls.innerWrapper"
       >
         <div
@@ -206,6 +207,7 @@ const animateCls = computed(() => props.animate
           :class="sizeCls.content"
           :style="{
             width: `${props.width}rem`,
+            minWidth: `${props.minWidth}rem`,
           }"
         >
           <div
