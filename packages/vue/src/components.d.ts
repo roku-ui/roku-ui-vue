@@ -7,6 +7,7 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    AspectRatio: typeof import('./components/AspectRatio.vue')['default']
     Avatar: typeof import('./components/Avatar.vue')['default']
     Btn: typeof import('./components/Btn.vue')['default']
     ChatContainer: typeof import('./components/ChatContainer.vue')['default']

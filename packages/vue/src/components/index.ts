@@ -1,3 +1,4 @@
+export { default as AspectRatio } from './AspectRatio.vue'
 export { default as Avatar } from './Avatar.vue'
 export { default as Btn } from './Btn.vue'
 export { default as ChatContainer } from './ChatContainer.vue'
