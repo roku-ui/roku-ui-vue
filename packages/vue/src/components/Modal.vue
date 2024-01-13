@@ -6,6 +6,7 @@ const props = withDefaults(defineProps<{
   blur?: 'sm' | 'md' | 'lg' | boolean
 }>(), {
   persistent: false,
+  blur: false,
 })
 
 const model = defineModel<boolean>()

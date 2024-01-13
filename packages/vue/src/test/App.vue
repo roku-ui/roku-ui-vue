@@ -61,6 +61,21 @@ function onDrop(files: File[] | null) {
           src="https://avatars.githubusercontent.com/u/29743310?v=4"
         />
       </Paper>
+      <Overlay
+        blur
+        rounded="md"
+      >
+        <Image
+          height="312px"
+          width="312px"
+          src="https://source.unsplash.com/random/512x512"
+        />
+        <template #content>
+          <div class="w-full h-full flex items-center justify-center">
+            This is a overlay
+          </div>
+        </template>
+      </Overlay>
       <ChatContainer class="w-full max-w-lg py-8">
         <ChatMessage
           position="right"
