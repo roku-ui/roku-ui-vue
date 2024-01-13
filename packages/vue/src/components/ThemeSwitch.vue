@@ -2,6 +2,7 @@
 import { isClient } from '@vueuse/core'
 
 const isDark = ref<boolean | undefined>(undefined)
+
 watchEffect(() => {
   if (isClient) {
     if (isDark.value === true) {
@@ -15,6 +16,8 @@ watchEffect(() => {
     }
   }
 })
+const isServer = ref(true)
+const animate = ref(false)
 onMounted(() => {
   if (isClient) {
     const theme = localStorage.getItem('scheme')
@@ -28,14 +31,39 @@ onMounted(() => {
       isDark.value = window.matchMedia('(prefers-color-scheme: dark)').matches
     }
   }
+  isServer.value = false
+})
+
+nextTick(() => {
+  animate.value = true
 })
 </script>
 
 <template>
-  <Switch
-    v-model="isDark"
-    color="secondary"
-    on-icon="i-tabler-moon"
-    off-icon="i-tabler-sun"
-  />
+  <div :class="{ hidden: !isServer }">
+    <div class="dark:hidden">
+      <Switch
+        :value="false"
+        on-icon="i-tabler-moon"
+        off-icon="i-tabler-sun"
+      />
+    </div>
+    <div class="light:hidden">
+      <Switch
+        :value="true"
+        color="secondary"
+        on-icon="i-tabler-moon"
+        off-icon="i-tabler-sun"
+      />
+    </div>
+  </div>
+  <div :class="{ hidden: isServer }">
+    <Switch
+      v-model="isDark"
+      :animate="animate"
+      color="secondary"
+      on-icon="i-tabler-moon"
+      off-icon="i-tabler-sun"
+    />
+  </div>
 </template>

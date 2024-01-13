@@ -17,6 +17,7 @@ const props = withDefaults(
     disabled?: boolean
     offIcon?: string
     onIcon?: string
+    value?: boolean
   }>(),
   {
     size: 'md',
@@ -26,6 +27,9 @@ const props = withDefaults(
   },
 )
 const model = defineModel<boolean>()
+if (props.value) {
+  model.value = props.value
+}
 const wrapper = ref<HTMLElement | null>(null)
 const isActivated = ref(false)
 const sizeCls = computed(() => {
