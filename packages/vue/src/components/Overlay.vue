@@ -24,7 +24,7 @@ const blurCls = computed(() => {
     case 'lg':
       return 'backdrop-blur-lg'
     default:
-      return '123'
+      return ''
   }
 })
 const rounded = useRounded(props)

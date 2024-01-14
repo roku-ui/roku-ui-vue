@@ -5,6 +5,7 @@ const code = computed(() => `<template>
   <Indicator>
     <Image
       width="48px"
+      height="48px"
       src="https://avatars.githubusercontent.com/u/29743310?v=4"
     />
   </Indicator>
@@ -17,6 +18,7 @@ const code = computed(() => `<template>
       <Indicator>
         <Image
           width="48px"
+          height="48px"
           src="https://avatars.githubusercontent.com/u/29743310?v=4"
         />
       </Indicator>
