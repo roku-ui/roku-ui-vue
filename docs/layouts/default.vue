@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Btn, RokuProvider, ThemeSwitch } from '@roku-ui/vue'
+import { Btn, RokuProvider, SchemeSwitch } from '@roku-ui/vue'
 
 useSeoMeta({
   title: 'Roku UI',
@@ -45,13 +45,15 @@ function toggleSideBar() {
         >
           <i class="i-tabler-menu" />
         </Btn>
-        <img
-          class="h-6 w-6"
-          src="/icon.png"
-        >
+        <NuxtLink to="/">
+          <img
+            class="h-6 w-6"
+            src="/icon.png"
+          >
+        </NuxtLink>
       </div>
       <div>
-        <ThemeSwitch />
+        <SchemeSwitch />
       </div>
     </div>
     <div class="min-h-100vh flex">

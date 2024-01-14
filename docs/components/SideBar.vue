@@ -2,44 +2,7 @@
 defineProps<{
   isOpen: boolean
 }>()
-const navData = [
-  {
-    to: '/',
-    text: 'Home',
-  },
-  {
-    to: '/btn',
-    text: 'Button',
-  },
-  {
-    to: '/slider',
-    text: 'Slider',
-  },
-  {
-    to: '/switch',
-    text: 'Switch',
-  },
-  {
-    to: '/text-field',
-    text: 'Text Field',
-  },
-  {
-    to: '/select',
-    text: 'Select',
-  },
-  {
-    to: '/avatar',
-    text: 'Avatar',
-  },
-  {
-    to: '/pin-input',
-    text: 'Pin Input',
-  },
-  {
-    to: '/paper',
-    text: 'Paper',
-  },
-]
+const contentComponents = await queryContent('components').find()
 </script>
 
 <template>
@@ -53,21 +16,29 @@ const navData = [
     <div class="w-64 flex flex-col gap-8 px-8 py-6">
       <div>
         <div>
-          Roku UI - Vue
+          <NuxtLink
+            to="/"
+            class="text-xl font-bold"
+          >
+            Roku UI - Vue
+          </NuxtLink>
         </div>
-        <div class="text-sm op58">
+        <NuxtLink
+          to="/"
+          class="text-sm op58"
+        >
           @roku-ui/vue
-        </div>
+        </NuxtLink>
       </div>
       <div>
         <NuxtLink
-          v-for="nav in navData"
-          :key="nav.to"
-          :to="nav.to"
-          :text="nav.text"
+          v-for="content in contentComponents"
+          :key="content.slug"
+          :to="content._path"
+          :text="content.title"
           class="block text-sm hover:text-primary-containerl"
         >
-          {{ nav.text }}
+          {{ content.title }}
         </NuxtLink>
       </div>
     </div>

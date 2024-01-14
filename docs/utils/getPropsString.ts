@@ -4,6 +4,9 @@ export function getpropsString(props: Record<string, any>) {
       if (typeof value === 'string') {
         return ` ${key}="${value}"`
       }
+      if (typeof value === 'number') {
+        return ` :${key}="${value}"`
+      }
       if (typeof value === 'boolean') {
         return value ? ` ${key}` : ``
       }

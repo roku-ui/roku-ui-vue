@@ -40,7 +40,7 @@ function onDrop(files: File[] | null) {
     <NotificationSystem />
     <div class="flex flex-col items-center gap-2">
       <Paper class="flex items-center gap-2">
-        <ThemeSwitch />
+        <SchemeSwitch />
       </Paper>
       <Paper class="flex items-center gap-2">
         <Avatar
@@ -104,7 +104,7 @@ function onDrop(files: File[] | null) {
         </ChatMessage>
         <ChatMessage
           position="right"
-          variant="fill"
+          variant="filled"
           avatar="https://avatars.githubusercontent.com/u/29743310?v=4"
         >
           Hello, world!

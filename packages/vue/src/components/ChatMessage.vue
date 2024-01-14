@@ -4,7 +4,7 @@ const props = withDefaults(
     avatar?: string
     position?: 'left' | 'right'
     color?: string
-    variant?: 'default' | 'transparent' | 'fill'
+    variant?: 'default' | 'transparent' | 'filled'
     withBorder?: boolean
   }>(),
   {
@@ -17,7 +17,7 @@ const bubbleColor = computed(() => {
   switch (props.variant) {
     case 'default':
       return 'bg-surface-base'
-    case 'fill':
+    case 'filled':
       switch (props.color) {
         case 'secondary':
           return 'bg-secondary-container text-secondary-on'

@@ -42,12 +42,14 @@ const option = ref('Apple')
       </div>
     </template>
     <template #preview>
-      <Slider
-        v-model="option"
-        :options="['Apple', 'Banana', 'Lemon']"
-        :size="size"
-        :animate="animate"
-      />
+      <div>
+        <Slider
+          v-model="option"
+          :options="['Apple', 'Banana', 'Lemon']"
+          :size="size"
+          :animate="animate"
+        />
+      </div>
     </template>
   </Demo>
 </template>

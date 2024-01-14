@@ -31,11 +31,11 @@ declare module 'vue' {
     RokuProvider: typeof import('./components/RokuProvider.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SchemeSwitch: typeof import('./components/SchemeSwitch.vue')['default']
     Select: typeof import('./components/Select.vue')['default']
     Slider: typeof import('./components/Slider.vue')['default']
     Switch: typeof import('./components/Switch.vue')['default']
     TextField: typeof import('./components/TextField.vue')['default']
     ThemeProvider: typeof import('./components/ThemeProvider.vue')['default']
-    ThemeSwitch: typeof import('./components/ThemeSwitch.vue')['default']
   }
 }
