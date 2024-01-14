@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useRounded } from '../utils/classGenerator'
+
 const props = withDefaults(
   defineProps<{
     title?: string
@@ -7,16 +9,22 @@ const props = withDefaults(
     loading?: boolean
     withBorder?: boolean
     closeable?: boolean
+    rounded?: 'sm' | 'md' | 'lg' | 'none' | string | number
+    block?: boolean
     color?: 'primary' | 'secondary' | 'tertiary' | 'error'
   }>(),
   {
     type: 'info',
     border: false,
     color: 'primary',
+    rounded: 'md',
+    block: false,
   },
 )
 
 defineEmits(['close'])
+
+const rounded = useRounded(props)
 
 const bgColorCls = computed(() => {
   switch (props.color) {
@@ -47,10 +55,16 @@ const textColorCls = computed(() => {
 
 <template>
   <div
-    class="relative max-w-100 min-h-16 min-w-80 w-full flex items-center gap-2 container-low rounded p-3"
+    class="relative min-h-16 min-w-80 w-full flex items-center gap-2 container-low p-3"
     :class="[
       { 'border-0': !withBorder },
+      rounded.class,
+      {
+        'max-w-100': !block,
+        'w-full': block,
+      },
     ]"
+    :style="rounded.style"
   >
     <div
       v-if="icon"
@@ -85,9 +99,14 @@ const textColorCls = computed(() => {
       >
         {{ title }}
       </div>
+
+      <slot
+        v-if="$slots.message"
+        name="message"
+      />
       <div
-        v-if="message"
-        class="text-surface-container text-sm"
+        v-else-if="message"
+        class="text-sm text-surface-onlow"
       >
         {{ message }}
       </div>

@@ -1,14 +1,20 @@
 <script setup lang="ts">
 defineProps<{
   icon?: string
+  title?: string
 }>()
 </script>
 
 <template>
   <div class="mb-12 mt-24">
-    <ProseH1 class="mb-1">
-      <slot />
-    </ProseH1>
+    <h1 :id="title">
+      <a
+        class="font-bold decoration-none"
+        :href="`#${title}`"
+      >
+        {{ title }}
+      </a>
+    </h1>
     <div class="text-sm text-surface-onlow">
       <slot name="description" />
     </div>

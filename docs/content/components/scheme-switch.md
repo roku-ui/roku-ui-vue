@@ -1,5 +1,5 @@
 ---
-title: SchemeSwitch / 主题切换
+title: Scheme Switch / 主题切换
 description: 用于切换主题。
 features:
   - 针对 SSR 场景优化

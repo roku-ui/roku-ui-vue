@@ -5,8 +5,7 @@ const { data } = await useAsyncData(route.path, queryContent(route.path).findOne
 
 <template>
   <main>
-    <ContentTitle>
-      {{ data?.title }}
+    <ContentTitle :title="data?.title">
       <template #description>
         {{ data?.description }}
       </template>

@@ -5,7 +5,9 @@ defineProps<{
 </script>
 
 <template>
-  <ProseH2>特性</ProseH2>
+  <ProseH2 id="特性">
+    特性
+  </ProseH2>
   <div class="flex flex-col gap-2">
     <div
       v-for="f in features"
