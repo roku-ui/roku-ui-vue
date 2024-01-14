@@ -64,10 +64,10 @@
     --r-color-tertiary-containerd: var(--r-color-tertiary-7);
     --r-color-error-containerd: var(--r-color-error-7);
 
-    --r-color-primary-containerl: var(--r-color-primary-4);
-    --r-color-secondary-containerl: var(--r-color-secondary-4);
-    --r-color-tertiary-containerl: var(--r-color-tertiary-4);
-    --r-color-error-containerl: var(--r-color-error-4);
+    --r-color-primary-containerl: var(--r-color-primary-5);
+    --r-color-secondary-containerl: var(--r-color-secondary-5);
+    --r-color-tertiary-containerl: var(--r-color-tertiary-5);
+    --r-color-error-containerl: var(--r-color-error-5);
 }
 
 :root * {
