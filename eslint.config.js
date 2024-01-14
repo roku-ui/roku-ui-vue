@@ -5,7 +5,7 @@ export default jannchie(
     vue: true,
     css: true,
     typescript: true,
-    // unocss: true,
+    unocss: true,
     formatters: {
       html: true,
       markdown: true,

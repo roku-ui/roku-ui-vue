@@ -83,12 +83,12 @@ function onDrop(files: File[] | null) {
           src="https://source.unsplash.com/random/512x512"
         />
         <template #content>
-          <div class="w-full h-full flex items-center justify-center  text-white">
+          <div class="h-full w-full flex items-center justify-center text-white">
             This is a overlay
           </div>
         </template>
       </Overlay>
-      <ChatContainer class="w-full max-w-lg py-8">
+      <ChatContainer class="max-w-lg w-full py-8">
         <ChatMessage
           position="right"
           avatar="https://avatars.githubusercontent.com/u/29743310?v=4"
@@ -126,7 +126,7 @@ function onDrop(files: File[] | null) {
           />
         </ChatMessage>
       </ChatContainer>
-      <Paper class="w-128 h-72">
+      <Paper class="h-72 w-128">
         <Dropzone @drop="onDrop">
           <div v-if="file">
             {{ file.name }}
@@ -224,7 +224,7 @@ function onDrop(files: File[] | null) {
           />
         </Indicator>
       </Paper>
-      <Paper class="flex flex-wrap gap-2 w-80">
+      <Paper class="w-80 flex flex-wrap gap-2">
         <Slider v-model="slider" />
       </Paper>
       <Paper class="flex flex-wrap gap-2">

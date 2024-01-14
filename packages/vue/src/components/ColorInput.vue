@@ -12,7 +12,7 @@ const input = ref<HTMLInputElement | null>(null)
       ref="input"
       v-model="model"
       type="color"
-      class="absolute opacity-0 pointer-events-none"
+      class="pointer-events-none absolute opacity-0"
     >
     <label
       :for="id"

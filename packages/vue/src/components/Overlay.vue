@@ -45,7 +45,7 @@ const colorStyle = computed(() => {
       ref="wrapperRef"
       :class="[blurCls, rounded.class]"
       :style="[rounded.style, colorStyle]"
-      class="absolute top-0 left-0 w-full h-full md:items-center overflow-hidden"
+      class="absolute left-0 top-0 h-full w-full overflow-hidden md:items-center"
     >
       <slot name="content" />
     </div>

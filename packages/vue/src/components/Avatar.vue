@@ -57,7 +57,7 @@ onMounted(() => {
   />
   <div
     v-if="!loaded"
-    class="h-[var(--size)] w-[var(--size)] animate-pulse rounded-full bg-surface-high object-cover border-transparent"
+    class="h-[var(--size)] w-[var(--size)] animate-pulse border-transparent rounded-full bg-surface-high object-cover"
     :style="[style, sizeStyle]"
   />
 </template>

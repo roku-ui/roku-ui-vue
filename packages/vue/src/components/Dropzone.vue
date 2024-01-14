@@ -44,7 +44,7 @@ const { isOverDropZone } = useDropZone(dropZoneRef, {
       ' bg-surface-low': !isOverDropZone,
       'border-dashed': dashed,
     }"
-    class="w-full h-full flex items-center justify-center cursor-pointer rounded"
+    class="h-full w-full flex cursor-pointer items-center justify-center rounded"
     @pointerup="() => open()"
   >
     <slot />

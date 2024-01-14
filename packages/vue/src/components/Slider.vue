@@ -194,12 +194,12 @@ const animateCls = computed(() => props.animate
     <div
       ref="wrapper"
       type="size"
-      class="flex w-full cursor-pointer items-center"
+      class="w-full flex cursor-pointer items-center"
       :class="sizeCls.wrapper"
       @touchmove.prevent
     >
       <div
-        class="rounded-full w-full bg-surface-lowest transition-background-color,border-color,color"
+        class="w-full rounded-full bg-surface-lowest transition-background-color,border-color,color"
         :class="sizeCls.innerWrapper"
       >
         <div

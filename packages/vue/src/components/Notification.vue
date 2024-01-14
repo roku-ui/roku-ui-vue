@@ -59,7 +59,7 @@ const textColorCls = computed(() => {
     >
       <i
         v-if="loading"
-        class="i-tabler-loader-2 h-container w-container shrink-0 animate-spin"
+        class="h-container w-container i-tabler-loader-2 shrink-0 animate-spin"
       />
       <i
         v-else
@@ -87,7 +87,7 @@ const textColorCls = computed(() => {
       </div>
       <div
         v-if="message"
-        class="text-sm text-surface-container"
+        class="text-surface-container text-sm"
       >
         {{ message }}
       </div>

@@ -78,7 +78,7 @@ const colorCls = computed(() => {
     >
       <div
         v-if="props.ping"
-        class="absolute animate-ping rounded-full border-2 border-transparent box-content"
+        class="absolute box-content animate-ping border-2 border-transparent rounded-full"
         :class="[
           {
             [sizeCls]: !$slots.label,
@@ -92,7 +92,7 @@ const colorCls = computed(() => {
         />
       </div>
       <div
-        class="top-0 rounded-full border-2 border-surface-low box-content"
+        class="top-0 box-content border-2 border-surface-low rounded-full"
         :class="[
           {
             [sizeCls]: !$slots.label,

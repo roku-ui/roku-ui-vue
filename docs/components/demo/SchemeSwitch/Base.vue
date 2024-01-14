@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PinInput, SchemeSwitch } from '@roku-ui/vue'
+import { SchemeSwitch } from '@roku-ui/vue'
 
 const code = computed(() => `<template>
   <SchemeSwitch /> // [!code highlight]

@@ -34,10 +34,10 @@ const bubbleColor = computed(() => {
 
 <template>
   <div
-    class="flex gap-2 self-center w-full text-center"
+    class="w-full flex self-center gap-2 text-center"
   >
     <div
-      class="rounded-xl px-3 py-2 w-full transition-background-color,border-color"
+      class="w-full rounded-xl px-3 py-2 transition-background-color,border-color"
       :class="[
         bubbleColor,
       ]"

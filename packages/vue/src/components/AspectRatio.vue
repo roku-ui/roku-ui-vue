@@ -12,7 +12,7 @@ withDefaults(defineProps<{
       :style="{
         '--ar-ratio': ratio,
       }"
-      class="before:content-[''] before:block before:h-0 before:pb-[calc((1/var(--ar-ratio,1))*100%)] children:absolute children:w-full children:h-full relative children:top-0"
+      class="relative children:absolute children:top-0 before:block before:h-0 children:h-full children:w-full before:pb-[calc((1/var(--ar-ratio,1))*100%)] before:content-['']"
     >
       <slot />
     </div>
