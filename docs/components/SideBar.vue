@@ -13,7 +13,7 @@ const contentComponents = await queryContent('components').find()
     }"
     class="fixed top-12 z-10 h-100vh min-w-64 w-33vw flex flex-col items-end gap-2 bg-surface-low transition-transform,background-color md:translate-x-0"
   >
-    <div class="w-64 flex flex-col gap-8 px-8 py-6">
+    <div class="w-72 flex flex-col gap-8 px-8 py-6">
       <div>
         <div>
           <NuxtLink
@@ -36,7 +36,7 @@ const contentComponents = await queryContent('components').find()
           :key="content.slug"
           :to="content._path"
           :text="content.title"
-          class="block text-sm hover:text-primary-containerl"
+          class="content-link block rounded p-1 px-2 text-sm hover:bg-surface-border-base/25"
         >
           {{ content.title }}
         </NuxtLink>
@@ -44,3 +44,9 @@ const contentComponents = await queryContent('components').find()
     </div>
   </div>
 </template>
+
+<style>
+.content-link .router-link-active {
+  color: rgb(var(--r-color-primary-containerl));
+}
+</style>
