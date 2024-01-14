@@ -2,9 +2,9 @@
 import { useRounded } from '../utils/classGenerator'
 
 const props = withDefaults(defineProps<{
-  value?: number
-  max?: number
-  min?: number
+  value?: number | string
+  max?: number | string
+  min?: number | string
   size?: 'sm' | 'md' | 'lg'
   color?: string
   rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full' | string | number
@@ -56,7 +56,7 @@ const rounded = useRounded(props)
       class="h-full"
       :class="[colorCls]"
       :style="[{
-        width: `${(value - min) / (max - min) * 100}%`,
+        width: `${(Number(value) - Number(min)) / (Number(max) - Number(min)) * 100}%`,
       }]"
     />
     <div
