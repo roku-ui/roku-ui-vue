@@ -46,7 +46,7 @@ const contentComponents = await queryContent('components').find()
 </template>
 
 <style>
-.content-link .router-link-active {
+.content-link.router-link-active {
   color: rgb(var(--r-color-primary-containerl));
 }
 </style>

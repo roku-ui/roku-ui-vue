@@ -6,6 +6,7 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     '@nuxt/image',
     '@nuxt/content',
+    '@nuxtjs/robots',
   ],
   components: [
     {

@@ -49,10 +49,12 @@ function toggleSideBar() {
           <i class="i-tabler-menu" />
         </Btn>
         <NuxtLink to="/">
-          <img
-            class="h-6 w-6"
+          <NuxtImg
+            width="24px"
+            height="24px"
+            alt="Roku UI"
             src="/icon.png"
-          >
+          />
         </NuxtLink>
       </div>
       <div>
