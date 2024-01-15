@@ -133,13 +133,12 @@ const sizeCls = computed(() => {
       <input
         ref="inputRef"
         :class="[colorCls.input, sizeCls.wrapper]"
-        class="r-select-input cursor-pointer border rounded outline-none"
+        class="r-select-input cursor-pointer border rounded outline-none outline-none focus-visible:outline-2"
         :placeholder="placeholder"
         readonly
         :value="currentLabel"
         aria-haspopup="listbox"
         autocomplete="off"
-        tabindex="-1"
         @focus="focused = true"
       >
       <i class="i-tabler-chevron-down pointer-events-none absolute right-2" />

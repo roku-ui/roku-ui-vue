@@ -150,8 +150,8 @@ const colorCls = computed(() => {
         'transition-all': animate,
       },
     ]"
+    :disabled="disabled"
     v-bind="$attrs"
-    tabindex="-1"
   >
     <slot
       v-if="$slots.leftSection"
