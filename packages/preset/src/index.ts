@@ -45,12 +45,12 @@ const shortcuts = colorKeys.filter(d => d !== 'surface').reduce((shortcuts, colo
   shortcuts[`container-subtle-${color}`] = `bg-${color}-container/0`
   shortcuts[`container-transparent-${color}`] = `bg-transparent text-${color}-container`
   shortcuts[`container-constrast-${color}`] = `text-${color}-container`
-  shortcuts[`btn-filled-${color}`] = `container-filled-${color} enabled:hover:bg-${color}-containerd text-${color}-on`
-  shortcuts[`btn-light-${color}`] = `container-light-${color} hover:bg-${color}-6/25 text-${color}-container`
-  shortcuts[`btn-outline-${color}`] = `container-outline-${color} hover:bg-${color}-container/10 text-${color}-container`
-  shortcuts[`btn-subtle-${color}`] = `container-subtle-${color} hover:bg-${color}-container/10 text-${color}-container`
-  shortcuts[`btn-transparent-${color}`] = `container-transparent-${color} hover:text-${color}-containerl`
-  shortcuts[`btn-constrast-${color}`] = `container-constrast-${color} hover:text-surface-base hover:bg-${color}-container`
+  shortcuts[`btn-filled-${color}`] = `container-filled-${color} enabled:hover:bg-${color}-containerd text-${color}-on focus-visible:outline-2 outline-offset-2 focus-visible:outline-${color}-container outline-none`
+  shortcuts[`btn-light-${color}`] = `container-light-${color} hover:bg-${color}-6/25 text-${color}-container focus-visible:outline-2 outline-offset-2 focus-visible:outline-${color}-container outline-none`
+  shortcuts[`btn-outline-${color}`] = `container-outline-${color} hover:bg-${color}-container/10 text-${color}-container focus-visible:outline-2 outline-offset-2 focus-visible:outline-${color}-container outline-none`
+  shortcuts[`btn-subtle-${color}`] = `container-subtle-${color} hover:bg-${color}-container/10 text-${color}-container focus-visible:outline-2 outline-offset-2 focus-visible:outline-${color}-container outline-none`
+  shortcuts[`btn-transparent-${color}`] = `container-transparent-${color} hover:text-${color}-containerl focus-visible:outline-2 outline-offset-2 focus-visible:outline-${color}-container outline-none`
+  shortcuts[`btn-constrast-${color}`] = `container-constrast-${color} hover:text-surface-base hover:bg-${color}-container focus-visible:outline-2 outline-offset-2 focus-visible:outline-${color}-container outline-none`
   return shortcuts
 }, {} as any)
 
@@ -73,7 +73,7 @@ const rokuPreset: () => Preset<object> = () => () => {
       'container-low': 'bg-surface-low border-surface-border-low border text-surface-on transition-background-color,border-color,color',
       'container-base': 'bg-surface-base border-surface-border-base border text-surface-on transition-background-color,border-color,color',
       'container-high': 'bg-surface-high border-surface-border-high border text-surface-on transition-background-color,border-color,color',
-      'btn-default': 'container-base enabled:hover:bg-surface-high transition-background-color,border-color,color',
+      'btn-default': 'container-base enabled:hover:bg-surface-high transition-background-color,border-color,color focus-visible:outline-2 outline-offset-2 focus-visible:outline-surface-border-base outline-none',
     },
     presets: [
       presetUno({
