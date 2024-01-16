@@ -16,7 +16,7 @@
       "require": "./dist/index.cjs"
     },
     "./package.json": "./package.json",
-    "./index.d.ts": "./dist/index.d.ts"
+    "./index.d.ts": "./index.d.ts"
   },
   "main": "dist/index.mjs",
   "module": "dist/index.mjs",

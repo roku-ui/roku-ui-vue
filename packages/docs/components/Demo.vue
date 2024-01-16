@@ -46,7 +46,7 @@ const codeHtml = computed(() => highlighter.codeToHtml(props.code, {
       </div>
     </div>
     <div
-      class="not-prose overflow-hidden rounded-b-xl text-sm children:overflow-auto children:p-2"
+      class="not-prose overflow-hidden rounded-b-xl text-sm children:overflow-auto children:p-2 children:outline-none!"
       v-html="codeHtml"
     />
   </div>

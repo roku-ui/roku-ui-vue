@@ -222,6 +222,7 @@ declare global {
   const useResizeObserver: typeof import('@vueuse/core')['useResizeObserver']
   const useRootScheme: typeof import('./composables/index')['useRootScheme']
   const useRootTheme: typeof import('./composables/index')['useRootTheme']
+  const useScheme: typeof import('./composables/index')['useScheme']
   const useScreenOrientation: typeof import('@vueuse/core')['useScreenOrientation']
   const useScreenSafeArea: typeof import('@vueuse/core')['useScreenSafeArea']
   const useScriptTag: typeof import('@vueuse/core')['useScriptTag']

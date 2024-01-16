@@ -50,3 +50,17 @@ const contentComponents = await queryContent('components').find()
   color: rgb(var(--r-color-primary-containerl));
 }
 </style>
+
+<style scoped>
+* {
+  outline-width: 2px;
+  outline-offset: 1px;
+}
+*:focus-visible {
+  --un-outline-color-opacity: 1;
+  outline-color: rgb(
+    var(--r-color-primary-container) / var(--un-outline-color-opacity)
+  );
+  outline-style: solid;
+}
+</style>

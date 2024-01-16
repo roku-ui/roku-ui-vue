@@ -9,7 +9,7 @@ defineProps<{
 <template>
   <Notification
     class="prose-md my-4"
-    title="警告"
+    title="提示"
     icon="i-tabler-alert-triangle"
     color="tertiary"
     rounded="0.75rem"

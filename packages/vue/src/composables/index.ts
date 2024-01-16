@@ -1,4 +1,5 @@
 import tinycolor from 'tinycolor2'
+import { isClient } from '@vueuse/core'
 import { type ThemeData, darkTheme } from '..'
 
 export function useRootTheme() {
@@ -143,4 +144,30 @@ export function useId(props: { id?: string }) {
     }
   })
   return id
+}
+
+export function useScheme() {
+  const isDark = useDark()
+  const scheme = computed<'dark' | 'light'>({
+    get() {
+      return isDark.value ? 'dark' : 'light'
+    },
+    set(value) {
+      isDark.value = value === 'dark'
+    },
+  })
+  watchEffect(() => {
+    if (isClient) {
+      if (isDark.value === true) {
+        document.documentElement.setAttribute('data-scheme', 'dark')
+        localStorage.setItem('scheme', 'dark')
+      }
+      else if (isDark.value === false) {
+        document.documentElement.setAttribute('data-scheme', 'light')
+
+        localStorage.setItem('scheme', 'light')
+      }
+    }
+  })
+  return scheme
 }
