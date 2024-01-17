@@ -6,7 +6,7 @@
     color-scheme: light;
 }
 
-[data-scheme="dark"] *, [data-scheme="dark"]  {
+[data-scheme="light"] [data-scheme="dark"] *, [data-scheme="dark"] *, [data-scheme="dark"]  {
     color-scheme: dark;
     --r-color-surface-on: var(--r-color-surface-3);
     --r-color-surface-oninverted: var(--r-color-surface-8);

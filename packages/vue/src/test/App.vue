@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Notifications, generateColors, lightTheme } from '..'
+import { Notifications, darkTheme, generateColors, lightTheme } from '..'
 
 const isLoading = refAutoReset(false, 3000)
 onMounted(() => {
@@ -158,6 +158,11 @@ function onDrop(files: File[] | null) {
         />
       </Paper>
       <ThemeProvider :theme="lightTheme">
+        <Paper class="m-4">
+          Other Theme
+        </Paper>
+      </ThemeProvider>
+      <ThemeProvider :theme="darkTheme">
         <Paper class="m-4">
           Other Theme
         </Paper>
