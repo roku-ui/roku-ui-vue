@@ -1,4 +1,5 @@
 <script setup lang="ts">
+type Variant = 'filled' | 'default' | 'light' | 'outline' | 'subtle' | 'transparent' | 'ghost' | 'constrast'
 const props = withDefaults(
   defineProps<{
     type?: 'button' | 'submit' | 'reset'
@@ -6,7 +7,8 @@ const props = withDefaults(
     is?: string | Component
     icon?: boolean
     pressEffect?: 'translate' | 'scale'
-    variant?: 'filled' | 'default' | 'light' | 'outline' | 'subtle' | 'transparent' | 'ghost' | 'constrast'
+    variant?: Variant
+    hoverVariant?: Variant
     color?: 'primary' | 'secondary' | 'tertiary' | 'error'
     animate?: boolean
     rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full'
@@ -57,9 +59,16 @@ const sizeCls = computed(() => {
       }
   }
 })
-
+const btn = ref<HTMLElement | null>(null)
+const isHover = useElementHover(btn)
+const variant = computed(() => {
+  if (props.hoverVariant && isHover.value) {
+    return props.hoverVariant
+  }
+  return props.variant
+})
 const colorCls = computed(() => {
-  switch (props.variant) {
+  switch (variant.value) {
     case 'filled':
       switch (props.color) {
         case 'secondary':
@@ -136,6 +145,7 @@ const colorCls = computed(() => {
 <template>
   <component
     :is="is"
+    ref="btn"
     :data-size="size"
     :type="type"
     class="flex items-center justify-center gap-1 decoration-none"
