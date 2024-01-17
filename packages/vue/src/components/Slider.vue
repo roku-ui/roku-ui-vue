@@ -122,7 +122,12 @@ function pointEventCallback(event: PointerEvent) {
   const right = rect.right.value
   const width = right - left
   const index = Math.round(((clientX - left) / width) * (length.value - 1))
-  if (index < 0 || index > length.value - 1) {
+  if (index < 0) {
+    currentIndex.value = 0
+    return
+  }
+  if (index > length.value - 1) {
+    currentIndex.value = length.value - 1
     return
   }
   currentIndex.value = index
