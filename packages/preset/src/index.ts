@@ -39,12 +39,12 @@ const colors = colorKeys.reduce<Record<string, any>>((colors, key) => {
 }, {})
 
 const shortcuts = colorKeys.filter(d => d !== 'surface').reduce((shortcuts, color) => {
-  shortcuts[`container-filled-${color}`] = `bg-${color}-container`
-  shortcuts[`container-light-${color}`] = `bg-${color}-container/10`
+  shortcuts[`container-filled-${color}`] = `bg-${color}-container border-${color}-container border`
+  shortcuts[`container-light-${color}`] = `bg-${color}-container/10 border-${color}-container border-transparent`
   shortcuts[`container-outline-${color}`] = `border-${color}-container border text-${color}-container`
-  shortcuts[`container-subtle-${color}`] = `bg-${color}-container/0`
-  shortcuts[`container-transparent-${color}`] = `bg-transparent text-${color}-container`
-  shortcuts[`container-constrast-${color}`] = `text-${color}-container`
+  shortcuts[`container-subtle-${color}`] = `bg-${color}-container/0 border-${color}-container border-transparent`
+  shortcuts[`container-transparent-${color}`] = `bg-transparent text-${color}-container border-transparent border-${color}-container`
+  shortcuts[`container-constrast-${color}`] = `text-${color}-container border-${color}-container border-transparent`
   shortcuts[`btn-filled-${color}`] = `container-filled-${color} enabled:hover:bg-${color}-containerd text-${color}-on focus-visible:outline-2 outline-offset-2 focus-visible:outline-${color}-container outline-none`
   shortcuts[`btn-light-${color}`] = `container-light-${color} hover:bg-${color}-6/25 text-${color}-container focus-visible:outline-2 outline-offset-2 focus-visible:outline-${color}-container outline-none`
   shortcuts[`btn-outline-${color}`] = `container-outline-${color} hover:bg-${color}-container/10 text-${color}-container focus-visible:outline-2 outline-offset-2 focus-visible:outline-${color}-container outline-none`
