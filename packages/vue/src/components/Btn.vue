@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useRounded } from '../utils/classGenerator'
+
 type Variant = 'filled' | 'default' | 'light' | 'outline' | 'subtle' | 'transparent' | 'ghost' | 'constrast'
 const props = withDefaults(
   defineProps<{
@@ -11,7 +13,7 @@ const props = withDefaults(
     hoverVariant?: Variant
     color?: 'primary' | 'secondary' | 'tertiary' | 'error'
     animate?: boolean
-    rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full'
+    rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full' | string | number
     disabled?: boolean
   }>(),
   {
@@ -24,21 +26,7 @@ const props = withDefaults(
     disabled: false,
   },
 )
-
-const rounedCls = computed(() => {
-  switch (props.rounded) {
-    case 'none':
-      return 'rounded-none'
-    case 'sm':
-      return 'rounded-sm'
-    case 'md':
-      return 'rounded-md'
-    case 'lg':
-      return 'rounded-lg'
-    case 'full':
-      return 'rounded-full'
-  }
-})
+const rounded = useRounded(props)
 
 const sizeCls = computed(() => {
   switch (props.size) {
@@ -149,9 +137,12 @@ const colorCls = computed(() => {
     :data-size="size"
     :type="type"
     class="flex items-center justify-center gap-1 decoration-none"
+    :style="[
+      rounded.style,
+    ]"
     :class="[
       colorCls,
-      rounedCls,
+      rounded.class,
       icon ? sizeCls.iconContent : sizeCls.normalContent,
       {
         'filter-grayscale pointer-events-none': disabled,

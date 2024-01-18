@@ -3,7 +3,7 @@ import tinycolor from 'tinycolor2'
 export * from './theme'
 export * from './notifications'
 
-const LIGHTNESS_MAP = [0.96, 0.907, 0.805, 0.697, 0.605, 0.547, 0.518, 0.445, 0.395, 0.34, 0.28]
+const LIGHTNESS_MAP = [0.96, 0.96, 0.907, 0.805, 0.697, 0.547, 0.518, 0.445, 0.395, 0.34, 0.28]
 
 function getClosestLightness(color: string | tinycolor.ColorFormats.PRGB | tinycolor.ColorFormats.RGB | tinycolor.ColorFormats.HSL | tinycolor.ColorFormats.HSV | tinycolor.Instance | undefined) {
   const lightnessGoal = tinycolor(color).toHsl().l

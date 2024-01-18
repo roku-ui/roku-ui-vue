@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Notifications, darkTheme, generateColors, lightTheme } from '..'
+import ThemeBtn from './ThemeBtn.vue'
 
 const isLoading = refAutoReset(false, 3000)
 onMounted(() => {
@@ -18,7 +19,6 @@ const slider = ref(47)
 const color = ref('#5474B4')
 const colors = computed(() => generateColors(color.value))
 const file = ref<File | null>(null)
-const scheme = useScheme()
 function onDrop(files: File[] | null) {
   if (files && files.length) {
     file.value = files[0]
@@ -42,12 +42,7 @@ function onDrop(files: File[] | null) {
     <div class="flex flex-col items-center gap-2">
       <Paper class="flex items-center gap-2">
         <SchemeSwitch />
-        <Btn @click="scheme = 'dark'">
-          dark
-        </Btn>
-        <Btn @click="scheme = 'light'">
-          light
-        </Btn>
+        <ThemeBtn />
       </Paper>
       <Paper class="flex items-center gap-2">
         <Avatar

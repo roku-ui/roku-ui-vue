@@ -1,8 +1,15 @@
 <script setup lang="ts">
 import { isClient } from '@vueuse/core'
 
-const isDark = ref<boolean | undefined>(undefined)
-
+const scheme = useScheme()
+const isDark = computed({
+  get() {
+    return scheme.value === 'dark'
+  },
+  set(value) {
+    scheme.value = value ? 'dark' : 'light'
+  },
+})
 watchEffect(() => {
   if (isClient) {
     if (isDark.value === true) {
@@ -16,6 +23,7 @@ watchEffect(() => {
     }
   }
 })
+
 const isServer = ref(true)
 const animate = ref(false)
 onMounted(() => {

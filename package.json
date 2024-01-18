@@ -7,13 +7,13 @@
   "license": "ISC",
   "keywords": [],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint . --fix",
     "build": "pnpm --filter @roku-ui/preset build && pnpm --filter @roku-ui/vue build",
     "release": "pnpm --filter @roku-ui/preset publish && pnpm --filter @roku-ui/vue publish",
     "watch": "pnpm --filter @roku-ui/vue watch",
     "generate": "pnpm --filter @roku-ui/docs generate",
-    "dev": "pnpm --filter @roku-ui/docs dev"
+    "dev": "pnpm --filter @roku-ui/docs dev",
+    "dev:vue": "pnpm --filter @roku-ui/vue dev"
   },
   "devDependencies": {
     "@unocss/eslint-config": "^0.58.3",

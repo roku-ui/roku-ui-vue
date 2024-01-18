@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useRounded } from '../utils/classGenerator'
+
 type Option = {
   id: number | string | symbol
   label: string
@@ -8,6 +10,7 @@ const props = withDefaults(defineProps<{
   options?: Option[]
   size?: 'sm' | 'md' | 'lg'
   noneText?: string
+  rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full' | string | number
   placeholder?: string
 }>(), {
   modelValue: undefined,
@@ -17,9 +20,12 @@ const props = withDefaults(defineProps<{
   size: 'md',
   noneText: 'No options',
   placeholder: '',
+  rounded: 'md',
 })
 
 const emit = defineEmits(['change'])
+
+const rounded = useRounded(props)
 
 const model = defineModel<string | symbol | number | undefined>({ default: undefined })
 
@@ -132,9 +138,10 @@ const sizeCls = computed(() => {
     <div class="w-full flex items-center">
       <input
         ref="inputRef"
-        :class="[colorCls.input, sizeCls.wrapper]"
-        class="r-select-input cursor-pointer border rounded outline-none outline-none focus-visible:outline-2"
+        :class="[colorCls.input, sizeCls.wrapper, rounded.class]"
+        class="r-select-input cursor-pointer border outline-none outline-none focus-visible:outline-2"
         :placeholder="placeholder"
+        :style="[rounded.style]"
         readonly
         :value="currentLabel"
         aria-haspopup="listbox"
