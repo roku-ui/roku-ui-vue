@@ -57,6 +57,9 @@ const paddingRight = computed(() => {
 const preferScheme = usePreferredColorScheme()
 
 watchEffect(() => {
+  if (!isClient) {
+    return 'dark'
+  }
   if (scheme.value === 'dark') {
     document.documentElement.dataset.scheme = 'dark'
   }

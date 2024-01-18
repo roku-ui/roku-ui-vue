@@ -1,8 +1,9 @@
 import tinycolor from 'tinycolor2'
+import { isClient } from '@vueuse/core'
 import { type ThemeData, darkTheme } from '..'
 
 export function useRootTheme() {
-  if (typeof window === 'undefined') {
+  if (!isClient) {
     return ref('dark')
   }
   const theme = ref(document.documentElement.dataset.scheme)
