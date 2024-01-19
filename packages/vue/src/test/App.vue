@@ -1,3 +1,4 @@
+<!-- eslint-disable no-console -->
 <script setup lang="ts">
 import { Notifications, darkTheme, generateColors, lightTheme } from '..'
 import ThemeBtn from './ThemeBtn.vue'
@@ -34,6 +35,12 @@ function onDrop(files: File[] | null) {
     })
   }
 }
+const text = ref('1')
+const tab = ref(0)
+
+watchEffect(() => {
+  console.log(tab.value)
+})
 </script>
 
 <template>
@@ -43,6 +50,39 @@ function onDrop(files: File[] | null) {
       <Paper class="flex items-center gap-2">
         <SchemeSwitch />
         <ThemeBtn />
+      </Paper>
+      <Paper>
+        <Tabs>
+          <TabItem :value="0">
+            Tab 0
+          </TabItem>
+          <TabItem
+            v-for="i in 3"
+            :key="i"
+            :value="i"
+            @click="() => console.log(i)"
+          >
+            Tab {{ i }}
+          </TabItem>
+          <TabItem
+            :value="4"
+          >
+            Tab 4
+          </TabItem>
+        </Tabs>
+      </Paper>
+      <Paper>
+        <Tabs
+          v-model="tab"
+          direction="vertical"
+        >
+          <TabItem :value="0">
+            Tab 0
+          </TabItem>
+          <TabItem :value="1">
+            Tab 1
+          </TabItem>
+        </Tabs>
       </Paper>
       <Paper class="flex items-center gap-2">
         <Avatar
@@ -400,10 +440,16 @@ function onDrop(files: File[] | null) {
         </Chip>
       </Paper>
       <Paper class="flex flex-wrap gap-2">
-        <TextField placeholder="Placeholder" />
+        <TextField
+          v-model="text"
+          placeholder="Placeholder"
+        />
       </Paper>
       <Paper class="flex flex-wrap gap-2">
-        <TextField rounded="none" />
+        <TextField
+          v-model="text"
+          rounded="none"
+        />
         <TextField rounded="lg" />
         <TextField rounded="full" />
         <TextField rounded="0.5rem" />

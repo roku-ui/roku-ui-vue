@@ -3,7 +3,6 @@ import { useRounded } from '../utils/classGenerator'
 
 const props = withDefaults(
   defineProps<{
-    modelValue?: string | number
     onChange?: (value: string) => void
     color?: 'primary' | 'secondary' | 'tertiary' | 'error'
     error?: boolean
@@ -19,7 +18,7 @@ const props = withDefaults(
     size: 'md',
   },
 )
-const emit = defineEmits(['change', 'update:modelValue', 'input', 'click', 'pointerdown', 'pointerup'])
+const model = defineModel<string | number>()
 const sizeCls = computed(() => {
   switch (props.size) {
     case 'sm':
@@ -61,13 +60,8 @@ const disabledCls = computed(() => {
 })
 
 const rounded = useRounded(props)
+
 const input = ref<HTMLInputElement | null>(null)
-
-function onInput(event: Event) {
-  emit('update:modelValue', (event.target as any)?.value ?? '')
-  emit('input', event)
-}
-
 defineExpose({
   el: input,
 })
@@ -76,16 +70,11 @@ defineExpose({
 <template>
   <input
     ref="input"
-    :value="modelValue"
+    v-model="model"
     class="bg-back-2 border px-2 py-1 outline-none transition-background-color,border-color,color"
     :class="[colorCls, disabledCls, rounded.class, sizeCls.base]"
     :style="[rounded.style]"
     :placeholder="placeholder"
     :type="props.password ? 'password' : 'text'"
-    @change="$emit('change', $event)"
-    @input="onInput"
-    @click="$emit('click', $event)"
-    @pointerdown="$emit('pointerdown', $event)"
-    @pointerup="$emit('pointerup', $event)"
   >
 </template>

@@ -50,3 +50,5 @@ export type ColorsTuple = readonly [
 export function generateColors(color: string | tinycolor.ColorFormats.PRGB | tinycolor.ColorFormats.RGB | tinycolor.ColorFormats.HSL | tinycolor.ColorFormats.HSV | tinycolor.Instance | undefined) {
   return generateColorsMap(color).colors as unknown as ColorsTuple
 }
+
+export * from './symbols'

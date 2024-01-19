@@ -73,7 +73,7 @@ const rokuPreset: () => Preset<object> = () => () => {
       'container-low': 'bg-surface-low border-surface-border-low border text-surface-on transition-background-color,border-color,color',
       'container-base': 'bg-surface-base border-surface-border-base border text-surface-on transition-background-color,border-color,color',
       'container-high': 'bg-surface-high border-surface-border-high border text-surface-on transition-background-color,border-color,color',
-      'btn-default': 'container-base enabled:hover:bg-surface-high transition-background-color,border-color,color focus-visible:outline-2 outline-offset-2 focus-visible:outline-surface-border-base outline-none',
+      'btn-default': 'container-base enabled:hover:bg-surface-border-base transition-background-color,border-color,color focus-visible:outline-2 outline-offset-2 focus-visible:outline-surface-border-base outline-none',
     },
     presets: [
       presetUno({

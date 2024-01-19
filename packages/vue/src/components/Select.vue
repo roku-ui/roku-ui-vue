@@ -153,7 +153,7 @@ const sizeCls = computed(() => {
     <div
       v-if="focused"
       :class="sizeCls.dropdown"
-      class="absolute z-1 mt-2 w-full flex-col overflow-hidden border container-base rounded p-1"
+      class="absolute z-10 mt-2 w-full flex-col overflow-hidden border container-base rounded p-1"
     >
       <div
         v-if="options.length === 0"
@@ -166,10 +166,10 @@ const sizeCls = computed(() => {
           v-for="option, i in options"
           :key="getId(option)"
           :class="{
-            'hover:bg-surface-high': keyboardIndex !== i,
+            'hover:bg-surface-high border-transparent': keyboardIndex !== i,
             'container-filled-primary': keyboardIndex === i,
           }"
-          class="flex cursor-pointer items-center justify-between gap-2 rounded p-1 px-2"
+          class="flex cursor-pointer items-center justify-between gap-2 border rounded p-1 px-2"
           @pointerdown="onItemPointerDown(option)"
           @hover="hoverIndex = i"
         >

@@ -20,7 +20,7 @@
     --r-color-surface-highest: var(--r-color-surface-6);
     --r-color-surface-border-low: var(--r-color-surface-8);
     --r-color-surface-border-base: var(--r-color-surface-7);
-    --r-color-surface-border-height: var(--r-color-surface-6);
+    --r-color-surface-border-high: var(--r-color-surface-6);
 
     --r-color-primary-container: var(--r-color-primary-7);
     --r-color-secondary-container: var(--r-color-secondary-7);
@@ -50,9 +50,9 @@
     --r-color-surface-base: var(--r-color-surface-1);
     --r-color-surface-high: var(--r-color-surface-0);
     --r-color-surface-highest: var(--r-color-surface-0);
-    --r-color-surface-border-low: var(--r-color-surface-4);
+    --r-color-surface-border-low: var(--r-color-surface-3);
     --r-color-surface-border-base: var(--r-color-surface-4);
-    --r-color-surface-border-height: var(--r-color-surface-3);
+    --r-color-surface-border-high: var(--r-color-surface-5);
 
     --r-color-primary-container: var(--r-color-primary-7);
     --r-color-secondary-container: var(--r-color-secondary-7);
