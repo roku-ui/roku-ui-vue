@@ -448,6 +448,12 @@ watchEffect(() => {
       <Paper class="flex flex-wrap gap-2">
         <TextField
           v-model="text"
+          label="label"
+        />
+      </Paper>
+      <Paper class="flex flex-wrap gap-2">
+        <TextField
+          v-model="text"
           rounded="none"
         />
         <TextField rounded="lg" />

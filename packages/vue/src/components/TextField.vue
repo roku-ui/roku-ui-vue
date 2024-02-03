@@ -11,6 +11,7 @@ const props = withDefaults(
     size?: 'sm' | 'md' | 'lg'
     password?: boolean
     placeholder?: string
+    label?: string
   }>(),
   {
     color: 'primary',
@@ -35,6 +36,18 @@ const sizeCls = computed(() => {
       }
   }
 })
+
+const labelSizeCls = computed(() => {
+  switch (props.size) {
+    case 'sm':
+      return 'text-xs'
+    case 'md':
+      return 'text-sm'
+    case 'lg':
+      return 'md-md'
+  }
+})
+
 const colorCls = computed(() => {
   if (props.error) {
     return 'text-error-container bg-surface-base border-error-container focus:border-error-container'
@@ -65,16 +78,38 @@ const input = ref<HTMLInputElement | null>(null)
 defineExpose({
   el: input,
 })
+const attrs = useAttrs()
+const id = useId(attrs)
 </script>
 
 <template>
-  <input
-    ref="input"
-    v-model="model"
-    class="bg-back-2 border px-2 py-1 outline-none transition-background-color,border-color,color"
-    :class="[colorCls, disabledCls, rounded.class, sizeCls.base]"
-    :style="[rounded.style]"
-    :placeholder="placeholder"
-    :type="props.password ? 'password' : 'text'"
-  >
+  <div>
+    <label
+      v-if="$slots.label || label"
+      :for="id"
+      class="mb-1 block text-surface-on"
+      :class="[labelSizeCls]"
+    >
+      <slot
+        v-if="$slots.label"
+        name="label"
+      />
+      <span
+        v-else
+      >
+        {{ label }}
+      </span>
+    </label>
+    <input
+      :id="id"
+      v-bind="$attrs"
+      ref="input"
+      v-model="model"
+      class="bg-back-2 border px-2 py-1 outline-none transition-background-color,border-color,color"
+      :class="[colorCls, disabledCls, rounded.class, sizeCls.base]"
+      :style="[rounded.style]"
+      :placeholder="placeholder"
+      :type="props.password ? 'password' : 'text'"
+    >
+  </div>
 </template>
