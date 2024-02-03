@@ -52,16 +52,16 @@ nextTick(() => {
     <div class="dark:hidden">
       <Switch
         :value="false"
-        on-icon="i-tabler-moon"
-        off-icon="i-tabler-sun"
+        on-icon="i-line-md-moon-twotone-alt-loop"
+        off-icon="i-line-md-sunny-outline-twotone-loop"
       />
     </div>
     <div class="light:hidden">
       <Switch
         :value="true"
         color="secondary"
-        on-icon="i-tabler-moon"
-        off-icon="i-tabler-sun"
+        on-icon="i-line-md-moon-twotone-alt-loop"
+        off-icon="i-line-md-sunny-outline-twotone-loop"
       />
     </div>
   </div>
@@ -70,8 +70,8 @@ nextTick(() => {
       v-model="isDark"
       :animate="animate"
       color="secondary"
-      on-icon="i-tabler-moon"
-      off-icon="i-tabler-sun"
+      on-icon="i-line-md-moon-twotone-alt-loop"
+      off-icon="i-line-md-sunny-outline-twotone-loop"
     />
   </div>
 </template>

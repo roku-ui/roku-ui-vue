@@ -8,21 +8,6 @@ const props = withDefaults(defineProps<{
 })
 
 const model = defineModel<boolean>()
-
-watchEffect(() => {
-  if (model.value) {
-    document.body.style.overflow = 'hidden'
-  }
-  else {
-    setTimeout(() => {
-      // if all modals are closed
-      if (!document.querySelector('.modal-wrapper.op100')) {
-        document.body.style.overflow = ''
-        document.body.style.marginRight = ''
-      }
-    }, 300)
-  }
-})
 </script>
 
 <template>

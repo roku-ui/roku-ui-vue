@@ -16,8 +16,8 @@
     "dev:vue": "pnpm --filter @roku-ui/vue dev"
   },
   "devDependencies": {
-    "@unocss/eslint-config": "^0.58.3",
-    "@unocss/eslint-plugin": "^0.58.3",
+    "@unocss/eslint-config": "^0.58.4",
+    "@unocss/eslint-plugin": "^0.58.4",
     "eslint": "^8.56.0",
     "eslint-plugin-format": "^0.1.0"
   },

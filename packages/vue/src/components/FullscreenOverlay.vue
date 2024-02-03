@@ -34,9 +34,11 @@ const blurCls = computed(() => {
       return ''
   }
 })
+const scrollbarWidth = ref(0)
 watchEffect(() => {
   if (model.value) {
     document.body.style.overflow = 'hidden'
+    document.body.style.marginRight = `${scrollbarWidth.value}px`
   }
   else {
     setTimeout(() => {
@@ -48,6 +50,15 @@ watchEffect(() => {
     }, 300)
   }
 })
+
+const resizeObserver = new ResizeObserver(() => {
+  const curWidth = window.innerWidth - document.body.clientWidth
+  if (curWidth !== 0) {
+    scrollbarWidth.value = curWidth
+  }
+})
+resizeObserver.observe(document.body)
+
 const currentTheme = useCurrentTheme()
 </script>
 

@@ -30,15 +30,15 @@
   "devDependencies": {
     "@jannchie/eslint-config": "^3.0.0",
     "@rollup/plugin-node-resolve": "^15.2.3",
-    "@rollup/plugin-typescript": "^11.1.5",
-    "@unocss/preset-icons": "^0.58.2",
-    "@unocss/reset": "^0.58.2",
+    "@rollup/plugin-typescript": "^11.1.6",
+    "@unocss/preset-icons": "^0.58.4",
+    "@unocss/reset": "^0.58.4",
     "eslint": "^8.56.0",
     "eslint-plugin-format": "^0.1.0",
-    "rollup": "^4.9.2",
-    "rollup-plugin-import-css": "^3.3.5",
+    "rollup": "^4.9.6",
+    "rollup-plugin-import-css": "^3.4.0",
     "rollup-plugin-string": "^3.0.0",
     "typescript": "^5.3.3",
-    "unocss": "^0.58.2"
+    "unocss": "^0.58.4"
   }
 }

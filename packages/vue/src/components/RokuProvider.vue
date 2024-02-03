@@ -19,22 +19,8 @@ const props = withDefaults(
   },
 )
 
-// ------------------------------
-// Calculate scrollbar width, and keep it updated
-const scrollbarWidth = ref(0)
-const currentScrollbar = ref(0)
-
 const scheme = ref<string | undefined>(props.theme.scheme)
 if (isClient) {
-  const resizeObserver = new ResizeObserver(() => {
-    const curWidth = window.innerWidth - document.body.clientWidth
-    if (curWidth !== 0) {
-      scrollbarWidth.value = curWidth
-    }
-    currentScrollbar.value = curWidth
-  })
-
-  resizeObserver.observe(document.body)
   const observer = new MutationObserver(() => {
     if (scheme.value !== document.documentElement.dataset.scheme) {
       scheme.value = document.documentElement.dataset.scheme
@@ -45,14 +31,6 @@ if (isClient) {
     attributeFilter: ['data-scheme'],
   })
 }
-const paddingRight = computed(() => {
-  if (currentScrollbar.value === scrollbarWidth.value) {
-    return `0px`
-  }
-  else {
-    return `${scrollbarWidth.value}px`
-  }
-})
 
 const preferScheme = usePreferredColorScheme()
 
@@ -86,7 +64,6 @@ const styles = useThemeStyles(props.theme)
     :is="is"
     :style="[
       styles,
-      { paddingRight },
     ]"
     class="text-surface-on transition-background-color,border-color,color"
   >
