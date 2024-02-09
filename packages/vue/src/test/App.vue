@@ -442,6 +442,13 @@ watchEffect(() => {
       <Paper class="flex flex-wrap gap-2">
         <TextField
           v-model="text"
+          password
+          placeholder="Password"
+        />
+      </Paper>
+      <Paper class="flex flex-wrap gap-2">
+        <TextField
+          v-model="text"
           placeholder="Placeholder"
         />
       </Paper>

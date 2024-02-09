@@ -38,7 +38,7 @@
     --r-color-error-containerl: var(--r-color-error-6);
 }
 
-[data-scheme="light"] *, [data-scheme="light"] {
+[data-scheme="light"] *, [data-scheme="light"], * {
     color-scheme: light;
     --r-color-surface-on: var(--r-color-surface-7);
     --r-color-surface-oninverted: var(--r-color-surface-2);
