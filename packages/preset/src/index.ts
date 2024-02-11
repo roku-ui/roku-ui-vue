@@ -54,7 +54,10 @@ const shortcuts = colorKeys.filter(d => d !== 'surface').reduce((shortcuts, colo
   return shortcuts
 }, {} as any)
 
-const rokuPreset: () => Preset<object> = () => () => {
+interface PresetOptions {
+  icon: any
+}
+const rokuPreset: (options: PresetOptions) => Preset<object> = options => () => {
   let file = ''
   try {
     file = fs.readFileSync('node_modules/@roku-ui/vue/dist/index.js', 'utf-8')
@@ -89,6 +92,7 @@ const rokuPreset: () => Preset<object> = () => () => {
           'display': 'inline-block',
           'vertical-align': 'middle',
         },
+        ...options.icon,
       }),
     ],
     content: {
