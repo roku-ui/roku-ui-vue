@@ -1,7 +1,7 @@
 {
   "name": "@roku-ui/docs",
   "type": "module",
-  "version": "0.7.4",
+  "version": "0.7.5",
   "author": "Jianqi Pan <jannchie@gmail.com>",
   "scripts": {
     "build": "nuxt prepare && nuxt build",
