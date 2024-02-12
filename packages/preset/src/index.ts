@@ -31,7 +31,7 @@ const colors = colorKeys.reduce<Record<string, any>>((colors, key) => {
     })
   }
   else {
-    ['container', 'containerd', 'containerl', 'on'].forEach((k) => {
+    ['container', 'containerd', 'containerl', 'on', 'onlow', 'border'].forEach((k) => {
       colors[key][k] = `rgb(var(--r-color-${key}-${k}))`
     })
   }

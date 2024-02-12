@@ -20,7 +20,7 @@
   },
   "main": "dist/index.mjs",
   "module": "dist/index.mjs",
-  "types": "index.d.ts",
+  "types": "dist/index.d.ts",
   "files": [
     "dist",
     "index.d.ts"
@@ -37,6 +37,7 @@
     "eslint": "^8.56.0",
     "eslint-plugin-format": "^0.1.0",
     "rollup": "^4.9.6",
+    "rollup-plugin-dts": "^6.1.0",
     "rollup-plugin-import-css": "^3.4.0",
     "rollup-plugin-string": "^3.0.0",
     "typescript": "^5.3.3",
