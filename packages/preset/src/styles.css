@@ -82,30 +82,30 @@
     --r-color-surface-border-base: var(--r-color-surface-7);
     --r-color-surface-border-high: var(--r-color-surface-6);
 
-    --r-color-primary-on: var(--r-color-primary-6);
-    --r-color-secondary-on: var(--r-color-secondary-6);
-    --r-color-tertiary-on: var(--r-color-tertiary-6);
-    --r-color-error-on: var(--r-color-error-6);
+    --r-color-primary-on: var(--r-color-primary-5);
+    --r-color-secondary-on: var(--r-color-secondary-5);
+    --r-color-tertiary-on: var(--r-color-tertiary-5);
+    --r-color-error-on: var(--r-color-error-5);
 
-    --r-color-primary-onlow: var(--r-color-primary-7);
-    --r-color-secondary-onlow: var(--r-color-secondary-7);
-    --r-color-tertiary-onlow: var(--r-color-tertiary-7);
-    --r-color-error-onlow: var(--r-color-error-7);
+    --r-color-primary-onlow: var(--r-color-primary-6);
+    --r-color-secondary-onlow: var(--r-color-secondary-6);
+    --r-color-tertiary-onlow: var(--r-color-tertiary-6);
+    --r-color-error-onlow: var(--r-color-error-6);
 
-    --r-color-primary-container: var(--r-color-primary-6);
-    --r-color-secondary-container: var(--r-color-secondary-6);
-    --r-color-tertiary-container: var(--r-color-tertiary-6);
-    --r-color-error-container: var(--r-color-error-6);
+    --r-color-primary-container: var(--r-color-primary-5);
+    --r-color-secondary-container: var(--r-color-secondary-5);
+    --r-color-tertiary-container: var(--r-color-tertiary-5);
+    --r-color-error-container: var(--r-color-error-5);
 
-    --r-color-primary-containerd: var(--r-color-primary-7);
-    --r-color-secondary-containerd: var(--r-color-secondary-7);
-    --r-color-tertiary-containerd: var(--r-color-tertiary-7);
-    --r-color-error-containerd: var(--r-color-error-7);
+    --r-color-primary-containerd: var(--r-color-primary-6);
+    --r-color-secondary-containerd: var(--r-color-secondary-6);
+    --r-color-tertiary-containerd: var(--r-color-tertiary-6);
+    --r-color-error-containerd: var(--r-color-error-6);
 
-    --r-color-primary-containerl: var(--r-color-primary-5);
-    --r-color-secondary-containerl: var(--r-color-secondary-5);
-    --r-color-tertiary-containerl: var(--r-color-tertiary-5);
-    --r-color-error-containerl: var(--r-color-error-5);
+    --r-color-primary-containerl: var(--r-color-primary-4);
+    --r-color-secondary-containerl: var(--r-color-secondary-4);
+    --r-color-tertiary-containerl: var(--r-color-tertiary-4);
+    --r-color-error-containerl: var(--r-color-error-4);
 }
 
 [data-scheme="light"] *, [data-scheme="light"], * {
