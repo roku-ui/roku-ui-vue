@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Dropzone, Paper } from '@roku-ui/vue'
+import { Dropzone } from '@roku-ui/vue'
 
 const code = computed(() => `<template>
   <Dropzone>

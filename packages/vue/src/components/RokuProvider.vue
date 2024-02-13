@@ -1,37 +1,24 @@
 <script setup lang="ts">
 import { isClient } from '@vueuse/core'
-import { darkTheme, lightTheme } from '../utils'
 import type { ThemeData } from '../utils'
+import { defaultTheme } from '../utils'
 
 const props = withDefaults(
   defineProps<{
     is?: string | Component
-    theme?: ThemeData
+    theme?: string
+    themes?: Record<string, ThemeData>
   }>(),
   {
     is: 'div',
-    theme() {
-      if (typeof window === 'undefined') {
-        return darkTheme
-      }
-      return document.documentElement.dataset.scheme === 'dark' ? darkTheme : lightTheme
-    },
+    theme: 'default',
+    themes: () => ({
+      default: defaultTheme.value,
+    }),
   },
 )
-
-const scheme = ref<string | undefined>(props.theme.scheme)
-if (isClient) {
-  const observer = new MutationObserver(() => {
-    if (scheme.value !== document.documentElement.dataset.scheme) {
-      scheme.value = document.documentElement.dataset.scheme
-    }
-  })
-  observer.observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ['data-scheme'],
-  })
-}
-
+const themeData = computed(() => props.themes[props.theme])
+const scheme = useScheme()
 const preferScheme = usePreferredColorScheme()
 
 watchEffect(() => {
@@ -55,8 +42,8 @@ watchEffect(() => {
 
 provide(schemeSymbol, scheme)
 
-// ------------------------------
-const styles = useThemeStyles(props.theme)
+const styles = computed(() => useThemeStyles(themeData.value))
+provide('currentThemeData', computed(() => themeData.value))
 </script>
 
 <template>

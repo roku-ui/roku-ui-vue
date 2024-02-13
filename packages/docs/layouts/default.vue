@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Btn, RokuProvider, SchemeSwitch } from '@roku-ui/vue'
+import { Btn, RokuProvider, SchemeSwitch, useThemeData } from '@roku-ui/vue'
 
 useSeoMeta({
   title: 'Roku UI',
@@ -31,10 +31,34 @@ const sideBarOpen = ref(false)
 function toggleSideBar() {
   sideBarOpen.value = !sideBarOpen.value
 }
+const primary = ref('#3F9CDC')
+const secondary = ref('#5999A6')
+const tertiary = ref('#F76C22')
+const error = ref('#F95858')
+const surface = ref('#121212')
+const theme = useThemeData('custom', {
+  primary,
+  secondary,
+  tertiary,
+  error,
+  surface,
+})
+provide('docThemeColor', {
+  primary,
+  secondary,
+  tertiary,
+  error,
+  surface,
+})
 </script>
 
 <template>
-  <RokuProvider>
+  <RokuProvider
+    theme="default"
+    :themes="{
+      default: theme,
+    }"
+  >
     <NuxtLoadingIndicator
       color="rgb(var(--r-color-primary-container))"
     />

@@ -15,7 +15,7 @@ defineProps<{
       class="flex items-center gap-2 md:text-lg"
     >
       <i class="i-tabler-circle-check mr-1 w-24px flex-shrink-0 text-primary-container" />
-      <span class="text-surface-onlow">{{ f }}</span>
+      <span class="text-surface-on-low">{{ f }}</span>
     </div>
   </div>
 </template>

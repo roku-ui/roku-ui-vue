@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Image, Indicator, Paper } from '@roku-ui/vue'
+import { Image, Indicator } from '@roku-ui/vue'
 
 const code = computed(() => `<template>
   <Indicator>

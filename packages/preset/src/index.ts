@@ -17,9 +17,27 @@ const colors = colorKeys.reduce<Record<string, any>>((colors, key) => {
   }, {} as any)
 
   if (key === 'surface') {
-    ['lowest', 'low', 'base', 'high', 'highest', 'on', 'onlow', 'border'].forEach((k) => {
+    ['lowest', 'low', 'base', 'high', 'highest', 'on', 'border'].forEach((k) => {
       if (k === 'border') {
         colors[key][k] = {
+          base: `rgb(var(--r-color-${key}-${k}-base))`,
+          low: `rgb(var(--r-color-${key}-${k}-low))`,
+          high: `rgb(var(--r-color-${key}-${k}-high))`,
+        }
+      }
+      else if (k === 'on') {
+        colors[key][k] = {
+          DEFAULT: `rgb(var(--r-color-${key}-${k}))`,
+          low: `rgb(var(--r-color-${key}-${k}-low))`,
+          container: {
+            DEFAULT: `rgb(var(--r-color-${key}-${k}-container))`,
+            low: `rgb(var(--r-color-${key}-${k}-container-low))`,
+          },
+        }
+      }
+      else if (k === 'border') {
+        colors[key][k] = {
+          DEFAULT: `rgb(var(--r-color-${key}-${k}-base))`,
           base: `rgb(var(--r-color-${key}-${k}-base))`,
           low: `rgb(var(--r-color-${key}-${k}-low))`,
           high: `rgb(var(--r-color-${key}-${k}-high))`,
@@ -31,8 +49,18 @@ const colors = colorKeys.reduce<Record<string, any>>((colors, key) => {
     })
   }
   else {
-    ['container', 'containerd', 'containerl', 'on', 'onlow', 'border'].forEach((k) => {
+    ['container', 'containerd', 'containerl', 'on', 'border'].forEach((k) => {
       colors[key][k] = `rgb(var(--r-color-${key}-${k}))`
+      if (k === 'on') {
+        colors[key][k] = {
+          DEFAULT: `rgb(var(--r-color-${key}-${k}))`,
+          low: `rgb(var(--r-color-${key}-${k}-low))`,
+          container: {
+            DEFAULT: `rgb(var(--r-color-${key}-${k}-container))`,
+            low: `rgb(var(--r-color-${key}-${k}-container-low))`,
+          },
+        }
+      }
     })
   }
   return colors
@@ -45,7 +73,7 @@ const shortcuts = colorKeys.filter(d => d !== 'surface').reduce((shortcuts, colo
   shortcuts[`container-subtle-${color}`] = `bg-${color}-container/0 border-${color}-container border-transparent`
   shortcuts[`container-transparent-${color}`] = `bg-transparent text-${color}-container border-transparent border-${color}-container`
   shortcuts[`container-constrast-${color}`] = `text-${color}-container border-${color}-container border-transparent`
-  shortcuts[`btn-filled-${color}`] = `container-filled-${color} enabled:hover:bg-${color}-containerd text-${color}-on focus-visible:outline-2 outline-offset-2 focus-visible:outline-${color}-container outline-none`
+  shortcuts[`btn-filled-${color}`] = `container-filled-${color} enabled:hover:bg-${color}-containerd text-${color}-on-container focus-visible:outline-2 outline-offset-2 focus-visible:outline-${color}-container outline-none`
   shortcuts[`btn-light-${color}`] = `container-light-${color} hover:bg-${color}-6/25 text-${color}-container focus-visible:outline-2 outline-offset-2 focus-visible:outline-${color}-container outline-none`
   shortcuts[`btn-outline-${color}`] = `container-outline-${color} hover:bg-${color}-container/10 text-${color}-container focus-visible:outline-2 outline-offset-2 focus-visible:outline-${color}-container outline-none`
   shortcuts[`btn-subtle-${color}`] = `container-subtle-${color} hover:bg-${color}-container/10 text-${color}-container focus-visible:outline-2 outline-offset-2 focus-visible:outline-${color}-container outline-none`

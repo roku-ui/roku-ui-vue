@@ -51,15 +51,17 @@ watchEffect(() => {
   }
 })
 
-const resizeObserver = new ResizeObserver(() => {
-  const curWidth = window.innerWidth - document.body.clientWidth
-  if (curWidth !== 0) {
-    scrollbarWidth.value = curWidth
-  }
-})
-resizeObserver.observe(document.body)
+if (typeof window !== 'undefined') {
+  const resizeObserver = new ResizeObserver(() => {
+    const curWidth = window.innerWidth - document.body.clientWidth
+    if (curWidth !== 0) {
+      scrollbarWidth.value = curWidth
+    }
+  })
+  resizeObserver.observe(document.body)
+}
 
-const currentTheme = useCurrentTheme()
+const currentTheme = useCurrentThemeData()
 </script>
 
 <template>

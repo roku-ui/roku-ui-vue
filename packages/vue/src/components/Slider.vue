@@ -249,7 +249,7 @@ const animateCls = computed(() => props.animate
       </div>
     </div>
     <div
-      class="relative mx-1 h-1em text-xs text-surface-onlow"
+      class="relative mx-1 h-1em text-xs text-surface-on-low"
       :style="{
         width: `${props.width}rem`,
       }"

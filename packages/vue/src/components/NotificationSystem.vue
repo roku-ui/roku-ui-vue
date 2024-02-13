@@ -14,8 +14,8 @@ const notifications = useNotifications()
       v-for="notification in notifications"
       :key="notification.hash"
 
-      closeable
       with-border
+      closeable
       :title="notification.title"
       :message="notification.message"
       :icon="notification.icon"

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Image, Slider } from '@roku-ui/vue'
+import { Image } from '@roku-ui/vue'
 
 const code = computed(() => `<template>
   <Image

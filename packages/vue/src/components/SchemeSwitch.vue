@@ -1,16 +1,9 @@
 <script setup lang="ts">
 import { isClient } from '@vueuse/core'
 
-const scheme = useScheme()
-const isDark = computed({
-  get() {
-    return scheme.value === 'dark'
-  },
-  set(value) {
-    scheme.value = value ? 'dark' : 'light'
-  },
-})
-watchEffect(() => {
+const isDark = ref(false)
+
+watch([isDark], () => {
   if (isClient) {
     if (isDark.value === true) {
       document.documentElement.setAttribute('data-scheme', 'dark')
@@ -18,7 +11,6 @@ watchEffect(() => {
     }
     else if (isDark.value === false) {
       document.documentElement.setAttribute('data-scheme', 'light')
-
       localStorage.setItem('scheme', 'light')
     }
   }
@@ -28,16 +20,7 @@ const isServer = ref(true)
 const animate = ref(false)
 onMounted(() => {
   if (isClient) {
-    const theme = localStorage.getItem('scheme')
-    if (theme === 'dark') {
-      isDark.value = true
-    }
-    else if (theme === 'light') {
-      isDark.value = false
-    }
-    else {
-      isDark.value = window.matchMedia('(prefers-color-scheme: dark)').matches
-    }
+    isDark.value = localStorage.getItem('scheme') === 'dark'
   }
   isServer.value = false
 })

@@ -1,6 +1,6 @@
 <!-- eslint-disable no-console -->
 <script setup lang="ts">
-import { Notifications, darkTheme, generateColors, lightTheme } from '..'
+import { Notifications, generateColors } from '..'
 import ThemeBtn from './ThemeBtn.vue'
 
 const isLoading = refAutoReset(false, 3000)
@@ -192,12 +192,16 @@ watchEffect(() => {
           :color="c"
         />
       </Paper>
-      <ThemeProvider :theme="lightTheme">
+      <ThemeProvider
+        scheme="light"
+      >
         <Paper class="m-4">
           Other Theme
         </Paper>
       </ThemeProvider>
-      <ThemeProvider :theme="darkTheme">
+      <ThemeProvider
+        scheme="dark"
+      >
         <Paper class="m-4">
           Other Theme
         </Paper>
@@ -299,10 +303,13 @@ watchEffect(() => {
       <Paper class="flex flex-wrap gap-2">
         <Select
           v-model="select"
+          aria-label="Select a fruit"
           placeholder="Select a fruit"
           :options="['apple', 'banana', 'orange']"
         />
-        <Select />
+        <Select
+          aria-label="empty select"
+        />
       </Paper>
       <Paper class="flex flex-wrap gap-2">
         <Btn @click="modal1 = !modal1">

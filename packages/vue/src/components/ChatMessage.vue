@@ -20,13 +20,13 @@ const bubbleColor = computed(() => {
     case 'filled':
       switch (props.color) {
         case 'secondary':
-          return 'bg-secondary-container text-secondary-on'
+          return 'bg-secondary-container text-secondary-on-container'
         case 'tertiary':
-          return 'bg-tertiary-container text-tertiary-on'
+          return 'bg-tertiary-container text-tertiary-on-container'
         case 'error':
-          return 'bg-error-container text-error-on'
+          return 'bg-error-container text-error-on-container'
         default:
-          return 'bg-primary-container text-primary-on'
+          return 'bg-primary-container text-primary-on-container'
       }
     case 'transparent':
       return 'bg-transparent'

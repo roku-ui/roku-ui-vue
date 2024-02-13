@@ -1,12 +1,9 @@
+import type { ColorsTuple } from '.'
+
 export interface BaseVariant {
   light: string
   base: string
   dark: string
-}
-export interface BaseColorSet {
-  container: BaseVariant
-  on: BaseVariant
-  outline: BaseVariant
 }
 
 export interface SurfaceVariant {
@@ -15,23 +12,16 @@ export interface SurfaceVariant {
   dark: string
 }
 
-export interface SurfaceColorSet {
-  container: SurfaceVariant
-  on: BaseVariant
-  outline: BaseVariant
-}
-
 export interface ThemeColorsColors {
-  primary: string[]
-  secondary: string[]
-  tertiary: string[]
-  error: string[]
-  surface: string[]
+  primary: ColorsTuple
+  secondary: ColorsTuple
+  tertiary: ColorsTuple
+  error: ColorsTuple
+  surface: ColorsTuple
 }
 
 export interface ThemeData {
   name: string
-  scheme: 'light' | 'dark'
   colors: ThemeColorsColors
 }
 
@@ -42,15 +32,16 @@ export const themeColors: ThemeColorsColors = {
   error: ['#ffeaea', '#fcd5d5', '#f2a8a9', '#ea7a7a', '#e25353', '#de3939', '#dd2b2b', '#c41e1f', '#af171a', '#9a0913', '#450a0a'],
   surface: ['#fefefe', '#fafafa', '#f2f2f2', '#e8e8e8', '#c6c6c6', '#737373', '#525252', '#343434', '#262626', '#171717', '#121212'],
 }
+const primary = ref('#3F9CDC')
+const secondary = ref('#5999A6')
+const tertiary = ref('#F76C22')
+const error = ref('#F95858')
+const surface = ref('#121212')
 
-export const darkTheme: ThemeData = {
-  name: 'dark',
-  scheme: 'dark',
-  colors: themeColors,
-}
-
-export const lightTheme: ThemeData = {
-  name: 'light',
-  scheme: 'light',
-  colors: themeColors,
-}
+export const defaultTheme = useThemeData('default', {
+  primary,
+  secondary,
+  tertiary,
+  error,
+  surface,
+})

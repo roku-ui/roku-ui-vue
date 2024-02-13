@@ -77,19 +77,19 @@ const colorCls = computed(() => {
   let c = 'bg-primary-container'
   switch (props.color) {
     case 'secondary':
-      c = 'bg-secondary-7'
+      c = 'bg-secondary-container'
       break
     case 'tertiary':
-      c = 'bg-tertiary-7'
+      c = 'bg-tertiary-container'
       break
     case 'error':
-      c = 'bg-error-7'
+      c = 'bg-error-container'
       break
     case 'primary':
     default:
   }
   return {
-    wrapper: model.value ? `border border-transparent ${c}` : 'bg-surface-lowest border border-surface-border-base',
+    wrapper: model.value ? `border border-transparent ${c}` : 'bg-surface-border-low border border-surface-border-low',
     indicator: props.disabled ? 'bg-surface-high' : 'bg-white text-primary-container',
   }
 })
@@ -101,7 +101,7 @@ const rounded = useRounded(props)
     role="switch"
     class="relative flex items-center gap-2"
     :class="{
-      'pointer-events-none filter-grayscale op60': props.disabled,
+      'pointer-events-none filter-grayscale op-60': props.disabled,
     }"
   >
     <input
@@ -130,15 +130,36 @@ const rounded = useRounded(props)
           :style="[rounded.style]"
           :class="[sizeCls.indicator, colorCls.indicator, animateCls.indicator, model ? sizeCls.active : sizeCls.inactive, rounded.class]"
         />
-        <i
-          class="absolute top-1/2 -translate-y-50%"
-          :class="[sizeCls.icon, {
-            [`left-0 text-${color}-on`]: model,
-            'right-0 text-surface-on ': !model,
-            [onIcon ?? '']: model && onIcon,
-            [offIcon ?? '']: !model && offIcon,
-          }]"
-        />
+        <Transition
+          enter-active-class="transition-all"
+          enter-from-class="opacity-0"
+          enter-to-class="opacity-100"
+          leave-active-class="transition-all"
+          leave-from-class="opacity-100"
+          leave-to-class="opacity-0"
+          mode="out-in"
+        >
+          <i
+            v-if="model"
+            key="on"
+            class="absolute top-1/2 -translate-y-50%"
+            :class="[sizeCls.icon, {
+              [`left-0 text-${color}-on-container-low`]: model,
+              [onIcon ?? '']: model && onIcon,
+              [offIcon ?? '']: !model && offIcon,
+            }]"
+          />
+          <i
+            v-else
+            key="off"
+            class="absolute top-1/2 -translate-y-50%"
+            :class="[sizeCls.icon, {
+              'right-0 text-surface-on-low ': !model,
+              [onIcon ?? '']: model && onIcon,
+              [offIcon ?? '']: !model && offIcon,
+            }]"
+          />
+        </Transition>
       </div>
     </label>
     <label

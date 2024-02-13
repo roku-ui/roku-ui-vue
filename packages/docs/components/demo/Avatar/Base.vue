@@ -13,7 +13,7 @@ const code = computed(() => `<template>
     <template #form>
       <div class="flex flex-col gap-6">
         <div>
-          <div class="texttext-surface-onlow">
+          <div class="texttext-surface-on-low">
             Size
           </div>
           <Slider

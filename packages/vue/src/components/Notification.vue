@@ -42,13 +42,13 @@ const bgColorCls = computed(() => {
 const textColorCls = computed(() => {
   switch (props.color) {
     case 'secondary':
-      return 'text-secondary-container'
+      return 'text-secondary-on'
     case 'tertiary':
-      return 'text-tertiary-container'
+      return 'text-tertiary-on'
     case 'error':
-      return 'text-error-container'
+      return 'text-error-on'
     default:
-      return 'text-primary-container'
+      return 'text-primary-on'
   }
 })
 </script>
@@ -106,7 +106,7 @@ const textColorCls = computed(() => {
       />
       <div
         v-else-if="message"
-        class="text-sm text-surface-onlow"
+        class="text-sm text-surface-on-low"
       >
         {{ message }}
       </div>

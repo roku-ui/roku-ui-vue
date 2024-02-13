@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { Btn } from '@roku-ui/vue'
+import { NuxtLink } from '#components'
+
 defineProps<{
   isOpen: boolean
 }>()
@@ -30,16 +33,38 @@ const contentComponents = await queryContent('components').find()
           @roku-ui/vue
         </NuxtLink>
       </div>
-      <div>
-        <NuxtLink
-          v-for="content in contentComponents"
-          :key="content.slug"
-          :to="content._path"
-          :text="content.title"
-          class="content-link block rounded p-1 px-2 text-sm hover:bg-surface-border-base/25"
-        >
-          {{ content.title }}
-        </NuxtLink>
+      <div class="flex flex-col gap-4">
+        <div class="flex flex-col gap-2">
+          <div class="px-2 text-xs text-surface-on-low">
+            工具
+          </div>
+          <div>
+            <Btn
+              :is="NuxtLink"
+              icon
+              href="/tools/theme"
+              variant="ghost"
+            >
+              <i class="i-tabler-color-filter" />
+            </Btn>
+          </div>
+        </div>
+        <div class="flex flex-col gap-2">
+          <div class="px-2 text-xs text-surface-on-low">
+            组件
+          </div>
+          <div>
+            <NuxtLink
+              v-for="content in contentComponents"
+              :key="content.slug"
+              :to="content._path"
+              :text="content.title"
+              class="content-link block rounded p-1 px-2 text-sm hover:bg-surface-border-base/25"
+            >
+              {{ content.title }}
+            </NuxtLink>
+          </div>
+        </div>
       </div>
     </div>
   </div>

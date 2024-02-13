@@ -16,6 +16,12 @@ export default defineNuxtConfig({
       prefix: 'Demo',
     },
     {
+      path: '~/components/tool',
+      global: true,
+      pathPrefix: true,
+      prefix: 'Tool',
+    },
+    {
       path: '~/components',
       global: false,
       pathPrefix: true,

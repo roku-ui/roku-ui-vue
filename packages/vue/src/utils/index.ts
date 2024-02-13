@@ -3,7 +3,7 @@ import tinycolor from 'tinycolor2'
 export * from './theme'
 export * from './notifications'
 
-const LIGHTNESS_MAP = [0.96, 0.96, 0.907, 0.805, 0.697, 0.547, 0.518, 0.445, 0.395, 0.34, 0.28]
+const LIGHTNESS_MAP = [0.98, 0.96, 0.9, 0.8, 0.6, 0.55, 0.5, 0.3, 0.28, 0.2, 0.08]
 
 function getClosestLightness(color: string | tinycolor.ColorFormats.PRGB | tinycolor.ColorFormats.RGB | tinycolor.ColorFormats.HSL | tinycolor.ColorFormats.HSV | tinycolor.Instance | undefined) {
   const lightnessGoal = tinycolor(color).toHsl().l
@@ -12,12 +12,12 @@ function getClosestLightness(color: string | tinycolor.ColorFormats.PRGB | tinyc
   )
 }
 
-export function generateColorsMap(color: tinycolor.ColorInput | undefined) {
+export function generateColorsMap(color: tinycolor.ColorInput | undefined, lightnessMap = LIGHTNESS_MAP) {
   const baseColor = tinycolor(color)
   const closestLightness = getClosestLightness(baseColor)
-  const baseColorIndex = LIGHTNESS_MAP.findIndex(l => l === closestLightness)
+  const baseColorIndex = lightnessMap.findIndex(l => l === closestLightness)
 
-  const colors = LIGHTNESS_MAP.map((lightness) => {
+  const colors = lightnessMap.map((lightness) => {
     const modifiedColor = tinycolor({ h: baseColor.toHsl().h, s: baseColor.toHsl().s, l: lightness })
     const saturationDelta = 0
     if (saturationDelta >= 0) {
@@ -47,8 +47,8 @@ export type ColorsTuple = readonly [
   ...string[],
 ]
 
-export function generateColors(color: string | tinycolor.ColorFormats.PRGB | tinycolor.ColorFormats.RGB | tinycolor.ColorFormats.HSL | tinycolor.ColorFormats.HSV | tinycolor.Instance | undefined) {
-  return generateColorsMap(color).colors as unknown as ColorsTuple
+export function generateColors(color: string | tinycolor.ColorFormats.PRGB | tinycolor.ColorFormats.RGB | tinycolor.ColorFormats.HSL | tinycolor.ColorFormats.HSV | tinycolor.Instance | undefined, lightnessMap: number[] = LIGHTNESS_MAP) {
+  return generateColorsMap(color, lightnessMap).colors as unknown as ColorsTuple
 }
 
 export * from './symbols'

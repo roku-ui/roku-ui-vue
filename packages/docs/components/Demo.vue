@@ -69,7 +69,7 @@ const codeHtml = computed(() => highlighter.codeToHtml(props.code, {
 
 .gird-paper-background {
   --size: 0.25rem;
-  --color: #33333318;
+  --color: rgb(var(--r-color-surface-5) / 0.05);
   background-color: transparent;
   border-radius: 0.5rem;
   background-image:

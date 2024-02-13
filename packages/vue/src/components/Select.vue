@@ -7,6 +7,7 @@ type Option = {
 } | string | symbol | number
 
 const props = withDefaults(defineProps<{
+  ariaLabel: string
   options?: Option[]
   size?: 'sm' | 'md' | 'lg'
   noneText?: string
@@ -144,6 +145,7 @@ const sizeCls = computed(() => {
         :style="[rounded.style]"
         readonly
         :value="currentLabel"
+        :aria-label="ariaLabel"
         aria-haspopup="listbox"
         autocomplete="off"
         @focus="focused = true"

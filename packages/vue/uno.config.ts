@@ -3,6 +3,6 @@ import { rokuPreset } from '@roku-ui/preset'
 
 export default defineConfig({
   presets: [
-    rokuPreset(),
+    rokuPreset({}),
   ],
 })

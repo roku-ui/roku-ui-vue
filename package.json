@@ -13,11 +13,11 @@
     "watch": "pnpm --filter @roku-ui/vue watch",
     "generate": "pnpm --filter @roku-ui/docs generate",
     "dev": "pnpm --filter @roku-ui/docs dev",
-    "dev:vue": "pnpm --filter @roku-ui/vue dev"
+    "dev:spa": "pnpm --filter @roku-ui/vue dev"
   },
   "devDependencies": {
-    "@unocss/eslint-config": "^0.58.4",
-    "@unocss/eslint-plugin": "^0.58.4",
+    "@unocss/eslint-config": "^0.58.5",
+    "@unocss/eslint-plugin": "^0.58.5",
     "eslint": "^8.56.0",
     "eslint-plugin-format": "^0.1.0"
   },
