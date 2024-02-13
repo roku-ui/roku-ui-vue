@@ -7,7 +7,7 @@ type Option = {
 } | string | symbol | number
 
 const props = withDefaults(defineProps<{
-  ariaLabel: string
+  ariaLabel?: string
   options?: Option[]
   size?: 'sm' | 'md' | 'lg'
   noneText?: string

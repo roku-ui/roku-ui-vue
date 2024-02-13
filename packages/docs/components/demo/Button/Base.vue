@@ -27,6 +27,7 @@ const variant = ref<Variant>('default')
           </div>
           <Select
             v-model="variant"
+            aria-label="Variant"
             :options="variants"
           />
         </div>
