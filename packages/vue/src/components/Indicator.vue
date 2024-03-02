@@ -57,13 +57,13 @@ const posCls = computed(() => {
 const colorCls = computed(() => {
   switch (props.color) {
     case 'primary':
-      return 'bg-primary-container text-primary-on'
+      return 'bg-primary-container text-white'
     case 'secondary':
-      return 'bg-secondary-container text-secondary-on'
+      return 'bg-secondary-container text-white'
     case 'tertiary':
-      return 'bg-tertiary-container text-tertiary-on'
+      return 'bg-tertiary-container text-white'
     case 'error':
-      return 'bg-error-container text-error-on'
+      return 'bg-error-container text-white'
   }
 })
 </script>
