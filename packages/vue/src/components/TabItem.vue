@@ -34,12 +34,12 @@ const indicatorCls = computed(() => {
     case 'horizontal':
       return 'absolute inset-0 top-100% h-2px w-full transition-background-color,border-color,color '
     case 'vertical':
-      return 'absolute inset-0 right-100% h-full w-2px bg-primary-container transition-background-color,border-color,color'
+      return 'absolute inset-0 right-100% h-full w-2px transition-background-color,border-color,color'
   }
 })
 const colorCls = computed(() => {
   if (isActivated.value) {
-    return 'bg-primary-container'
+    return 'bg-primary-containerl'
   }
   return 'bg-surface-lowest'
 })

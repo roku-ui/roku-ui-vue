@@ -71,7 +71,7 @@ const currentTheme = useCurrentThemeData()
     >
       <div
         ref="wrapperRef"
-        class="modal-wrapper fixed left-0 top-0 z-100 h-full w-full bg-surface-9/50 transition-all duration-300 md:items-center"
+        class="modal-wrapper fixed left-0 top-0 z-100 h-full w-full bg-surface-10/50 transition-all duration-300 md:items-center"
         :class="[blurCls, wrapperClass, {
           ['op0 pointer-events-none']: !model,
           ['op100']: model,

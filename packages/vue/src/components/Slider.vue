@@ -69,30 +69,30 @@ function optionToIndex(option: any) {
 const colorCls = computed(() => {
   switch (props.color) {
     case 'primary':
-      return 'bg-primary-container'
+      return 'bg-primary-containerl'
     case 'secondary':
-      return 'bg-secondary-container'
+      return 'bg-secondary-containerl'
     case 'tertiary':
-      return 'bg-tertiary-container'
+      return 'bg-tertiary-containerl'
     case 'error':
-      return 'bg-error-container'
+      return 'bg-error-containerl'
   }
 })
 
 const indicatorOuterCls = computed(() => {
-  return `dark:bg-white bg-${props.color}-container`
+  return `dark:bg-white bg-${props.color}-containerl`
 })
 
 const indicatorInnerCls = computed(() => {
   switch (props.color) {
     case 'primary':
-      return 'dark:bg-primary-container bg-white'
+      return 'dark:bg-primary-containerl bg-white'
     case 'secondary':
-      return 'dark:bg-secondary-container bg-white'
+      return 'dark:bg-secondary-containerl bg-white'
     case 'tertiary':
-      return 'dark:bg-tertiary-container bg-white'
+      return 'dark:bg-tertiary-containerl bg-white'
     case 'error':
-      return 'dark:bg-error-container bg-white'
+      return 'dark:bg-error-containerl bg-white'
   }
 })
 
@@ -204,7 +204,7 @@ const animateCls = computed(() => props.animate
       @touchmove.prevent
     >
       <div
-        class="w-full rounded-full bg-surface-lowest transition-background-color,border-color,color"
+        class="w-full rounded-full bg-surface-3 transition-background-color,border-color,color dark:bg-surface-7"
         :class="sizeCls.innerWrapper"
       >
         <div
@@ -221,7 +221,7 @@ const animateCls = computed(() => props.animate
             :style="{
               left: `${(optionToIndex(option) / (length - 1)) * 100}%`,
             }"
-            class="absolute top-50% rounded-full bg-white"
+            class="absolute top-50% rounded-full bg-surface-0"
             :class="sizeCls.tick"
           />
           <div

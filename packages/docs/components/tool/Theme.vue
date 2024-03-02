@@ -64,7 +64,7 @@ const { primary, secondary, surface, tertiary, error } = inject<{
     </Paper>
     <Paper>
       <div class="flex gap-2">
-        <div class="flex flex-col bg-primary-container px-2 py-1">
+        <div class="flex flex-col bg-primary-containerl px-2 py-1">
           <div class="text-primary-on-container">
             primary on
           </div>

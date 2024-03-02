@@ -32,13 +32,13 @@ const sizeCls = computed(() => {
 const colorCls = computed(() => {
   switch (props.color) {
     case 'primary':
-      return 'bg-primary-container'
+      return 'bg-primary-containerl'
     case 'secondary':
-      return 'bg-secondary-7'
+      return 'bg-secondary-containerl'
     case 'tertiary':
-      return 'bg-tertiary-7'
+      return 'bg-tertiary-containerl'
     case 'error':
-      return 'bg-error-7'
+      return 'bg-error-containerl'
   }
 })
 
