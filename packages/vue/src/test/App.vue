@@ -38,6 +38,7 @@ function onDrop(files: File[] | null) {
 const text = ref('1')
 const tab = ref(0)
 const loading = ref(true)
+const tabs = ref(0)
 </script>
 
 <template>
@@ -54,7 +55,7 @@ const loading = ref(true)
         </Btn>
       </Paper>
       <Paper>
-        <Tabs>
+        <Tabs v-model="tabs">
           <TabItem :value="0">
             Tab 0
           </TabItem>
@@ -72,6 +73,7 @@ const loading = ref(true)
             Tab 4
           </TabItem>
         </Tabs>
+        {{ tabs }}
       </Paper>
       <Paper>
         <Tabs

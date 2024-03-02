@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Fragment } from 'vue'
-import { directionSymbol, tabCurrentSymbol } from '../utils'
+import { childrenElementMapSymbol, directionSymbol, tabCurrentSymbol } from '../utils'
 
 const props = withDefaults(defineProps<{
   defaultValue?: string | number | symbol
@@ -13,7 +13,6 @@ const slots = useSlots()
 
 const valueList = computed(() => {
   const children = slots.default?.()
-  //   children?.map(child => child.props.value)
   const childList = children?.flatMap<any>((child) => {
     if (child.type === Fragment) {
       return child.children!
@@ -30,6 +29,7 @@ const model = defineModel<string | number | symbol>()
 if (!model.value && valueList.value.length > 0) {
   model.value = valueList.value[0]
 }
+const tabRef = ref<HTMLElement | null>(null)
 
 onMounted(() => {
   if (props.defaultValue) {
@@ -42,55 +42,87 @@ const direction = computed(() => {
   return props.direction
 })
 provide(directionSymbol, direction)
-onKeyStroke('left', () => {
+const childrenElementMap = new Map<string | number | symbol, Ref<HTMLButtonElement | null>>()
+provide(childrenElementMapSymbol, childrenElementMap)
+
+onKeyStroke('ArrowLeft', (e) => {
+  if (!tabRef.value?.contains(document.activeElement)) {
+    return
+  }
+  e.preventDefault()
+
   if (props.direction !== 'horizontal') {
     return
   }
   const index = model.value ? valueList.value.indexOf(model.value) : 0
-  if (index > 0) {
-    model.value = valueList.value[index - 1]
-  }
-  else {
-    model.value = valueList.value[valueList.value.length - 1]
+  const newValue = index > 0 ? valueList.value[index - 1] : valueList.value[valueList.value.length - 1]
+  model.value = newValue
+  const elRef = childrenElementMap.get(newValue)
+  if (elRef) {
+    const el = elRef.value
+    if (el) {
+      el.focus()
+    }
   }
 })
 
-onKeyStroke('right', () => {
+onKeyStroke('ArrowRight', (e) => {
+  if (!tabRef.value?.contains(document.activeElement)) {
+    return
+  }
+  e.preventDefault()
   if (props.direction !== 'horizontal') {
     return
   }
   const index = model.value ? valueList.value.indexOf(model.value) : 0
-  if (index < valueList.value.length - 1) {
-    model.value = valueList.value[index + 1]
-  }
-  else {
-    model.value = valueList.value[0]
+  const newValue = (index < valueList.value.length - 1) ? model.value = valueList.value[index + 1] : model.value = valueList.value[0]
+  model.value = newValue
+  const elRef = childrenElementMap.get(newValue)
+  if (elRef) {
+    const el = elRef.value
+    if (el) {
+      el.focus()
+    }
   }
 })
 
-onKeyStroke('up', () => {
+onKeyStroke('ArrowUp', (e) => {
+  if (!tabRef.value?.contains(document.activeElement)) {
+    return
+  }
+  e.preventDefault()
   if (props.direction !== 'vertical') {
     return
   }
   const index = model.value ? valueList.value.indexOf(model.value) : 0
-  if (index > 0) {
-    model.value = valueList.value[index - 1]
-  }
-  else {
-    model.value = valueList.value[valueList.value.length - 1]
+  const newValue = index > 0 ? valueList.value[index - 1] : valueList.value[valueList.value.length - 1]
+  model.value = newValue
+  const elRef = childrenElementMap.get(newValue)
+  if (elRef) {
+    const el = elRef.value
+    if (el) {
+      el.focus()
+    }
   }
 })
 
-onKeyStroke('down', () => {
+onKeyStroke('ArrowDown', (e) => {
+  if (!tabRef.value?.contains(document.activeElement)) {
+    return
+  }
+  e.preventDefault()
   if (props.direction !== 'vertical') {
     return
   }
   const index = model.value ? valueList.value.indexOf(model.value) : 0
-  if (index < valueList.value.length - 1) {
-    model.value = valueList.value[index + 1]
-  }
-  else {
-    model.value = valueList.value[0]
+  const newValue = (index < valueList.value.length - 1) ? valueList.value[index + 1] : valueList.value[0]
+  model.value = newValue
+  const elRef = childrenElementMap.get(newValue)
+  if (elRef) {
+    const el = elRef.value
+    if (el) {
+      el.focus()
+    }
   }
 })
 
@@ -106,6 +138,7 @@ const directionCls = computed(() => {
 
 <template>
   <div
+    ref="tabRef"
     class="flex"
     :class="[directionCls]"
   >
