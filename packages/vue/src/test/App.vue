@@ -1,7 +1,6 @@
 <!-- eslint-disable no-console -->
 <script setup lang="ts">
 import { Notifications, generateColors } from '..'
-import ThemeBtn from './ThemeBtn.vue'
 
 const isLoading = refAutoReset(false, 3000)
 onMounted(() => {
@@ -47,7 +46,6 @@ const tabs = ref(0)
     <div class="flex flex-col items-center gap-2">
       <Paper class="flex items-center gap-2">
         <SchemeSwitch />
-        <ThemeBtn />
       </Paper>
       <Paper :loading="loading">
         <Btn @click="loading = !loading">

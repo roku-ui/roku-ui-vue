@@ -1,4 +1,5 @@
 import tinycolor from 'tinycolor2'
+import type { RemovableRef } from '@vueuse/core'
 import { isClient } from '@vueuse/core'
 import type { MaybeRef } from 'vue'
 import { type ThemeData, defaultTheme, generateColors } from '..'
@@ -190,7 +191,7 @@ export function useId(props: { id?: string }) {
 
 export const schemeSymbol = Symbol('scheme')
 
-export function useScheme() {
+export function useSchemeString(): RemovableRef<string> {
   const scheme = useLocalStorage('scheme', 'light')
   if (isClient) {
     const observer = new MutationObserver(() => {

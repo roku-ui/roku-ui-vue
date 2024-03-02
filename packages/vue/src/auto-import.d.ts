@@ -225,6 +225,7 @@ declare global {
   const useRootScheme: typeof import('./composables/index')['useRootScheme']
   const useRootTheme: typeof import('./composables/index')['useRootTheme']
   const useScheme: typeof import('./composables/index')['useScheme']
+  const useSchemeString: typeof import('./composables/index')['useSchemeString']
   const useScreenOrientation: typeof import('@vueuse/core')['useScreenOrientation']
   const useScreenSafeArea: typeof import('@vueuse/core')['useScreenSafeArea']
   const useScriptTag: typeof import('@vueuse/core')['useScriptTag']

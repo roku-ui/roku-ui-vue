@@ -18,7 +18,7 @@ const props = withDefaults(
   },
 )
 const themeData = computed(() => props.themes[props.theme])
-const scheme = useScheme()
+const scheme = useSchemeString()
 const preferScheme = usePreferredColorScheme()
 
 watchEffect(() => {
