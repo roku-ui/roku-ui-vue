@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { isClient } from '@vueuse/core'
 import { useRounded } from '../utils/classGenerator'
 
 type Option = {
@@ -129,6 +130,21 @@ const sizeCls = computed(() => {
       }
   }
 })
+const dropdownRef = ref(null)
+const { height } = useElementBounding(dropdownRef)
+const { bottom } = useElementBounding(inputRef)
+const hasArea = computed(() => {
+  if (!focused.value) {
+    return false
+  }
+  if (isClient) {
+    if (height.value === 0) {
+      return false
+    }
+    return (document.documentElement.clientHeight - bottom.value) > height.value
+  }
+  return false
+})
 </script>
 
 <template>
@@ -154,8 +170,11 @@ const sizeCls = computed(() => {
     </div>
     <div
       v-if="focused"
-      :class="sizeCls.dropdown"
+      ref="dropdownRef"
       class="absolute z-10 mt-2 w-full flex-col overflow-hidden border container-base rounded p-1"
+      :class="[sizeCls.dropdown, {
+        'bottom-10': !hasArea,
+      }]"
     >
       <div
         v-if="options.length === 0"
