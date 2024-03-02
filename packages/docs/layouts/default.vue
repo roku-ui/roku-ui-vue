@@ -73,12 +73,12 @@ provide('docThemeColor', {
           <i class="i-tabler-menu" />
         </Btn>
         <NuxtLink to="/">
-          <NuxtImg
+          <img
             width="24px"
             height="24px"
             alt="Roku UI"
             src="/icon.png"
-          />
+          >
         </NuxtLink>
       </div>
       <div>
