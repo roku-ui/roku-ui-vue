@@ -30,7 +30,7 @@ const sizeCls = computed(() => {
 })
 const colorCls = computed(() => {
   if (model.value) {
-    return 'container-filled-primary border-transparent'
+    return 'container-filled-primary border-transparent text-white'
   }
   else {
     return 'container-base'

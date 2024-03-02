@@ -7,7 +7,8 @@ const props = defineProps<{
 }>()
 const currentThemeData = useCurrentThemeData()
 const styles = computed(() => useThemeStyles(props.theme ? props.theme : currentThemeData.value))
-const scheme = computed(() => props.scheme ? props.scheme : useLocalStorage('scheme', 'light'))
+const localStorageScheme = useLocalStorage('scheme', 'light')
+const scheme = computed(() => props.scheme ? props.scheme : localStorageScheme.value)
 </script>
 
 <template>

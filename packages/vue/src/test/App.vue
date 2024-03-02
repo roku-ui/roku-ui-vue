@@ -37,10 +37,7 @@ function onDrop(files: File[] | null) {
 }
 const text = ref('1')
 const tab = ref(0)
-
-watchEffect(() => {
-  console.log(tab.value)
-})
+const loading = ref(true)
 </script>
 
 <template>
@@ -50,6 +47,11 @@ watchEffect(() => {
       <Paper class="flex items-center gap-2">
         <SchemeSwitch />
         <ThemeBtn />
+      </Paper>
+      <Paper :loading="loading">
+        <Btn @click="loading = !loading">
+          {{ loading ? 'Stop' : 'Start' }} Loading
+        </Btn>
       </Paper>
       <Paper>
         <Tabs>
