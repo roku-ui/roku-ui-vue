@@ -67,6 +67,10 @@ const codeHtml = computed(() => highlighter.codeToHtml(props.code, {
   align-items: stretch;
 }
 
+.shiki {
+  background-color: rgb(var(--r-color-surface-8));
+}
+
 .gird-paper-background {
   --size: 0.25rem;
   --color: rgb(var(--r-color-surface-5) / 0.05);

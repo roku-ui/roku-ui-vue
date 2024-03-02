@@ -2,17 +2,17 @@
 import { Paper } from '@roku-ui/vue'
 
 const code = computed(() => `<template>
-  <Paper> // [!code highlight]
-    Paper // [!code highlight]
-  </Paper> // [!code highlight]
+  <Paper loading> // [!code highlight]
+    Loading Paper
+  </Paper>
 </template>`)
 </script>
 
 <template>
   <Demo :code="code">
     <template #preview>
-      <Paper>
-        Paper
+      <Paper loading>
+        Loading Paper
       </Paper>
     </template>
   </Demo>

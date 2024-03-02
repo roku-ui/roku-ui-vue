@@ -9,6 +9,7 @@ const props = withDefaults(
     loading?: boolean
     is?: string | Component
     color?: string
+    traceAnimate?: boolean
   }>(),
   {
     size: 'md',
@@ -17,6 +18,7 @@ const props = withDefaults(
     is: 'div',
     loading: false,
     color: 'primary',
+    traceAnimate: false,
   },
 )
 
@@ -35,7 +37,7 @@ const loadingStyle = computed(() => {
     return {
       'background': 'linear-gradient(var(--bg), var(--bg)) padding-box, var(--gradient) border-box',
       'background-color': 'var(--bg)',
-      '--bg': 'rgba(var(--r-color-surface-low))',
+      '--bg': 'rgba(var(--r-color-surface-low) / 1)',
       '--gradient': `radial-gradient(circle at center, ${getColorValue(props.color)} 25%, var(--bg) 25%)`,
       'background-size': '200% 200%',
     }
@@ -44,8 +46,72 @@ const loadingStyle = computed(() => {
     return {}
   }
 })
+const { x, y } = useMouse()
 const paperRef = ref<HTMLElement | null>(null)
-const { width, height } = useElementBounding(paperRef)
+const { width, height, top, left } = useElementBounding(paperRef)
+
+const traceAnimateStyle = computed(() => {
+  if (props.traceAnimate) {
+    const center = computed(() => {
+      return {
+        x: left.value + width.value / 2,
+        y: top.value + height.value / 2,
+      }
+    })
+    const points = computed(() => {
+      // 如果 x, y 在 paperRef 之外
+      if (x.value < left.value || x.value > left.value + width.value || y.value < top.value || y.value > top.value + height.value) {
+        return {
+          x: x.value,
+          y: y.value,
+        }
+      }
+      const centerX = center.value.x
+      const centerY = center.value.y
+
+      // Otherwise, calculate the intersection point with paperRef boundaries
+      let intersectionX, intersectionY
+
+      // Calculate slope of line from center to (x, y)
+      const slope = (y.value - centerY) / (x.value - centerX)
+
+      // Calculate intersection points with paperRef boundaries
+      if (x.value < centerX) { // Left side of paperRef
+        intersectionX = left.value
+        intersectionY = centerY + slope * (left.value - centerX)
+      }
+      else { // Right side of paperRef
+        intersectionX = left.value + width.value
+        intersectionY = centerY + slope * (intersectionX - centerX)
+      }
+
+      // Check if intersectionY is within paperRef height, adjust if necessary
+      if (intersectionY < top.value) {
+        intersectionY = top.value
+        intersectionX = centerX + (intersectionY - centerY) / slope
+      }
+      else if (intersectionY > top.value + height.value) {
+        intersectionY = top.value + height.value
+        intersectionX = centerX + (intersectionY - centerY) / slope
+      }
+      return {
+        x: intersectionX,
+        y: intersectionY,
+      }
+    })
+    return {
+      '--bg': `rgba(var(--r-color-surface-low) / 1)`,
+      '--gradient': `radial-gradient(circle at ${points.value.x - left.value}px ${points.value.y - top.value}px, ${getColorValue(props.color)} 50px, var(--bg) 50px)`,
+      'background': 'linear-gradient(var(--bg), var(--bg)) padding-box, var(--gradient) border-box',
+      'background-size': '200% 200%',
+      'background-color': 'var(--bg)',
+    }
+  }
+  else {
+    return {}
+  }
+})
+
 const keyFrames = computed(() => {
   if (!width.value || !height.value) {
     return []
@@ -70,10 +136,7 @@ const keyFrames = computed(() => {
       backgroundPosition: '100% 0%',
       offset: 1 - 0.5 * (height.value / width.value),
     },
-    {
-      backgroundPosition: '0% 0%',
-      offset: 1,
-    },
+
   ]
   return res
 })
@@ -94,7 +157,7 @@ useAnimate(paperRef, keyFrames, {
       },
       roundedCls.class,
     ]"
-    :style="[roundedCls.style, loadingStyle]"
+    :style="[roundedCls.style, loadingStyle, traceAnimateStyle]"
   >
     <slot />
   </component>

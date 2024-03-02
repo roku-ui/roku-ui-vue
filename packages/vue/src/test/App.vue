@@ -47,6 +47,36 @@ const tabs = ref(0)
       <Paper class="flex items-center gap-2">
         <SchemeSwitch />
       </Paper>
+      <div class="flex flex-col gap-2">
+        <div class="flex gap-2">
+          <Paper
+            trace-animate
+            class="h-24 w-32 flex items-center justify-center"
+          >
+            Trace
+          </Paper>
+          <Paper
+            trace-animate
+            class="h-24 w-32 flex items-center justify-center"
+          >
+            Trace
+          </Paper>
+        </div>
+        <div class="flex gap-2">
+          <Paper
+            trace-animate
+            class="h-24 w-32 flex items-center justify-center"
+          >
+            Trace
+          </Paper>
+          <Paper
+            trace-animate
+            class="h-24 w-32 flex items-center justify-center"
+          >
+            Trace
+          </Paper>
+        </div>
+      </div>
       <Paper :loading="loading">
         <Btn @click="loading = !loading">
           {{ loading ? 'Stop' : 'Start' }} Loading
