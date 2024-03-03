@@ -39,5 +39,6 @@ declare module 'vue' {
     Tabs: typeof import('./components/Tabs.vue')['default']
     TextField: typeof import('./components/TextField.vue')['default']
     ThemeProvider: typeof import('./components/ThemeProvider.vue')['default']
+    Tooltip: typeof import('./components/Tooltip.vue')['default']
   }
 }

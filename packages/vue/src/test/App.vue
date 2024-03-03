@@ -47,6 +47,16 @@ const tabs = ref(0)
       <Paper class="flex items-center gap-2">
         <SchemeSwitch />
       </Paper>
+      <Tooltip>
+        <Btn>
+          Hover me
+        </Btn>
+        <template #content>
+          <Paper>
+            This is a tooltip
+          </Paper>
+        </template>
+      </Tooltip>
       <div class="flex flex-col gap-2">
         <div class="flex gap-2">
           <Paper
@@ -77,8 +87,13 @@ const tabs = ref(0)
           </Paper>
         </div>
       </div>
-      <Paper :loading="loading">
-        <Btn @click="loading = !loading">
+      <Paper
+        :loading="loading"
+        class="h-72 w-256"
+      >
+        <Btn
+          @click="loading = !loading"
+        >
           {{ loading ? 'Stop' : 'Start' }} Loading
         </Btn>
       </Paper>

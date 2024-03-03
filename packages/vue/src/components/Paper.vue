@@ -32,13 +32,20 @@ function getColorValue(color: string) {
 }
 
 const roundedCls = useRounded(props)
+const { x, y } = useMouse()
+const paperRef = ref<HTMLElement | null>(null)
+const { width, height, top, left } = useElementBounding(paperRef)
+
+const shortEdge = computed(() => {
+  return Math.min(width.value, height.value)
+})
 const loadingStyle = computed(() => {
   if (props.loading) {
     return {
       'background': 'linear-gradient(var(--bg), var(--bg)) padding-box, var(--gradient) border-box',
       'background-color': 'var(--bg)',
       '--bg': 'rgba(var(--r-color-surface-low) / 1)',
-      '--gradient': `radial-gradient(circle at center, ${getColorValue(props.color)} 25%, var(--bg) 25%)`,
+      '--gradient': `radial-gradient(circle at center, ${getColorValue(props.color)} ${shortEdge.value * 0.5}px, var(--bg) ${shortEdge.value * 0.5}px)`,
       'background-size': '200% 200%',
     }
   }
@@ -46,9 +53,6 @@ const loadingStyle = computed(() => {
     return {}
   }
 })
-const { x, y } = useMouse()
-const paperRef = ref<HTMLElement | null>(null)
-const { width, height, top, left } = useElementBounding(paperRef)
 
 const traceAnimateStyle = computed(() => {
   if (props.traceAnimate) {
@@ -101,7 +105,7 @@ const traceAnimateStyle = computed(() => {
     })
     return {
       '--bg': `rgba(var(--r-color-surface-low) / 1)`,
-      '--gradient': `radial-gradient(circle at ${points.value.x - left.value}px ${points.value.y - top.value}px, ${getColorValue(props.color)} 50px, var(--bg) 50px)`,
+      '--gradient': `radial-gradient(circle at ${points.value.x - left.value}px ${points.value.y - top.value}px, ${getColorValue(props.color)} ${shortEdge.value * 0.5}px, var(--bg) ${shortEdge.value * 0.5}px)`,
       'background': 'linear-gradient(var(--bg), var(--bg)) padding-box, var(--gradient) border-box',
       'background-size': '200% 200%',
       'background-color': 'var(--bg)',
@@ -121,12 +125,12 @@ const keyFrames = computed(() => {
   }
   const res = [
     {
-      backgroundPosition: '0% 0%',
+      backgroundPosition: `0% 0%`,
       offset: 0,
     },
     {
       backgroundPosition: '0% 100%',
-      offset: 0.5 * (height.value / width.value),
+      offset: 0.25,
     },
     {
       backgroundPosition: '100% 100%',
@@ -134,9 +138,8 @@ const keyFrames = computed(() => {
     },
     {
       backgroundPosition: '100% 0%',
-      offset: 1 - 0.5 * (height.value / width.value),
+      offset: 0.75,
     },
-
   ]
   return res
 })
