@@ -38,6 +38,18 @@ const text = ref('1')
 const tab = ref(0)
 const loading = ref(true)
 const tabs = ref(0)
+const selectObj = ref()
+
+const apiSearch = ref('')
+const apiSelected = ref<undefined | { id: number, label: string }>()
+const apiOptions = computed(() => {
+  const options = [
+    { id: 1, label: 'apple' },
+    { id: 2, label: 'banana' },
+    { id: 3, label: 'orange' },
+  ].filter(option => option.label.includes(apiSearch.value))
+  return options
+})
 </script>
 
 <template>
@@ -47,13 +59,37 @@ const tabs = ref(0)
       <Paper class="flex items-center gap-2">
         <SchemeSwitch />
       </Paper>
-      <Select
-        v-model="select"
-        searchable
-        aria-label="Select a fruit"
-        placeholder="Select a fruit"
-        :options="['apple', 'banana', 'orange']"
-      />
+      <Paper>
+        {{ apiSearch }}
+        {{ apiSelected }}
+        <Select
+          v-model="apiSelected"
+          searchable
+          aria-label="Select a fruit"
+          placeholder="Select a fruit"
+          :options="apiOptions"
+          @input="apiSearch = $event"
+        />
+      </Paper>
+      <Paper>
+        {{ selectObj }}
+        <Select
+          v-model="selectObj"
+          aria-label="Select a fruit"
+          placeholder="Select a fruit"
+          :options="[{ id: 1, label: 'apple' }, { id: 2, label: 'banana' }, { id: 3, label: 'orange' }]"
+        />
+      </Paper>
+      <Paper>
+        {{ select }}
+        <Select
+          v-model="select"
+          searchable
+          aria-label="Select a fruit"
+          placeholder="Select a fruit"
+          :options="['apple', 'banana', 'orange']"
+        />
+      </Paper>
       <Tooltip>
         <Btn>
           Hover me

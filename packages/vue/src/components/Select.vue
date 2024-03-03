@@ -4,7 +4,7 @@ import { useRounded } from '../utils/classGenerator'
 
 type Option = {
   id: number | string | symbol
-  label: string
+  [key: string]: any
 } | string | symbol | number
 
 const props = withDefaults(defineProps<{
@@ -12,32 +12,39 @@ const props = withDefaults(defineProps<{
   options?: Option[]
   size?: 'sm' | 'md' | 'lg'
   noneText?: string
+  notFoundText?: string
   rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full' | string | number
   placeholder?: string
   searchable?: boolean
+  filter?: (label: string, text: string) => boolean
 }>(), {
-  modelValue: undefined,
   options() {
     return []
   },
   size: 'md',
   noneText: 'No options',
+  notFoundText: 'Not found',
   placeholder: '',
   rounded: 'md',
   searchable: false,
+  filter: (label: string, text: string) => label.includes(text),
 })
 
-const emit = defineEmits(['change'])
+const emit = defineEmits<{
+  change: [option: Option | undefined]
+  input: [searchWord: string]
+}>()
 
 const rounded = useRounded(props)
 
-const model = defineModel<string | symbol | number | undefined>({ default: undefined })
+const model = defineModel<Option | undefined>({ default: undefined })
 
-const inputRef = ref(null)
+const inputRef = ref<null | HTMLInputElement>(null)
 const wrapperRef = ref(null)
-
-const { focused } = useFocus(inputRef)
-const index = computed(() => props.options.map((d => getId(d))).indexOf(model.value))
+const focused = ref(false)
+onClickOutside(wrapperRef, () => {
+  focused.value = false
+})
 
 const hoverIndex = ref(-1)
 const keyboardIndex = ref(-1)
@@ -48,18 +55,13 @@ watchEffect(() => {
   }
 })
 
-watchEffect(() => {
-  model.value = getId(props.options[index.value])
-})
-
 watch(model, () => {
   emit('change', model.value)
 })
 
-const options = props.options
-
-const currentOption = computed(() => options[index.value])
+const currentOption = computed(() => model.value)
 const currentLabel = computed(() => getLabel(currentOption.value))
+
 function getLabel(option?: Option) {
   if (!option) {
     return ''
@@ -67,7 +69,10 @@ function getLabel(option?: Option) {
   if (typeof option === 'string' || typeof option === 'symbol' || typeof option === 'number') {
     return String(option)
   }
-  return option.label
+  if (option.label) {
+    return option.label
+  }
+  return option.id
 }
 
 function getId(option?: Option) {
@@ -80,32 +85,58 @@ function getId(option?: Option) {
   return option.id
 }
 
+const searchText = ref('')
+watch(currentLabel, () => {
+  searchText.value = currentLabel.value
+})
+watchEffect(() => {
+  if (!focused.value) {
+    searchText.value = currentLabel.value
+  }
+})
+function onInput(event: Event) {
+  focused.value = true
+  const target = event.target as HTMLInputElement
+  searchText.value = target.value
+  emit('input', searchText.value)
+}
+const filtedOptions = computed(() => {
+  if (props.searchable && searchText.value !== currentLabel.value) {
+    return props.options.filter((d) => {
+      return props.filter(getLabel(d), searchText.value)
+    })
+  }
+  return props.options
+})
+
 onKeyStroke('ArrowDown', (e) => {
   if (focused.value) {
     e.preventDefault()
-    keyboardIndex.value = (keyboardIndex.value + 1) % options.length
+    keyboardIndex.value = (keyboardIndex.value + 1) % props.options.length
   }
 })
 
 onKeyStroke('ArrowUp', (e) => {
   if (focused.value) {
     e.preventDefault()
-    keyboardIndex.value = (keyboardIndex.value - 1 + options.length) % options.length
+    keyboardIndex.value = (keyboardIndex.value - 1 + props.options.length) % props.options.length
   }
 })
 
 onKeyStroke('Enter', () => {
   if (focused.value && keyboardIndex.value !== -1) {
-    model.value = getId(options[keyboardIndex.value])
+    model.value = filtedOptions.value[keyboardIndex.value]
+    inputRef.value!.focus()
     focused.value = false
   }
 })
 function onItemPointerDown(option: Option) {
+  inputRef.value!.focus()
   if (!focused.value) {
     focused.value = true
     return
   }
-  model.value = getId(option)
+  model.value = option
   focused.value = false
 }
 const colorCls = computed(() => {
@@ -147,28 +178,6 @@ const hasArea = computed(() => {
   }
   return false
 })
-
-const searchText = ref('')
-watchEffect(() => {
-  searchText.value = currentLabel.value
-})
-
-function onInput(event: Event) {
-  const target = event.target as HTMLInputElement
-  searchText.value = target.value
-}
-function shouldDisplay(data: Option, text: string) {
-  return String(getLabel(data)).includes(text)
-}
-
-const filtedOptions = computed(() => {
-  if (props.searchable && searchText.value !== currentLabel.value) {
-    return options.filter((d) => {
-      return shouldDisplay(d, searchText.value)
-    })
-  }
-  return options
-})
 </script>
 
 <template>
@@ -189,7 +198,7 @@ const filtedOptions = computed(() => {
         aria-haspopup="listbox"
         autocomplete="off"
         @input="onInput"
-        @focus="focused = true"
+        @click="focused = true"
       >
       <i class="i-tabler-chevron-down pointer-events-none absolute right-2" />
     </div>
@@ -205,7 +214,9 @@ const filtedOptions = computed(() => {
         v-if="options.length === 0"
         class="flex cursor-default items-center justify-between gap-2 rounded p-1 px-2"
       >
-        {{ noneText }}
+        <slot name="none">
+          {{ noneText }}
+        </slot>
       </div>
       <template v-else>
         <div
@@ -219,10 +230,23 @@ const filtedOptions = computed(() => {
           @pointerdown="onItemPointerDown(option)"
           @hover="hoverIndex = i"
         >
-          {{ getLabel(option) }}
+          <slot
+            name="item"
+            :data="option"
+          >
+            {{ getLabel(option) }}
+          </slot>
           <div v-if="option === currentOption">
             <i class="i-tabler-check h-3 w-3" />
           </div>
+        </div>
+        <div
+          v-if="searchable && filtedOptions.length === 0"
+          class="flex cursor-default items-center justify-between gap-2 rounded p-1 px-2"
+        >
+          <slot name="not-found">
+            {{ notFoundText }}
+          </slot>
         </div>
       </template>
     </div>
