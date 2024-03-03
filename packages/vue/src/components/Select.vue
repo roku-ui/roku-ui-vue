@@ -14,6 +14,7 @@ const props = withDefaults(defineProps<{
   noneText?: string
   rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full' | string | number
   placeholder?: string
+  searchable?: boolean
 }>(), {
   modelValue: undefined,
   options() {
@@ -23,6 +24,7 @@ const props = withDefaults(defineProps<{
   noneText: 'No options',
   placeholder: '',
   rounded: 'md',
+  searchable: false,
 })
 
 const emit = defineEmits(['change'])
@@ -60,10 +62,10 @@ const currentOption = computed(() => options[index.value])
 const currentLabel = computed(() => getLabel(currentOption.value))
 function getLabel(option?: Option) {
   if (!option) {
-    return undefined
+    return ''
   }
   if (typeof option === 'string' || typeof option === 'symbol' || typeof option === 'number') {
-    return option
+    return String(option)
   }
   return option.label
 }
@@ -145,6 +147,28 @@ const hasArea = computed(() => {
   }
   return false
 })
+
+const searchText = ref('')
+watchEffect(() => {
+  searchText.value = currentLabel.value
+})
+
+function onInput(event: Event) {
+  const target = event.target as HTMLInputElement
+  searchText.value = target.value
+}
+function shouldDisplay(data: Option, text: string) {
+  return String(getLabel(data)).includes(text)
+}
+
+const filtedOptions = computed(() => {
+  if (props.searchable && searchText.value !== currentLabel.value) {
+    return options.filter((d) => {
+      return shouldDisplay(d, searchText.value)
+    })
+  }
+  return options
+})
 </script>
 
 <template>
@@ -159,11 +183,12 @@ const hasArea = computed(() => {
         class="r-select-input cursor-pointer border outline-none outline-none focus-visible:outline-2"
         :placeholder="placeholder"
         :style="[rounded.style]"
-        readonly
-        :value="currentLabel"
+        :readonly="!searchable"
+        :value="searchText"
         :aria-label="ariaLabel"
         aria-haspopup="listbox"
         autocomplete="off"
+        @input="onInput"
         @focus="focused = true"
       >
       <i class="i-tabler-chevron-down pointer-events-none absolute right-2" />
@@ -184,7 +209,7 @@ const hasArea = computed(() => {
       </div>
       <template v-else>
         <div
-          v-for="option, i in options"
+          v-for="option, i in filtedOptions"
           :key="getId(option)"
           :class="{
             'hover:bg-surface-high border-transparent': keyboardIndex !== i,

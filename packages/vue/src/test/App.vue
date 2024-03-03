@@ -47,6 +47,13 @@ const tabs = ref(0)
       <Paper class="flex items-center gap-2">
         <SchemeSwitch />
       </Paper>
+      <Select
+        v-model="select"
+        searchable
+        aria-label="Select a fruit"
+        placeholder="Select a fruit"
+        :options="['apple', 'banana', 'orange']"
+      />
       <Tooltip>
         <Btn>
           Hover me
@@ -89,7 +96,6 @@ const tabs = ref(0)
       </div>
       <Paper
         :loading="loading"
-        class="h-72 w-256"
       >
         <Btn
           @click="loading = !loading"
@@ -348,12 +354,6 @@ const tabs = ref(0)
       </Paper>
 
       <Paper class="flex flex-wrap gap-2">
-        <Select
-          v-model="select"
-          aria-label="Select a fruit"
-          placeholder="Select a fruit"
-          :options="['apple', 'banana', 'orange']"
-        />
         <Select
           aria-label="empty select"
         />
