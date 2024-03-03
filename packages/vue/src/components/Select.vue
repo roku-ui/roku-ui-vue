@@ -1,11 +1,6 @@
-<script setup lang="ts" generic="T extends Option">
+<script setup lang="ts" generic="T extends { id: number | string | symbol;  [key: string]: any;} | string | symbol | number">
 import { isClient } from '@vueuse/core'
 import { useRounded } from '../utils/classGenerator'
-
-type Option = {
-  id: number | string | symbol
-  [key: string]: any
-} | string | symbol | number
 
 const props = withDefaults(defineProps<{
   ariaLabel?: string
