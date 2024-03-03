@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="T extends Option">
 import { isClient } from '@vueuse/core'
 import { useRounded } from '../utils/classGenerator'
 
@@ -9,7 +9,7 @@ type Option = {
 
 const props = withDefaults(defineProps<{
   ariaLabel?: string
-  options?: Option[]
+  options?: T[]
   size?: 'sm' | 'md' | 'lg'
   noneText?: string
   notFoundText?: string
@@ -31,13 +31,13 @@ const props = withDefaults(defineProps<{
 })
 
 const emit = defineEmits<{
-  change: [option: Option | undefined]
+  change: [option: T | undefined]
   input: [searchWord: string]
 }>()
 
 const rounded = useRounded(props)
 
-const model = defineModel<Option | undefined>({ default: undefined })
+const model = defineModel<T | undefined>({ default: undefined })
 
 const inputRef = ref<null | HTMLInputElement>(null)
 const wrapperRef = ref(null)
@@ -62,7 +62,7 @@ watch(model, () => {
 const currentOption = computed(() => model.value)
 const currentLabel = computed(() => getLabel(currentOption.value))
 
-function getLabel(option?: Option) {
+function getLabel(option?: T) {
   if (!option) {
     return ''
   }
@@ -75,7 +75,7 @@ function getLabel(option?: Option) {
   return option.id
 }
 
-function getId(option?: Option) {
+function getId(option?: T) {
   if (!option) {
     return undefined
   }
@@ -130,7 +130,7 @@ onKeyStroke('Enter', () => {
     focused.value = false
   }
 })
-function onItemPointerDown(option: Option) {
+function onItemPointerDown(option: T) {
   inputRef.value!.focus()
   if (!focused.value) {
     focused.value = true
@@ -178,6 +178,18 @@ const hasArea = computed(() => {
   }
   return false
 })
+function optionIsEq(a: T, b: T | undefined) {
+  if (!b) {
+    return false
+  }
+  if (typeof a === 'string' || typeof a === 'symbol' || typeof a === 'number') {
+    return a === b
+  }
+  if (typeof b === 'string' || typeof b === 'symbol' || typeof b === 'number') {
+    return false
+  }
+  return a.id === b.id
+}
 </script>
 
 <template>
@@ -233,10 +245,11 @@ const hasArea = computed(() => {
           <slot
             name="item"
             :data="option"
+            :selected="optionIsEq(option, currentOption)"
           >
             {{ getLabel(option) }}
           </slot>
-          <div v-if="option === currentOption">
+          <div v-if="optionIsEq(option, currentOption)">
             <i class="i-tabler-check h-3 w-3" />
           </div>
         </div>

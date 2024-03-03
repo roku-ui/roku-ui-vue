@@ -69,7 +69,16 @@ const apiOptions = computed(() => {
           placeholder="Select a fruit"
           :options="apiOptions"
           @input="apiSearch = $event"
-        />
+        >
+          <template #item="{ data }">
+            <div class="flex items-center justify-center gap-2">
+              <i class="i-tabler-circle" />
+              <span>
+                {{ data.label }}
+              </span>
+            </div>
+          </template>
+        </Select>
       </Paper>
       <Paper>
         {{ selectObj }}
