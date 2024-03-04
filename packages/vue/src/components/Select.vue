@@ -185,6 +185,12 @@ function optionIsEq(a: T, b: T | undefined) {
   }
   return a.id === b.id
 }
+const searchCls = computed(() => {
+  if (props.searchable) {
+    return 'cursor-text'
+  }
+  return 'cursor-pointer'
+})
 </script>
 
 <template>
@@ -195,8 +201,8 @@ function optionIsEq(a: T, b: T | undefined) {
     <div class="w-full flex items-center">
       <input
         ref="inputRef"
-        :class="[colorCls.input, sizeCls.wrapper, rounded.class]"
-        class="r-select-input cursor-pointer border outline-none outline-none focus-visible:outline-2"
+        :class="[colorCls.input, sizeCls.wrapper, rounded.class, searchCls]"
+        class="r-select-input border outline-none outline-none focus-visible:outline-2"
         :placeholder="placeholder"
         :style="[rounded.style]"
         :readonly="!searchable"
