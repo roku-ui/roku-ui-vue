@@ -29,18 +29,18 @@
     "build": "rollup --config"
   },
   "devDependencies": {
-    "@jannchie/eslint-config": "^3.0.0",
+    "@jannchie/eslint-config": "^3.2.1",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-typescript": "^11.1.6",
-    "@unocss/preset-icons": "^0.58.5",
-    "@unocss/reset": "^0.58.5",
-    "eslint": "^8.56.0",
-    "eslint-plugin-format": "^0.1.0",
-    "rollup": "^4.10.0",
-    "rollup-plugin-dts": "^6.1.0",
-    "rollup-plugin-import-css": "^3.4.0",
+    "@unocss/preset-icons": "^0.61.2",
+    "@unocss/reset": "^0.61.2",
+    "eslint": "^9.6.0",
+    "eslint-plugin-format": "^0.1.2",
+    "rollup": "^4.18.0",
+    "rollup-plugin-dts": "^6.1.1",
+    "rollup-plugin-import-css": "^3.5.0",
     "rollup-plugin-string": "^3.0.0",
-    "typescript": "^5.3.3",
-    "unocss": "^0.58.5"
+    "typescript": "^5.5.3",
+    "unocss": "^0.61.2"
   }
 }

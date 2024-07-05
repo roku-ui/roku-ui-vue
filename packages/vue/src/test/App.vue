@@ -50,12 +50,25 @@ const apiOptions = computed(() => {
   ].filter(option => option.label.includes(apiSearch.value))
   return options
 })
+const btnGroupVal = ref()
+const btnGroupOptions = [
+  { label: 'Left', value: 'left', icon: 'i-tabler-align-left' },
+  { label: 'Center', value: 'center', icon: 'i-tabler-align-center' },
+  { label: 'Right', value: 'right', icon: 'i-tabler-align-right' },
+]
 </script>
 
 <template>
   <RokuProvider>
     <NotificationSystem />
     <div class="flex flex-col items-center gap-2">
+      <Paper>
+        <BtnGroup
+          v-model="btnGroupVal"
+          :selections="btnGroupOptions"
+          color="secondary"
+        />
+      </Paper>
       <Paper class="flex items-center gap-2">
         <SchemeSwitch />
       </Paper>
@@ -104,9 +117,7 @@ const apiOptions = computed(() => {
           Hover me
         </Btn>
         <template #content>
-          <Paper>
-            This is a tooltip
-          </Paper>
+          This is a tooltip
         </template>
       </Tooltip>
       <div class="flex flex-col gap-2">

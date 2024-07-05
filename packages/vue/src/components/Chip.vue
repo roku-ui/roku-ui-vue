@@ -22,10 +22,11 @@ const sizeCls = computed(() => {
   switch (props.size) {
     case 'sm':
       return 'px-3 text-sm h-6'
-    case 'md':
-      return 'px-6 h-8 text-base'
     case 'lg':
       return 'px-8 h-10 text-lg'
+    case 'md':
+    default:
+      return 'px-6 h-8 text-base'
   }
 })
 const colorCls = computed(() => {

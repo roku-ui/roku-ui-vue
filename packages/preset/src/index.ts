@@ -73,12 +73,12 @@ const shortcuts = colorKeys.filter(d => d !== 'surface').reduce((shortcuts, colo
   shortcuts[`container-subtle-${color}`] = `bg-${color}-container/0 border-${color}-container border-transparent`
   shortcuts[`container-transparent-${color}`] = `bg-transparent text-${color}-container border-transparent border-${color}-container`
   shortcuts[`container-constrast-${color}`] = `text-${color}-container border-${color}-container border-transparent`
-  shortcuts[`btn-filled-${color}`] = `container-filled-${color} enabled:hover:bg-${color}-containerd text-${color}-on-container focus-visible:outline-2 outline-offset-2 focus-visible:outline-${color}-container outline-none`
-  shortcuts[`btn-light-${color}`] = `container-light-${color} hover:bg-${color}-6/25 text-${color}-container focus-visible:outline-2 outline-offset-2 focus-visible:outline-${color}-container outline-none`
-  shortcuts[`btn-outline-${color}`] = `container-outline-${color} hover:bg-${color}-container/10 text-${color}-container focus-visible:outline-2 outline-offset-2 focus-visible:outline-${color}-container outline-none`
-  shortcuts[`btn-subtle-${color}`] = `container-subtle-${color} hover:bg-${color}-container/10 text-${color}-container focus-visible:outline-2 outline-offset-2 focus-visible:outline-${color}-container outline-none`
+  shortcuts[`btn-filled-${color}`] = `container-filled-${color} enabled:hover:bg-${color}-containerd enabled:hover:border-${color}-containerd text-${color}-on-container focus-visible:outline-2 outline-offset-2 focus-visible:outline-${color}-container outline-none`
+  shortcuts[`btn-light-${color}`] = `container-light-${color} enabled:hover:bg-${color}-6/25 text-${color}-container focus-visible:outline-2 outline-offset-2 focus-visible:outline-${color}-container outline-none`
+  shortcuts[`btn-outline-${color}`] = `container-outline-${color} enabled:hover:bg-${color}-container/10 text-${color}-container focus-visible:outline-2 outline-offset-2 focus-visible:outline-${color}-container outline-none`
+  shortcuts[`btn-subtle-${color}`] = `container-subtle-${color} enabled:hover:bg-${color}-container/10 text-${color}-container focus-visible:outline-2 outline-offset-2 focus-visible:outline-${color}-container outline-none`
   shortcuts[`btn-transparent-${color}`] = `container-transparent-${color} hover:text-${color}-containerl focus-visible:outline-2 outline-offset-2 focus-visible:outline-${color}-container outline-none`
-  shortcuts[`btn-constrast-${color}`] = `container-constrast-${color} hover:text-surface-base hover:bg-${color}-container focus-visible:outline-2 outline-offset-2 focus-visible:outline-${color}-container outline-none`
+  shortcuts[`btn-constrast-${color}`] = `container-constrast-${color} hover:text-surface-base enabled:hover:bg-${color}-container focus-visible:outline-2 outline-offset-2 focus-visible:outline-${color}-container outline-none`
   return shortcuts
 }, {} as any)
 

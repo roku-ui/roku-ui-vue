@@ -132,6 +132,8 @@ const directionCls = computed(() => {
       return 'flex-row'
     case 'vertical':
       return 'flex-col'
+    default:
+      return 'flex-row'
   }
 })
 </script>

@@ -7,5 +7,5 @@ features:
 
 ## 基础用法
 
-::demo-dropzone-base
+::demo-chip-base
 ::
