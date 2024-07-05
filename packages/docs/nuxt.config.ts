@@ -1,6 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
+
   modules: [
     '@unocss/nuxt',
     '@vueuse/nuxt',
@@ -8,6 +9,7 @@ export default defineNuxtConfig({
     '@nuxt/content',
     '@nuxtjs/robots',
   ],
+
   components: [
     {
       path: '~/components/demo',
@@ -27,9 +29,12 @@ export default defineNuxtConfig({
       pathPrefix: true,
     },
   ],
+
   content: {
     highlight: {
       theme: 'github-dark',
     },
   },
+
+  compatibilityDate: '2024-07-06',
 })
