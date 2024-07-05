@@ -32,6 +32,7 @@
     "@jannchie/eslint-config": "^3.2.1",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-typescript": "^11.1.6",
+    "@types/node": "^20.14.9",
     "@unocss/preset-icons": "^0.61.2",
     "@unocss/reset": "^0.61.2",
     "eslint": "^9.6.0",

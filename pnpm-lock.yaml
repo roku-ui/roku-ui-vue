@@ -102,6 +102,9 @@ importers:
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
         version: 11.1.6(rollup@4.18.0)(tslib@2.6.3)(typescript@5.5.3)
+      '@types/node':
+        specifier: ^20.14.9
+        version: 20.14.9
       '@unocss/preset-icons':
         specifier: ^0.61.2
         version: 0.61.2
@@ -131,7 +134,7 @@ importers:
         version: 5.5.3
       unocss:
         specifier: ^0.61.2
-        version: 0.61.2(@unocss/webpack@0.61.2(rollup@4.18.0))(postcss@8.4.39)(rollup@4.18.0)(vite@5.3.3(@types/node@20.14.9)(terser@5.31.1))
+        version: 0.61.2(@unocss/webpack@0.61.2(rollup@4.18.0)(webpack@5.92.1))(postcss@8.4.39)(rollup@4.18.0)(vite@5.3.3(@types/node@20.14.9)(terser@5.31.1))
 
   packages/vue:
     dependencies:
@@ -7318,7 +7321,7 @@ snapshots:
       '@unocss/reset': 0.61.2
       '@unocss/vite': 0.61.2(rollup@4.18.0)(vite@5.3.3(@types/node@20.14.9)(terser@5.31.1))
       '@unocss/webpack': 0.61.2(rollup@4.18.0)(webpack@5.92.1)
-      unocss: 0.61.2(@unocss/webpack@0.61.2(rollup@4.18.0))(postcss@8.4.39)(rollup@4.18.0)(vite@5.3.3(@types/node@20.14.9)(terser@5.31.1))
+      unocss: 0.61.2(@unocss/webpack@0.61.2(rollup@4.18.0)(webpack@5.92.1))(postcss@8.4.39)(rollup@4.18.0)(vite@5.3.3(@types/node@20.14.9)(terser@5.31.1))
     transitivePeerDependencies:
       - magicast
       - postcss
@@ -11702,7 +11705,7 @@ snapshots:
 
   universalify@2.0.1: {}
 
-  unocss@0.61.2(@unocss/webpack@0.61.2(rollup@4.18.0))(postcss@8.4.39)(rollup@4.18.0)(vite@5.3.3(@types/node@20.14.9)(terser@5.31.1)):
+  unocss@0.61.2(@unocss/webpack@0.61.2(rollup@4.18.0)(webpack@5.92.1))(postcss@8.4.39)(rollup@4.18.0)(vite@5.3.3(@types/node@20.14.9)(terser@5.31.1)):
     dependencies:
       '@unocss/astro': 0.61.2(rollup@4.18.0)(vite@5.3.3(@types/node@20.14.9)(terser@5.31.1))
       '@unocss/cli': 0.61.2(rollup@4.18.0)
