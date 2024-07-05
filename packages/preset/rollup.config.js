@@ -17,7 +17,7 @@ export default {
       tsconfig: 'tsconfig.json',
     }),
     nodeResolve({
-      resolveOnly: [/@unocss*/],
+      resolveOnly: [/@unocs+/],
     }),
   ],
 }
