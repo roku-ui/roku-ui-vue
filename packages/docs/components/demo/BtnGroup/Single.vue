@@ -1,15 +1,12 @@
 <script setup lang="ts">
 import { BtnGroup } from '@roku-ui/vue'
 
-const val = ref('left')
-const selections = ['left', 'center', 'right']
-
 const code = computed(() => `<script setup>
 import { ref } from 'vue'
 import { BtnGroup } from '@roku-ui/vue'
 
-const val = ref('left')
-const selections = ['left', 'center', 'right']
+const val = ref()
+const selections = ['check']
 <\/script>
 
 <template>
@@ -18,6 +15,9 @@ const selections = ['left', 'center', 'right']
     :selections="selections"
   />
 </template>`)
+
+const val = ref()
+const selections = ['check']
 </script>
 
 <template>
