@@ -7,7 +7,14 @@ const props = withDefaults(defineProps<{
   unselectable?: boolean
 }>(), {
   color: 'primary',
-  unselectable: false,
+  unselectable: undefined,
+})
+
+const unselectable = computed(() => {
+  if (props.unselectable === undefined) {
+    return props.selections.length === 1
+  }
+  return props.unselectable
 })
 
 function getLabel(selection: T) {
@@ -23,7 +30,7 @@ function getIcon(selection: T) {
 }
 const model = defineModel<string | undefined>()
 function onClick(selection: T) {
-  if (getValue(selection) === model.value && props.unselectable) {
+  if (getValue(selection) === model.value && unselectable.value) {
     model.value = undefined
   }
   else {
