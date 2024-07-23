@@ -56,6 +56,9 @@ const btnGroupOptions = [
   { label: 'Center', value: 'center', icon: 'i-tabler-align-center' },
   { label: 'Right', value: 'right', icon: 'i-tabler-align-right' },
 ]
+const btnGroupOptionSingle = [
+  { label: 'Is Active', value: 'active', icon: 'i-tabler-check' },
+]
 </script>
 
 <template>
@@ -67,6 +70,10 @@ const btnGroupOptions = [
           v-model="btnGroupVal"
           :selections="btnGroupOptions"
           color="secondary"
+        />
+        <BtnGroup
+          v-model="btnGroupVal"
+          :selections="btnGroupOptionSingle"
         />
       </Paper>
       <Paper class="flex items-center gap-2">
