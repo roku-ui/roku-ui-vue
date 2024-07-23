@@ -1,11 +1,14 @@
 <script setup lang="ts">
 type T = string | { value: string, label?: string, icon?: string }
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   selections: T[]
   default?: T
   color?: 'primary' | 'secondary' | 'tertiary' | 'error'
   unselectable?: boolean
-}>()
+}>(), {
+  color: 'primary',
+  unselectable: false,
+})
 
 function getLabel(selection: T) {
   return typeof selection === 'string' ? selection : selection.label ?? selection.value
@@ -27,10 +30,15 @@ function onClick(selection: T) {
     model.value = getValue(selection)
   }
 }
+const isSingle = computed(() => props.selections.length === 1)
+const childClass = computed(() => isSingle.value ? null : 'first-children:rounded-r-0 last-children:rounded-l-0 not-first-children:rounded-l-0 not-last-children:rounded-r-0')
 </script>
 
 <template>
-  <div class="inline-flex w-auto container first-children:rounded-r-0 last-children:rounded-l-0 not-first-children:rounded-l-0 not-last-children:rounded-r-0">
+  <div
+    class="inline-flex w-auto container"
+    :class="[childClass]"
+  >
     <Btn
       v-for="selection in props.selections"
       :key="getValue(selection)"
