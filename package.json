@@ -16,10 +16,10 @@
     "dev:spa": "pnpm --filter @roku-ui/vue dev"
   },
   "devDependencies": {
-    "@jannchie/eslint-config": "^3.0.0",
-    "@unocss/eslint-config": "^0.61.2",
-    "@unocss/eslint-plugin": "^0.61.2",
-    "eslint": "^9.6.0",
+    "@jannchie/eslint-config": "^3.2.1",
+    "@unocss/eslint-config": "^0.61.9",
+    "@unocss/eslint-plugin": "^0.61.9",
+    "eslint": "^9.8.0",
     "eslint-plugin-format": "^0.1.2"
   },
   "simple-git-hooks": {

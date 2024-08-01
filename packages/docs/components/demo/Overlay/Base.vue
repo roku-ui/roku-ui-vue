@@ -21,7 +21,7 @@ const opacity = ref<number>(80)
       <div class="flex flex-col gap-6">
         <div>
           <div class="text-surface-on-low">
-            Size
+            Opacity 
           </div>
           <Slider
             v-model="opacity"

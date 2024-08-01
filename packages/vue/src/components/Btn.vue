@@ -147,7 +147,7 @@ const colorCls = computed(() => {
       rounded.class,
       icon ? sizeCls.iconContent : sizeCls.normalContent,
       {
-        'filter-grayscale pointer-events-none': disabled,
+        'filter-grayscale pointer-events-none select-none filter-brightness-80': disabled,
         'active:translate-y-0.25': pressEffect === 'translate',
         'active:scale-98': pressEffect === 'scale',
         'transition-all': animate,
