@@ -1,8 +1,8 @@
 <script setup lang="tsx">
-import { getHighlighter } from 'shikiji'
+import { getSingletonHighlighter } from 'shiki'
 import {
   transformerNotationHighlight,
-} from 'shikiji-transformers'
+} from '@shikijs/transformers'
 
 const props = withDefaults(defineProps<{
   code?: string
@@ -10,7 +10,7 @@ const props = withDefaults(defineProps<{
   code: '',
 })
 
-const highlighter = await getHighlighter({
+const highlighter = await getSingletonHighlighter ({
   themes: ['vitesse-dark'],
   langs: ['vue', 'tsx'],
 })

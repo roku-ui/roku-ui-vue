@@ -4,7 +4,18 @@ import { computed, useRuntimeConfig } from '#imports'
 const props = defineProps<{ id?: string }>()
 
 const { headings } = useRuntimeConfig().public.mdc
-const generate = computed(() => props.id && headings?.anchorLinks?.h2)
+const generate = computed(() => {
+  if (!headings) {
+    return false
+  }
+  if (!headings.anchorLinks) {
+    return false
+  }
+  if (headings.anchorLinks === true) {
+    return props.id
+  }
+  return props.id && headings.anchorLinks.h2
+})
 </script>
 
 <template>
