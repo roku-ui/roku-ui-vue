@@ -1,10 +1,6 @@
 import fs from 'node:fs'
-import {
-  presetIcons,
-  presetTypography,
-  presetUno,
-} from 'unocss'
 import type { Preset } from 'unocss'
+import { presetIcons, presetTypography, presetUno } from 'unocss'
 
 import tailwindReset from '@unocss/reset/tailwind.css'
 import baseStyle from './styles.css'
@@ -90,7 +86,7 @@ const rokuPreset: (options?: PresetOptions) => Preset<object> = (options = {}) =
   try {
     file = fs.readFileSync('node_modules/@roku-ui/vue/dist/index.js', 'utf-8')
   }
-  catch { }
+  catch {}
   return {
     name: 'roku',
     theme: {
