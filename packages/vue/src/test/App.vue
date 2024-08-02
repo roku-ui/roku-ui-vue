@@ -1,6 +1,7 @@
 <!-- eslint-disable no-console -->
 <script setup lang="ts">
 import { Notifications, generateColors } from '..'
+import WaterfallDemo from './demo/WaterfallDemo.vue'
 
 const isLoading = refAutoReset(false, 3000)
 onMounted(() => {
@@ -64,6 +65,7 @@ const btnGroupOptionSingle = [
 <template>
   <RokuProvider>
     <NotificationSystem />
+    <WaterfallDemo />
     <div class="flex flex-col items-center gap-2">
       <Paper>
         <BtnGroup
