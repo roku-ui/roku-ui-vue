@@ -64,7 +64,7 @@ const { primary, secondary, surface, tertiary, error } = inject<{
     </Paper>
     <Paper>
       <div class="flex gap-2">
-        <div class="flex flex-col bg-primary-containerl px-2 py-1">
+        <div class="flex flex-col bg-primary-containerd px-2 py-1">
           <div class="text-primary-on-container">
             primary on
           </div>
@@ -72,7 +72,7 @@ const { primary, secondary, surface, tertiary, error } = inject<{
             primary on-low
           </div>
         </div>
-        <div class="flex flex-col bg-secondary-container px-2 py-1">
+        <div class="flex flex-col bg-secondary-containerd px-2 py-1">
           <div class="text-secondary-on-container">
             secondary on
           </div>
@@ -80,7 +80,7 @@ const { primary, secondary, surface, tertiary, error } = inject<{
             secondary on-low
           </div>
         </div>
-        <div class="flex flex-col bg-tertiary-container px-2 py-1">
+        <div class="flex flex-col bg-tertiary-containerd px-2 py-1">
           <div class="text-tertiary-on-container">
             tertiary on
           </div>
@@ -88,7 +88,7 @@ const { primary, secondary, surface, tertiary, error } = inject<{
             tertiary on-low
           </div>
         </div>
-        <div class="flex flex-col bg-error-container px-2 py-1">
+        <div class="flex flex-col bg-error-containerd px-2 py-1">
           <div class="text-error-on-container">
             error on
           </div>
