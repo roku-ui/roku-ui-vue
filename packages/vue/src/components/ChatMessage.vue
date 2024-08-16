@@ -1,37 +1,26 @@
 <script setup lang="ts">
+import { useColorClass, useColorStyle } from '../shared'
+import type { Variant } from '../types'
+
 const props = withDefaults(
   defineProps<{
     avatar?: string
     position?: 'left' | 'right'
     color?: string
-    variant?: 'default' | 'transparent' | 'filled'
+    variant?: Variant
     withBorder?: boolean
   }>(),
   {
     position: 'left',
     variant: 'default',
     withBorder: false,
+    color: 'primary',
   },
 )
-const bubbleColor = computed(() => {
-  switch (props.variant) {
-    case 'default':
-      return 'bg-surface-base'
-    case 'filled':
-      switch (props.color) {
-        case 'secondary':
-          return 'bg-secondary-container text-secondary-on-container'
-        case 'tertiary':
-          return 'bg-tertiary-container text-tertiary-on-container'
-        case 'error':
-          return 'bg-error-container text-error-on-container'
-        default:
-          return 'bg-primary-container text-primary-on-container'
-      }
-    case 'transparent':
-      return 'bg-transparent'
-  }
-})
+const variant = computed(() => props.variant)
+const color = computed(() => props.color)
+const bubbleStyle = useColorStyle(color, variant)
+const bubbleClass = useColorClass(variant)
 </script>
 
 <template>
@@ -60,8 +49,9 @@ const bubbleColor = computed(() => {
           'rounded-tl': position === 'left',
           'border': withBorder,
         },
-        bubbleColor,
+        bubbleClass,
       ]"
+      :style="[bubbleStyle]"
     >
       <slot />
     </div>

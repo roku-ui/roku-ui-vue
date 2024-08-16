@@ -42,14 +42,6 @@ const sizeCls = computed(() => {
         inactive: 'left-[calc(0.125rem-1px)]',
         active: isActivated.value ? 'left-[calc(0.875rem-1px)]' : 'left-[calc(1.125rem-1px)]',
       }
-    case 'md':
-      return {
-        icon: 'text-sm mx-1',
-        wrapper: 'h-6 w-12',
-        indicator: isActivated.value ? 'h-4 w-5' : 'h-4 w-4',
-        inactive: 'left-[calc(0.25rem-1px)]',
-        active: isActivated.value ? 'left-[calc(1.5rem-1px)]' : 'left-[calc(1.75rem-1px)]',
-      }
     case 'lg':
       return {
         icon: 'text-lg mx-2',
@@ -57,6 +49,15 @@ const sizeCls = computed(() => {
         indicator: isActivated.value ? 'h-6 w-8' : 'h-6 w-6',
         inactive: 'left-[calc(0.25rem-1px)]',
         active: isActivated.value ? 'left-[calc(1.75rem-1px)]' : 'left-[calc(2.25rem-1px)]',
+      }
+    case 'md':
+    default:
+      return {
+        icon: 'text-sm mx-1',
+        wrapper: 'h-6 w-12',
+        indicator: isActivated.value ? 'h-4 w-5' : 'h-4 w-4',
+        inactive: 'left-[calc(0.25rem-1px)]',
+        active: isActivated.value ? 'left-[calc(1.5rem-1px)]' : 'left-[calc(1.75rem-1px)]',
       }
   }
 })

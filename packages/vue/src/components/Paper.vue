@@ -1,38 +1,34 @@
 <script setup lang="ts">
+import { useColorStyleWithKey } from '../shared'
+import type { Rounded } from '../types'
 import { useRounded } from '../utils/classGenerator'
 
 const props = withDefaults(
   defineProps<{
-    size?: 'sm' | 'md' | 'lg' | string | number
-    rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full' | string | number
-    withBorder?: boolean
+    rounded?: Rounded
     loading?: boolean
     is?: string | Component
     color?: string
     traceAnimate?: boolean
+    withBorder?: boolean
+    noPadding?: boolean
   }>(),
   {
-    size: 'md',
     rounded: 'md',
     withBorder: false,
     is: 'div',
     loading: false,
     color: 'primary',
     traceAnimate: false,
+    noPadding: false,
   },
 )
 
-function getColorValue(color: string) {
-  if (['primary', 'secondary', 'tertiary', 'error'].includes(color)) {
-    return `rgb(var(--r-color-${color}-container))`
-  }
-  else {
-    return color
-  }
-}
+const color = computed(() => props.color)
+const colorStyle = useColorStyleWithKey(color, ['fill'])
 
 const roundedCls = useRounded(props)
-const { x, y } = useMouse()
+const { x, y } = useMouse({ type: 'client' })
 const paperRef = ref<HTMLElement | null>(null)
 const { width, height, top, left } = useElementBounding(paperRef)
 
@@ -45,7 +41,7 @@ const loadingStyle = computed(() => {
       'background': 'linear-gradient(var(--bg), var(--bg)) padding-box, var(--gradient) border-box',
       'background-color': 'var(--bg)',
       '--bg': 'rgba(var(--r-color-surface-low) / 1)',
-      '--gradient': `radial-gradient(circle at center, ${getColorValue(props.color)} ${shortEdge.value * 0.5}px, var(--bg) ${shortEdge.value * 0.5}px)`,
+      '--gradient': `radial-gradient(circle at center, var(--l-fill) ${shortEdge.value * 0.5}px, var(--bg) ${shortEdge.value * 0.5}px)`,
       'background-size': '200% 200%',
     }
   }
@@ -105,7 +101,7 @@ const traceAnimateStyle = computed(() => {
     })
     return {
       '--bg': `rgba(var(--r-color-surface-low) / 1)`,
-      '--gradient': `radial-gradient(circle at ${points.value.x - left.value}px ${points.value.y - top.value}px, ${getColorValue(props.color)} ${shortEdge.value * 0.5}px, var(--bg) ${shortEdge.value * 0.5}px)`,
+      '--gradient': `radial-gradient(circle at ${points.value.x - left.value}px ${points.value.y - top.value}px, var(--l-fill) ${shortEdge.value * 0.5}px, var(--bg) ${shortEdge.value * 0.5}px)`,
       'background': 'linear-gradient(var(--bg), var(--bg)) padding-box, var(--gradient) border-box',
       'background-size': '200% 200%',
       'background-color': 'var(--bg)',
@@ -153,14 +149,15 @@ useAnimate(paperRef, keyFrames, {
   <component
     :is="is"
     ref="paperRef"
-    class="relative container-low rounded-lg p-4"
+    class="relative container-low transition-background-color,border-color,color"
     :class="[
       {
         'border-transparent': !withBorder,
+        'p-4': !noPadding,
       },
       roundedCls.class,
     ]"
-    :style="[roundedCls.style, loadingStyle, traceAnimateStyle]"
+    :style="[roundedCls.style, loadingStyle, traceAnimateStyle, colorStyle]"
   >
     <slot />
   </component>

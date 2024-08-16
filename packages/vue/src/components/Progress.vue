@@ -26,19 +26,23 @@ const sizeCls = computed(() => {
       return 'h-0.5'
     case 'lg':
       return 'h-1'
+    default:
+      return 'h-0.5'
   }
 })
 
 const colorCls = computed(() => {
   switch (props.color) {
     case 'primary':
-      return 'bg-primary-containerl'
+      return 'bg-primary-container'
     case 'secondary':
-      return 'bg-secondary-containerl'
+      return 'bg-secondary-container'
     case 'tertiary':
-      return 'bg-tertiary-containerl'
+      return 'bg-tertiary-container'
     case 'error':
-      return 'bg-error-containerl'
+      return 'bg-error-container'
+    default:
+      return 'bg-primary-container'
   }
 })
 

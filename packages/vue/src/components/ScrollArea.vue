@@ -135,7 +135,7 @@ const hover = useElementHover(() => scrollBarIndicatorRef.value)
       :style="{
         width: `${barWidth}px`,
       }"
-      class="h-full absolute z-999 right-0"
+      class="absolute right-0 z-999 h-full"
     >
       <div
         v-show="scrollBarData.barHeight < clientHeight"

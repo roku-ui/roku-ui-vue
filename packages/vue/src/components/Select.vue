@@ -236,8 +236,8 @@ const searchCls = computed(() => {
           v-for="option, i in filtedOptions"
           :key="getId(option)"
           :class="{
-            'hover:bg-surface-high border-transparent': keyboardIndex !== i,
-            'container-filled-primary': keyboardIndex === i,
+            'hover:bg-surface-low border-transparent': keyboardIndex !== i,
+            'container-filled-primary text-white': keyboardIndex === i,
           }"
           class="flex cursor-pointer items-center justify-between gap-2 border rounded p-1 px-2"
           @pointerdown="onItemPointerDown(option)"

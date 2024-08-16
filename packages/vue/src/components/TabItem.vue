@@ -23,23 +23,25 @@ onMounted(() => {
 const direction = inject<ComputedRef<'horizontal' | 'vertical'>>(directionSymbol, computed(() => 'horizontal'))
 const directionCls = computed(() => {
   switch (direction.value) {
-    case 'horizontal':
-      return 'flex-col rounded-tr-lg rounded-tl-lg'
     case 'vertical':
       return 'flex-row-reverse rounded-tr-lg rounded-br-lg'
+    case 'horizontal':
+    default:
+      return 'flex-col rounded-tr-lg rounded-tl-lg'
   }
 })
 const indicatorCls = computed(() => {
   switch (direction.value) {
-    case 'horizontal':
-      return 'absolute inset-0 top-100% h-2px w-full transition-background-color,border-color,color '
     case 'vertical':
       return 'absolute inset-0 right-100% h-full w-2px transition-background-color,border-color,color'
+    case 'horizontal':
+    default:
+      return 'absolute inset-0 top-100% h-2px w-full transition-background-color,border-color,color '
   }
 })
 const colorCls = computed(() => {
   if (isActivated.value) {
-    return 'bg-primary-containerl'
+    return 'bg-primary-container'
   }
   return 'bg-surface-lowest'
 })

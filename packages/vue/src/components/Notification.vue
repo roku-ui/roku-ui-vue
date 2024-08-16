@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useColorStyle } from '../shared'
 import { useRounded } from '../utils/classGenerator'
 
 const props = withDefaults(
@@ -11,7 +12,7 @@ const props = withDefaults(
     closeable?: boolean
     rounded?: 'sm' | 'md' | 'lg' | 'none' | string | number
     block?: boolean
-    color?: 'primary' | 'secondary' | 'tertiary' | 'error'
+    color?: string
   }>(),
   {
     type: 'info',
@@ -25,32 +26,8 @@ const props = withDefaults(
 defineEmits(['close'])
 
 const rounded = useRounded(props)
-
-const bgColorCls = computed(() => {
-  switch (props.color) {
-    case 'secondary':
-      return 'bg-secondary-container'
-    case 'tertiary':
-      return 'bg-tertiary-container'
-    case 'error':
-      return 'bg-error-container'
-    default:
-      return 'bg-primary-container'
-  }
-})
-
-const textColorCls = computed(() => {
-  switch (props.color) {
-    case 'secondary':
-      return 'text-secondary-on'
-    case 'tertiary':
-      return 'text-tertiary-on'
-    case 'error':
-      return 'text-error-on'
-    default:
-      return 'text-primary-on'
-  }
-})
+const color = computed(() => props.color ?? 'primary')
+const colorStyle = useColorStyle(color)
 </script>
 
 <template>
@@ -64,12 +41,11 @@ const textColorCls = computed(() => {
         'w-full': block,
       },
     ]"
-    :style="rounded.style"
+    :style="[rounded.style, colorStyle]"
   >
     <div
       v-if="icon"
-      class="leading-0"
-      :class="textColorCls"
+      class="text-[var(--l-text)] leading-0 dark:text-[var(--d-text)]"
     >
       <i
         v-if="loading"
@@ -85,17 +61,16 @@ const textColorCls = computed(() => {
       v-else
     >
       <div
-        class="absolute left-[0.25rem] top-[0.25rem] h-[calc(100%-0.5rem)] w-1 rounded-full"
+        class="absolute left-[0.25rem] top-[0.25rem] h-[calc(100%-0.5rem)] w-1 rounded-full bg-[var(--d-fill)] dark:bg-[var(--d-fill)]"
         :class="[{
           'animate-pulse': loading,
-        }, bgColorCls]"
+        }]"
       />
     </div>
     <div class="grow-1">
       <div
         v-if="title"
-        :class="textColorCls"
-        class="text-base"
+        class="text-base text-[var(--l-text)] dark:text-[var(--d-text)]"
       >
         {{ title }}
       </div>
@@ -115,10 +90,13 @@ const textColorCls = computed(() => {
       v-if="closeable"
       icon
       variant="transparent"
-      class="text-surface-on hover:text-surface-on"
       @click="$emit('close')"
     >
-      <i class="i-tabler-x" />
+      <slot
+        v-if="$slots.closeIcon"
+        name="close-icon"
+      />
+      <i v-else class="i-tabler-x" />
     </Btn>
   </div>
 </template>

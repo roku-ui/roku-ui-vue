@@ -17,7 +17,7 @@ const inputs = ref<{
   focus: () => void
   blur: () => void
 }[]
-    >([])
+>([])
 function onInput(e: InputEvent) {
   e.preventDefault()
   e.stopPropagation()
@@ -53,6 +53,26 @@ function onBackspace(e: KeyboardEvent) {
     inputs.value[currentIndex - 1].el.value = ''
   }
 }
+
+function onArrowLeft(e: KeyboardEvent) {
+  e.preventDefault()
+  e.stopPropagation()
+  const currentIndex = inputs.value.findIndex(d => d.el === e.target)
+  if (currentIndex > 0) {
+    inputs.value[currentIndex - 1].el.focus()
+    inputs.value[currentIndex - 1].el.select()
+  }
+}
+
+function onArrowRight(e: KeyboardEvent) {
+  e.preventDefault()
+  e.stopPropagation()
+  const currentIndex = inputs.value.findIndex(d => d.el === e.target)
+  if (currentIndex < inputs.value.length - 1) {
+    inputs.value[currentIndex + 1].el.focus()
+    inputs.value[currentIndex + 1].el.select()
+  }
+}
 </script>
 
 <template>
@@ -67,6 +87,8 @@ function onBackspace(e: KeyboardEvent) {
       @pointerup="$event.target.select()"
       @input.stop.prevent="onInput"
       @keydown.backspace="onBackspace"
+      @keydown.arrow-left="onArrowLeft"
+      @keydown.arrow-right="onArrowRight"
     />
   </div>
 </template>
