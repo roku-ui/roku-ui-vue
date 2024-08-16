@@ -1,7 +1,11 @@
 <!-- eslint-disable no-console -->
 <script setup lang="ts">
 import { Notifications, generateColors } from '..'
+import PopoverDemo from './demo/PopoverDemo.vue'
+import TagsDemo from './demo/TagsDemo.vue'
 import WaterfallDemo from './demo/WaterfallDemo.vue'
+import SelectAreaDemo from './demo/SelectAreaDemo.vue'
+import RatingDemo from './demo/RatingDemo.vue'
 
 const isLoading = refAutoReset(false, 3000)
 onMounted(() => {
@@ -65,8 +69,13 @@ const btnGroupOptionSingle = [
 <template>
   <RokuProvider>
     <NotificationSystem />
-    <WaterfallDemo />
     <div class="flex flex-col items-center gap-2">
+      <RatingDemo />
+      <SelectAreaDemo />
+      <PopoverDemo />
+      <TagsDemo />
+      <WaterfallDemo />
+      <PinInput with-border />
       <Paper>
         <BtnGroup
           v-model="btnGroupVal"
@@ -122,7 +131,7 @@ const btnGroupOptionSingle = [
         />
       </Paper>
       <Tooltip>
-        <Btn>
+        <Btn hover-variant="filled">
           Hover me
         </Btn>
         <template #content>
@@ -601,7 +610,7 @@ const btnGroupOptionSingle = [
         <TextField color="error" />
         <TextField />
       </Paper>
-      <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}` })">
+      <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 1000 })">
         Push Notification
       </Btn>
       <Paper class="flex flex-wrap gap-2">
@@ -780,6 +789,12 @@ const btnGroupOptionSingle = [
         >
           Button
         </Btn>
+        <Tag
+          color="secondary"
+          variant="subtle"
+        >
+          Tag
+        </Tag>
       </Paper>
       <Paper class="flex flex-wrap gap-2">
         <Btn
@@ -797,13 +812,13 @@ const btnGroupOptionSingle = [
       </Paper>
       <Paper class="flex flex-wrap gap-2">
         <Btn
-          variant="constrast"
+          variant="contrast"
           color="primary"
         >
           Button
         </Btn>
         <Btn
-          variant="constrast"
+          variant="contrast"
           color="secondary"
         >
           Button
