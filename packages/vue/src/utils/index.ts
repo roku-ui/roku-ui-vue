@@ -1,18 +1,24 @@
+import type { ColorInput } from 'tinycolor2'
 import tinycolor from 'tinycolor2'
+import { COLOR_LIGHTNESS_MAP } from '..'
 
 export * from './theme'
 export * from './notifications'
-
-const LIGHTNESS_MAP = [0.98, 0.96, 0.9, 0.8, 0.6, 0.55, 0.5, 0.3, 0.28, 0.2, 0.08]
+export * from './classGenerator'
 
 function getClosestLightness(color: string | tinycolor.ColorFormats.PRGB | tinycolor.ColorFormats.RGB | tinycolor.ColorFormats.HSL | tinycolor.ColorFormats.HSV | tinycolor.Instance | undefined) {
   const lightnessGoal = tinycolor(color).toHsl().l
-  return LIGHTNESS_MAP.reduce((prev, curr) =>
+  return COLOR_LIGHTNESS_MAP.reduce((prev, curr) =>
     Math.abs(curr - lightnessGoal) < Math.abs(prev - lightnessGoal) ? curr : prev,
   )
 }
 
-export function generateColorsMap(color: tinycolor.ColorInput | undefined, lightnessMap = LIGHTNESS_MAP) {
+export function generateColorsMap(color: tinycolor.ColorInput, lightnessMap = COLOR_LIGHTNESS_MAP) {
+  const objMap = generateColorsObjMap(color, lightnessMap)
+  return { ...objMap, colors: objMap.colors.map(c => c.toHexString()) }
+}
+
+export function generateColorsObjMap(color: tinycolor.ColorInput, lightnessMap = COLOR_LIGHTNESS_MAP) {
   const baseColor = tinycolor(color)
   const closestLightness = getClosestLightness(baseColor)
   const baseColorIndex = lightnessMap.findIndex(l => l === closestLightness)
@@ -29,9 +35,8 @@ export function generateColorsMap(color: tinycolor.ColorInput | undefined, light
     return modifiedColor
   })
 
-  return { baseColorIndex, colors: colors.map(c => c.toHexString()) }
+  return { baseColorIndex, colors: colors.map(c => c) }
 }
-
 export type ColorsTuple = readonly [
   string,
   string,
@@ -47,7 +52,7 @@ export type ColorsTuple = readonly [
   ...string[],
 ]
 
-export function generateColors(color: string | tinycolor.ColorFormats.PRGB | tinycolor.ColorFormats.RGB | tinycolor.ColorFormats.HSL | tinycolor.ColorFormats.HSV | tinycolor.Instance | undefined, lightnessMap: number[] = LIGHTNESS_MAP) {
+export function generateColors(color: ColorInput, lightnessMap: number[] = COLOR_LIGHTNESS_MAP) {
   return generateColorsMap(color, lightnessMap).colors as unknown as ColorsTuple
 }
 

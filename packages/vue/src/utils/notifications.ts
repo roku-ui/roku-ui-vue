@@ -3,17 +3,21 @@ export interface NotificationData {
   message?: string
   color?: string
   icon?: string
+  durationMS?: number
   [key: string]: any
 }
 
-export const notificationsSymbol = Symbol('Notifications')
-const notifications: NotificationData = reactive<NotificationData[]>([])
+export interface NotificationDataWithHash extends NotificationData {
+  hash: string
+}
+
+const notifications = ref<NotificationDataWithHash[]>([])
 export function useNotifications() {
   return notifications
 }
 export class Notifications {
   static show(data: NotificationData) {
     data.hash = Math.random().toString(36)
-    notifications.push(data)
+    notifications.value.push(data as NotificationDataWithHash)
   }
 }

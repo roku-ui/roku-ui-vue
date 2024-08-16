@@ -7,7 +7,7 @@ export function useRounded(props: { rounded: 'none' | 'sm' | 'md' | 'lg' | 'full
 }
 
 function getRoundedStyle(rounded: 'none' | 'sm' | 'md' | 'lg' | 'full' | string | number) {
-  const regex = /^-?\d*\.?\d+(px|em|rem|vh|vw|in|cm|mm|pt|pc|%)?$/
+  const regex = /^-?(?:\d+(?:\.\d+)?|\.\d+)(?:px|em|rem|vh|vw|in|cm|mm|pt|pc|%)?$/
   switch (rounded) {
     case 'none':
       return '--r-rounded: 0'

@@ -4,6 +4,7 @@ import { isClient } from '@vueuse/core'
 import type { MaybeRef } from 'vue'
 import { type ThemeData, defaultTheme, generateColors } from '..'
 
+export const COLOR_LIGHTNESS_MAP = [0.98, 0.96, 0.9, 0.7, 0.5, 0.4, 0.35, 0.3, 0.28, 0.2, 0.08]
 export function useRootTheme() {
   if (!isClient) {
     return ref('dark')
@@ -52,7 +53,7 @@ export function useThemeData(
     surface?: number[]
   } = {},
 ) {
-  const defaultColorLightness = [0.98, 0.96, 0.9, 0.8, 0.7, 0.6, 0.55, 0.4, 0.36, 0.3, 0.2]
+  const defaultColorLightness = COLOR_LIGHTNESS_MAP
   const defaultSurfaceLightness = [1, 0.99, 0.98, 0.9, 0.8, 0.5, 0.2, 0.12, 0.1, 0.08, 0.06]
   if (lightnessMap.primary === undefined) {
     lightnessMap.primary = defaultColorLightness
@@ -109,70 +110,9 @@ export function useThemeStyles(theme: ThemeData) {
     'color': 'rgb(var(--r-color-surface-on))',
   }
 
-  // const schemeStyles = computed(() => {
-  //   if (root) {
-  //     return {}
-  //   }
-  //   const { scheme } = theme
-  //   switch (scheme) {
-  //     case 'dark':
-  //       return {
-  //         'colorScheme': 'dark',
-  //         '--r-color-surface-on': 'var(--r-color-surface-3)',
-  //         '--r-color-surface-oninverted': 'var(--r-color-surface-8)',
-  //         '--r-color-surface-on-low': 'var(--r-color-surface-4)',
-  //         '--r-color-surface-on-lowinverted': 'var(--r-color-surface-7)',
-  //         '--r-color-surface-lowest': 'var(--r-color-surface-10)',
-  //         '--r-color-surface-low': 'var(--r-color-surface-9)',
-  //         '--r-color-surface-base': 'var(--r-color-surface-8)',
-  //         '--r-color-surface-high': 'var(--r-color-surface-7)',
-  //         '--r-color-surface-highest': 'var(--r-color-surface-6)',
-  //         '--r-color-surface-border': 'var(--r-color-surface-7)',
-  //         '--r-color-primary-container': 'var(--r-color-primary-8)',
-  //         '--r-color-secondary-container': 'var(--r-color-secondary-8)',
-  //         '--r-color-tertiary-container': 'var(--r-color-tertiary-8)',
-  //         '--r-color-error-container': 'var(--r-color-error-8)',
-  //         '--r-color-primary-containerd': 'var(--r-color-primary-9)',
-  //         '--r-color-secondary-containerd': 'var(--r-color-secondary-9)',
-  //         '--r-color-tertiary-containerd': 'var(--r-color-tertiary-9)',
-  //         '--r-color-error-containerd': 'var(--r-color-error-9)',
-  //         '--r-color-primary-containerl': 'var(--r-color-primary-6)',
-  //         '--r-color-secondary-containerl': 'var(--r-color-secondary-6)',
-  //         '--r-color-tertiary-containerl': 'var(--r-color-tertiary-6)',
-  //         '--r-color-error-containerl': 'var(--r-color-error-6)',
-  //       }
-  //     case 'light':
-  //       return {
-  //         'colorScheme': 'light',
-  //         '--r-color-surface-on': 'var(--r-color-surface-7)',
-  //         '--r-color-surface-oninverted': 'var(--r-color-surface-2)',
-  //         '--r-color-surface-on-low': 'var(--r-color-surface-6)',
-  //         '--r-color-surface-on-lowinverted': 'var(--r-color-surface-3)',
-  //         '--r-color-surface-lowest': 'var(--r-color-surface-3)',
-  //         '--r-color-surface-low': 'var(--r-color-surface-2)',
-  //         '--r-color-surface-base': 'var(--r-color-surface-1)',
-  //         '--r-color-surface-high': 'var(--r-color-surface-0)',
-  //         '--r-color-surface-highest': 'var(--r-color-surface-0)',
-  //         '--r-color-surface-border': 'var(--r-color-surface-4)',
-  //         '--r-color-primary-container': 'var(--r-color-primary-6)',
-  //         '--r-color-secondary-container': 'var(--r-color-secondary-6)',
-  //         '--r-color-tertiary-container': 'var(--r-color-tertiary-6)',
-  //         '--r-color-error-container': 'var(--r-color-error-6)',
-  //         '--r-color-primary-containerd': 'var(--r-color-primary-7)',
-  //         '--r-color-secondary-containerd': 'var(--r-color-secondary-7)',
-  //         '--r-color-tertiary-containerd': 'var(--r-color-tertiary-7)',
-  //         '--r-color-error-containerd': 'var(--r-color-error-7)',
-  //         '--r-color-primary-containerl': 'var(--r-color-primary-4)',
-  //         '--r-color-secondary-containerl': 'var(--r-color-secondary-4)',
-  //         '--r-color-tertiary-containerl': 'var(--r-color-tertiary-4)',
-  //         '--r-color-error-containerl': 'var(--r-color-error-4)',
-  //       }
-  //   }
-  // })
   return {
     ...colorStyles,
     ...themeStyles,
-    // ...schemeStyles.value,
   }
 }
 
