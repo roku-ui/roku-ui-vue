@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { useColorClass, useColorStyle } from '../shared'
+import type { Variant } from '../types'
 import { useRounded } from '../utils/classGenerator'
 
-type Variant = 'filled' | 'default' | 'light' | 'outline' | 'subtle' | 'transparent' | 'ghost' | 'constrast'
 const props = withDefaults(
   defineProps<{
     type?: 'button' | 'submit' | 'reset'
@@ -51,85 +52,16 @@ const sizeCls = computed(() => {
 })
 const btn = ref<HTMLElement | null>(null)
 const isHover = useElementHover(btn)
+
 const variant = computed(() => {
   if (props.hoverVariant && isHover.value) {
     return props.hoverVariant
   }
-  return props.variant
+  return props.variant ?? 'default'
 })
-const colorCls = computed(() => {
-  switch (variant.value) {
-    case 'filled':
-      switch (props.color) {
-        case 'secondary':
-          return 'btn-filled-secondary'
-        case 'tertiary':
-          return 'btn-filled-tertiary'
-        case 'error':
-          return 'btn-filled-error'
-        default:
-          return 'btn-filled-primary'
-      }
-    case 'ghost':
-    case 'light':
-      switch (props.color) {
-        case 'secondary':
-          return 'btn-light-secondary'
-        case 'tertiary':
-          return 'btn-light-tertiary'
-        case 'error':
-          return 'btn-light-error'
-        default:
-          return 'btn-light-primary'
-      }
-    case 'constrast':
-      switch (props.color) {
-        case 'secondary':
-          return 'btn-constrast-secondary'
-        case 'tertiary':
-          return 'btn-constrast-tertiary'
-        case 'error':
-          return 'btn-constrast-error'
-        default:
-          return 'btn-constrast-primary'
-      }
-    case 'outline':
-      switch (props.color) {
-        case 'secondary':
-          return 'btn-outline-secondary'
-        case 'tertiary':
-          return 'btn-outline-tertiary'
-        case 'error':
-          return 'btn-outline-error'
-        default:
-          return 'btn-outline-primary'
-      }
-    case 'subtle':
-      switch (props.color) {
-        case 'secondary':
-          return 'btn-subtle-secondary'
-        case 'tertiary':
-          return 'btn-subtle-tertiary'
-        case 'error':
-          return 'btn-subtle-error'
-        default:
-          return 'btn-subtle-primary'
-      }
-    case 'transparent':
-      switch (props.color) {
-        case 'secondary':
-          return 'btn-transparent-secondary'
-        case 'tertiary':
-          return 'btn-transparent-tertiary'
-        case 'error':
-          return 'btn-transparent-error'
-        default:
-          return 'btn-transparent-primary'
-      }
-    default:
-      return 'btn-default'
-  }
-})
+const color = computed(() => props.color ?? 'primary')
+const colorClass = useColorClass(variant)
+const colorStyle = useColorStyle(color, variant)
 </script>
 
 <template>
@@ -141,9 +73,10 @@ const colorCls = computed(() => {
     class="flex items-center justify-center gap-1 decoration-none"
     :style="[
       rounded.style,
+      colorStyle,
     ]"
     :class="[
-      colorCls,
+      colorClass,
       rounded.class,
       icon ? sizeCls.iconContent : sizeCls.normalContent,
       {
