@@ -11,3 +11,10 @@ features:
 
 ::demo-switch-base
 ::
+
+## 图标
+
+支持在开关上添加图标。
+
+::demo-switch-icon
+::

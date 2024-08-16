@@ -13,7 +13,7 @@ function code(props: { size?: Size, variant?: Variant, disabled?: boolean } = {}
   </Btn> // [!code highlight]
 </template>`
 }
-const variants = ['default', 'filled', 'light', 'ghost', 'outline', 'subtle', 'transparent', 'constrast']
+const variants = ['default', 'filled', 'light', 'ghost', 'outline', 'subtle', 'transparent', 'contrast']
 const variant = ref<Variant>('default')
 </script>
 
