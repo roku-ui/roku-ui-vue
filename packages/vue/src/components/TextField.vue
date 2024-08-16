@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useColorStyleWithKey } from '../shared'
 import { useRounded } from '../utils/classGenerator'
 
 const props = withDefaults(
@@ -26,13 +27,14 @@ const sizeCls = computed(() => {
       return {
         base: 'h-6 px-2 py-1 text-xs',
       }
-    case 'md':
-      return {
-        base: 'h-8 px-3 py-1 text-sm',
-      }
     case 'lg':
       return {
         base: 'h-10 px-4 py-2 text-base',
+      }
+    case 'md':
+    default:
+      return {
+        base: 'h-8 px-3 py-1 text-sm',
       }
   }
 })
@@ -41,30 +43,15 @@ const labelSizeCls = computed(() => {
   switch (props.size) {
     case 'sm':
       return 'text-xs'
-    case 'md':
-      return 'text-sm'
     case 'lg':
       return 'md-md'
-  }
-})
-
-const colorCls = computed(() => {
-  if (props.error) {
-    return 'text-error-container bg-surface-base border-error-container focus:border-error-container'
-  }
-  switch (props.color) {
-    case 'secondary':
-      return 'text-surface-on bg-surface-base border-surface-border-base focus:border-secondary-container'
-    case 'tertiary':
-      return 'text-surface-on bg-surface-base border-surface-border-base focus:border-tertiary-container'
-    case 'error':
-      return 'text-surface-on bg-surface-base border-surface-border-base focus:border-error-container'
-    case 'primary':
+    case 'md':
     default:
-      return 'text-surface-on bg-surface-base border-surface-border-base focus:border-primary-container'
+      return 'text-sm'
   }
 })
 
+const colorStyle = useColorStyleWithKey(props.color, ['fill', 'border'])
 const disabledCls = computed(() => {
   if (props.disabled) {
     return 'pointer-events-none filter grayscale opacity-60'
@@ -83,7 +70,7 @@ const id = useId(attrs)
 </script>
 
 <template>
-  <div>
+  <div :style="[colorStyle]">
     <label
       v-if="$slots.label || label"
       :for="id"
@@ -105,8 +92,8 @@ const id = useId(attrs)
       v-bind="$attrs"
       ref="input"
       v-model="model"
-      class="w-full border px-2 py-1 outline-none transition-background-color,border-color,color"
-      :class="[colorCls, disabledCls, rounded.class, sizeCls.base]"
+      class="w-full border border-[var(--l-border)] px-2 py-1 outline-none transition-background-color,border-color,color dark:border-[var(--d-border)] focus:border-[var(--l-fill)] focus:ring-[var(--l-fill)] dark:focus:border-[var(--d-fill)] dark:focus:ring-[var(--d-fill)]"
+      :class="[disabledCls, rounded.class, sizeCls.base]"
       :style="[rounded.style]"
       :placeholder="placeholder"
       :type="props.password ? 'password' : 'text'"
