@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useColorStyleWithKey } from '../shared'
 import { childrenElementMapSymbol, directionSymbol, tabCurrentSymbol } from '../utils'
 
 const props = withDefaults(defineProps<{
@@ -7,6 +8,7 @@ const props = withDefaults(defineProps<{
 }>(), {
   color: 'primary',
 })
+const color = computed(() => props.color)
 const currentModel = inject<Ref<string | number | symbol>>(tabCurrentSymbol, ref(''))
 const tabRef = ref<HTMLButtonElement | null>(null)
 const isActivated = computed(() => {
@@ -39,29 +41,32 @@ const indicatorCls = computed(() => {
       return 'absolute inset-0 top-100% h-2px w-full transition-background-color,border-color,color '
   }
 })
-const colorCls = computed(() => {
-  if (isActivated.value) {
-    return 'bg-primary-container'
-  }
-  return 'bg-surface-lowest'
-})
+// const colorCls = computed(() => {
+//   if (isActivated.value) {
+//     return 'bg-primary-container'
+//   }
+//   return 'bg-surface-lowest'
+// })
+const colorStyle = useColorStyleWithKey(color, ['fill'])
 </script>
 
 <template>
   <button
     ref="tabRef"
     type="button"
-    class="rutline-none relative min-w-20 flex items-center justify-center outline-none focus-visible:outline-2 focus-visible:outline-primary-container outline-offset-0!"
+    class="rutline-none relative min-w-20 flex items-center justify-center outline-none focus-visible:outline-2 focus-visible:outline-[var(--d-fill)] outline-offset-0!"
     :class="[directionCls]"
+    :style="colorStyle"
     @click="onClick"
   >
     <div
       v-if="isActivated"
-      :class="[indicatorCls, colorCls]"
+      class="dark:bg-[var(--d-fill)] light:bg-[var(--l-fill)]"
+      :class="[indicatorCls]"
     />
     <div
       v-else
-      :class="[indicatorCls, colorCls]"
+      :class="[indicatorCls]"
     />
     <div class="h-full py-2">
       <slot />

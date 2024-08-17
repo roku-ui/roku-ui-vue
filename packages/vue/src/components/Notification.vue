@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { useColorStyle } from '../shared'
+import { useColorStyleWithKey } from '../shared'
+import type { Size } from '../types'
 import { useRounded } from '../utils/classGenerator'
 
 const props = withDefaults(
@@ -13,6 +14,7 @@ const props = withDefaults(
     rounded?: 'sm' | 'md' | 'lg' | 'none' | string | number
     block?: boolean
     color?: string
+    size?: Size
   }>(),
   {
     type: 'info',
@@ -20,6 +22,7 @@ const props = withDefaults(
     color: 'primary',
     rounded: 'md',
     block: false,
+    size: 'md',
   },
 )
 
@@ -27,15 +30,27 @@ defineEmits(['close'])
 
 const rounded = useRounded(props)
 const color = computed(() => props.color ?? 'primary')
-const colorStyle = useColorStyle(color)
+const colorStyle = useColorStyleWithKey(color, ['fill', 'text'])
+const shapeClass = computed(() => {
+  switch (props.size) {
+    case 'sm':
+      return 'min-h-10 p-1'
+    case 'lg':
+      return 'min-h-16 p-4'
+    case 'md':
+    default:
+      return 'min-h-16 p-3'
+  }
+})
 </script>
 
 <template>
   <div
-    class="relative min-h-16 min-w-80 w-full flex items-center gap-2 container-low p-3"
+    class="relative min-w-80 w-full flex items-center gap-2 container-low pl-4"
     :class="[
       { 'border-0': !withBorder },
       rounded.class,
+      shapeClass,
       {
         'max-w-100': !block,
         'w-full': block,
@@ -70,7 +85,12 @@ const colorStyle = useColorStyle(color)
     <div class="grow-1">
       <div
         v-if="title"
-        class="text-base text-[var(--l-text)] dark:text-[var(--d-text)]"
+        class="text-[var(--l-text)] dark:text-[var(--d-text)]"
+        :class="{
+          'text-xs': size === 'sm',
+          'text-sm': size === 'md',
+          'text-base': size === 'lg',
+        }"
       >
         {{ title }}
       </div>
@@ -81,7 +101,11 @@ const colorStyle = useColorStyle(color)
       />
       <div
         v-else-if="message"
-        class="text-sm text-surface-on-low"
+        class="text-surface-on-low"
+        :class="{
+          'text-xs': size === 'sm',
+          'text-sm': size === 'md' || size === 'lg',
+        }"
       >
         {{ message }}
       </div>

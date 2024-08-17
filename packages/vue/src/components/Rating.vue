@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useColorStyleWithKey } from '../shared'
-import type { size } from '../types'
+import type { Size } from '../types'
 
 const props = withDefaults(defineProps<{
   count?: number
@@ -9,7 +9,7 @@ const props = withDefaults(defineProps<{
   color?: string[] | string
   highlightSelectedOnly?: boolean
   unselectable?: boolean
-  size?: size
+  size?: Size
 }>(), {
   color: '#FDBD01',
 })
