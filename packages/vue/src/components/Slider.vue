@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useElementBounding, useEventListener } from '@vueuse/core'
 import { computed, onMounted, ref, watchEffect } from 'vue'
+import { useColorStyleWithKey } from '../shared'
 
 const props = withDefaults(
   defineProps<{
@@ -12,7 +13,7 @@ const props = withDefaults(
     max?: number
     step?: number
     tickNum?: number
-    color?: 'primary' | 'secondary' | 'tertiary' | 'error'
+    color?: string
     minWidth?: number
   }>(),
   {
@@ -89,40 +90,11 @@ function optionToIndex(option: any) {
   }
   return res
 }
-
-const colorCls = computed(() => {
-  switch (props.color) {
-    case 'primary':
-      return 'bg-primary-container'
-    case 'secondary':
-      return 'bg-secondary-container'
-    case 'tertiary':
-      return 'bg-tertiary-container'
-    case 'error':
-      return 'bg-error-container'
-    default:
-      return 'bg-error-container'
-  }
-})
-
-const indicatorOuterCls = computed(() => {
-  return `dark:bg-white bg-${props.color}-container`
-})
-
-const indicatorInnerCls = computed(() => {
-  switch (props.color) {
-    case 'primary':
-      return 'dark:bg-primary-container bg-white'
-    case 'secondary':
-      return 'dark:bg-secondary-container bg-white'
-    case 'tertiary':
-      return 'dark:bg-tertiary-container bg-white'
-    case 'error':
-      return 'dark:bg-error-container bg-white'
-    default:
-      return 'dark:bg-primary-container bg-white'
-  }
-})
+const color = computed(() => props.color)
+const colorStyle = useColorStyleWithKey(color, ['fill'])
+const colorCls = 'bg-[var(--l-fill)] dark:bg-[var(--d-fill)]'
+const indicatorOuterCls = 'dark:bg-white bg-[var(--l-fill)]'
+const indicatorInnerCls = 'dark:bg-[var(--l-fill)] bg-white'
 
 watchEffect(() => {
   if (currentIndex.value < 0) {
@@ -232,7 +204,7 @@ const animateCls = computed(() => props.animate
 </script>
 
 <template>
-  <div class="relative w-full">
+  <div :style="colorStyle" class="relative w-full">
     <div
       ref="wrapper"
       type="size"
