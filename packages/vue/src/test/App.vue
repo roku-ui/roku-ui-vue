@@ -610,8 +610,23 @@ const btnGroupOptionSingle = [
         <TextField color="error" />
         <TextField />
       </Paper>
-      <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 1000 })">
-        Push Notification
+      <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 1000, position: 'top-left' })">
+        Push Left
+      </Btn>
+      <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 1000, position: 'top' })">
+        Push Center
+      </Btn>
+      <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 1000, position: 'top-right' })">
+        Push Right
+      </Btn>
+      <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 1000, position: 'bottom-left' })">
+        Push BL
+      </Btn>
+      <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 1000, position: 'bottom' })">
+        Push BC
+      </Btn>
+      <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 1000, position: 'bottom-right' })">
+        Push BR
       </Btn>
       <Paper class="flex flex-wrap gap-2">
         <Switch disabled />

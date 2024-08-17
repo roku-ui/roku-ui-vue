@@ -4,6 +4,7 @@ export interface NotificationData {
   color?: string
   icon?: string
   durationMS?: number
+  position?: 'top' | 'top-right' | 'top-left' | 'bottom' | 'bottom-right' | 'bottom-left'
   [key: string]: any
 }
 
@@ -18,6 +19,6 @@ export function useNotifications() {
 export class Notifications {
   static show(data: NotificationData) {
     data.hash = Math.random().toString(36)
-    notifications.value.push(data as NotificationDataWithHash)
+    notifications.value = [data as NotificationDataWithHash, ...notifications.value]
   }
 }
