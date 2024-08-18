@@ -68,12 +68,14 @@ let ani: Animation | undefined
 const loadingStyle = computed(() => {
   if (props.loading) {
     if (ani) {
-      ani.cancel()
+      ani.play()
     }
-    ani = paperRef.value?.animate(keyFrames.value, {
-      duration: 1000,
-      iterations: Number.POSITIVE_INFINITY,
-    })
+    else {
+      ani = paperRef.value?.animate(keyFrames.value, {
+        duration: 1000,
+        iterations: Number.POSITIVE_INFINITY,
+      })
+    }
     return {
       'background': 'linear-gradient(var(--bg), var(--bg)) padding-box, var(--gradient) border-box',
       'background-color': 'var(--bg)',
@@ -83,6 +85,9 @@ const loadingStyle = computed(() => {
     }
   }
   else {
+    if (ani) {
+      ani.pause()
+    }
     return {}
   }
 })

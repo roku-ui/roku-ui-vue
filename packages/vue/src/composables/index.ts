@@ -4,6 +4,8 @@ import { isClient } from '@vueuse/core'
 import type { MaybeRef } from 'vue'
 import { type ThemeData, defaultTheme, generateColors } from '..'
 
+export * from './dom'
+
 export const COLOR_LIGHTNESS_MAP = [0.98, 0.96, 0.9, 0.7, 0.5, 0.4, 0.35, 0.3, 0.28, 0.2, 0.08]
 export function useRootTheme() {
   if (!isClient) {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { MaybeComputedElementRef } from '@vueuse/core'
-import { tryOnMounted, unrefElement, useElementBounding, useElementHover, useEventListener, useMediaQuery, useMouse, useParentElement, useResizeObserver, useScroll } from '@vueuse/core'
+import { useElementBounding, useElementHover, useEventListener, useMouse, useParentElement, useScroll } from '@vueuse/core'
+import { useClientHeight, useScrollHeight } from '../composables/dom'
 
 const props = withDefaults(
   defineProps<{
@@ -13,36 +13,6 @@ const props = withDefaults(
     threshold: 100,
   },
 )
-function useClientHeight(target: MaybeComputedElementRef, options: {
-  initialWidth?: number
-  initialHeight?: number
-  listenOrientation?: boolean
-} = {}) {
-  const {
-    initialWidth = Number.POSITIVE_INFINITY,
-    listenOrientation = true,
-  } = options
-
-  const clientHeight = ref(initialWidth)
-  const el = computed(() => unrefElement(target))
-  const update = () => {
-    if (el.value) {
-      clientHeight.value = el.value.clientHeight
-    }
-  }
-
-  update()
-  tryOnMounted(update)
-  useEventListener('resize', update, { passive: true })
-  useResizeObserver(() => el.value, update)
-
-  if (listenOrientation) {
-    const matches = useMediaQuery('(orientation: portrait)')
-    watch(matches, () => update())
-  }
-
-  return clientHeight
-}
 
 const parentElement = useParentElement()
 const parentBounds = useElementBounding(parentElement)
@@ -63,12 +33,13 @@ const { x, y } = useScroll(() => scrollDomRef.value)
 const scrollableLength = computed(() => {
   return (scrollDomRef.value?.scrollHeight ?? 0) - (clientHeight.value ?? 0)
 })
+const scrollHeight = useScrollHeight(() => scrollDomRef.value)
 const barProgress = computed(() => y.value / scrollableLength.value || 0)
 const barHeight = computed(() => {
   if (!scrollDomRef.value) {
     return 0
   }
-  return clientHeight.value / scrollDomRef.value.scrollHeight * clientHeight.value
+  return clientHeight.value / scrollHeight.value * clientHeight.value
 })
 const scrollableHeight = computed(() => {
   return clientHeight.value - barHeight.value
