@@ -26,7 +26,7 @@ const props = withDefaults(
 
 const color = computed(() => props.color)
 const colorStyle = useColorStyleWithKey(color, ['fill'])
-
+const loading = computed(() => props.loading)
 const roundedCls = useRounded(props)
 const { x, y } = useMouse({ type: 'client' })
 const paperRef = ref<HTMLElement | null>(null)
@@ -35,8 +35,45 @@ const { width, height, top, left } = useElementBounding(paperRef)
 const shortEdge = computed(() => {
   return Math.min(width.value, height.value)
 })
+
+const keyFrames = computed(() => {
+  if (!width.value || !height.value) {
+    return []
+  }
+  if (!loading.value) {
+    return []
+  }
+  const res = [
+    {
+      backgroundPosition: `0% 0%`,
+      offset: 0,
+    },
+    {
+      backgroundPosition: '0% 100%',
+      offset: 0.25,
+    },
+    {
+      backgroundPosition: '100% 100%',
+      offset: 0.5,
+    },
+    {
+      backgroundPosition: '100% 0%',
+      offset: 0.75,
+    },
+  ]
+  return res
+})
+
+let ani: Animation | undefined
 const loadingStyle = computed(() => {
   if (props.loading) {
+    if (ani) {
+      ani.cancel()
+    }
+    ani = paperRef.value?.animate(keyFrames.value, {
+      duration: 1000,
+      iterations: Number.POSITIVE_INFINITY,
+    })
     return {
       'background': 'linear-gradient(var(--bg), var(--bg)) padding-box, var(--gradient) border-box',
       'background-color': 'var(--bg)',
@@ -110,38 +147,6 @@ const traceAnimateStyle = computed(() => {
   else {
     return {}
   }
-})
-
-const keyFrames = computed(() => {
-  if (!width.value || !height.value) {
-    return []
-  }
-  if (!props.loading) {
-    return []
-  }
-  const res = [
-    {
-      backgroundPosition: `0% 0%`,
-      offset: 0,
-    },
-    {
-      backgroundPosition: '0% 100%',
-      offset: 0.25,
-    },
-    {
-      backgroundPosition: '100% 100%',
-      offset: 0.5,
-    },
-    {
-      backgroundPosition: '100% 0%',
-      offset: 0.75,
-    },
-  ]
-  return res
-})
-useAnimate(paperRef, keyFrames, {
-  duration: 1000,
-  iterations: Number.POSITIVE_INFINITY,
 })
 </script>
 

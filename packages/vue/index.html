@@ -9,9 +9,7 @@
 
   <body>
     <script>
-      var e =
-        window.matchMedia &&
-        window.matchMedia('(prefers-color-scheme: dark)').matches
+      var e = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
       t = localStorage.getItem('scheme') || 'auto'
       'dark' === t || (e && 'light' !== t)
         ? (document.documentElement.dataset.scheme = 'dark')

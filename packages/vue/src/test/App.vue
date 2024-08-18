@@ -41,7 +41,7 @@ function onDrop(files: File[] | null) {
 }
 const text = ref('1')
 const tab = ref(0)
-const loading = ref(true)
+const loading = ref(false)
 const tabs = ref(0)
 const selectObj = ref()
 
