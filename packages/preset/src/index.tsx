@@ -78,6 +78,15 @@ const shortcuts = colorKeys.filter(d => d !== 'surface').reduce((shortcuts, colo
   return shortcuts
 }, {} as any)
 
+const themeShortCuts = {
+  'surface-base': 'light:bg-[var(--l-surface-base)] dark:bg-[var(--d-surface-base)] dark:border-[var(--d-surface-border)] light:border-[var(--l-surface-border)]',
+  'surface-lowest': 'light:bg-[var(--l-surface-lowest)] dark:bg-[var(--d-surface-lowest)] dark:border-[var(--d-surface-border)] light:border-[var(--l-surface-border)]',
+  'surface-low': 'light:bg-[var(--l-surface-low)] dark:bg-[var(--d-surface-low)] dark:border-[var(--d-surface-border)] light:border-[var(--l-surface-border)]',
+  'surface-high': 'light:bg-[var(--l-surface-high)] dark:bg-[var(--d-surface-high)] dark:border-[var(--d-surface-border)] light:border-[var(--l-surface-border)]',
+  'surface-highest': 'light:bg-[var(--l-surface-highest)] dark:bg-[var(--d-surface-highest)] dark:border-[var(--d-surface-border)] light:border-[var(--l-surface-border)]',
+  'surface-outline': 'light:border-[var(--l-surface-border)] dark:border-[var(--d-surface-border)] dark:text-[var(--d-surface-border)] light:text-[var(--l-surface-border)]',
+}
+
 interface PresetOptions {
   icon?: any
 }
@@ -97,10 +106,11 @@ const rokuPreset: (options?: PresetOptions) => Preset<object> = (options = {}) =
     safelist: ['rounded-[var(--r-rounded)]'],
     shortcuts: {
       ...shortcuts,
-      'container-low': 'bg-surface-low border-surface-border-low border text-surface-on transition-background-color,border-color,color',
-      'container-base': 'bg-surface-base border-surface-border-base border text-surface-on transition-background-color,border-color,color',
-      'container-high': 'bg-surface-high border-surface-border-high border text-surface-on transition-background-color,border-color,color',
-      'btn-default': 'container-base enabled:hover:bg-surface-border-base transition-background-color,border-color,color focus-visible:outline-2 outline-offset-2 focus-visible:outline-surface-border-base outline-none',
+      ...themeShortCuts,
+      'container-low': 'bg-surface-low border-surface-border-low border text-surface-on',
+      'container-base': 'bg-surface-base border-surface-border-base border text-surface-on',
+      'container-high': 'bg-surface-high border-surface-border-high border text-surface-on',
+      'btn-default': 'container-base enabled:hover:bg-surface-border-base focus-visible:outline-2 outline-offset-2 focus-visible:outline-surface-border-base outline-none',
     },
     presets: [
       presetUno({

@@ -1,8 +1,22 @@
 import { type MaybeRef, unref } from 'vue'
 import tinycolor from 'tinycolor2'
-import { errorColor, generateColorsObjMap, primaryColor, secondaryColor, surfaceColor, tertiaryColor } from '../utils'
+import { generateColorsObjMap } from '../utils'
 import type { Variant } from '../types'
-import { COLOR_LIGHTNESS_MAP } from '..'
+import { COLOR_LIGHTNESS_MAP, SURFACE_LIGHTNESS_MAP } from '..'
+
+export const primaryColor = ref('#3F9CDC')
+export const secondaryColor = ref('#5999A6')
+export const tertiaryColor = ref('#F76C22')
+export const errorColor = ref('#F95858')
+export const surfaceColor = ref('#121212')
+
+export const defaultTheme = useThemeData('default', {
+  primary: primaryColor,
+  secondary: secondaryColor,
+  tertiary: tertiaryColor,
+  error: errorColor,
+  surface: surfaceColor,
+})
 
 const colorStyleCache = new Map<string, tinycolor.Instance[]>()
 function useColorsObjs(color: MaybeRef<string>) {
@@ -36,12 +50,19 @@ function useColorsObjs(color: MaybeRef<string>) {
 export function useColorStyleByColorsAndVariant(colorInstances: MaybeRef<tinycolor.Instance[]>, variant: MaybeRef<Variant> | undefined = undefined) {
   return computed(() => {
     const color = unref(colorInstances)
+    const surface = generateColorsObjMap(unref(surfaceColor), SURFACE_LIGHTNESS_MAP).colors
+
+    const lSurfaceHigh = surface[0].toHexString()
+    const lSurfaceBorder = surface[3].toHexString()
+
+    const dSurfaceHigh = surface[8].toHexString()
+    const dSurfaceBorder = surface[7].toHexString()
 
     const dFill = color[5].toHexString()
     const dFillH = color[6].toHexString()
     const dOnFill = tinycolor.mostReadable(color[5].toHexString(), [color[0], color[10]], { includeFallbackColors: true }).toHexString()
-    const lFill = color[4].toHexString()
-    const lFillH = color[5].toHexString()
+    const lFill = color[5].toHexString()
+    const lFillH = color[6].toHexString()
     const lOnFill = tinycolor.mostReadable(color[5].toHexString(), [color[0], color[10]], { includeFallbackColors: true }).toHex8String()
 
     const dText = color[3].toHexString()
@@ -50,14 +71,13 @@ export function useColorStyleByColorsAndVariant(colorInstances: MaybeRef<tinycol
     const lTextH = color[6].toHexString()
     const lFillT = color[6].setAlpha(0.08).toHex8String()
     const lFillTH = color[6].setAlpha(0.1).toHex8String()
+    const lFillOp50 = color[6].setAlpha(0.5).toHex8String()
+    const lFillOp75 = color[6].setAlpha(0.75).toHex8String()
     const dFillT = color[4].setAlpha(0.2).toHex8String()
     const dFillTH = color[4].setAlpha(0.3).toHex8String()
     const dFillOp50 = color[4].setAlpha(0.5).toHex8String()
-    const lFillOp50 = color[6].setAlpha(0.5).toHex8String()
     const dFillOp75 = color[4].setAlpha(0.75).toHex8String()
-    const lFillOp75 = color[6].setAlpha(0.75).toHex8String()
     if (!variant) {
-      const surface = unref(useColorsObjs('surface'))
       return {
         '--d-text': dText,
         '--d-text-h': dTextH,
@@ -65,25 +85,32 @@ export function useColorStyleByColorsAndVariant(colorInstances: MaybeRef<tinycol
         '--d-fill-t': dFillT,
         '--d-fill-h': dFillH,
         '--d-on-fill': dOnFill,
+        '--d-border': dSurfaceBorder,
+        '--d-border-h': surface[7].toHexString(),
+        '--d-fill-t-h': dFillTH,
+        '--d-fill-50': dFillOp50,
+        '--d-fill-75': dFillOp75,
         '--l-text': lText,
         '--l-text-h': lTextH,
         '--l-fill': lFill,
         '--l-fill-t': lFillT,
         '--l-fill-h': lFillH,
         '--l-on-fill': lOnFill,
-        '--l-border': surface[2].toHexString(),
-        '--d-border': surface[9].toHexString(),
-        '--d-fill-t-h': dFillTH,
+        '--l-border': lSurfaceBorder,
+        '--l-border-h': surface[3].toHexString(),
         '--l-fill-t-h': lFillTH,
-        '--d-fill-50': dFillOp50,
         '--l-fill-50': lFillOp50,
-        '--d-fill-75': dFillOp75,
         '--l-fill-75': lFillOp75,
       }
     }
     switch (unref(variant)) {
       case 'default':
-        return {}
+        return {
+          '--d-surface-high': dSurfaceHigh,
+          '--d-surface-border': dSurfaceBorder,
+          '--l-surface-high': lSurfaceHigh,
+          '--l-surface-border': lSurfaceBorder,
+        }
       case 'filled':
         return {
           '--d-fill': dFill,
@@ -164,21 +191,21 @@ export function useColorClass(variant: MaybeRef<Variant>) {
   return computed(() => {
     switch (unref(variant)) {
       case 'default':
-        return ['border', 'border-surface-border-base', 'bg-surface-base', 'text-surface-on', 'transition-background-color,border']
+        return 'theme-default'
       case 'filled':
-        return ['border', 'border-transparent', 'dark:bg-[var(--d-fill)]', 'dark:text-[var(--d-on-fill)]', 'dark:hover:bg-[var(--d-fill-h)]', 'light:bg-[var(--l-fill)]', 'light:text-[var(--l-on-fill)]', 'light:hover:bg-[var(--l-fill-h)]']
+        return 'theme-filled'
       case 'outline':
-        return ['border', 'dark:border-[var(--d-text)]', 'dark:text-[var(--d-text)]', 'dark:hover:bg-[var(--d-fill-t)]', 'light:border-[var(--l-text)]', 'light:text-[var(--l-text)]', 'light:hover:bg-[var(--l-fill-t)]']
+        return 'theme-outline'
       case 'light':
-        return ['border', 'border-transparent', 'dark:bg-[var(--d-fill-t)]', 'dark:text-[var(--d-text)]', 'dark:hover:bg-[var(--d-fill-t-h)]', 'light:bg-[var(--l-fill-t)]', 'light:text-[var(--l-text)]', 'light:hover:bg-[var(--l-fill-t-h)]']
+        return 'theme-light'
       case 'transparent':
-        return ['border', 'border-transparent', 'bg-transparent', 'dark:text-[var(--d-text)]', 'light:text-[var(--l-text)]']
+        return 'theme-transparent'
       case 'subtle':
-        return ['border', 'border-transparent', 'bg-transparent', 'dark:text-[var(--d-text)]', 'dark:hover:bg-[var(--d-fill-t)]', 'light:text-[var(--l-text)]', 'light:hover:bg-[var(--l-fill-t)]']
+        return 'theme-subtle'
       case 'contrast':
-        return ['border', 'border-transparent', 'bg-transparent', 'dark:text-[var(--d-text)]', 'dark:hover:bg-[var(--d-fill)]', 'light:text-[var(--l-text)]', 'light:hover:bg-[var(--l-fill)]', 'dark:hover:text-[var(--d-on-fill)]', 'light:hover:text-[var(--l-on-fill)]']
+        return 'theme-contrast'
       case 'white':
-        return ['border', 'border-transparent', 'bg-white', 'dark:text-[var(--d-text)]', 'light:text-[var(--l-text)]']
+        return 'theme-white'
       default:
         return []
     }

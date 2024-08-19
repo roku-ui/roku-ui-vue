@@ -1,10 +1,13 @@
 <script setup lang="ts" generic="T extends { id: number | string | symbol;  [key: string]: any;} | string | symbol | number">
 import { isClient } from '@vueuse/core'
 import { useRounded } from '../utils/classGenerator'
+import { useColorStyleWithKey } from '../shared'
+import type { Color } from '../types'
 
 const props = withDefaults(defineProps<{
   ariaLabel?: string
   options?: T[]
+  color?: Color
   size?: 'sm' | 'md' | 'lg'
   noneText?: string
   notFoundText?: string
@@ -134,9 +137,11 @@ function onItemPointerDown(option: T) {
   model.value = option
   focused.value = false
 }
+const color = computed(() => props.color ?? 'primary')
+const colorStyle = useColorStyleWithKey(color, ['fill', 'border'])
 const colorCls = computed(() => {
   return {
-    input: 'container-base focus:border-primary-container',
+    input: 'dark:border-[var(--d-border)] focus:border-[var(--l-fill)] light:border-[var(--l-border)] focus:ring-[var(--l-fill)] dark:focus:border-[var(--d-fill)] dark:focus:ring-[var(--d-fill)]',
   }
 })
 const sizeCls = computed(() => {
@@ -197,6 +202,7 @@ const searchCls = computed(() => {
   <div
     ref="wrapperRef"
     class="r-select-wrapper relative"
+    :style="colorStyle"
   >
     <div class="w-full flex items-center">
       <input

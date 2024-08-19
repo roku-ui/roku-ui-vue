@@ -11,7 +11,7 @@ const generate = computed(() => {
   if (!headings.anchorLinks) {
     return false
   }
-  if (headings.anchorLinks === true) {
+  if (headings.anchorLinks.h3 === true) {
     return props.id
   }
   return props.id && headings.anchorLinks.h3

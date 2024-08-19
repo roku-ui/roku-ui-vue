@@ -2,11 +2,37 @@ import tinycolor from 'tinycolor2'
 import type { RemovableRef } from '@vueuse/core'
 import { isClient } from '@vueuse/core'
 import type { MaybeRef } from 'vue'
-import { type ThemeData, defaultTheme, generateColors } from '..'
+import { type ThemeData, generateColors } from '..'
+import { defaultTheme } from '../shared'
 
 export * from './dom'
 
-export const COLOR_LIGHTNESS_MAP = [0.98, 0.96, 0.9, 0.7, 0.5, 0.4, 0.35, 0.3, 0.28, 0.2, 0.08]
+export const COLOR_LIGHTNESS_MAP = [
+  0.90,
+  0.80,
+  0.70,
+  0.60,
+  0.5,
+  0.4,
+  0.30,
+  0.20,
+  0.10,
+  0.05,
+  0.01,
+]
+export const SURFACE_LIGHTNESS_MAP = [
+  1,
+  0.99,
+  0.95,
+  0.9,
+  0.7,
+  0.5,
+  0.3,
+  0.2,
+  0.1,
+  0.075,
+  0.05,
+]
 export function useRootTheme() {
   if (!isClient) {
     return ref('dark')
@@ -56,7 +82,7 @@ export function useThemeData(
   } = {},
 ) {
   const defaultColorLightness = COLOR_LIGHTNESS_MAP
-  const defaultSurfaceLightness = [1, 0.99, 0.98, 0.9, 0.8, 0.5, 0.2, 0.12, 0.1, 0.08, 0.06]
+  const defaultSurfaceLightness = SURFACE_LIGHTNESS_MAP
   if (lightnessMap.primary === undefined) {
     lightnessMap.primary = defaultColorLightness
   }

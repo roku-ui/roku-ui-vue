@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import { useColorStyleWithKey } from '../shared'
+import type { Color } from '../types'
+
 const props = withDefaults(
   defineProps<{
-    color?: 'primary' | 'secondary' | 'tertiary' | 'error'
+    color?: Color
     size?: 'sm' | 'md' | 'lg' | string | number
     position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'top' | 'bottom' | 'left' | 'right'
     ping?: boolean
@@ -35,37 +38,29 @@ const labelCls = computed(() => {
   switch (props.size) {
     case 'sm':
       return 'text-sm children:px-1.5'
-    case 'md':
-      return 'text-md children:px-2'
     case 'lg':
       return 'text-lg children:px-2.5'
+    case 'md':
+    default:
+      return 'text-md children:px-2'
   }
 })
 const posCls = computed(() => {
   switch (props.position) {
-    case 'top-left':
-      return 'top-0 left-0 -translate-x-1/2 -translate-y-1/2'
-    case 'top-right':
-      return 'top-0 right-0 translate-x-1/2 -translate-y-1/2'
     case 'bottom-left':
       return 'bottom-0 left-0 -translate-x-1/2 translate-y-1/2'
     case 'bottom-right':
       return 'bottom-0 right-0 translate-x-1/2 translate-y-1/2'
+    case 'top-left':
+      return 'top-0 left-0 -translate-x-1/2 -translate-y-1/2'
+    case 'top-right':
+    default:
+      return 'top-0 right-0 translate-x-1/2 -translate-y-1/2'
   }
 })
 
-const colorCls = computed(() => {
-  switch (props.color) {
-    case 'primary':
-      return 'bg-primary-container text-white'
-    case 'secondary':
-      return 'bg-secondary-container text-white'
-    case 'tertiary':
-      return 'bg-tertiary-container text-white'
-    case 'error':
-      return 'bg-error-container text-white'
-  }
-})
+const color = computed(() => props.color)
+const colorStyle = useColorStyleWithKey(color, ['fill', 'on-fill'])
 </script>
 
 <template>
@@ -78,13 +73,13 @@ const colorCls = computed(() => {
     >
       <div
         v-if="props.ping"
-        class="absolute box-content animate-ping border-2 border-transparent rounded-full"
+        class="absolute box-content animate-ping border-2 border-transparent rounded-full bg-[var(--l-fill)] text-[var(--l-on-fill)] dark:bg-[var(--d-fill)] dark:text-[var(--d-on-fill)]"
         :class="[
           {
             [sizeCls]: !$slots.label,
           },
-          colorCls,
         ]"
+        :style="colorStyle"
       >
         <slot
           v-if="$slots.label"
@@ -92,13 +87,13 @@ const colorCls = computed(() => {
         />
       </div>
       <div
-        class="top-0 box-content border-2 border-surface-low rounded-full"
+        class="top-0 box-content border-2 border-surface-low rounded-full bg-[var(--l-fill)] text-[var(--l-on-fill)] dark:bg-[var(--d-fill)] dark:text-[var(--d-on-fill)]"
         :class="[
           {
             [sizeCls]: !$slots.label,
           },
-          colorCls,
         ]"
+        :style="colorStyle"
       >
         <slot
           v-if="$slots.label"

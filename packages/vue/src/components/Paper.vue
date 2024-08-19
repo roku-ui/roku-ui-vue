@@ -159,7 +159,7 @@ const traceAnimateStyle = computed(() => {
   <component
     :is="is"
     ref="paperRef"
-    class="relative container-low transition-background-color,border-color,color"
+    class="relative container-low"
     :class="[
       {
         'border-transparent': !withBorder,

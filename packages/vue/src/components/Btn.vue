@@ -12,8 +12,7 @@ const props = withDefaults(
     pressEffect?: 'translate' | 'scale'
     variant?: Variant
     hoverVariant?: Variant
-    color?: 'primary' | 'secondary' | 'tertiary' | 'error'
-    animate?: boolean
+    color?: string
     rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full' | string | number
     disabled?: boolean
   }>(),
@@ -83,7 +82,6 @@ const colorStyle = useColorStyle(color, variant)
         'filter-grayscale pointer-events-none select-none filter-brightness-80': disabled,
         'active:translate-y-0.25': pressEffect === 'translate',
         'active:scale-98': pressEffect === 'scale',
-        'transition-all': animate,
       },
     ]"
     :disabled="disabled"

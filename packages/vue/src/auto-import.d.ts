@@ -8,6 +8,7 @@ declare global {
   const COLOR_LIGHTNESS_MAP: typeof import('./composables/index')['COLOR_LIGHTNESS_MAP']
   const DefaultMagicKeysAliasMap: typeof import('../../../node_modules/.pnpm/@vueuse+core@10.11.1_vue@3.4.37_typescript@5.5.4_/node_modules/@vueuse/core/index.mjs')['DefaultMagicKeysAliasMap']
   const EffectScope: typeof import('vue')['EffectScope']
+  const SURFACE_LIGHTNESS_MAP: typeof import('./composables/index')['SURFACE_LIGHTNESS_MAP']
   const StorageSerializers: typeof import('../../../node_modules/.pnpm/@vueuse+core@10.11.1_vue@3.4.37_typescript@5.5.4_/node_modules/@vueuse/core/index.mjs')['StorageSerializers']
   const TransitionPresets: typeof import('../../../node_modules/.pnpm/@vueuse+core@10.11.1_vue@3.4.37_typescript@5.5.4_/node_modules/@vueuse/core/index.mjs')['TransitionPresets']
   const asyncComputed: typeof import('@vueuse/core')['asyncComputed']

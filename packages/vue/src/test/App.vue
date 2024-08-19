@@ -70,6 +70,9 @@ const btnGroupOptionSingle = [
   <RokuProvider>
     <NotificationSystem />
     <div class="flex flex-col items-center gap-2">
+      <div class="theme-filled">
+        test
+      </div>
       <RatingDemo />
       <SelectAreaDemo />
       <PopoverDemo />

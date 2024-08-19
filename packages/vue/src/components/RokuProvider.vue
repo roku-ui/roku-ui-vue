@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { isClient } from '@vueuse/core'
 import type { ThemeData } from '../utils'
-import { defaultTheme } from '../utils'
+import { defaultTheme } from '../shared'
 
 const props = withDefaults(
   defineProps<{
@@ -52,7 +52,6 @@ provide('currentThemeData', computed(() => themeData.value))
     :style="[
       styles,
     ]"
-    class="text-surface-on transition-background-color,border-color,color"
   >
     <slot />
   </component>

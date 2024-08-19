@@ -6,7 +6,7 @@ import nodeResolve from '@rollup/plugin-node-resolve'
  * @type {import('rollup').RollupOptions}
  */
 export default {
-  input: 'src/index.ts',
+  input: 'src/index.tsx',
   output: [
     {
       file: './dist/index.cjs',

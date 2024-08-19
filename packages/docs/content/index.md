@@ -19,7 +19,7 @@ features:
 
 Roku UI 依赖于 UnoCSS，因此你需要一并安装 UnoCSS。同时，我们提供了一套 UnoCSS 的 preset，它包含样式 Reset CSS，同时扫描所有组件用到的原子化样式，用户无需引入其他样式文件。我们推荐使用 pnpm 来安装。
 
-```bash
+```bash meta-info=val
 pnpm add @roku-ui/vue @roku-ui/preset unocss
 ```
 
