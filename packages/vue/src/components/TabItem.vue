@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { type ComputedRef, type Ref, computed, inject, onMounted, ref } from 'vue'
 import { useColorStyleWithKey } from '../shared'
 import { childrenElementMapSymbol, directionSymbol, tabCurrentSymbol } from '../utils'
 

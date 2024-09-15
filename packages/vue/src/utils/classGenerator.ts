@@ -1,3 +1,5 @@
+import { computed } from 'vue'
+
 export function useRounded(props: { rounded: 'none' | 'sm' | 'md' | 'lg' | 'full' | string | number }) {
   return computed(() => {
     const style = getRoundedStyle(props.rounded)

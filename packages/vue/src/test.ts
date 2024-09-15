@@ -1,7 +1,4 @@
-// import '@unocss/reset/tailwind.css'
-
-// import 'virtual:uno.css'
-// import './styles.css'
+import { createApp } from 'vue'
 import App from './test/App.vue'
 
 createApp(App).mount('#app')

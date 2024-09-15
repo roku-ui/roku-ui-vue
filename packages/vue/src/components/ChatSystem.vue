@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+
 const props = withDefaults(
   defineProps<{
     position?: 'left' | 'right'
@@ -27,6 +29,7 @@ const bubbleColor = computed(() => {
           return 'bg-primary-container text-primary-on'
       }
     case 'transparent':
+    default:
       return 'bg-transparent'
   }
 })

@@ -1,5 +1,6 @@
 <script setup lang="ts" generic="T extends { id: number | string | symbol;  [key: string]: any;} | string | symbol | number">
 import { isClient } from '@vueuse/core'
+import { computed, ref, watch, watchEffect } from 'vue'
 import { useRounded } from '../utils/classGenerator'
 import { useColorStyleWithKey } from '../shared'
 import type { Color } from '../types'

@@ -1,5 +1,6 @@
 <!-- eslint-disable no-console -->
 <script setup lang="ts">
+import { computed, onMounted, ref } from 'vue'
 import { Notifications, generateColors } from '..'
 import PopoverDemo from './demo/PopoverDemo.vue'
 import TagsDemo from './demo/TagsDemo.vue'

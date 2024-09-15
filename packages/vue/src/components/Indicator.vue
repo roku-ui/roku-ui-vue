@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed, useSlots } from 'vue'
 import { useColorStyleWithKey } from '../shared'
 import type { Color } from '../types'
 

@@ -1,4 +1,4 @@
-import { type MaybeRef, unref } from 'vue'
+import { type MaybeRef, computed, ref, unref } from 'vue'
 import tinycolor from 'tinycolor2'
 import { generateColorsObjMap } from '../utils'
 import type { Variant } from '../types'

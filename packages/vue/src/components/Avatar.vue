@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Component } from 'vue'
+import { type Component, computed, onMounted, ref } from 'vue'
 
 const props = withDefaults(
   defineProps<{

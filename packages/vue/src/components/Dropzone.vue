@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useDropZone } from '@vueuse/core'
+import { ref } from 'vue'
 
 const props = withDefaults(
   defineProps<{

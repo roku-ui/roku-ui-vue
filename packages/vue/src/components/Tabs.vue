@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Fragment } from 'vue'
+import type { Ref } from 'vue'
+import { Fragment, computed, onMounted, provide, ref, useSlots } from 'vue'
 import { childrenElementMapSymbol, directionSymbol, tabCurrentSymbol } from '../utils'
 
 const props = withDefaults(defineProps<{

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useColorStyleWithKey } from '../shared'
 import type { Size } from '../types'
 import { useRounded } from '../utils/classGenerator'

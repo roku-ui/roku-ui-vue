@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useColorClass, useColorStyle } from '../shared'
 import type { Variant } from '../types'
 

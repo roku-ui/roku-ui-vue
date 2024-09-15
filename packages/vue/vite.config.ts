@@ -18,7 +18,6 @@ export default defineConfig({
     }),
     AutoImport({
       imports: [
-        'vue',
         '@vueuse/core',
       ],
       dirs: [
@@ -41,7 +40,6 @@ export default defineConfig({
     rollupOptions: {
       external: ['vue'],
       output: {
-        exports: 'named',
         globals: {
           vue: 'Vue',
         },

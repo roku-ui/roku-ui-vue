@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { isClient } from '@vueuse/core'
+import { type Component, computed, provide, watchEffect } from 'vue'
 import type { ThemeData } from '../utils'
 import { defaultTheme } from '../shared'
 
