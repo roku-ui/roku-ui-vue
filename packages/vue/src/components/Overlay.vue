@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { useRounded } from '@/utils/classGenerator'
 import tinycolor from 'tinycolor2'
 import { computed, ref } from 'vue'
-import { useRounded } from '../utils/classGenerator'
 
 const props = withDefaults(defineProps<{
   blur?: boolean | 'sm' | 'md' | 'lg'

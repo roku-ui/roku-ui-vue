@@ -26,8 +26,8 @@ pnpm add @roku-ui/vue @roku-ui/preset unocss
 然后创建 UnoCSS 的配置文件 `unocss.config.ts`，并导入 preset：
 
 ```ts
-import { defineConfig } from 'unocss'
 import { rokuPreset } from '@roku-ui/preset'
+import { defineConfig } from 'unocss'
 
 export default defineConfig({
   presets: [

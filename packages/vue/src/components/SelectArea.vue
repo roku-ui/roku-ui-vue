@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useElementBounding, useEventListener, useMagicKeys, useMouse, useParentElement } from '@vueuse/core'
 import { computed, ref } from 'vue'
-import { useColorStyleWithKey } from '../shared'
+import { useColorsObjs } from '../shared'
 
 const props = withDefaults(defineProps<{
   target?: HTMLElement
@@ -15,7 +15,15 @@ const emit = defineEmits<{
   selectEnd: [Area, { target: EventTarget | null, shift: boolean, ctrl: boolean }]
 }>()
 const color = computed(() => props.color)
-const colorStyle = useColorStyleWithKey(color, ['fill-50', 'fill-75', 'fill-t-h', 'fill-t'])
+const colors = useColorsObjs(color)
+const colorStyle = computed(() => {
+  const borderColor = colors.value[5].setAlpha(0.5).toHex8String()
+  const fillColor = colors.value[5].setAlpha(0.1).toHex8String()
+  return {
+    '--border-color': borderColor,
+    '--fill-color': fillColor,
+  }
+})
 
 const { shift, control: ctrl } = useMagicKeys()
 export interface Area {
@@ -110,8 +118,7 @@ useEventListener(window, 'dragend', () => {
   <Teleport v-if="target" :to="target">
     <div
       v-if="dragging"
-      class="absolute z-10000 h-1 border border-[var(--l-border)] border-[var(--l-fill-t)] bg-[var(--l-fill-t-h)] dark:border-[var(--d-fill-t-h)] dark:bg-[var(--d-fill-t)]"
-
+      class="absolute z-10000 h-1 border border border-[var(--border-color)] bg-[var(--fill-color)]"
       :style="[{
         left: `${Math.min(startPoint.x, endPoint.x)}px`,
         top: `${Math.min(startPoint.y, endPoint.y)}px`,

@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import type { Color } from '../types'
 import { computed, useSlots } from 'vue'
 import { useColorStyleWithKey } from '../shared'
-import type { Color } from '../types'
 
 const props = withDefaults(
   defineProps<{
@@ -74,7 +74,7 @@ const colorStyle = useColorStyleWithKey(color, ['fill', 'on-fill'])
     >
       <div
         v-if="props.ping"
-        class="absolute box-content animate-ping border-2 border-transparent rounded-full bg-[var(--l-fill)] text-[var(--l-on-fill)] dark:bg-[var(--d-fill)] dark:text-[var(--d-on-fill)]"
+        class="absolute box-content animate-ping border-2 border-transparent rounded-full bg-[var(--l-fill)] text-[var(--l-text)] dark:bg-[var(--d-fill)] dark:text-[var(--d-text)]"
         :class="[
           {
             [sizeCls]: !$slots.label,
@@ -88,7 +88,7 @@ const colorStyle = useColorStyleWithKey(color, ['fill', 'on-fill'])
         />
       </div>
       <div
-        class="top-0 box-content border-2 border-surface-low rounded-full bg-[var(--l-fill)] text-[var(--l-on-fill)] dark:bg-[var(--d-fill)] dark:text-[var(--d-on-fill)]"
+        class="border-surface-low top-0 box-content border-2 rounded-full bg-[var(--l-fill)] text-[var(--l-text)] dark:bg-[var(--d-fill)] dark:text-[var(--d-text)]"
         :class="[
           {
             [sizeCls]: !$slots.label,

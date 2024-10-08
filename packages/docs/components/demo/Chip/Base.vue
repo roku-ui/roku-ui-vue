@@ -9,7 +9,7 @@ const code = computed(() => `<template>
 <template>
   <Demo :code="code">
     <template #preview>
-        <Chip>Chip</Chip>
+      <Chip>Chip</Chip>
     </template>
   </Demo>
 </template>

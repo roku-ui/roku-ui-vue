@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
-import { Fragment, computed, onMounted, provide, ref, useSlots } from 'vue'
-import { childrenElementMapSymbol, directionSymbol, tabCurrentSymbol } from '../utils'
+import { childrenElementMapSymbol, directionSymbol, tabCurrentSymbol } from '@/utils'
+import { computed, Fragment, onMounted, provide, ref, useSlots } from 'vue'
 
 const props = withDefaults(defineProps<{
   defaultValue?: string | number | symbol
@@ -21,7 +21,7 @@ const valueList = computed(() => {
     return child
   }).filter((child) => {
     return child?.props?.value !== undefined
-  }).map((d => d.props.value)) ?? []
+  }).map(d => d.props.value) ?? []
   return childList as (string | number | symbol)[]
 })
 

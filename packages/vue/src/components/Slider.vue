@@ -259,7 +259,7 @@ const animateCls = computed(() => props.animate
     </div>
     <div
       v-if="ticks.length > 0"
-      class="relative mx-1 h-1em text-xs text-surface-on-low"
+      class="text-surface-on-low relative mx-1 h-1em text-xs"
       :style="{
         width: `${props.width}rem`,
       }"

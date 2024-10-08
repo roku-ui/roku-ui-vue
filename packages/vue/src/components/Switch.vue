@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { useRounded } from '@/utils/classGenerator'
 import { computed, ref } from 'vue'
-import { useRounded } from '../utils/classGenerator'
 
 defineOptions({
   inheritAttrs: false,
@@ -121,7 +121,7 @@ const rounded = useRounded(props)
         ref="wrapper"
         :class="[sizeCls.wrapper, colorCls.wrapper, rounded.class]"
         :style="[rounded.style]"
-        class="relative inline-block transition-all"
+        class="relative inline-block"
         @pointerdown="isActivated = true"
         @pointerup="isActivated = false"
         @pointerleave="isActivated = false"
@@ -132,36 +132,26 @@ const rounded = useRounded(props)
           :style="[rounded.style]"
           :class="[sizeCls.indicator, colorCls.indicator, animateCls.indicator, model ? sizeCls.active : sizeCls.inactive, rounded.class]"
         />
-        <Transition
-          enter-active-class="transition-all"
-          enter-from-class="opacity-0"
-          enter-to-class="opacity-100"
-          leave-active-class="transition-all"
-          leave-from-class="opacity-100"
-          leave-to-class="opacity-0"
-          mode="out-in"
-        >
-          <i
-            v-if="model"
-            key="on"
-            class="absolute top-1/2 -translate-y-50%"
-            :class="[sizeCls.icon, {
-              [`left-0 text-${color}-on-container-low`]: model,
-              [onIcon ?? '']: model && onIcon,
-              [offIcon ?? '']: !model && offIcon,
-            }]"
-          />
-          <i
-            v-else
-            key="off"
-            class="absolute top-1/2 -translate-y-50%"
-            :class="[sizeCls.icon, {
-              'right-0 text-surface-on-low ': !model,
-              [onIcon ?? '']: model && onIcon,
-              [offIcon ?? '']: !model && offIcon,
-            }]"
-          />
-        </Transition>
+        <i
+          v-if="model"
+          key="on"
+          class="absolute top-1/2 -translate-y-50%"
+          :class="[sizeCls.icon, {
+            [`left-0 text-${color}-on-container-low`]: model,
+            [onIcon ?? '']: model && onIcon,
+            [offIcon ?? '']: !model && offIcon,
+          }]"
+        />
+        <i
+          v-else
+          key="off"
+          class="absolute top-1/2 -translate-y-50%"
+          :class="[sizeCls.icon, {
+            'right-0 text-surface-on-low ': !model,
+            [onIcon ?? '']: model && onIcon,
+            [offIcon ?? '']: !model && offIcon,
+          }]"
+        />
       </div>
     </label>
     <label

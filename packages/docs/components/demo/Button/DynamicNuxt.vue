@@ -1,6 +1,6 @@
 <script setup lang="tsx">
-import { Btn } from '@roku-ui/vue'
 import { NuxtLink } from '#components'
+import { Btn } from '@roku-ui/vue'
 
 const code = `<template>
   <Btn :is="NuxtLink" href="https://jannchie.com" target="_blank"> // [!code highlight]

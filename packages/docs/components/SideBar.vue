@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Btn } from '@roku-ui/vue'
 import { NuxtLink } from '#components'
+import { Btn } from '@roku-ui/vue'
 
 defineProps<{
   isOpen: boolean

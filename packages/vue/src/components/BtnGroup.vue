@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed } from 'vue'
 
 type T = string | { value: string, label?: string, icon?: string }
 const props = withDefaults(defineProps<{

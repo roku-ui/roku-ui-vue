@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { useRounded } from '@/utils/classGenerator'
 import { type Component, onMounted, ref } from 'vue'
-import { useRounded } from '../utils/classGenerator'
 
 const props = withDefaults(
   defineProps<{
@@ -66,7 +66,7 @@ const rounded = useRounded(props)
     />
     <div
       v-if="!loaded"
-      class="h-full w-full animate-pulse border-transparent bg-surface-high object-cover"
+      class="bg-surface-high h-full w-full animate-pulse border-transparent object-cover"
       :class="[
         props.class,
         rounded.class,

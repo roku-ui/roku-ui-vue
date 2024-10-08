@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import type { Size } from '../types'
 import { computed, ref } from 'vue'
 import { useColorStyleWithKey } from '../shared'
-import type { Size } from '../types'
 
 const props = withDefaults(defineProps<{
   count?: number
@@ -63,7 +63,7 @@ function unifyInput(
 
   // If input is undefined, use default values for all elements
   if (input === undefined) {
-    return Array(n).fill({ active: defaultActiveIcon, normal: defaultNormalIcon })
+    return Array.from({ length: n }, () => ({ active: defaultActiveIcon, normal: defaultNormalIcon }))
   }
 
   // Determine the base object to use for filling the array
@@ -77,14 +77,14 @@ function unifyInput(
     if (normalizedArray.length === 1) {
       // If the array only contains one element, use it to fill all elements
       baseObject = normalizedArray[0]
-      return Array(n).fill(baseObject)
+      return Array.from({ length: n }, () => ({ ...baseObject }))
     }
     else {
       // If the array contains multiple elements, ensure it has exactly `n` elements
       return normalizedArray
         .slice(0, n) // Use existing elements up to n
         .concat( // Fill remaining with default values
-          Array(Math.max(0, n - normalizedArray.length)).fill({ active: defaultActiveIcon, normal: defaultNormalIcon }),
+          Array.from({ length: Math.max(0, n - normalizedArray.length) }, () => ({ active: defaultActiveIcon, normal: defaultNormalIcon })),
         )
     }
   }
@@ -94,9 +94,8 @@ function unifyInput(
       normal: input.normal || defaultNormalIcon,
     }
   }
-
-  // Create an array with `n` elements, all being `baseObject`
-  return Array(n).fill(baseObject)
+  // 创建一个包含 `n` 个元素的数组，每个元素都是 `baseObject`
+  return Array.from({ length: n }, () => ({ ...baseObject }))
 }
 
 function getCls(idx: number) {

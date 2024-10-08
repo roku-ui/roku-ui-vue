@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import ScrollArea from '@/components/ScrollArea.vue'
 import { computed, ref } from 'vue'
 import { VirtualWaterfall } from 'vue-wf'
-import ScrollArea from '../../components/ScrollArea.vue'
 
 const tmps = ref(Array.from({ length: 100 }))
 const heights = [50, 100, 200, 300, 400]

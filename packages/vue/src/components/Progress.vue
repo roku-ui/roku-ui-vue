@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { useRounded } from '@/utils/classGenerator'
 import { computed } from 'vue'
-import { useRounded } from '../utils/classGenerator'
 
 const props = withDefaults(defineProps<{
   value?: number | string
@@ -52,7 +52,7 @@ const rounded = useRounded(props)
 
 <template>
   <div
-    class="relative w-full self-center overflow-hidden bg-surface-high transition-background-color,border-color,color"
+    class="bg-surface-high relative w-full self-center overflow-hidden transition-background-color,border-color,color"
     :class="[sizeCls, rounded.class]"
     :style="[rounded.style]"
   >

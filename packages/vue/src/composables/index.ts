@@ -1,8 +1,8 @@
-import tinycolor from 'tinycolor2'
 import type { RemovableRef } from '@vueuse/core'
 import { isClient } from '@vueuse/core'
-import { type MaybeRef, type Ref, computed, inject, onMounted, ref, unref } from 'vue'
-import { type ThemeData, generateColors } from '..'
+import tinycolor from 'tinycolor2'
+import { computed, inject, type MaybeRef, onMounted, type Ref, ref, unref } from 'vue'
+import { generateColors, type ThemeData } from '..'
 import { defaultTheme } from '../shared'
 
 export * from './dom'
@@ -12,12 +12,12 @@ export const COLOR_LIGHTNESS_MAP = [
   0.80,
   0.70,
   0.60,
-  0.5,
-  0.4,
+  0.55,
+  0.41,
+  0.36,
   0.30,
   0.20,
   0.10,
-  0.05,
   0.01,
 ]
 export const SURFACE_LIGHTNESS_MAP = [

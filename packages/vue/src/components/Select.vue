@@ -1,9 +1,9 @@
 <script setup lang="ts" generic="T extends { id: number | string | symbol;  [key: string]: any;} | string | symbol | number">
+import type { Color } from '../types'
+import { useRounded } from '@/utils/classGenerator'
 import { isClient } from '@vueuse/core'
 import { computed, ref, watch, watchEffect } from 'vue'
-import { useRounded } from '../utils/classGenerator'
-import { useColorStyleWithKey } from '../shared'
-import type { Color } from '../types'
+import { useInputColorStyle } from '../shared'
 
 const props = withDefaults(defineProps<{
   ariaLabel?: string
@@ -139,12 +139,8 @@ function onItemPointerDown(option: T) {
   focused.value = false
 }
 const color = computed(() => props.color ?? 'primary')
-const colorStyle = useColorStyleWithKey(color, ['fill', 'border'])
-const colorCls = computed(() => {
-  return {
-    input: 'dark:border-[var(--d-border)] focus:border-[var(--l-fill)] light:border-[var(--l-border)] focus:ring-[var(--l-fill)] dark:focus:border-[var(--d-fill)] dark:focus:ring-[var(--d-fill)]',
-  }
-})
+const colorStyle = useInputColorStyle(color, 'default')
+
 const sizeCls = computed(() => {
   switch (props.size) {
     case 'sm':
@@ -208,8 +204,8 @@ const searchCls = computed(() => {
     <div class="w-full flex items-center">
       <input
         ref="inputRef"
-        :class="[colorCls.input, sizeCls.wrapper, rounded.class, searchCls]"
-        class="r-select-input border outline-none outline-none focus-visible:outline-2"
+        :class="[sizeCls.wrapper, rounded.class, searchCls]"
+        class="r-select-input border outline-none outline-none focus-visible:outline-2 custom-input-colors"
         :placeholder="placeholder"
         :style="[rounded.style]"
         :readonly="!searchable"
@@ -225,7 +221,7 @@ const searchCls = computed(() => {
     <div
       v-if="focused"
       ref="dropdownRef"
-      class="absolute z-10 mt-2 w-full flex-col overflow-hidden border container-base rounded p-1"
+      class="container-base absolute z-10 mt-2 w-full flex-col overflow-hidden border rounded p-1"
       :class="[sizeCls.dropdown, {
         'bottom-10': !hasArea,
       }]"

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { type ComputedRef, type Ref, computed, inject, onMounted, ref } from 'vue'
+import { childrenElementMapSymbol, directionSymbol, tabCurrentSymbol } from '@/utils'
+import { computed, type ComputedRef, inject, onMounted, type Ref, ref } from 'vue'
 import { useColorStyleWithKey } from '../shared'
-import { childrenElementMapSymbol, directionSymbol, tabCurrentSymbol } from '../utils'
 
 const props = withDefaults(defineProps<{
   value: string | number | symbol

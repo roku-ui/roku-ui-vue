@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import type { Rounded } from '../types'
+import { useRounded } from '@/utils/classGenerator'
 import { type Component, computed, ref } from 'vue'
 import { useColorStyleWithKey } from '../shared'
-import type { Rounded } from '../types'
-import { useRounded } from '../utils/classGenerator'
 
 const props = withDefaults(
   defineProps<{
@@ -160,7 +160,7 @@ const traceAnimateStyle = computed(() => {
   <component
     :is="is"
     ref="paperRef"
-    class="relative container-low"
+    class="container-low relative"
     :class="[
       {
         'border-transparent': !withBorder,

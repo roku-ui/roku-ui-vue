@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import type { ThemeData } from '@/utils'
 import { isClient } from '@vueuse/core'
 import { type Component, computed, provide, watchEffect } from 'vue'
-import type { ThemeData } from '../utils'
 import { defaultTheme } from '../shared'
 
 const props = withDefaults(

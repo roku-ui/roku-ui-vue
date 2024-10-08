@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { useRounded } from '@/utils/classGenerator'
 import { computed, ref, useAttrs } from 'vue'
-import { useColorStyleWithKey } from '../shared'
-import { useRounded } from '../utils/classGenerator'
+import { useInputColorStyle } from '../shared'
 
 const props = withDefaults(
   defineProps<{
@@ -52,7 +52,7 @@ const labelSizeCls = computed(() => {
   }
 })
 
-const colorStyle = useColorStyleWithKey(props.color, ['fill', 'border'])
+const colorStyle = useInputColorStyle(props.color, 'default')
 const disabledCls = computed(() => {
   if (props.disabled) {
     return 'pointer-events-none filter grayscale opacity-60'
@@ -75,7 +75,7 @@ const id = useId(attrs)
     <label
       v-if="$slots.label || label"
       :for="id"
-      class="mb-1 block text-surface-on"
+      class="mb-1 block"
       :class="[labelSizeCls]"
     >
       <slot
@@ -93,7 +93,7 @@ const id = useId(attrs)
       v-bind="$attrs"
       ref="input"
       v-model="model"
-      class="w-full border px-2 py-1 outline-none dark:border-[var(--d-border)] focus:border-[var(--l-fill)] light:border-[var(--l-border)] focus:ring-[var(--l-fill)] dark:focus:border-[var(--d-fill)] dark:focus:ring-[var(--d-fill)]"
+      class="w-full border px-2 py-1 outline-none custom-input-colors"
       :class="[disabledCls, rounded.class, sizeCls.base]"
       :style="[rounded.style]"
       :placeholder="placeholder"

@@ -1,12 +1,12 @@
 <!-- eslint-disable no-console -->
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
-import { Notifications, generateColors } from '..'
+import { generateColors, Notifications } from '..'
 import PopoverDemo from './demo/PopoverDemo.vue'
+import RatingDemo from './demo/RatingDemo.vue'
+import SelectAreaDemo from './demo/SelectAreaDemo.vue'
 import TagsDemo from './demo/TagsDemo.vue'
 import WaterfallDemo from './demo/WaterfallDemo.vue'
-import SelectAreaDemo from './demo/SelectAreaDemo.vue'
-import RatingDemo from './demo/RatingDemo.vue'
 
 const isLoading = refAutoReset(false, 3000)
 onMounted(() => {

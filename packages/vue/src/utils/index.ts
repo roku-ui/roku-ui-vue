@@ -2,9 +2,9 @@ import type { ColorInput } from 'tinycolor2'
 import tinycolor from 'tinycolor2'
 import { COLOR_LIGHTNESS_MAP } from '..'
 
-export * from './theme'
-export * from './notifications'
 export * from './classGenerator'
+export * from './notifications'
+export * from './symbols'
 
 function getClosestLightness(color: string | tinycolor.ColorFormats.PRGB | tinycolor.ColorFormats.RGB | tinycolor.ColorFormats.HSL | tinycolor.ColorFormats.HSV | tinycolor.Instance | undefined) {
   const lightnessGoal = tinycolor(color).toHsl().l
@@ -56,4 +56,4 @@ export function generateColors(color: ColorInput, lightnessMap: number[] = COLOR
   return generateColorsMap(color, lightnessMap).colors as unknown as ColorsTuple
 }
 
-export * from './symbols'
+export * from './theme'

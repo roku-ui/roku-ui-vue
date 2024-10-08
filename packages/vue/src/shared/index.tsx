@@ -1,7 +1,7 @@
-import { type MaybeRef, computed, ref, unref } from 'vue'
+import type { BtnVariant, InputVariant } from '../types'
+import { generateColorsObjMap } from '@/utils'
 import tinycolor from 'tinycolor2'
-import { generateColorsObjMap } from '../utils'
-import type { Variant } from '../types'
+import { computed, type MaybeRef, ref, unref } from 'vue'
 import { COLOR_LIGHTNESS_MAP, SURFACE_LIGHTNESS_MAP } from '..'
 
 export const primaryColor = ref('#3F9CDC')
@@ -19,7 +19,7 @@ export const defaultTheme = useThemeData('default', {
 })
 
 const colorStyleCache = new Map<string, tinycolor.Instance[]>()
-function useColorsObjs(color: MaybeRef<string>) {
+export function useColorsObjs(color: MaybeRef<string>) {
   return computed(() => {
     const colorStr = unref(color)
     if (colorStyleCache.has(colorStr)) {
@@ -47,135 +47,223 @@ function useColorsObjs(color: MaybeRef<string>) {
   })
 }
 
-export function useColorStyleByColorsAndVariant(colorInstances: MaybeRef<tinycolor.Instance[]>, variant: MaybeRef<Variant> | undefined = undefined) {
+export function useSurfaceColors() {
+  return computed(() => generateColorsObjMap(unref(surfaceColor), SURFACE_LIGHTNESS_MAP).colors)
+}
+
+// type ColorKey = ''
+
+// export function useColorClassAndStyle(color: MaybeRef<string>, keys: ColorKey[]) {
+//   return computed(() => {
+//     const className = []
+//     const style = []
+//     for (const key of keys) {
+//     }
+//     return { class: className, style }
+//   })
+// }
+
+const darkDefaultFillIndex = 8
+const darkDefaultFillVariantIndex = 7
+
+const darkDefaultBorderIndex = 7
+
+const darkFillIndex = 5
+const darkFillVariantIndex = 6
+
+const darkTextIndex = 2
+
+const darkBorderIndex = 3
+
+const darkOpacity = 0.25
+const darkOpacityVariant = 0.3
+
+const lightDefaultFillIndex = 1
+const lightDefaultFillVariantIndex = 2
+
+const lightDefaultBorderIndex = 4
+
+const lightFillIndex = 5
+const lightFillVariantIndex = 6
+
+const lightTextIndex = 6
+const lightTextVariantIndex = 7
+
+const lightBorderIndex = 4
+
+const lightOpacity = 0.08
+const lightOpacityVariant = 0.15
+
+export function useColorStyleByColorsAndBtnVariant(colorInstances: MaybeRef<tinycolor.Instance[]>, variant: MaybeRef<BtnVariant>) {
   return computed(() => {
     const color = unref(colorInstances)
     const surface = generateColorsObjMap(unref(surfaceColor), SURFACE_LIGHTNESS_MAP).colors
 
-    const lSurfaceHigh = surface[0].toHexString()
-    const lSurfaceBorder = surface[3].toHexString()
-
-    const dSurfaceHigh = surface[8].toHexString()
-    const dSurfaceBorder = surface[7].toHexString()
-
-    const dFill = color[5].toHexString()
-    const dFillH = color[6].toHexString()
-    const dOnFill = tinycolor.mostReadable(color[5].toHexString(), [color[0], color[10]], { includeFallbackColors: true }).toHexString()
-    const lFill = color[5].toHexString()
-    const lFillH = color[6].toHexString()
-    const lOnFill = tinycolor.mostReadable(color[5].toHexString(), [color[0], color[10]], { includeFallbackColors: true }).toHex8String()
-
-    const dText = color[3].toHexString()
-    const dTextH = color[4].toHexString()
-    const lText = color[5].toHexString()
-    const lTextH = color[6].toHexString()
-    const lFillT = color[6].setAlpha(0.08).toHex8String()
-    const lFillTH = color[6].setAlpha(0.1).toHex8String()
-    const lFillOp50 = color[6].setAlpha(0.5).toHex8String()
-    const lFillOp75 = color[6].setAlpha(0.75).toHex8String()
-    const dFillT = color[4].setAlpha(0.2).toHex8String()
-    const dFillTH = color[4].setAlpha(0.3).toHex8String()
-    const dFillOp50 = color[4].setAlpha(0.5).toHex8String()
-    const dFillOp75 = color[4].setAlpha(0.75).toHex8String()
-    if (!variant) {
-      return {
-        '--d-text': dText,
-        '--d-text-h': dTextH,
-        '--d-fill': dFill,
-        '--d-fill-t': dFillT,
-        '--d-fill-h': dFillH,
-        '--d-on-fill': dOnFill,
-        '--d-border': dSurfaceBorder,
-        '--d-border-h': surface[7].toHexString(),
-        '--d-fill-t-h': dFillTH,
-        '--d-fill-50': dFillOp50,
-        '--d-fill-75': dFillOp75,
-        '--l-text': lText,
-        '--l-text-h': lTextH,
-        '--l-fill': lFill,
-        '--l-fill-t': lFillT,
-        '--l-fill-h': lFillH,
-        '--l-on-fill': lOnFill,
-        '--l-border': lSurfaceBorder,
-        '--l-border-h': surface[3].toHexString(),
-        '--l-fill-t-h': lFillTH,
-        '--l-fill-50': lFillOp50,
-        '--l-fill-75': lFillOp75,
-      }
+    const variantStyles: Record<BtnVariant, () => Record<string, string>> = {
+      default: () => getDefaultVariantStyle(surface),
+      filled: () => getFilledVariantStyle(color),
+      light: () => getLightVariantStyle(color),
+      outline: () => getOutlineVariantStyle(color),
+      transparent: () => getTransparentVariantStyle(color),
+      subtle: () => getSubtleVariantStyle(color),
+      contrast: () => getContrastVariantStyle(color),
+      white: () => getWhiteVariantStyle(color),
     }
-    switch (unref(variant)) {
-      case 'default':
-        return {
-          '--d-surface-high': dSurfaceHigh,
-          '--d-surface-border': dSurfaceBorder,
-          '--l-surface-high': lSurfaceHigh,
-          '--l-surface-border': lSurfaceBorder,
-        }
-      case 'filled':
-        return {
-          '--d-fill': dFill,
-          '--l-fill': lFill,
-          '--d-on-fill': dOnFill,
-          '--l-on-fill': lOnFill,
-          '--l-fill-h': lFillH,
-          '--d-fill-h': dFillH,
-        }
-      case 'outline':
-        return {
-          '--d-text': dText,
-          '--d-text-h': dTextH,
-          '--d-fill-t': dFillT,
-          '--l-text': lText,
-          '--l-text-h': lTextH,
-          '--l-fill-t': lFillT,
-        }
-      case 'light':
-        return {
-          '--d-fill-t': dFillT,
-          '--d-fill-t-h': dFillTH,
-          '--d-text': dText,
-          '--l-fill-t': lFillT,
-          '--l-fill-t-h': lFillTH,
-          '--l-text': lText,
-        }
-      case 'subtle':
-        return {
-          '--d-text': dText,
-          '--d-fill-t': dFillT,
-          '--l-text': lText,
-          '--l-fill-t': lFillT,
-        }
-      case 'transparent':
-        return {
-          '--d-text': dText,
-          '--l-text': lText,
-        }
-      case 'contrast':
-        return {
-          '--d-text': dText,
-          '--l-text': lText,
-          '--d-fill': dFill,
-          '--l-fill': lFill,
-          '--d-on-fill': dOnFill,
-          '--l-on-fill': lOnFill,
-        }
-      case 'white':
-        return {
-          '--d-text': dFill,
-          '--l-text': lFill,
-        }
-    }
-    return {}
+    return variantStyles[unref(variant)]?.() ?? {}
   })
 }
 
-export function useColorStyle(color: MaybeRef<string>, variant: MaybeRef<Variant> | undefined = undefined) {
+function getDefaultVariantStyle(surface: tinycolor.Instance[]): Record<string, string> {
+  return {
+    '--d-fill': surface[darkDefaultFillIndex].toHexString(),
+    '--d-fill-h': surface[darkDefaultFillVariantIndex].toHexString(),
+    '--d-border': surface[darkDefaultBorderIndex].toHexString(),
+    '--l-fill': surface[lightDefaultFillIndex].toHexString(),
+    '--l-fill-h': surface[lightDefaultFillVariantIndex].toHexString(),
+    '--l-border': surface[lightDefaultBorderIndex].toHexString(),
+  }
+}
+
+function getFilledVariantStyle(color: tinycolor.Instance[]): Record<string, string> {
+  return {
+    '--d-border': 'transparent',
+    '--d-fill': color[darkFillIndex].toHexString(),
+    '--d-fill-h': color[darkFillVariantIndex].toHexString(),
+    '--d-text': 'white',
+    '--l-fill': color[lightFillIndex].toHexString(),
+    '--l-fill-h': color[lightFillVariantIndex].toHexString(),
+    '--l-text': 'white',
+    '--l-text-h': 'white',
+    '--l-border': 'transparent',
+  }
+}
+
+function getLightVariantStyle(color: tinycolor.Instance[]): Record<string, string> {
+  return {
+    '--d-border': 'transparent',
+    '--d-fill': color[darkFillIndex].setAlpha(darkOpacity).toHex8String(),
+    '--d-fill-h': color[darkFillIndex].setAlpha(darkOpacityVariant).toHex8String(),
+    '--d-text': color[darkTextIndex].toHexString(),
+    '--d-text-h': color[darkTextIndex].toHexString(),
+    '--l-fill': color[lightFillIndex].setAlpha(lightOpacity).toHex8String(),
+    '--l-fill-h': color[lightFillIndex].setAlpha(lightOpacityVariant).toHex8String(),
+    '--l-text': color[lightTextIndex].toHexString(),
+    '--l-text-h': color[lightTextIndex].toHexString(),
+    '--l-border': 'transparent',
+  }
+}
+
+function getOutlineVariantStyle(color: tinycolor.Instance[]): Record<string, string> {
+  return {
+    '--d-fill': 'transparent',
+    '--d-fill-h': color[darkFillVariantIndex].setAlpha(darkOpacity).toHex8String(),
+    '--d-text': color[darkTextIndex].toHexString(),
+    '--d-text-h': color[darkTextIndex].toHexString(),
+    '--d-border': color[darkBorderIndex].toHexString(),
+    '--l-fill': 'transparent',
+    '--l-fill-h': color[lightFillVariantIndex].setAlpha(lightOpacity).toHex8String(),
+    '--l-text': color[lightTextIndex].toHexString(),
+    '--l-text-h': color[lightTextIndex].toHexString(),
+    '--l-border': color[lightBorderIndex].toHexString(),
+  }
+}
+
+function getTransparentVariantStyle(color: tinycolor.Instance[]): Record<string, string> {
+  return {
+    '--d-text': color[3].toHexString(),
+    '--d-text-h': color[3].toHexString(),
+    '--l-text': color[lightTextVariantIndex].toHexString(),
+    '--l-text-h': color[lightTextVariantIndex].toHexString(),
+    '--d-fill': 'transparent',
+    '--l-fill': 'transparent',
+    '--d-border': 'transparent',
+    '--l-border': 'transparent',
+  }
+}
+
+function getSubtleVariantStyle(color: tinycolor.Instance[]): Record<string, string> {
+  return {
+    '--d-fill': 'transparent',
+    '--d-fill-h': color[3].setAlpha(darkOpacity).toHex8String(),
+    '--d-text': color[2].toHexString(),
+    '--d-text-h': color[2].toHexString(),
+    '--d-border': 'transparent',
+    '--l-fill': 'transparent',
+    '--l-fill-h': color[3].setAlpha(lightOpacity).toHex8String(),
+    '--l-text': color[6].toHexString(),
+    '--l-text-h': color[6].toHexString(),
+    '--l-border': 'transparent',
+  }
+}
+
+function getContrastVariantStyle(color: tinycolor.Instance[]): Record<string, string> {
+  return {
+    '--d-text': color[2].toHexString(),
+    '--d-text-h': 'white',
+    '--d-fill': 'transparent',
+    '--d-fill-h': color[5].toHexString(),
+    '--d-border': 'transparent',
+    '--l-text': color[6].toHexString(),
+    '--l-text-h': 'white',
+    '--l-fill': 'transparent',
+    '--l-fill-h': color[5].toHexString(),
+    '--l-border': 'transparent',
+  }
+}
+
+function getWhiteVariantStyle(color: tinycolor.Instance[]): Record<string, string> {
+  return {
+    '--d-fill': 'white',
+    '--d-fill-h': 'white',
+    '--d-text': color[6].toHexString(),
+    '--d-text-h': color[6].toHexString(),
+    '--d-border': 'transparent',
+    '--l-fill': 'white',
+    '--l-fill-h': 'white',
+    '--l-text': color[6].toHexString(),
+    '--l-text-h': color[6].toHexString(),
+    '--l-border': 'transparent',
+  }
+}
+
+export function useBtnColorStyle(color: MaybeRef<string>, variant: MaybeRef<BtnVariant> = 'default') {
   const colors = useColorsObjs(color)
-  return useColorStyleByColorsAndVariant(colors, variant)
+  return useColorStyleByColorsAndBtnVariant(colors, variant)
+}
+
+export function useInputColorStyle(color: MaybeRef<string>, variant: MaybeRef<InputVariant> = 'default') {
+  const colors = useColorsObjs(color).value
+  const surfaceColors = useSurfaceColors().value
+  switch (unref(variant)) {
+    case 'default':
+      return {
+        '--d-fill': surfaceColors[8].toHexString(),
+        '--d-border-f': colors[5].toHexString(),
+        '--d-border': surfaceColors[7].toHexString(),
+        '--d-placeholder': surfaceColors[5].toHexString(),
+        '--d-text': 'white',
+
+        '--l-fill': surfaceColors[1].toHexString(),
+        '--l-border-f': colors[4].toHexString(),
+        '--l-border': surfaceColors[4].toHexString(),
+        '--l-placeholder': surfaceColors[5].toHexString(),
+        '--l-text': 'black',
+      }
+    case 'filled':
+      return {
+        '--d-fill': colors[5].toHexString(),
+        '--d-fill-h': colors[6].toHexString(),
+        '--d-border': 'transparent',
+        '--l-fill': colors[5].toHexString(),
+        '--l-fill-h': colors[6].toHexString(),
+        '--l-border': 'transparent',
+
+      }
+  }
 }
 
 export function useColorStyleWithKey(color: MaybeRef<string>, keys: any[]) {
-  const colorStyle = useColorStyle(color)
+  const colorStyle = useBtnColorStyle(color)
   return computed(() => {
     return keys.reduce((prev, curr) => {
       for (const v of ['l', 'd']) {
@@ -184,30 +272,5 @@ export function useColorStyleWithKey(color: MaybeRef<string>, keys: any[]) {
       }
       return prev
     }, {})
-  })
-}
-
-export function useColorClass(variant: MaybeRef<Variant>) {
-  return computed(() => {
-    switch (unref(variant)) {
-      case 'default':
-        return 'theme-default'
-      case 'filled':
-        return 'theme-filled'
-      case 'outline':
-        return 'theme-outline'
-      case 'light':
-        return 'theme-light'
-      case 'transparent':
-        return 'theme-transparent'
-      case 'subtle':
-        return 'theme-subtle'
-      case 'contrast':
-        return 'theme-contrast'
-      case 'white':
-        return 'theme-white'
-      default:
-        return []
-    }
   })
 }

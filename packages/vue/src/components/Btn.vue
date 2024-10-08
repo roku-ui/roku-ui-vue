@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import type { BtnVariant } from '../types'
+import { useRounded } from '@/utils/classGenerator'
 import { type Component, computed, ref } from 'vue'
-import { useColorClass, useColorStyle } from '../shared'
-import type { Variant } from '../types'
-import { useRounded } from '../utils/classGenerator'
+import { useBtnColorStyle } from '../shared'
 
 const props = withDefaults(
   defineProps<{
@@ -11,8 +11,8 @@ const props = withDefaults(
     is?: string | Component
     icon?: boolean
     pressEffect?: 'translate' | 'scale'
-    variant?: Variant
-    hoverVariant?: Variant
+    variant?: BtnVariant
+    hoverVariant?: BtnVariant
     color?: string
     rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full' | string | number
     disabled?: boolean
@@ -60,8 +60,7 @@ const variant = computed(() => {
   return props.variant ?? 'default'
 })
 const color = computed(() => props.color ?? 'primary')
-const colorClass = useColorClass(variant)
-const colorStyle = useColorStyle(color, variant)
+const colorStyle = useBtnColorStyle(color, variant)
 </script>
 
 <template>
@@ -70,19 +69,17 @@ const colorStyle = useColorStyle(color, variant)
     ref="btn"
     :data-size="size"
     :type="type"
-    class="flex items-center justify-center gap-1 decoration-none"
+    class="flex items-center justify-center gap-1 decoration-none custom-colors"
     :style="[
       rounded.style,
       colorStyle,
     ]"
     :class="[
-      colorClass,
       rounded.class,
       icon ? sizeCls.iconContent : sizeCls.normalContent,
       {
         'filter-grayscale pointer-events-none select-none filter-brightness-80': disabled,
         'active:translate-y-0.25': pressEffect === 'translate',
-        'active:scale-98': pressEffect === 'scale',
       },
     ]"
     :disabled="disabled"

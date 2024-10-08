@@ -1,8 +1,8 @@
 <script setup lang="tsx">
-import { getSingletonHighlighter } from 'shiki'
 import {
   transformerNotationHighlight,
 } from '@shikijs/transformers'
+import { getSingletonHighlighter } from 'shiki'
 
 const props = withDefaults(defineProps<{
   code?: string

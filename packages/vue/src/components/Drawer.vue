@@ -28,7 +28,7 @@ const model = defineModel<boolean>()
     >
       <div
         v-if="model"
-        class="fixed h-full w-full bg-surface-low md:w-md"
+        class="bg-surface-low fixed h-full w-full md:w-md"
         :class="position === 'left' ? 'left-0' : 'right-0'"
       >
         <div class="flex justify-end p-4 md:px-6 md:py-4 md:pb-0">

@@ -1,12 +1,12 @@
 <script setup lang="ts">
+import type { BtnVariant } from '../types'
 import { computed } from 'vue'
 import { useRounded } from '..'
-import type { Variant } from '../types'
-import { useColorClass, useColorStyle } from '../shared'
+import { useBtnColorStyle } from '../shared'
 
 const props = withDefaults(defineProps<{
   color?: string
-  variant?: Variant
+  variant?: BtnVariant
   rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full' | string | number
   size?: 'sm' | 'md' | 'lg'
   leftIcon?: string
@@ -31,21 +31,20 @@ const sizeCls = computed(() => {
 const rounded = useRounded(props)
 const color = computed(() => props.color ?? 'primary')
 const variant = computed(() => props.variant)
-const colorClass = useColorClass(variant)
-const colorStyle = useColorStyle(color, variant)
+const colorStyle = useBtnColorStyle(color, variant)
 </script>
 
 <template>
   <span
     :tabindex="-1"
     :style="[colorStyle, rounded.style]"
-    :class="[colorClass, rounded.class, sizeCls]"
-    class="inline-block h-fit flex cursor-pointer gap-1 border"
+    :class="[rounded.class, sizeCls]"
+    class="inline-block h-fit flex cursor-pointer gap-1 border custom-colors"
   >
     <i
       v-if="props.leftIcon"
       :class="props.leftIcon"
-      class="h-container w-container shrink-0"
+      class="shrink-0"
     />
     <slot
       v-else-if="$slots.leftIcon"

@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import type { Size } from '../types'
+import { useRounded } from '@/utils/classGenerator'
 import { computed } from 'vue'
 import { useColorStyleWithKey } from '../shared'
-import type { Size } from '../types'
-import { useRounded } from '../utils/classGenerator'
 
 const props = withDefaults(
   defineProps<{
@@ -47,7 +47,7 @@ const shapeClass = computed(() => {
 
 <template>
   <div
-    class="relative min-w-80 w-full flex items-center gap-2 container-low pl-4"
+    class="container-low relative min-w-80 w-full flex items-center gap-2 pl-4"
     :class="[
       { 'border-0': !withBorder },
       rounded.class,

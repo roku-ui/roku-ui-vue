@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { Variant } from '../../types'
+import type { BtnVariant } from '@/types'
 
 const colors = ['default', 'primary', 'secondary', 'tertiary', 'error', 'crimson', 'darkorchid', 'dodgerblue']
-const variants: Variant[] = ['default', 'filled', 'light', 'outline', 'transparent', 'subtle', 'contrast', 'white']
+const variants: BtnVariant[] = ['default', 'filled', 'light', 'outline', 'transparent', 'subtle', 'contrast', 'white']
 </script>
 
 <template>
