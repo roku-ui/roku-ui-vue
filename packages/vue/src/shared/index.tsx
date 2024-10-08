@@ -25,7 +25,7 @@ export function useColors(color: MaybeRef<Color>) {
     if (colorStyleCache.has(colorStr)) {
       return colorStyleCache.get(colorStr)!
     }
-    function generateColorObj() {
+    function generatePredefinedColorList() {
       switch (colorStr) {
         case 'default':
           return generateColorsObjMap(unref(surfaceColor), COLOR_LIGHTNESS_MAP).colors
@@ -39,9 +39,11 @@ export function useColors(color: MaybeRef<Color>) {
           return generateColorsObjMap(unref(errorColor), COLOR_LIGHTNESS_MAP).colors
       }
       const colorObj = tinycolor(colorStr)
-      return generateColorsObjMap(colorObj.toHexString(), COLOR_LIGHTNESS_MAP).colors
+      const resp = generateColorsObjMap(colorObj.toHexString(), COLOR_LIGHTNESS_MAP).colors
+      colorStyleCache.set(colorStr, resp)
+      return resp
     }
-    const resp = generateColorObj()
+    const resp = generatePredefinedColorList()
     colorStyleCache.set(colorStr, resp)
     return resp
   })
@@ -68,8 +70,8 @@ const darkSurfaceBgVariantIndex = 7
 const darkSurfaceBorderIndex = 7
 const darkSurfaceTextVariantIndex = 6
 
-const darkFillIndex = 5
-const darkFillVariantIndex = 6
+const darkBgIndex = 5
+const darkBgVariantIndex = 6
 
 const darkTextIndex = 2
 
@@ -83,8 +85,8 @@ const lightSurfaceBgVariantIndex = 2
 const lightSurfaceBorderIndex = 4
 const lightSurfaceTextVariantIndex = 5
 
-const lightFillIndex = 5
-const lightFillVariantIndex = 6
+const lightBgIndex = 5
+const lightBgVariantIndex = 6
 
 const lightTextIndex = 6
 const lightTextVariantIndex = 7
@@ -244,11 +246,11 @@ function getDefaultVariantStyle(surface: tinycolor.Instance[]): Record<string, s
 function getFilledVariantStyle(color: tinycolor.Instance[]): Record<string, string> {
   return {
     '--d-border': 'transparent',
-    '--d-bg': color[darkFillIndex].toHexString(),
-    '--d-bg-h': color[darkFillVariantIndex].toHexString(),
+    '--d-bg': color[darkBgIndex].toHexString(),
+    '--d-bg-h': color[darkBgVariantIndex].toHexString(),
     '--d-text': 'white',
-    '--l-bg': color[lightFillIndex].toHexString(),
-    '--l-bg-h': color[lightFillVariantIndex].toHexString(),
+    '--l-bg': color[lightBgIndex].toHexString(),
+    '--l-bg-h': color[lightBgVariantIndex].toHexString(),
     '--l-text': 'white',
     '--l-text-h': 'white',
     '--l-border': 'transparent',
@@ -258,12 +260,12 @@ function getFilledVariantStyle(color: tinycolor.Instance[]): Record<string, stri
 function getLightVariantStyle(color: tinycolor.Instance[]): Record<string, string> {
   return {
     '--d-border': 'transparent',
-    '--d-bg': color[darkFillIndex].setAlpha(darkOpacity).toHex8String(),
-    '--d-bg-h': color[darkFillIndex].setAlpha(darkOpacityVariant).toHex8String(),
+    '--d-bg': color[darkBgIndex].clone().setAlpha(darkOpacity).toHex8String(),
+    '--d-bg-h': color[darkBgIndex].clone().setAlpha(darkOpacityVariant).toHex8String(),
     '--d-text': color[darkTextIndex].toHexString(),
     '--d-text-h': color[darkTextIndex].toHexString(),
-    '--l-bg': color[lightFillIndex].setAlpha(lightOpacity).toHex8String(),
-    '--l-bg-h': color[lightFillIndex].setAlpha(lightOpacityVariant).toHex8String(),
+    '--l-bg': color[lightBgIndex].clone().setAlpha(lightOpacity).toHex8String(),
+    '--l-bg-h': color[lightBgIndex].clone().setAlpha(lightOpacityVariant).toHex8String(),
     '--l-text': color[lightTextIndex].toHexString(),
     '--l-text-h': color[lightTextIndex].toHexString(),
     '--l-border': 'transparent',
@@ -273,12 +275,12 @@ function getLightVariantStyle(color: tinycolor.Instance[]): Record<string, strin
 function getOutlineVariantStyle(color: tinycolor.Instance[]): Record<string, string> {
   return {
     '--d-bg': 'transparent',
-    '--d-bg-h': color[darkFillVariantIndex].setAlpha(darkOpacity).toHex8String(),
+    '--d-bg-h': color[darkBgVariantIndex].clone().setAlpha(darkOpacity).toHex8String(),
     '--d-text': color[darkTextIndex].toHexString(),
     '--d-text-h': color[darkTextIndex].toHexString(),
     '--d-border': color[darkBorderIndex].toHexString(),
     '--l-bg': 'transparent',
-    '--l-bg-h': color[lightFillVariantIndex].setAlpha(lightOpacity).toHex8String(),
+    '--l-bg-h': color[lightBgVariantIndex].clone().setAlpha(lightOpacity).toHex8String(),
     '--l-text': color[lightTextIndex].toHexString(),
     '--l-text-h': color[lightTextIndex].toHexString(),
     '--l-border': color[lightBorderIndex].toHexString(),
@@ -301,12 +303,12 @@ function getTransparentVariantStyle(color: tinycolor.Instance[]): Record<string,
 function getSubtleVariantStyle(color: tinycolor.Instance[]): Record<string, string> {
   return {
     '--d-bg': 'transparent',
-    '--d-bg-h': color[3].setAlpha(darkOpacity).toHex8String(),
+    '--d-bg-h': color[3].clone().setAlpha(darkOpacity).toHex8String(),
     '--d-text': color[2].toHexString(),
     '--d-text-h': color[2].toHexString(),
     '--d-border': 'transparent',
     '--l-bg': 'transparent',
-    '--l-bg-h': color[3].setAlpha(lightOpacity).toHex8String(),
+    '--l-bg-h': color[3].clone().setAlpha(lightOpacity).toHex8String(),
     '--l-text': color[6].toHexString(),
     '--l-text-h': color[6].toHexString(),
     '--l-border': 'transparent',
@@ -355,13 +357,13 @@ export function useInputColorStyle(color: MaybeRef<string>, variant: MaybeRef<In
     case 'default':
       return {
         '--d-bg': surfaceColors[darkSurfaceBgIndex].toHexString(),
-        '--d-border-f': colors[darkFillIndex].toHexString(),
+        '--d-border-f': colors[darkBgIndex].toHexString(),
         '--d-border': surfaceColors[darkSurfaceBorderIndex].toHexString(),
         '--d-placeholder': surfaceColors[darkSurfaceTextVariantIndex].toHexString(),
         '--d-text': 'white',
 
         '--l-bg': surfaceColors[lightSurfaceBgIndex].toHexString(),
-        '--l-border-f': colors[lightFillIndex].toHexString(),
+        '--l-border-f': colors[lightBgIndex].toHexString(),
         '--l-border': surfaceColors[lightSurfaceBorderIndex].toHexString(),
         '--l-placeholder': surfaceColors[lightSurfaceTextVariantIndex].toHexString(),
         '--l-text': 'black',

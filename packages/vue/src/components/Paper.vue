@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import type { Color, Rounded } from '../types'
-import { generateColorsMap, generateColorsObjMap } from '@/utils'
 import { useRounded } from '@/utils/classGenerator'
 import { type Component, computed, ref } from 'vue'
-import { getColorCS, getSurfaceCS, useColors, useColorStyleWithKey } from '../shared'
+import { useColors, useColorStyleWithKey } from '../shared'
 
 const props = withDefaults(
   defineProps<{
@@ -27,7 +26,6 @@ const props = withDefaults(
 )
 
 const color = computed(() => props.color)
-const colorStyle = useColorStyleWithKey(color, ['fill'])
 const loading = computed(() => props.loading)
 const roundedCls = useRounded(props)
 const { x, y } = useMouse({ type: 'client' })
@@ -81,10 +79,11 @@ const loadingStyle = computed(() => {
       })
     }
     return {
+      '--border-color': borderColor.value,
       'background': 'linear-gradient(var(--bg), var(--bg)) padding-box, var(--gradient) border-box',
       'background-color': 'var(--bg)',
       '--bg': 'rgba(var(--r-color-surface-low) / 1)',
-      '--gradient': `radial-gradient(circle at center, var(--l-bg) ${shortEdge.value * 0.5}px, var(--bg) ${shortEdge.value * 0.5}px)`,
+      '--gradient': `radial-gradient(circle at center, var(--border-color) ${shortEdge.value * 0.5}px, var(--bg) ${shortEdge.value * 0.5}px)`,
       'background-size': '200% 200%',
     }
   }
@@ -92,7 +91,9 @@ const loadingStyle = computed(() => {
     if (ani) {
       ani.pause()
     }
-    return {}
+    return {
+      background: 'rgba(var(--r-color-surface-low) / 1)',
+    }
   }
 })
 
@@ -146,9 +147,9 @@ const traceAnimateStyle = computed(() => {
       }
     })
     return {
-      '--fill': borderColor.value,
+      '--border-color': borderColor.value,
       '--bg': `rgba(var(--r-color-surface-low) / 1)`,
-      '--gradient': `radial-gradient(circle at ${points.value.x - left.value}px ${points.value.y - top.value}px, var(--fill) ${shortEdge.value * 0.5}px, var(--bg) ${shortEdge.value * 0.5}px)`,
+      '--gradient': `radial-gradient(circle at ${points.value.x - left.value}px ${points.value.y - top.value}px, var(--border-color) ${shortEdge.value * 0.5}px, var(--bg) ${shortEdge.value * 0.5}px)`,
       'background': 'linear-gradient(var(--bg), var(--bg)) padding-box, var(--gradient) border-box',
       'background-size': '200% 200%',
       'background-color': 'var(--bg)',
@@ -172,7 +173,7 @@ const traceAnimateStyle = computed(() => {
       },
       roundedCls.class,
     ]"
-    :style="[roundedCls.style, loadingStyle, traceAnimateStyle, colorStyle]"
+    :style="[roundedCls.style, loadingStyle, traceAnimateStyle]"
   >
     <slot />
   </component>
