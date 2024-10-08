@@ -1,15 +1,16 @@
 <script setup lang="ts">
-import type { Rounded } from '../types'
+import type { Color, Rounded } from '../types'
+import { generateColorsMap, generateColorsObjMap } from '@/utils'
 import { useRounded } from '@/utils/classGenerator'
 import { type Component, computed, ref } from 'vue'
-import { useColorStyleWithKey } from '../shared'
+import { getColorCS, getSurfaceCS, useColors, useColorStyleWithKey } from '../shared'
 
 const props = withDefaults(
   defineProps<{
     rounded?: Rounded
     loading?: boolean
     is?: string | Component
-    color?: string
+    color?: Color
     traceAnimate?: boolean
     withBorder?: boolean
     noPadding?: boolean
@@ -66,6 +67,8 @@ const keyFrames = computed(() => {
 })
 
 let ani: Animation | undefined
+
+const borderColor = computed(() => useColors(color.value).value[5])
 const loadingStyle = computed(() => {
   if (props.loading) {
     if (ani) {
@@ -143,8 +146,9 @@ const traceAnimateStyle = computed(() => {
       }
     })
     return {
+      '--fill': borderColor.value,
       '--bg': `rgba(var(--r-color-surface-low) / 1)`,
-      '--gradient': `radial-gradient(circle at ${points.value.x - left.value}px ${points.value.y - top.value}px, var(--l-bg) ${shortEdge.value * 0.5}px, var(--bg) ${shortEdge.value * 0.5}px)`,
+      '--gradient': `radial-gradient(circle at ${points.value.x - left.value}px ${points.value.y - top.value}px, var(--fill) ${shortEdge.value * 0.5}px, var(--bg) ${shortEdge.value * 0.5}px)`,
       'background': 'linear-gradient(var(--bg), var(--bg)) padding-box, var(--gradient) border-box',
       'background-size': '200% 200%',
       'background-color': 'var(--bg)',
@@ -160,7 +164,7 @@ const traceAnimateStyle = computed(() => {
   <component
     :is="is"
     ref="paperRef"
-    class="container-low relative"
+    class="container-low relative border"
     :class="[
       {
         'border-transparent': !withBorder,

@@ -19,7 +19,7 @@ export const defaultTheme = useThemeData('default', {
 })
 
 const colorStyleCache = new Map<string, tinycolor.Instance[]>()
-export function useColorsObjs(color: MaybeRef<Color>) {
+export function useColors(color: MaybeRef<Color>) {
   return computed(() => {
     const colorStr = unref(color)
     if (colorStyleCache.has(colorStr)) {
@@ -192,7 +192,7 @@ export function getCS(cs: CSOptions) {
 }
 
 export function getColorCS(color: MaybeRef<Color>, type: CSType, index: CSIndex) {
-  const colors = useColorsObjs(color)
+  const colors = useColors(color)
   return computed(() => {
     if (typeof index === 'number') {
       return getCSInner(unref(colors), type, index, index)
@@ -344,12 +344,12 @@ function getWhiteVariantStyle(color: tinycolor.Instance[]): Record<string, strin
 }
 
 export function useBtnColorStyle(color: MaybeRef<string>, variant: MaybeRef<BtnVariant> = 'default') {
-  const colors = useColorsObjs(color)
+  const colors = useColors(color)
   return useColorStyleByColorsAndBtnVariant(colors, variant)
 }
 
 export function useInputColorStyle(color: MaybeRef<string>, variant: MaybeRef<InputVariant> = 'default') {
-  const colors = useColorsObjs(color).value
+  const colors = useColors(color).value
   const surfaceColors = useSurfaceColors().value
   switch (unref(variant)) {
     case 'default':

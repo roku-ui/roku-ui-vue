@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useElementBounding, useEventListener, useMagicKeys, useMouse, useParentElement } from '@vueuse/core'
 import { computed, ref } from 'vue'
-import { useColorsObjs } from '../shared'
+import { useColors } from '../shared'
 
 const props = withDefaults(defineProps<{
   target?: HTMLElement
@@ -15,7 +15,7 @@ const emit = defineEmits<{
   selectEnd: [Area, { target: EventTarget | null, shift: boolean, ctrl: boolean }]
 }>()
 const color = computed(() => props.color)
-const colors = useColorsObjs(color)
+const colors = useColors(color)
 const colorStyle = computed(() => {
   const borderColor = colors.value[5].setAlpha(0.5).toHex8String()
   const fillColor = colors.value[5].setAlpha(0.1).toHex8String()
