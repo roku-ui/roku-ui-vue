@@ -92,6 +92,9 @@ const btnGroupOptionSingle = [
         />
       </Paper>
       <Paper class="flex items-center gap-2">
+        <Switch indicator-icon="i-tabler-123" />
+        <Switch on-indicator-icon="i-tabler-123" />
+        <Switch off-indicator-icon="i-tabler-123" />
         <SchemeSwitch />
       </Paper>
       <Paper>
@@ -347,7 +350,7 @@ const btnGroupOptionSingle = [
             style="height: 4rem; width: 4rem"
             src="https://avatars.githubusercontent.com/u/29743310?v=4"
           />
-        </indicator>
+        </Indicator>
         <Indicator>
           <template #label>
             1

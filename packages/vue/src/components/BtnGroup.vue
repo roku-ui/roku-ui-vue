@@ -40,7 +40,7 @@ function onClick(selection: T) {
   }
 }
 const isSingle = computed(() => props.selections.length === 1)
-const childClass = computed(() => isSingle.value ? null : 'first-children:rounded-r-0 last-children:rounded-l-0 not-first-children:rounded-l-0 not-last-children:rounded-r-0')
+const childClass = computed(() => isSingle.value ? null : 'first-children:rounded-r-0 first-children:border-r-none last-children:rounded-l-0 last-children:border-l-none not-first-children:rounded-l-0 not-last-children:rounded-r-0')
 </script>
 
 <template>
@@ -49,11 +49,14 @@ const childClass = computed(() => isSingle.value ? null : 'first-children:rounde
     :class="[childClass]"
   >
     <Btn
-      v-for="selection in props.selections"
+      v-for="selection, i in props.selections"
       :key="getValue(selection)"
       :model="model"
       :variant="getValue(selection) === model ? 'filled' : undefined"
       :color="props.color"
+      :class="{
+        'border-x-none': i !== 0 && i !== props.selections.length - 1,
+      }"
       @click="onClick(selection)"
     >
       <i

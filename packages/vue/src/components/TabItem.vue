@@ -55,14 +55,14 @@ const colorStyle = useColorStyleWithKey(color, ['fill'])
   <button
     ref="tabRef"
     type="button"
-    class="rutline-none relative min-w-20 flex items-center justify-center outline-none focus-visible:outline-2 focus-visible:outline-[var(--d-fill)] outline-offset-0!"
+    class="rutline-none relative min-w-20 flex items-center justify-center outline-none focus-visible:outline-2 focus-visible:outline-[var(--d-bg)] outline-offset-0!"
     :class="[directionCls]"
     :style="colorStyle"
     @click="onClick"
   >
     <div
       v-if="isActivated"
-      class="dark:bg-[var(--d-fill)] light:bg-[var(--l-fill)]"
+      class="dark:bg-[var(--d-bg)] light:bg-[var(--l-bg)]"
       :class="[indicatorCls]"
     />
     <div

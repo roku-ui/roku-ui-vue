@@ -81,7 +81,7 @@ const loadingStyle = computed(() => {
       'background': 'linear-gradient(var(--bg), var(--bg)) padding-box, var(--gradient) border-box',
       'background-color': 'var(--bg)',
       '--bg': 'rgba(var(--r-color-surface-low) / 1)',
-      '--gradient': `radial-gradient(circle at center, var(--l-fill) ${shortEdge.value * 0.5}px, var(--bg) ${shortEdge.value * 0.5}px)`,
+      '--gradient': `radial-gradient(circle at center, var(--l-bg) ${shortEdge.value * 0.5}px, var(--bg) ${shortEdge.value * 0.5}px)`,
       'background-size': '200% 200%',
     }
   }
@@ -144,7 +144,7 @@ const traceAnimateStyle = computed(() => {
     })
     return {
       '--bg': `rgba(var(--r-color-surface-low) / 1)`,
-      '--gradient': `radial-gradient(circle at ${points.value.x - left.value}px ${points.value.y - top.value}px, var(--l-fill) ${shortEdge.value * 0.5}px, var(--bg) ${shortEdge.value * 0.5}px)`,
+      '--gradient': `radial-gradient(circle at ${points.value.x - left.value}px ${points.value.y - top.value}px, var(--l-bg) ${shortEdge.value * 0.5}px, var(--bg) ${shortEdge.value * 0.5}px)`,
       'background': 'linear-gradient(var(--bg), var(--bg)) padding-box, var(--gradient) border-box',
       'background-size': '200% 200%',
       'background-color': 'var(--bg)',

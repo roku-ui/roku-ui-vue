@@ -92,9 +92,9 @@ function optionToIndex(option: any) {
 }
 const color = computed(() => props.color)
 const colorStyle = useColorStyleWithKey(color, ['fill'])
-const colorCls = 'bg-[var(--l-fill)] dark:bg-[var(--d-fill)]'
-const indicatorOuterCls = 'dark:bg-white bg-[var(--l-fill)]'
-const indicatorInnerCls = 'dark:bg-[var(--l-fill)] bg-white'
+const colorCls = 'bg-[var(--l-bg)] dark:bg-[var(--d-bg)]'
+const indicatorOuterCls = 'dark:bg-white bg-[var(--l-bg)]'
+const indicatorInnerCls = 'dark:bg-[var(--l-bg)] bg-white'
 
 watchEffect(() => {
   if (currentIndex.value < 0) {

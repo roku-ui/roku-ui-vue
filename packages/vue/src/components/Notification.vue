@@ -77,7 +77,7 @@ const shapeClass = computed(() => {
       v-else
     >
       <div
-        class="absolute left-[0.25rem] top-[0.25rem] h-[calc(100%-0.5rem)] w-1 rounded-full bg-[var(--d-fill)] dark:bg-[var(--d-fill)]"
+        class="absolute left-[0.25rem] top-[0.25rem] h-[calc(100%-0.5rem)] w-1 rounded-full bg-[var(--d-bg)] dark:bg-[var(--d-bg)]"
         :class="[{
           'animate-pulse': loading,
         }]"

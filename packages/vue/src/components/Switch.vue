@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { Color } from '@/types'
+import { getColorCS, getSurfaceCS } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
 import { computed, ref } from 'vue'
 
@@ -14,11 +16,14 @@ const props = withDefaults(
     label?: string
     id?: string
     rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full' | string | number
-    color?: 'primary' | 'secondary' | 'tertiary' | 'error'
+    color?: Color
     disabled?: boolean
     offIcon?: string
     onIcon?: string
     value?: boolean
+    indicatorIcon?: string
+    onIndicatorIcon?: string
+    offIndicatorIcon?: string
   }>(),
   {
     size: 'md',
@@ -75,24 +80,19 @@ const animateCls = computed(() => props.animate
 
 const id = useId(props)
 
+const wrapperBGCS = getSurfaceCS('bg', { dark: 7, light: 3 })
+const wrapperActiveBGCS = getColorCS(props.color, 'bg', 5)
+const activeTextCS = getColorCS(props.color, 'text', 5)
 const colorCls = computed(() => {
-  let c = 'bg-primary-container'
-  switch (props.color) {
-    case 'secondary':
-      c = 'bg-secondary-container'
-      break
-    case 'tertiary':
-      c = 'bg-tertiary-container'
-      break
-    case 'error':
-      c = 'bg-error-container'
-      break
-    case 'primary':
-    default:
-  }
   return {
-    wrapper: model.value ? `border border-transparent ${c}` : 'bg-surface-border-low border border-surface-border-low',
-    indicator: props.disabled ? 'bg-surface-high' : 'bg-white text-primary-container',
+    wrapper: model.value ? [wrapperActiveBGCS.value.class] : [wrapperBGCS.value.class],
+    indicator: 'bg-white shadow',
+  }
+})
+const colorStyle = computed(() => {
+  return {
+    wrapper: model.value ? wrapperActiveBGCS.value.style : wrapperBGCS.value.style,
+    indicator: model.value ? {} : '',
   }
 })
 const rounded = useRounded(props)
@@ -119,8 +119,8 @@ const rounded = useRounded(props)
     >
       <div
         ref="wrapper"
-        :class="[sizeCls.wrapper, colorCls.wrapper, rounded.class]"
-        :style="[rounded.style]"
+        :class="[sizeCls.wrapper, ...colorCls.wrapper, rounded.class]"
+        :style="[rounded.style, colorStyle.wrapper]"
         class="relative inline-block"
         @pointerdown="isActivated = true"
         @pointerup="isActivated = false"
@@ -129,9 +129,29 @@ const rounded = useRounded(props)
       >
         <div
           class="absolute top-50% -translate-y-50%"
-          :style="[rounded.style]"
+          :style="[rounded.style, colorStyle.indicator]"
           :class="[sizeCls.indicator, colorCls.indicator, animateCls.indicator, model ? sizeCls.active : sizeCls.inactive, rounded.class]"
-        />
+        >
+
+          <i
+            v-if="props.indicatorIcon"
+            class="h-full w-full"
+            :class="[props.indicatorIcon, model ? activeTextCS.class : 'text-black']"
+            :style="activeTextCS.style"
+          />
+          <i
+            v-else-if="model && props.onIndicatorIcon"
+            class="h-full w-full"
+            :class="[props.onIndicatorIcon, model ? activeTextCS.class : 'text-black']"
+            :style="activeTextCS.style"
+          />
+          <i
+            v-else-if="!model && props.offIndicatorIcon"
+            class="h-full w-full"
+            :class="[props.offIndicatorIcon, model ? activeTextCS.class : 'text-black']"
+            :style="activeTextCS.style"
+          />
+        </div>
         <i
           v-if="model"
           key="on"
@@ -147,7 +167,7 @@ const rounded = useRounded(props)
           key="off"
           class="absolute top-1/2 -translate-y-50%"
           :class="[sizeCls.icon, {
-            'right-0 text-surface-on-low ': !model,
+            'right-0': !model,
             [onIcon ?? '']: model && onIcon,
             [offIcon ?? '']: !model && offIcon,
           }]"
