@@ -96,7 +96,7 @@ const lightBorderIndex = 4
 const lightOpacity = 0.08
 const lightOpacityVariant = 0.15
 
-type CSType = 'bg' | 'border' | 'text' | 'placeholder' | 'hover:bg' | 'hover:border' | 'hover:text'
+type CSType = 'bg' | 'border' | 'text' | 'placeholder' | 'hover:bg' | 'hover:border' | 'hover:text' | 'outline'
 type CSIndex = number | { dark: number, light: number }
 interface CSOptions {
   color: MaybeRef<Color | 'surface'>
@@ -106,6 +106,17 @@ interface CSOptions {
 
 export function getCSInner(colors: tinycolor.Instance[], type: CSType, darkIndex: number, lightIndex: number) {
   switch (type) {
+    case 'outline':
+      return {
+        style: {
+          [`--d-outline`]: colors[darkIndex].toHexString(),
+          [`--l-outline`]: colors[lightIndex].toHexString(),
+        },
+        class: {
+          [`dark:focus-visible:outline-[--d-outline]`]: `var(--d-outline)`,
+          [`focus-visible:outline-[--l-outline]`]: `var(--l-outline)`,
+        },
+      }
     case 'bg':
       return {
         style: {

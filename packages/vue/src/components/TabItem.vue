@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { getCS, useColorStyleWithKey } from '@/shared'
 import { childrenElementMapSymbol, directionSymbol, tabCurrentSymbol } from '@/utils'
 import { computed, type ComputedRef, inject, onMounted, type Ref, ref } from 'vue'
-import { useColorStyleWithKey } from '../shared'
 
 const props = withDefaults(defineProps<{
   value: string | number | symbol
@@ -36,10 +36,10 @@ const directionCls = computed(() => {
 const indicatorCls = computed(() => {
   switch (direction.value) {
     case 'vertical':
-      return 'absolute inset-0 right-100% h-full w-2px transition-background-color,border-color,color'
+      return 'absolute inset-0 right-100% h-full w-2px'
     case 'horizontal':
     default:
-      return 'absolute inset-0 top-100% h-2px w-full transition-background-color,border-color,color '
+      return 'absolute inset-0 top-100% h-2px w-full'
   }
 })
 // const colorCls = computed(() => {
@@ -49,21 +49,31 @@ const indicatorCls = computed(() => {
 //   return 'bg-surface-lowest'
 // })
 const colorStyle = useColorStyleWithKey(color, ['fill'])
+const indicatorBgCS = getCS({
+  color: color.value,
+  type: 'bg',
+  index: 5,
+})
+const btnOutlineCS = getCS({
+  color: color.value,
+  type: 'outline',
+  index: 5,
+})
 </script>
 
 <template>
   <button
     ref="tabRef"
     type="button"
-    class="rutline-none relative min-w-20 flex items-center justify-center outline-none focus-visible:outline-2 focus-visible:outline-[var(--d-bg)] outline-offset-0!"
-    :class="[directionCls]"
-    :style="colorStyle"
+    class="rutline-none relative min-w-20 flex items-center justify-center outline-none focus-visible:outline-2 outline-offset-0!"
+    :class="[directionCls, btnOutlineCS.class]"
+    :style="[colorStyle, btnOutlineCS.style]"
     @click="onClick"
   >
     <div
       v-if="isActivated"
-      class="dark:bg-[var(--d-bg)] light:bg-[var(--l-bg)]"
-      :class="[indicatorCls]"
+      :class="[indicatorBgCS.class, indicatorCls]"
+      :style="[indicatorBgCS.style]"
     />
     <div
       v-else
