@@ -330,13 +330,13 @@ function getContrastVariantStyle(color: tinycolor.Instance[]): Record<string, st
 
 function getWhiteVariantStyle(color: tinycolor.Instance[]): Record<string, string> {
   return {
-    '--d-fill': 'white',
-    '--d-fill-h': 'white',
+    '--d-bg': 'white',
+    '--d-bg-h': 'white',
     '--d-text': color[6].toHexString(),
     '--d-text-h': color[6].toHexString(),
     '--d-border': 'transparent',
-    '--l-fill': 'white',
-    '--l-fill-h': 'white',
+    '--l-bg': 'white',
+    '--l-bg-h': 'white',
     '--l-text': color[6].toHexString(),
     '--l-text-h': color[6].toHexString(),
     '--l-border': 'transparent',
