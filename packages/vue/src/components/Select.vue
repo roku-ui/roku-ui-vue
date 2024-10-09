@@ -1,6 +1,6 @@
 <script setup lang="ts" generic="T extends { id: number | string | symbol;  [key: string]: any;} | string | symbol | number">
 import type { Color } from '@/types'
-import { getContainerCS, getContainerVariantCS, getFillCS, useInputColorStyle } from '@/shared'
+import { getContainerVariantCS, useContainerDefaultCS, useContainerFilledCS, useInputColorStyle } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
 import { isClient } from '@vueuse/core'
 import { computed, ref, watch, watchEffect } from 'vue'
@@ -210,9 +210,9 @@ const searchCls = computed(() => {
   }
   return 'cursor-pointer'
 })
-const containerCS = getContainerCS()
+const containerCS = useContainerDefaultCS()
 const containerVariantCS = getContainerVariantCS()
-const fillCS = getFillCS(color)
+const fillCS = useContainerFilledCS(color)
 function onMousemove(i: number) {
   // 细节 4：鼠标移动时，设置鼠标索引，重置键盘索引
   hoverIndex.value = i

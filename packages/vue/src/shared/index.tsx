@@ -1,4 +1,4 @@
-import type { BtnVariant, Color, InputVariant } from '../types'
+import type { BtnVariant, Color, ContainerVariant, InputVariant } from '../types'
 import { generateColorsObjMap } from '@/utils'
 import tinycolor from 'tinycolor2'
 import { computed, type MaybeRef, ref, unref } from 'vue'
@@ -17,6 +17,17 @@ export const defaultTheme = useThemeData('default', {
   error: errorColor,
   surface: surfaceColor,
 })
+
+export function useContainerCS(variant: MaybeRef<ContainerVariant>, color: MaybeRef<Color>) {
+  return computed(() => {
+    switch (unref(variant)) {
+      case 'filled':
+        return useContainerFilledCS(color).value
+      default:
+        return useContainerDefaultCS().value
+    }
+  })
+}
 
 const colorStyleCache = new Map<string, tinycolor.Instance[]>()
 export function useColors(color: MaybeRef<Color>) {
@@ -104,7 +115,7 @@ interface CSOptions {
   index: CSIndex
 }
 
-export function getContainerCS() {
+export function useContainerDefaultCS() {
   return computed(() => {
     const bgCS = getCS({
       color: 'surface',
@@ -143,7 +154,7 @@ function mergeCS(...cs: ReturnType<typeof getCS>[]) {
   }
 }
 
-export function getFillCS(color: MaybeRef<Color>) {
+export function useIndicatorFilledCS(color: MaybeRef<Color>) {
   return computed(() => {
     const bgCS = getCS({
       color,
@@ -154,6 +165,27 @@ export function getFillCS(color: MaybeRef<Color>) {
       color: 'surface',
       type: 'border',
       index: { dark: darkSurfaceBgIndex, light: lightSurfaceBgIndex },
+    })
+    const textCS = getCS({
+      color,
+      type: 'text',
+      index: 0,
+    })
+    return mergeCS(bgCS, borderCS, textCS)
+  })
+}
+
+export function useContainerFilledCS(color: MaybeRef<Color>) {
+  return computed(() => {
+    const bgCS = getCS({
+      color,
+      type: 'bg',
+      index: { dark: 5, light: 5 },
+    })
+    const borderCS = getCS({
+      color: 'surface',
+      type: 'border',
+      index: { dark: 5, light: 5 },
     })
     const textCS = getCS({
       color,

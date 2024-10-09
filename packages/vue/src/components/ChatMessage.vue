@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import type { BtnVariant } from '../types'
+import type { ContainerVariant } from '../types'
 import { computed } from 'vue'
-import { useBtnColorStyle } from '../shared'
+import { useContainerCS } from '../shared'
 
 const props = withDefaults(
   defineProps<{
     avatar?: string
     position?: 'left' | 'right'
     color?: string
-    variant?: BtnVariant
+    variant?: ContainerVariant
     withBorder?: boolean
   }>(),
   {
@@ -20,8 +20,7 @@ const props = withDefaults(
 )
 const variant = computed(() => props.variant)
 const color = computed(() => props.color)
-const bubbleStyle = useBtnColorStyle(color, variant)
-// const bubbleClass = useBtnColorClass(variant)
+const bubbleCS = useContainerCS(variant, color)
 </script>
 
 <template>
@@ -43,16 +42,16 @@ const bubbleStyle = useBtnColorStyle(color, variant)
       :src="avatar"
     />
     <div
-      class="rounded-xl px-3 py-2 transition-background-color,border-color"
+      class="rounded-xl px-3 py-2"
       :class="[
         {
           'rounded-tr': position === 'right',
           'rounded-tl': position === 'left',
           'border': withBorder,
         },
-        // bubbleClass,
+        bubbleCS.class,
       ]"
-      :style="[bubbleStyle]"
+      :style="[bubbleCS.style]"
     >
       <slot />
     </div>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Color } from '../types'
 import { computed, useSlots } from 'vue'
-import { getFillCS } from '../shared'
+import { useIndicatorFilledCS } from '../shared'
 
 const props = withDefaults(
   defineProps<{
@@ -61,7 +61,7 @@ const posCls = computed(() => {
 })
 
 const color = computed(() => props.color)
-const fillCS = getFillCS(color)
+const fillCS = useIndicatorFilledCS(color)
 </script>
 
 <template>
