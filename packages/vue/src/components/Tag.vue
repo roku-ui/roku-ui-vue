@@ -2,7 +2,7 @@
 import type { BtnVariant } from '../types'
 import { computed } from 'vue'
 import { useRounded } from '..'
-import { useBtnColorStyle } from '../shared'
+import { useButtonCS } from '../shared'
 
 const props = withDefaults(defineProps<{
   color?: string
@@ -31,15 +31,15 @@ const sizeCls = computed(() => {
 const rounded = useRounded(props)
 const color = computed(() => props.color ?? 'primary')
 const variant = computed(() => props.variant)
-const colorStyle = useBtnColorStyle(color, variant)
+const cs = useButtonCS(variant, color)
 </script>
 
 <template>
   <span
     :tabindex="-1"
-    :style="[colorStyle, rounded.style]"
-    :class="[rounded.class, sizeCls]"
-    class="inline-block h-fit flex cursor-pointer gap-1 border custom-colors"
+    :style="[cs.style, rounded.style]"
+    :class="[cs.class, rounded.class, sizeCls]"
+    class="inline-block h-fit flex cursor-pointer gap-1 border"
   >
     <i
       v-if="props.leftIcon"

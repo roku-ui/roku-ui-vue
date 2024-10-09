@@ -273,7 +273,6 @@ const btnGroupOptionSingle = [
         </ChatMessage>
         <ChatMessage
           position="right"
-          variant="transparent"
           avatar="https://avatars.githubusercontent.com/u/29743310?v=4"
         >
           Hello, world!

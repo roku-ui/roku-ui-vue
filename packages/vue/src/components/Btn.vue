@@ -2,7 +2,7 @@
 import type { BtnVariant } from '../types'
 import { useRounded } from '@/utils/classGenerator'
 import { type Component, computed, ref } from 'vue'
-import { useBtnColorStyle } from '../shared'
+import { useButtonCS } from '../shared'
 
 const props = withDefaults(
   defineProps<{
@@ -60,7 +60,7 @@ const variant = computed(() => {
   return props.variant ?? 'default'
 })
 const color = computed(() => props.color ?? 'primary')
-const colorStyle = useBtnColorStyle(color, variant)
+const cs = useButtonCS(variant, color)
 </script>
 
 <template>
@@ -69,12 +69,13 @@ const colorStyle = useBtnColorStyle(color, variant)
     ref="btn"
     :data-size="size"
     :type="type"
-    class="flex items-center justify-center gap-1 decoration-none custom-colors"
+    class="flex items-center justify-center gap-1 decoration-none"
     :style="[
+      cs.style,
       rounded.style,
-      colorStyle,
     ]"
     :class="[
+      cs.class,
       rounded.class,
       icon ? sizeCls.iconContent : sizeCls.normalContent,
       {

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useButtonCS, useContainerDefaultVariantCS } from '@/shared'
 import { useDropZone } from '@vueuse/core'
 import { ref } from 'vue'
 
@@ -35,17 +36,22 @@ const { isOverDropZone } = useDropZone(dropZoneRef, {
     emits('drop', files)
   },
 })
+const cs = useButtonCS('default')
+const dropCS = useContainerDefaultVariantCS()
 </script>
 
 <template>
   <div
     ref="dropZoneRef"
-    :class="{
-      '': isOverDropZone,
-      ' bg-surface-low': !isOverDropZone,
-      'border-dashed': dashed,
-    }"
-    class="h-full w-full flex cursor-pointer items-center justify-center rounded transition-background-color,border-color"
+    :class="[
+      cs.class,
+      isOverDropZone && dropCS.class,
+      {
+        'bg-surface-low': !isOverDropZone,
+        'border-dashed': dashed,
+      }]"
+    :style="[cs.style, isOverDropZone && dropCS.style]"
+    class="h-full w-full flex cursor-pointer items-center justify-center border rounded"
     @pointerup="() => open()"
   >
     <slot />

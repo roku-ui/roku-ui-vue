@@ -1,7 +1,9 @@
+import type { ComputedRef, MaybeRef } from 'vue'
 import type { BtnVariant, Color, ContainerVariant, InputVariant } from '../types'
 import { generateColorsObjMap } from '@/utils'
 import tinycolor from 'tinycolor2'
-import { computed, type MaybeRef, ref, unref } from 'vue'
+import { computed, ref, unref } from 'vue'
+
 import { COLOR_LIGHTNESS_MAP, SURFACE_LIGHTNESS_MAP } from '..'
 
 export const primaryColor = ref('#3F9CDC')
@@ -114,6 +116,10 @@ interface CSOptions {
   type: CSType
   index: CSIndex
 }
+interface CS {
+  style: Record<string, string>
+  class: string[] | string
+}
 
 export function useContainerDefaultCS() {
   return computed(() => {
@@ -131,7 +137,7 @@ export function useContainerDefaultCS() {
   })
 }
 
-export function getContainerVariantCS() {
+export function useContainerDefaultVariantCS() {
   return computed(() => {
     const bgCS = getCS({
       color: 'surface',
@@ -196,10 +202,7 @@ export function useContainerFilledCS(color: MaybeRef<Color>) {
   })
 }
 
-export function getCSInner(colors: tinycolor.Instance[], type: CSType, darkIndex: number, lightIndex: number): {
-  style: Record<string, string>
-  class: string[]
-} {
+export function getCSInner(colors: tinycolor.Instance[], type: CSType, darkIndex: number, lightIndex: number): CS {
   switch (type) {
     case 'outline':
       return {
@@ -319,22 +322,24 @@ export function getSurfaceCS(type: CSType, index: CSIndex) {
   })
 }
 
-export function useColorStyleByColorsAndBtnVariant(colorInstances: MaybeRef<tinycolor.Instance[]>, variant: MaybeRef<BtnVariant>) {
+export function useButtonCS(variant: MaybeRef<BtnVariant> = 'default', color: MaybeRef<Color> = 'primary'): ComputedRef<CS> {
   return computed(() => {
-    const color = unref(colorInstances)
+    const colors = useColors(color).value
     const surface = generateColorsObjMap(unref(surfaceColor), SURFACE_LIGHTNESS_MAP).colors
-
     const variantStyles: Record<BtnVariant, () => Record<string, string>> = {
       default: () => getDefaultVariantStyle(surface),
-      filled: () => getFilledVariantStyle(color),
-      light: () => getLightVariantStyle(color),
-      outline: () => getOutlineVariantStyle(color),
-      transparent: () => getTransparentVariantStyle(color),
-      subtle: () => getSubtleVariantStyle(color),
-      contrast: () => getContrastVariantStyle(color),
-      white: () => getWhiteVariantStyle(color),
+      filled: () => getFilledVariantStyle(colors),
+      light: () => getLightVariantStyle(colors),
+      outline: () => getOutlineVariantStyle(colors),
+      transparent: () => getTransparentVariantStyle(colors),
+      subtle: () => getSubtleVariantStyle(colors),
+      contrast: () => getContrastVariantStyle(colors),
+      white: () => getWhiteVariantStyle(colors),
     }
-    return variantStyles[unref(variant)]?.() ?? {}
+    return {
+      style: variantStyles[unref(variant)](),
+      class: 'custom-colors',
+    }
   })
 }
 
@@ -451,11 +456,6 @@ function getWhiteVariantStyle(color: tinycolor.Instance[]): Record<string, strin
   }
 }
 
-export function useBtnColorStyle(color: MaybeRef<string>, variant: MaybeRef<BtnVariant> = 'default') {
-  const colors = useColors(color)
-  return useColorStyleByColorsAndBtnVariant(colors, variant)
-}
-
 export function useInputColorStyle(color: MaybeRef<string>, variant: MaybeRef<InputVariant> = 'default') {
   const colors = useColors(color).value
   const surfaceColors = useSurfaceColors().value
@@ -488,14 +488,7 @@ export function useInputColorStyle(color: MaybeRef<string>, variant: MaybeRef<In
 }
 
 export function useColorStyleWithKey(color: MaybeRef<string>, keys: any[]) {
-  const colorStyle = useBtnColorStyle(color)
   return computed(() => {
-    return keys.reduce((prev, curr) => {
-      for (const v of ['l', 'd']) {
-        const key = `--${v}-${curr}`
-        prev[key] = colorStyle.value[key as keyof typeof colorStyle.value]
-      }
-      return prev
-    }, {})
+    return {}
   })
 }
