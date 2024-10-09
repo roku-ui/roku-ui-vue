@@ -120,6 +120,22 @@ export function getContainerCS() {
   })
 }
 
+export function getContainerVariantCS() {
+  return computed(() => {
+    const bgCS = getCS({
+      color: 'surface',
+      type: 'bg',
+      index: { dark: 7, light: 2 },
+    })
+    const borderCS = getCS({
+      color: 'surface',
+      type: 'border',
+      index: { dark: 7, light: 4 },
+    })
+    return mergeCS(bgCS, borderCS)
+  })
+}
+
 function mergeCS(...cs: ReturnType<typeof getCS>[]) {
   return {
     style: cs.reduce((prev, curr) => ({ ...prev, ...curr.value.style }), {}),

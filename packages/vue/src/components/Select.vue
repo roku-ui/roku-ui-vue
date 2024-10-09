@@ -1,9 +1,9 @@
 <script setup lang="ts" generic="T extends { id: number | string | symbol;  [key: string]: any;} | string | symbol | number">
-import type { Color } from '../types'
+import type { Color } from '@/types'
+import { getContainerCS, getContainerVariantCS, getFillCS, useInputColorStyle } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
 import { isClient } from '@vueuse/core'
 import { computed, ref, watch, watchEffect } from 'vue'
-import { getContainerCS, getFillCS, useInputColorStyle } from '../shared'
 
 const props = withDefaults(defineProps<{
   ariaLabel?: string
@@ -49,6 +49,7 @@ const hoverIndex = ref(-1)
 const keyboardIndex = ref(-1)
 
 watchEffect(() => {
+  //
   if (!focused.value) {
     keyboardIndex.value = -1
   }
@@ -60,6 +61,7 @@ watch(model, () => {
 
 const currentOption = computed(() => model.value)
 const currentLabel = computed(() => getLabel(currentOption.value))
+const currentIndex = computed(() => props.options.findIndex(d => optionIsEq(d, currentOption.value)))
 
 function getLabel(option?: T) {
   if (!option) {
@@ -88,11 +90,7 @@ const searchText = ref('')
 watch(currentLabel, () => {
   searchText.value = currentLabel.value
 })
-watchEffect(() => {
-  if (!focused.value) {
-    searchText.value = currentLabel.value
-  }
-})
+
 function onInput(event: Event) {
   focused.value = true
   const target = event.target as HTMLInputElement
@@ -111,6 +109,14 @@ const filtedOptions = computed(() => {
 onKeyStroke('ArrowDown', (e) => {
   if (focused.value) {
     e.preventDefault()
+    if (keyboardIndex.value === -1 && hoverIndex.value !== -1) {
+      // 细节 1：如果键盘索引为 -1 且鼠标索引不为 -1，则将键盘索引设置为鼠标索引
+      keyboardIndex.value = hoverIndex.value
+    }
+    else if (keyboardIndex.value === -1 && hoverIndex.value === -1 && currentIndex.value !== -1) {
+      // 细节 2：如果键盘索引为 -1 且鼠标索引为 -1 且当前索引不为 -1，则将键盘索引设置为当前索引
+      keyboardIndex.value = currentIndex.value
+    }
     keyboardIndex.value = (keyboardIndex.value + 1) % props.options.length
   }
 })
@@ -118,6 +124,12 @@ onKeyStroke('ArrowDown', (e) => {
 onKeyStroke('ArrowUp', (e) => {
   if (focused.value) {
     e.preventDefault()
+    if (keyboardIndex.value === -1 && hoverIndex.value !== -1) {
+      keyboardIndex.value = hoverIndex.value
+    }
+    else if (keyboardIndex.value === -1 && hoverIndex.value === -1 && currentIndex.value !== -1) {
+      keyboardIndex.value = currentIndex.value
+    }
     keyboardIndex.value = (keyboardIndex.value - 1 + props.options.length) % props.options.length
   }
 })
@@ -163,6 +175,11 @@ const sizeCls = computed(() => {
 const dropdownRef = ref(null)
 const { height } = useElementBounding(dropdownRef)
 const { bottom } = useElementBounding(inputRef)
+watch([focused], () => {
+  // 细节 3：当下拉框收起时，重置键盘索引和鼠标索引
+  keyboardIndex.value = -1
+  hoverIndex.value = -1
+})
 const hasArea = computed(() => {
   if (!focused.value) {
     return false
@@ -194,7 +211,13 @@ const searchCls = computed(() => {
   return 'cursor-pointer'
 })
 const containerCS = getContainerCS()
+const containerVariantCS = getContainerVariantCS()
 const fillCS = getFillCS(color)
+function onMousemove(i: number) {
+  // 细节 4：鼠标移动时，设置鼠标索引，重置键盘索引
+  hoverIndex.value = i
+  keyboardIndex.value = -1
+}
 </script>
 
 <template>
@@ -241,13 +264,18 @@ const fillCS = getFillCS(color)
         <div
           v-for="option, i in filtedOptions"
           :key="getId(option)"
-          :class="{
-            'hover:bg-surface-low border-transparent': keyboardIndex !== i,
-            [fillCS.class]: keyboardIndex === i,
-          }"
-          class="flex cursor-pointer items-center justify-between gap-2 border rounded p-1 px-2"
+          :class="[
+            keyboardIndex === i && fillCS.class,
+            hoverIndex === i && keyboardIndex === -1 && containerVariantCS.class,
+          ]"
+          :style="[
+            keyboardIndex === i && fillCS.style,
+            hoverIndex === i && keyboardIndex === -1 && containerVariantCS.style,
+          ]"
+          class="flex cursor-pointer items-center justify-between gap-2 rounded p-1 px-2"
           @pointerdown="onItemPointerDown(option)"
-          @hover="hoverIndex = i"
+          @mousemove="onMousemove(i)"
+          @mouseleave="hoverIndex = -1"
         >
           <slot
             name="item"
