@@ -104,7 +104,54 @@ interface CSOptions {
   index: CSIndex
 }
 
-export function getCSInner(colors: tinycolor.Instance[], type: CSType, darkIndex: number, lightIndex: number) {
+export function getContainerCS() {
+  return computed(() => {
+    const bgCS = getCS({
+      color: 'surface',
+      type: 'bg',
+      index: { dark: 8, light: 1 },
+    })
+    const borderCS = getCS({
+      color: 'surface',
+      type: 'border',
+      index: { dark: 7, light: 4 },
+    })
+    return mergeCS(bgCS, borderCS)
+  })
+}
+
+function mergeCS(...cs: ReturnType<typeof getCS>[]) {
+  return {
+    style: cs.reduce((prev, curr) => ({ ...prev, ...curr.value.style }), {}),
+    class: cs.reduce<string[]>((prev, curr) => [...prev, ...curr.value.class], []),
+  }
+}
+
+export function getFillCS(color: MaybeRef<Color>) {
+  return computed(() => {
+    const bgCS = getCS({
+      color,
+      type: 'bg',
+      index: { dark: 5, light: 5 },
+    })
+    const borderCS = getCS({
+      color: 'surface',
+      type: 'border',
+      index: { dark: darkSurfaceBgIndex, light: lightSurfaceBgIndex },
+    })
+    const textCS = getCS({
+      color,
+      type: 'text',
+      index: 0,
+    })
+    return mergeCS(bgCS, borderCS, textCS)
+  })
+}
+
+export function getCSInner(colors: tinycolor.Instance[], type: CSType, darkIndex: number, lightIndex: number): {
+  style: Record<string, string>
+  class: string[]
+} {
   switch (type) {
     case 'outline':
       return {
@@ -112,10 +159,10 @@ export function getCSInner(colors: tinycolor.Instance[], type: CSType, darkIndex
           [`--d-outline`]: colors[darkIndex].toHexString(),
           [`--l-outline`]: colors[lightIndex].toHexString(),
         },
-        class: {
-          [`dark:focus-visible:outline-[--d-outline]`]: `var(--d-outline)`,
-          [`focus-visible:outline-[--l-outline]`]: `var(--l-outline)`,
-        },
+        class: [
+          `dark:focus-visible:outline-[--d-outline]`,
+          `focus-visible:outline-[--l-outline]`,
+        ],
       }
     case 'bg':
       return {
@@ -123,10 +170,10 @@ export function getCSInner(colors: tinycolor.Instance[], type: CSType, darkIndex
           [`--d-bg`]: colors[darkIndex].toHexString(),
           [`--l-bg`]: colors[lightIndex].toHexString(),
         },
-        class: {
-          [`dark:bg-[--d-bg]`]: `var(--d-bg)`,
-          [`bg-[--l-bg]`]: `var(--l-bg)`,
-        },
+        class: [
+          `dark:bg-[--d-bg]`,
+          `bg-[--l-bg]`,
+        ],
       }
     case 'border':
       return {
@@ -134,10 +181,10 @@ export function getCSInner(colors: tinycolor.Instance[], type: CSType, darkIndex
           [`--d-border`]: colors[darkIndex].toHexString(),
           [`--l-border`]: colors[lightIndex].toHexString(),
         },
-        class: {
-          [`dark:border-[--d-border]`]: `var(--d-border)`,
-          [`border-[--l-border]`]: `var(--l-border)`,
-        },
+        class: [
+          `dark:border-[--d-border]`,
+          `border-[--l-border]`,
+        ],
       }
     case 'text':
       return {
@@ -145,10 +192,10 @@ export function getCSInner(colors: tinycolor.Instance[], type: CSType, darkIndex
           [`--d-text`]: colors[darkIndex].toHexString(),
           [`--l-text`]: colors[lightIndex].toHexString(),
         },
-        class: {
-          [`dark:text-[--d-text]`]: `var(--d-text)`,
-          [`text-[--l-text]`]: `var(--l-text)`,
-        },
+        class: [
+          `dark:text-[--d-text]`,
+          `text-[--l-text]`,
+        ],
       }
     case 'placeholder':
       return {
@@ -156,10 +203,10 @@ export function getCSInner(colors: tinycolor.Instance[], type: CSType, darkIndex
           [`--d-placeholder`]: colors[darkIndex].toHexString(),
           [`--l-placeholder`]: colors[lightIndex].toHexString(),
         },
-        class: {
-          [`dark:placeholder-[--d-placeholder]`]: `var(--d-placeholder)`,
-          [`placeholder-[--l-placeholder]`]: `var(--l-placeholder)`,
-        },
+        class: [
+          'dark:placeholder-[--d-placeholder]',
+          'placeholder-[--l-placeholder]',
+        ],
       }
     case 'hover:bg':
       return {
@@ -167,10 +214,10 @@ export function getCSInner(colors: tinycolor.Instance[], type: CSType, darkIndex
           [`--d-bg-h`]: colors[darkIndex].toHexString(),
           [`--l-bg-h`]: colors[lightIndex].toHexString(),
         },
-        class: {
-          [`dark:hover:bg-[--d-bg-h]`]: `var(--d-bg-h)`,
-          [`hover:bg-[--l-bg-h]`]: `var(--l-bg-h)`,
-        },
+        class: [
+          `dark:hover:bg-[--d-bg-h]`,
+          `hover:bg-[--l-bg-h]`,
+        ],
       }
     case 'hover:border':
       return {
@@ -178,10 +225,10 @@ export function getCSInner(colors: tinycolor.Instance[], type: CSType, darkIndex
           [`--d-border-h`]: colors[darkIndex].toHexString(),
           [`--l-border-h`]: colors[lightIndex].toHexString(),
         },
-        class: {
-          [`dark:hover:border-[--d-border-h]`]: `var(--d-border-h)`,
-          [`hover:border-[--l-border-h]`]: `var(--l-border-h)`,
-        },
+        class: [
+          'dark:hover:border-[--d-border-h]',
+          'hover:border-[--l-border-h]',
+        ],
       }
     case 'hover:text':
       return {
@@ -189,10 +236,10 @@ export function getCSInner(colors: tinycolor.Instance[], type: CSType, darkIndex
           [`--d-text-h`]: colors[darkIndex].toHexString(),
           [`--l-text-h`]: colors[lightIndex].toHexString(),
         },
-        class: {
-          [`dark:hover:text-[--d-text-h]`]: `var(--d-text-h)`,
-          [`hover:text-[--l-text-h]`]: `var(--l-text-h)`,
-        },
+        class: [
+          'dark:hover:text-[--d-text-h]',
+          'hover:text-[--l-text-h]',
+        ],
       }
   }
 }

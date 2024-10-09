@@ -245,7 +245,7 @@ const btnGroupOptionSingle = [
           :ratio="16 / 9"
         >
           <Image
-            src="https://source.unsplash.com/random/512x512"
+            src="https://picsum.photos/seed/2/512/512"
           />
         </AspectRatio>
       </Paper>
@@ -256,7 +256,7 @@ const btnGroupOptionSingle = [
         <Image
           height="312px"
           width="312px"
-          src="https://source.unsplash.com/random/512x512"
+          src="https://picsum.photos/seed/2/512/512"
         />
         <template #content>
           <div class="h-full w-full flex items-center justify-center text-white">
@@ -298,7 +298,7 @@ const btnGroupOptionSingle = [
           <Image
             height="312px"
             width="312px"
-            src="https://source.unsplash.com/random/512x512"
+            src="https://picsum.photos/seed/2/512/512"
           />
         </ChatMessage>
       </ChatContainer>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Color } from '../types'
 import { computed, useSlots } from 'vue'
-import { useColorStyleWithKey } from '../shared'
+import { getFillCS } from '../shared'
 
 const props = withDefaults(
   defineProps<{
@@ -61,7 +61,7 @@ const posCls = computed(() => {
 })
 
 const color = computed(() => props.color)
-const colorStyle = useColorStyleWithKey(color, ['fill', 'on-fill'])
+const fillCS = getFillCS(color)
 </script>
 
 <template>
@@ -74,13 +74,14 @@ const colorStyle = useColorStyleWithKey(color, ['fill', 'on-fill'])
     >
       <div
         v-if="props.ping"
-        class="absolute box-content animate-ping border-2 border-transparent rounded-full bg-[var(--l-bg)] text-[var(--l-text)] dark:bg-[var(--d-bg)] dark:text-[var(--d-text)]"
+        class="absolute box-content animate-ping border-2 border-transparent rounded-full"
         :class="[
           {
             [sizeCls]: !$slots.label,
           },
+          fillCS.class,
         ]"
-        :style="colorStyle"
+        :style="[fillCS.style]"
       >
         <slot
           v-if="$slots.label"
@@ -88,13 +89,14 @@ const colorStyle = useColorStyleWithKey(color, ['fill', 'on-fill'])
         />
       </div>
       <div
-        class="border-surface-low top-0 box-content border-2 rounded-full bg-[var(--l-bg)] text-[var(--l-text)] dark:bg-[var(--d-bg)] dark:text-[var(--d-text)]"
+        class="border-surface-low top-0 box-content border-2 rounded-full"
         :class="[
           {
             [sizeCls]: !$slots.label,
           },
+          fillCS.class,
         ]"
-        :style="colorStyle"
+        :style="fillCS.style"
       >
         <slot
           v-if="$slots.label"

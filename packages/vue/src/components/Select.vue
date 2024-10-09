@@ -3,7 +3,7 @@ import type { Color } from '../types'
 import { useRounded } from '@/utils/classGenerator'
 import { isClient } from '@vueuse/core'
 import { computed, ref, watch, watchEffect } from 'vue'
-import { useInputColorStyle } from '../shared'
+import { getContainerCS, getFillCS, useInputColorStyle } from '../shared'
 
 const props = withDefaults(defineProps<{
   ariaLabel?: string
@@ -193,6 +193,8 @@ const searchCls = computed(() => {
   }
   return 'cursor-pointer'
 })
+const containerCS = getContainerCS()
+const fillCS = getFillCS(color)
 </script>
 
 <template>
@@ -205,7 +207,7 @@ const searchCls = computed(() => {
       <input
         ref="inputRef"
         :class="[sizeCls.wrapper, rounded.class, searchCls]"
-        class="r-select-input border outline-none outline-none focus-visible:outline-2 custom-input-colors"
+        class="border outline-none outline-none focus-visible:outline-2 custom-input-colors"
         :placeholder="placeholder"
         :style="[rounded.style]"
         :readonly="!searchable"
@@ -221,10 +223,11 @@ const searchCls = computed(() => {
     <div
       v-if="focused"
       ref="dropdownRef"
-      class="container-base absolute z-10 mt-2 w-full flex-col overflow-hidden border rounded p-1"
-      :class="[sizeCls.dropdown, {
+      class="absolute z-10 mt-2 w-full flex-col overflow-hidden border rounded p-1"
+      :class="[containerCS.class, sizeCls.dropdown, {
         'bottom-10': !hasArea,
       }]"
+      :style="[containerCS.style]"
     >
       <div
         v-if="options.length === 0"
@@ -240,7 +243,7 @@ const searchCls = computed(() => {
           :key="getId(option)"
           :class="{
             'hover:bg-surface-low border-transparent': keyboardIndex !== i,
-            'container-filled-primary text-white': keyboardIndex === i,
+            [fillCS.class]: keyboardIndex === i,
           }"
           class="flex cursor-pointer items-center justify-between gap-2 border rounded p-1 px-2"
           @pointerdown="onItemPointerDown(option)"
