@@ -6,7 +6,7 @@ import { computed, ref, unref } from 'vue'
 
 import { COLOR_LIGHTNESS_MAP, SURFACE_LIGHTNESS_MAP } from '..'
 
-export const primaryColor = ref('#3F9CDC')
+export const primaryColor = ref('#0067cc')
 export const secondaryColor = ref('#5999A6')
 export const tertiaryColor = ref('#F76C22')
 export const errorColor = ref('#F95858')
@@ -467,7 +467,7 @@ export function useInputColorStyle(color: MaybeRef<string>, variant: MaybeRef<In
         '--d-text': 'white',
 
         '--l-bg': surfaceColors[lightSurfaceBgIndex].toHexString(),
-        '--l-border-f': colors[lightBgIndex].toHexString(),
+        '--l-border-f': colors[3].toHexString(),
         '--l-border': surfaceColors[lightSurfaceBorderIndex].toHexString(),
         '--l-placeholder': surfaceColors[lightSurfaceTextVariantIndex].toHexString(),
         '--l-text': 'black',
