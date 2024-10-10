@@ -2,7 +2,7 @@
 import type { Size } from '../types'
 import { useRounded } from '@/utils/classGenerator'
 import { computed } from 'vue'
-import { useColorStyleWithKey } from '../shared'
+import { useColorStyleWithKey, useContainerDefaultCS, useContainerFilledCS, useSurfaceColors } from '../shared'
 
 const props = withDefaults(
   defineProps<{
@@ -30,8 +30,9 @@ const props = withDefaults(
 defineEmits(['close'])
 
 const rounded = useRounded(props)
-const color = computed(() => props.color ?? 'primary')
-const colorStyle = useColorStyleWithKey(color, ['fill', 'text'])
+const color = computed(() => props.color)
+const containerFilledCS = useContainerFilledCS(color)
+const containerSurfaceCS = useContainerDefaultCS()
 const shapeClass = computed(() => {
   switch (props.size) {
     case 'sm':
@@ -57,7 +58,8 @@ const shapeClass = computed(() => {
         'w-full': block,
       },
     ]"
-    :style="[rounded.style, colorStyle]"
+    :style="[rounded.style]"
+    v-bind="containerSurfaceCS"
   >
     <div
       v-if="icon"
@@ -81,6 +83,7 @@ const shapeClass = computed(() => {
         :class="[{
           'animate-pulse': loading,
         }]"
+        v-bind="containerFilledCS"
       />
     </div>
     <div class="grow-1">
@@ -102,7 +105,7 @@ const shapeClass = computed(() => {
       />
       <div
         v-else-if="message"
-        class="text-surface-on-low"
+        class="text-surface-on-low op-50"
         :class="{
           'text-xs': size === 'sm',
           'text-sm': size === 'md' || size === 'lg',
