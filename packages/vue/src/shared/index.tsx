@@ -25,6 +25,8 @@ export function useContainerCS(variant: MaybeRef<ContainerVariant>, color: Maybe
     switch (unref(variant)) {
       case 'filled':
         return useContainerFilledCS(color).value
+      case 'light':
+        return useContainerLightCS(color).value
       default:
         return useContainerDefaultCS().value
     }
@@ -113,6 +115,7 @@ interface CSOptions {
   color: MaybeRef<Color | 'surface'>
   type: CSType
   index: CSIndex
+  alpha?: number
 }
 interface CS {
   style: Record<string, string>
@@ -131,7 +134,9 @@ export function useContainerDefaultCS() {
       type: 'border',
       index: { dark: 7, light: 4 },
     })
-    return mergeCS(bgCS, borderCS)
+    const cs = mergeCS(bgCS, borderCS)
+    cs.class.push('border')
+    return cs
   })
 }
 
@@ -200,13 +205,31 @@ export function useContainerFilledCS(color: MaybeRef<Color>) {
   })
 }
 
-export function getCSInner(colors: tinycolor.Instance[], type: CSType, darkIndex: number, lightIndex: number): CS {
+export function useContainerLightCS(color: MaybeRef<Color>) {
+  return computed(() => {
+    const bgCS = getCS({
+      color,
+      type: 'bg',
+      index: { dark: 5, light: 4 },
+      alpha: 0.15,
+    })
+
+    const textCS = getCS({
+      color,
+      type: 'text',
+      index: { dark: 2, light: 5 },
+    })
+    return mergeCS(bgCS, textCS)
+  })
+}
+
+export function getCSInner(colors: tinycolor.Instance[], type: CSType, darkIndex: number, lightIndex: number, alpha = 1.0): CS {
   switch (type) {
     case 'outline':
       return {
         style: {
-          [`--d-outline`]: colors[darkIndex].toHexString(),
-          [`--l-outline`]: colors[lightIndex].toHexString(),
+          [`--d-outline`]: colors[darkIndex].clone().setAlpha(alpha).toHex8String(),
+          [`--l-outline`]: colors[lightIndex].clone().setAlpha(alpha).toHex8String(),
         },
         class: [
           `dark:focus-visible:outline-[--d-outline]`,
@@ -216,8 +239,8 @@ export function getCSInner(colors: tinycolor.Instance[], type: CSType, darkIndex
     case 'bg':
       return {
         style: {
-          [`--d-bg`]: colors[darkIndex].toHexString(),
-          [`--l-bg`]: colors[lightIndex].toHexString(),
+          [`--d-bg`]: colors[darkIndex].clone().setAlpha(alpha).toHex8String(),
+          [`--l-bg`]: colors[lightIndex].clone().setAlpha(alpha).toHex8String(),
         },
         class: [
           `dark:bg-[--d-bg]`,
@@ -227,8 +250,8 @@ export function getCSInner(colors: tinycolor.Instance[], type: CSType, darkIndex
     case 'border':
       return {
         style: {
-          [`--d-border`]: colors[darkIndex].toHexString(),
-          [`--l-border`]: colors[lightIndex].toHexString(),
+          [`--d-border`]: colors[darkIndex].clone().setAlpha(alpha).toHex8String(),
+          [`--l-border`]: colors[lightIndex].clone().setAlpha(alpha).toHex8String(),
         },
         class: [
           `dark:border-[--d-border]`,
@@ -238,8 +261,8 @@ export function getCSInner(colors: tinycolor.Instance[], type: CSType, darkIndex
     case 'text':
       return {
         style: {
-          [`--d-text`]: colors[darkIndex].toHexString(),
-          [`--l-text`]: colors[lightIndex].toHexString(),
+          [`--d-text`]: colors[darkIndex].clone().setAlpha(alpha).toHex8String(),
+          [`--l-text`]: colors[lightIndex].clone().setAlpha(alpha).toHex8String(),
         },
         class: [
           `dark:text-[--d-text]`,
@@ -249,8 +272,8 @@ export function getCSInner(colors: tinycolor.Instance[], type: CSType, darkIndex
     case 'placeholder':
       return {
         style: {
-          [`--d-placeholder`]: colors[darkIndex].toHexString(),
-          [`--l-placeholder`]: colors[lightIndex].toHexString(),
+          [`--d-placeholder`]: colors[darkIndex].clone().setAlpha(alpha).toHex8String(),
+          [`--l-placeholder`]: colors[lightIndex].clone().setAlpha(alpha).toHex8String(),
         },
         class: [
           'dark:placeholder-[--d-placeholder]',
@@ -260,8 +283,8 @@ export function getCSInner(colors: tinycolor.Instance[], type: CSType, darkIndex
     case 'hover:bg':
       return {
         style: {
-          [`--d-bg-h`]: colors[darkIndex].toHexString(),
-          [`--l-bg-h`]: colors[lightIndex].toHexString(),
+          [`--d-bg-h`]: colors[darkIndex].clone().setAlpha(alpha).toHexString(),
+          [`--l-bg-h`]: colors[lightIndex].clone().setAlpha(alpha).toHexString(),
         },
         class: [
           `dark:hover:bg-[--d-bg-h]`,
@@ -271,8 +294,8 @@ export function getCSInner(colors: tinycolor.Instance[], type: CSType, darkIndex
     case 'hover:border':
       return {
         style: {
-          [`--d-border-h`]: colors[darkIndex].toHexString(),
-          [`--l-border-h`]: colors[lightIndex].toHexString(),
+          [`--d-border-h`]: colors[darkIndex].clone().setAlpha(alpha).toHexString(),
+          [`--l-border-h`]: colors[lightIndex].clone().setAlpha(alpha).toHexString(),
         },
         class: [
           'dark:hover:border-[--d-border-h]',
@@ -282,8 +305,8 @@ export function getCSInner(colors: tinycolor.Instance[], type: CSType, darkIndex
     case 'hover:text':
       return {
         style: {
-          [`--d-text-h`]: colors[darkIndex].toHexString(),
-          [`--l-text-h`]: colors[lightIndex].toHexString(),
+          [`--d-text-h`]: colors[darkIndex].clone().setAlpha(alpha).toHexString(),
+          [`--l-text-h`]: colors[lightIndex].clone().setAlpha(alpha).toHexString(),
         },
         class: [
           'dark:hover:text-[--d-text-h]',
@@ -297,16 +320,16 @@ export function getCS(cs: CSOptions) {
   if (cs.color === 'surface') {
     return getSurfaceCS(cs.type, cs.index)
   }
-  return getColorCS(cs.color, cs.type, cs.index)
+  return getColorCS(cs.color, cs.type, cs.index, cs.alpha)
 }
 
-export function getColorCS(color: MaybeRef<Color>, type: CSType, index: CSIndex) {
+export function getColorCS(color: MaybeRef<Color>, type: CSType, index: CSIndex, alpha = 1.0) {
   const colors = useColors(color)
   return computed(() => {
     if (typeof index === 'number') {
-      return getCSInner(unref(colors), type, index, index)
+      return getCSInner(unref(colors), type, index, index, alpha)
     }
-    return getCSInner(unref(colors), type, index.dark, index.light)
+    return getCSInner(unref(colors), type, index.dark, index.light, alpha)
   })
 }
 

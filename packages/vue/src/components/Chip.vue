@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { Color, ContainerVariant } from '@/types'
+import { useContainerCS } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
 import { computed } from 'vue'
 
@@ -7,56 +9,42 @@ const props = withDefaults(
     is?: string | any
     src?: string
     size?: 'sm' | 'md' | 'lg' | string | number
-    style?: any
-    class?: any
+    color?: Color
+    variant?: ContainerVariant
     rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full' | string | number
   }>(),
   {
     size: 'md',
     is: 'img',
     rounded: 'full',
+    color: 'primary',
+    variant: 'default',
   },
 )
-const model = defineModel<boolean>({ default: undefined })
 const rounded = useRounded(props)
 const sizeCls = computed(() => {
   switch (props.size) {
     case 'sm':
-      return 'px-3 text-sm h-6'
-    case 'lg':
-      return 'px-8 h-10 text-lg'
+      return 'px-3 py-0.5 text-xs'
     case 'md':
+      return 'px-4 py-0.5 text-sm'
+    case 'lg':
+      return 'px-5 py-0.5 text-base'
     default:
-      return 'px-6 h-8 text-base'
+      return ''
   }
 })
-const colorCls = computed(() => {
-  if (model.value) {
-    return 'container-filled-primary border-transparent text-white'
-  }
-  else {
-    return 'container-base'
-  }
-})
-const checkable = computed(() => {
-  return model.value !== undefined
-})
-const checkableCls = computed(() => {
-  if (checkable.value) {
-    return 'cursor-pointer'
-  }
-  else {
-    return ''
-  }
-})
+
+const variant = computed(() => props.variant)
+const color = computed(() => props.color)
+const chipCS = useContainerCS(variant, color)
 </script>
 
 <template>
   <span
-    class="inline-flex items-center gap-1"
-    :class="[rounded.class, sizeCls, colorCls, checkableCls]"
-    :style="[rounded.style]"
-    @pointerup="checkable && (model = !model)"
+    class="inline-block h-fit inline-flex items-center gap-1"
+    :class="[rounded.class, chipCS.class, sizeCls]"
+    :style="[rounded.style, chipCS.style]"
   >
     <slot
       v-if="$slots.leftSection"

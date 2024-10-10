@@ -547,11 +547,6 @@ const btnGroupOptionSingle = [
       <PinInput />
       <PinInput password />
       <Paper class="flex flex-wrap gap-2">
-        <Chip v-model="chip">
-          Checkable Chip
-        </Chip>
-      </Paper>
-      <Paper class="flex flex-wrap gap-2">
         <Chip size="sm">
           Chip
         </Chip>
@@ -559,6 +554,28 @@ const btnGroupOptionSingle = [
           Chip
         </Chip>
         <Chip size="lg">
+          Chip
+        </Chip>
+      </Paper>
+      <Paper class="flex flex-wrap gap-2">
+        <Chip variant="filled">
+          Chip
+        </Chip>
+        <Chip variant="filled" color="secondary">
+          Chip
+        </Chip>
+        <Chip variant="filled" color="tertiary">
+          Chip
+        </Chip>
+      </Paper>
+      <Paper class="flex flex-wrap gap-2">
+        <Chip variant="light">
+          Chip
+        </Chip>
+        <Chip variant="light" color="secondary">
+          Chip
+        </Chip>
+        <Chip variant="light" color="tertiary">
           Chip
         </Chip>
       </Paper>
