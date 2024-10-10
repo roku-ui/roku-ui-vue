@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useElementBounding, useEventListener } from '@vueuse/core'
 import { computed, onMounted, ref, watchEffect } from 'vue'
-import { useColorStyleWithKey } from '../shared'
+import { getCS, useColors, useColorStyleWithKey, useContainerFilledCS } from '../shared'
 
 const props = withDefaults(
   defineProps<{
@@ -91,11 +91,13 @@ function optionToIndex(option: any) {
   return res
 }
 const color = computed(() => props.color)
-const colorStyle = useColorStyleWithKey(color, ['fill'])
-const colorCls = 'bg-[var(--l-bg)] dark:bg-[var(--d-bg)]'
-const indicatorOuterCls = 'dark:bg-white bg-[var(--l-bg)]'
-const indicatorInnerCls = 'dark:bg-[var(--l-bg)] bg-white'
+const colors = useColors(color.value)
 
+const filledColor = computed(() => colors.value[4])
+const indicatorOuterCls = 'dark:bg-white bg-[var(--i-bg)]'
+const indicatorInnerCls = 'dark:bg-[var(--i-bg)] bg-white'
+
+const containerFilledCS = useContainerFilledCS(color)
 watchEffect(() => {
   if (currentIndex.value < 0) {
     return
@@ -204,7 +206,7 @@ const animateCls = computed(() => props.animate
 </script>
 
 <template>
-  <div :style="colorStyle" class="relative w-full">
+  <div class="relative w-full">
     <div
       ref="wrapper"
       type="size"
@@ -238,21 +240,31 @@ const animateCls = computed(() => props.animate
             ref="indicator"
             class="absolute top-50% cursor-pointer rounded-full transition-background-color,border-color,color"
             :class="[sizeCls.indicator, animateCls.indicator, indicatorOuterCls]"
-            :style="{
-              left: `${(currentIndex / (length - 1)) * 100}%`,
-            }"
+            :style="[
+              `--i-bg: ${filledColor}`,
+              {
+                left: `${(currentIndex / (length - 1)) * 100}%`,
+              },
+            ]"
           >
             <div
-              class="pointer-events-none absolute left-50% top-50% rounded-full transition-background-color,border-color,color"
+              class="pointer-events-none absolute left-50% top-50% rounded-full"
               :class="[sizeCls.indicatorInner, indicatorInnerCls]"
             />
           </div>
           <div
             class="pointer-events-none h-full rounded-full"
-            :class="[sizeCls.progress, animateCls.progress, colorCls]"
-            :style="{
-              width: `${(currentIndex / (length - 1)) * 100}%`,
-            }"
+            :class="[
+              containerFilledCS.class,
+              sizeCls.progress,
+              animateCls.progress,
+            ]"
+            :style="[
+              containerFilledCS.style,
+              {
+                width: `${(currentIndex / (length - 1)) * 100}%`,
+              },
+            ]"
           />
         </div>
       </div>

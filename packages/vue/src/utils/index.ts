@@ -26,6 +26,12 @@ export function generateColorsObjMap(color: tinycolor.ColorInput, lightnessMap =
   const colors = lightnessMap.map((lightness) => {
     const modifiedColor = tinycolor({ h: baseColor.toHsl().h, s: baseColor.toHsl().s, l: lightness })
     const saturationDelta = 0
+
+    // Adjust the lightness for some hues
+    if (baseColor.toHsl().h >= 20 && baseColor.toHsl().h <= 200) {
+      modifiedColor.darken(2)
+    }
+
     if (saturationDelta >= 0) {
       modifiedColor.saturate(saturationDelta * 100)
     }

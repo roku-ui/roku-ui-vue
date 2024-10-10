@@ -98,12 +98,10 @@ const lightSurfaceBgVariantIndex = 2
 const lightSurfaceBorderIndex = 4
 const lightSurfaceTextVariantIndex = 5
 
-const lightBgIndex = 5
-const lightBgVariantIndex = 6
+const lightBgIndex = 4
+const lightBgVariantIndex = 5
 
-const lightTextIndex = 6
-const lightTextVariantIndex = 7
-
+const lightTextIndex = 5
 const lightBorderIndex = 4
 
 const lightOpacity = 0.08
@@ -165,7 +163,7 @@ export function useIndicatorFilledCS(color: MaybeRef<Color>) {
     const bgCS = getCS({
       color,
       type: 'bg',
-      index: { dark: 5, light: 5 },
+      index: { dark: 5, light: 4 },
     })
     const borderCS = getCS({
       color: 'surface',
@@ -186,12 +184,12 @@ export function useContainerFilledCS(color: MaybeRef<Color>) {
     const bgCS = getCS({
       color,
       type: 'bg',
-      index: { dark: 5, light: 5 },
+      index: { dark: 5, light: 4 },
     })
     const borderCS = getCS({
       color: 'surface',
       type: 'border',
-      index: { dark: 5, light: 5 },
+      index: { dark: 5, light: 4 },
     })
     const textCS = getCS({
       color,
@@ -402,8 +400,8 @@ function getTransparentVariantStyle(color: tinycolor.Instance[]): Record<string,
   return {
     '--d-text': color[3].toHexString(),
     '--d-text-h': color[3].toHexString(),
-    '--l-text': color[lightTextVariantIndex].toHexString(),
-    '--l-text-h': color[lightTextVariantIndex].toHexString(),
+    '--l-text': color[5].toHexString(),
+    '--l-text-h': color[5].toHexString(),
     '--d-bg': 'transparent',
     '--l-bg': 'transparent',
     '--d-border': 'transparent',
@@ -420,8 +418,8 @@ function getSubtleVariantStyle(color: tinycolor.Instance[]): Record<string, stri
     '--d-border': 'transparent',
     '--l-bg': 'transparent',
     '--l-bg-h': color[3].clone().setAlpha(lightOpacity).toHex8String(),
-    '--l-text': color[6].toHexString(),
-    '--l-text-h': color[6].toHexString(),
+    '--l-text': color[5].toHexString(),
+    '--l-text-h': color[5].toHexString(),
     '--l-border': 'transparent',
   }
 }
@@ -433,7 +431,7 @@ function getContrastVariantStyle(color: tinycolor.Instance[]): Record<string, st
     '--d-bg': 'transparent',
     '--d-bg-h': color[5].toHexString(),
     '--d-border': 'transparent',
-    '--l-text': color[6].toHexString(),
+    '--l-text': color[5].toHexString(),
     '--l-text-h': 'white',
     '--l-bg': 'transparent',
     '--l-bg-h': color[5].toHexString(),
@@ -445,13 +443,13 @@ function getWhiteVariantStyle(color: tinycolor.Instance[]): Record<string, strin
   return {
     '--d-bg': 'white',
     '--d-bg-h': 'white',
-    '--d-text': color[6].toHexString(),
-    '--d-text-h': color[6].toHexString(),
+    '--d-text': color[4].toHexString(),
+    '--d-text-h': color[4].toHexString(),
     '--d-border': 'transparent',
     '--l-bg': 'white',
     '--l-bg-h': 'white',
-    '--l-text': color[6].toHexString(),
-    '--l-text-h': color[6].toHexString(),
+    '--l-text': color[5].toHexString(),
+    '--l-text-h': color[5].toHexString(),
     '--l-border': 'transparent',
   }
 }
@@ -487,8 +485,8 @@ export function useInputColorStyle(color: MaybeRef<string>, variant: MaybeRef<In
   }
 }
 
-export function useColorStyleWithKey(color: MaybeRef<string>, keys: any[]) {
+export function useColorStyleWithKey(color: MaybeRef<tinycolor.Instance>, key: string) {
   return computed(() => {
-    return {}
+
   })
 }

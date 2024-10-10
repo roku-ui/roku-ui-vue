@@ -8,12 +8,12 @@ import { defaultTheme } from '../shared'
 export * from './dom'
 
 export const COLOR_LIGHTNESS_MAP = [
-  0.90,
+  0.98,
   0.80,
   0.70,
   0.60,
-  0.55,
-  0.41,
+  0.43,
+  0.40,
   0.36,
   0.30,
   0.20,
