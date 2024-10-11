@@ -1,8 +1,6 @@
 # Changelog
 
-
 ## v0.1.1
-
 
 ### 🚀 Enhancements
 
@@ -68,4 +66,3 @@
 ### ❤️ Contributors
 
 - Jianqi Pan ([@Jannchie](http://github.com/Jannchie))
-
