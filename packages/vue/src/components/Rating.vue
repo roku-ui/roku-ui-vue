@@ -11,12 +11,12 @@ const props = withDefaults(defineProps<{
   unselectable?: boolean
   size?: Size
 }>(), {
-  color: '#FFD700',
+  color: '#ffeb91',
 })
 const emit = defineEmits<{
   select: [number]
 }>()
-const defaultColor = '#FFD700'
+const defaultColor = '#ffeb91'
 const activeCls = 'text-[var(--d-text)]'
 const inactiveCls = 'text-surface-on-low'
 const hoverCls = 'text-[var(--d-text-h)]'
