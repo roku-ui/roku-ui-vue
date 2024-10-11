@@ -13,10 +13,10 @@ const rating = ref(3)
     <Rating
       v-model="rating"
       :count="4" size="lg" :icons="[
-        'i-tabler-leaf',
-        'i-tabler-heart',
-        'i-tabler-file',
-        'i-tabler-rating-18-plus',
+        'i-fluent-checkmark-circle-12-filled',
+        'i-fluent-question-circle-12-filled',
+        'i-fluent-error-circle-12-filled',
+        'i-fluent-dismiss-circle-12-filled',
       ]"
       :color="['green', 'yellow', 'orange', 'red']"
       highlight-selected-only

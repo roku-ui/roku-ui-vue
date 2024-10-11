@@ -42,7 +42,7 @@ const bubbleCS = useContainerCS(variant, color)
       :src="avatar"
     />
     <div
-      class="rounded-xl px-3 py-2"
+      class="flex flex-col gap-1 rounded-xl p-2"
       :class="[
         {
           'rounded-tr': position === 'right',

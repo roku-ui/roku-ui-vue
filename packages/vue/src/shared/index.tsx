@@ -124,12 +124,12 @@ interface CS {
 
 export function useContainerDefaultCS() {
   return computed(() => {
-    const bgCS = getCS({
+    const bgCS = useCS({
       color: 'surface',
       type: 'bg',
       index: { dark: 8, light: 1 },
     })
-    const borderCS = getCS({
+    const borderCS = useCS({
       color: 'surface',
       type: 'border',
       index: { dark: 7, light: 4 },
@@ -142,12 +142,12 @@ export function useContainerDefaultCS() {
 
 export function useContainerDefaultVariantCS() {
   return computed(() => {
-    const bgCS = getCS({
+    const bgCS = useCS({
       color: 'surface',
       type: 'bg',
       index: { dark: 7, light: 2 },
     })
-    const borderCS = getCS({
+    const borderCS = useCS({
       color: 'surface',
       type: 'border',
       index: { dark: 7, light: 4 },
@@ -156,7 +156,7 @@ export function useContainerDefaultVariantCS() {
   })
 }
 
-function mergeCS(...cs: ReturnType<typeof getCS>[]) {
+function mergeCS(...cs: ReturnType<typeof useCS>[]) {
   return {
     style: cs.reduce((prev, curr) => ({ ...prev, ...curr.value.style }), {}),
     class: cs.reduce<string[]>((prev, curr) => [...prev, ...curr.value.class], []),
@@ -165,17 +165,17 @@ function mergeCS(...cs: ReturnType<typeof getCS>[]) {
 
 export function useIndicatorFilledCS(color: MaybeRef<Color>) {
   return computed(() => {
-    const bgCS = getCS({
+    const bgCS = useCS({
       color,
       type: 'bg',
       index: { dark: 5, light: 4 },
     })
-    const borderCS = getCS({
+    const borderCS = useCS({
       color: 'surface',
       type: 'border',
       index: { dark: darkSurfaceBgIndex, light: lightSurfaceBgIndex },
     })
-    const textCS = getCS({
+    const textCS = useCS({
       color,
       type: 'text',
       index: 0,
@@ -186,17 +186,17 @@ export function useIndicatorFilledCS(color: MaybeRef<Color>) {
 
 export function useContainerFilledCS(color: MaybeRef<Color>) {
   return computed(() => {
-    const bgCS = getCS({
+    const bgCS = useCS({
       color,
       type: 'bg',
       index: { dark: 5, light: 4 },
     })
-    const borderCS = getCS({
+    const borderCS = useCS({
       color: 'surface',
       type: 'border',
       index: { dark: 5, light: 4 },
     })
-    const textCS = getCS({
+    const textCS = useCS({
       color,
       type: 'text',
       index: 0,
@@ -207,14 +207,14 @@ export function useContainerFilledCS(color: MaybeRef<Color>) {
 
 export function useContainerLightCS(color: MaybeRef<Color>) {
   return computed(() => {
-    const bgCS = getCS({
+    const bgCS = useCS({
       color,
       type: 'bg',
       index: { dark: 5, light: 4 },
       alpha: 0.15,
     })
 
-    const textCS = getCS({
+    const textCS = useCS({
       color,
       type: 'text',
       index: { dark: 2, light: 5 },
@@ -316,14 +316,14 @@ export function getCSInner(colors: tinycolor.Instance[], type: CSType, darkIndex
   }
 }
 
-export function getCS(cs: CSOptions) {
+export function useCS(cs: CSOptions) {
   if (cs.color === 'surface') {
-    return getSurfaceCS(cs.type, cs.index)
+    return useSurfaceCS(cs.type, cs.index)
   }
-  return getColorCS(cs.color, cs.type, cs.index, cs.alpha)
+  return useColorCS(cs.color, cs.type, cs.index, cs.alpha)
 }
 
-export function getColorCS(color: MaybeRef<Color>, type: CSType, index: CSIndex, alpha = 1.0) {
+export function useColorCS(color: MaybeRef<Color>, type: CSType, index: CSIndex, alpha = 1.0) {
   const colors = useColors(color)
   return computed(() => {
     if (typeof index === 'number') {
@@ -333,7 +333,7 @@ export function getColorCS(color: MaybeRef<Color>, type: CSType, index: CSIndex,
   })
 }
 
-export function getSurfaceCS(type: CSType, index: CSIndex) {
+export function useSurfaceCS(type: CSType, index: CSIndex) {
   return computed(() => {
     const { colors } = generateColorsObjMap(unref(surfaceColor), SURFACE_LIGHTNESS_MAP)
     if (typeof index === 'number') {
@@ -506,10 +506,4 @@ export function useInputColorStyle(color: MaybeRef<string>, variant: MaybeRef<In
 
       }
   }
-}
-
-export function useColorStyleWithKey(color: MaybeRef<tinycolor.Instance>, key: string) {
-  return computed(() => {
-
-  })
 }

@@ -26,7 +26,7 @@ const bubbleCS = useContainerCS(variant, color)
     class="w-full flex self-center gap-2 text-center"
   >
     <div
-      class="w-full rounded-xl px-3 py-2 transition-background-color,border-color"
+      class="w-full rounded-xl px-3 py-2"
       :class="[
         bubbleCS.class,
       ]"

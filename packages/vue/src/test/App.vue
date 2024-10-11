@@ -12,7 +12,6 @@ const isLoading = refAutoReset(false, 3000)
 onMounted(() => {
   isLoading.value = true
 })
-const chip = ref(true)
 const modal1 = ref(false)
 const modal2 = ref(false)
 const modal3 = ref(false)
@@ -63,7 +62,7 @@ const btnGroupOptions = [
   { label: 'Right', value: 'right', icon: 'i-tabler-align-right' },
 ]
 const btnGroupOptionSingle = [
-  { label: 'Is Active', value: 'active', icon: 'i-tabler-check' },
+  { label: 'Is Active', value: 'active', icon: 'i-fluent-checkmark-12-filled' },
 ]
 </script>
 
@@ -298,6 +297,7 @@ const btnGroupOptionSingle = [
             height="312px"
             width="312px"
             src="https://picsum.photos/seed/2/512/512"
+            class="rounded-lg"
           />
         </ChatMessage>
       </ChatContainer>
@@ -409,14 +409,21 @@ const btnGroupOptionSingle = [
         </Indicator>
       </Paper>
       <Paper class="w-80 flex flex-wrap gap-2">
+        {{ slider.toFixed(2) }}
         <Slider v-model="slider" />
       </Paper>
       <Paper class="flex flex-wrap gap-2">
-        <Slider v-model="slider" />
-      </Paper>
-      <Paper class="flex flex-wrap gap-2">
+        {{ slider.toFixed(2) }}
         <Slider
           v-model="slider"
+          :step="10"
+        />
+      </Paper>
+      <Paper class="flex flex-wrap gap-2">
+        {{ slider.toFixed(2) }}
+        <Slider
+          v-model="slider"
+          :step="0.2"
           color="tertiary"
         />
       </Paper>

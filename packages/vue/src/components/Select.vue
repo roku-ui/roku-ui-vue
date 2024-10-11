@@ -241,7 +241,7 @@ function onMousemove(i: number) {
         @input="onInput"
         @click="focused = true"
       >
-      <i class="i-tabler-chevron-down pointer-events-none absolute right-2" />
+      <i class="i-fluent-chevron-down-12-filled pointer-events-none absolute right-2" />
     </div>
     <div
       v-if="focused"
@@ -285,7 +285,7 @@ function onMousemove(i: number) {
             {{ getLabel(option) }}
           </slot>
           <div v-if="optionIsEq(option, currentOption)">
-            <i class="i-tabler-check h-3 w-3" />
+            <i class="i-fluent-checkmark-12-filled h-3 w-3" />
           </div>
         </div>
         <div

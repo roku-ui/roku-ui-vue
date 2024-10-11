@@ -2,7 +2,7 @@
 import type { Size } from '../types'
 import { useRounded } from '@/utils/classGenerator'
 import { computed } from 'vue'
-import { useColorStyleWithKey, useContainerDefaultCS, useContainerFilledCS, useSurfaceColors } from '../shared'
+import { useContainerDefaultCS, useContainerFilledCS } from '../shared'
 
 const props = withDefaults(
   defineProps<{
@@ -124,7 +124,7 @@ const shapeClass = computed(() => {
         v-if="$slots.closeIcon"
         name="close-icon"
       />
-      <i v-else class="i-tabler-x" />
+      <i v-else class="i-fluent-dismiss-12-filled" />
     </Btn>
   </div>
 </template>

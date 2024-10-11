@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getCS, useColorStyleWithKey } from '@/shared'
+import { useCS } from '@/shared'
 import { childrenElementMapSymbol, directionSymbol, tabCurrentSymbol } from '@/utils'
 import { computed, type ComputedRef, inject, onMounted, type Ref, ref } from 'vue'
 
@@ -48,13 +48,12 @@ const indicatorCls = computed(() => {
 //   }
 //   return 'bg-surface-lowest'
 // })
-const colorStyle = useColorStyleWithKey(color, ['fill'])
-const indicatorBgCS = getCS({
+const indicatorBgCS = useCS({
   color: color.value,
   type: 'bg',
   index: 5,
 })
-const btnOutlineCS = getCS({
+const btnOutlineCS = useCS({
   color: color.value,
   type: 'outline',
   index: 5,
@@ -66,8 +65,8 @@ const btnOutlineCS = getCS({
     ref="tabRef"
     type="button"
     class="rutline-none relative min-w-20 flex items-center justify-center outline-none focus-visible:outline-2 outline-offset-0!"
-    :class="[directionCls, btnOutlineCS.class]"
-    :style="[colorStyle, btnOutlineCS.style]"
+    :class="[directionCls]"
+    v-bind="btnOutlineCS"
     @click="onClick"
   >
     <div

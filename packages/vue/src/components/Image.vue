@@ -16,7 +16,7 @@ const props = withDefaults(
   }>(),
   {
     is: 'img',
-    rounded: 'md',
+    rounded: 'none',
   },
 )
 

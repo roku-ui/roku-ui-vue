@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useElementBounding, useEventListener } from '@vueuse/core'
 import { computed, onMounted, ref, watchEffect } from 'vue'
-import { getCS, useColors, useColorStyleWithKey, useContainerFilledCS } from '../shared'
+import { useColors, useContainerFilledCS } from '../shared'
 
 const props = withDefaults(
   defineProps<{

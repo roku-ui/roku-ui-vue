@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Size } from '../types'
 import { computed, ref } from 'vue'
-import { useColorStyleWithKey } from '../shared'
+import { useContainerCS, useCS } from '../shared'
 
 const props = withDefaults(defineProps<{
   count?: number
@@ -11,17 +11,17 @@ const props = withDefaults(defineProps<{
   unselectable?: boolean
   size?: Size
 }>(), {
-  color: '#FDBD01',
+  color: '#FFD700',
 })
 const emit = defineEmits<{
   select: [number]
 }>()
-const defaultColor = '#FDBD01'
+const defaultColor = '#FFD700'
 const activeCls = 'text-[var(--d-text)]'
 const inactiveCls = 'text-surface-on-low'
 const hoverCls = 'text-[var(--d-text-h)]'
-const defaultIcon = 'i-tabler-star'
-const defaultActionIcon = 'i-tabler-star-filled'
+const defaultIcon = 'i-fluent-star-12-filled'
+const defaultActionIcon = 'i-fluent-star-12-filled'
 
 const count = computed(() => props.count ?? 5)
 const model = defineModel({
@@ -98,37 +98,26 @@ function unifyInput(
   return Array.from({ length: n }, () => ({ ...baseObject }))
 }
 
+function isActive(idx: number): boolean {
+  if (highlightSelectedOnly.value) {
+    if (hoverIndex.value !== -1) {
+      return hoverIndex.value === idx + 1
+    }
+    return model.value === idx + 1
+  }
+  if (hoverIndex.value !== -1) {
+    return hoverIndex.value > idx
+  }
+  return model.value >= idx + 1
+}
+
 function getCls(idx: number) {
   const normalIcon = iconData.value[idx].normal
   const activeIcon = iconData.value[idx].active
-  if (highlightSelectedOnly.value) {
-    if (hoverIndex.value !== -1) {
-      if (hoverIndex.value === idx + 1) {
-        return [hoverCls, activeIcon]
-      }
-      return [inactiveCls, normalIcon]
-    }
-    else {
-      if (model.value === idx + 1) {
-        return [activeCls, activeIcon]
-      }
-      return [inactiveCls, normalIcon]
-    }
+  if (isActive(idx)) {
+    return [highlightSelectedOnly.value ? hoverCls : activeCls, activeIcon]
   }
-  if (hoverIndex.value !== -1) {
-    if (hoverIndex.value > idx) {
-      return [hoverCls, activeIcon]
-    }
-    else {
-      return [inactiveCls, normalIcon]
-    }
-  }
-  else {
-    if (model.value >= idx + 1) {
-      return [activeCls, activeIcon]
-    }
-    return [inactiveCls, normalIcon]
-  }
+  return [inactiveCls, normalIcon]
 }
 const colors = computed(() => {
   if (typeof props.color === 'string') {
@@ -144,39 +133,16 @@ const colors = computed(() => {
   return resp
 })
 
-const colorStyles = computed(() => colors.value.map(d => useColorStyleWithKey(d, ['fill', 'fill-h', 'text', 'text-h'])))
+const containerCS = colors.value.map((color) => {
+  return useContainerCS('filled', color)
+})
 
-function getStyle(idx: number) {
-  const style = colorStyles.value[idx].value
-  if (highlightSelectedOnly.value) {
-    if (hoverIndex.value !== -1) {
-      if (hoverIndex.value === idx + 1) {
-        return style
-      }
-      return { color: '#666F' }
-    }
-    else {
-      if (model.value === idx + 1) {
-        return style
-      }
-      return { color: '#666F' }
-    }
-  }
-  if (hoverIndex.value !== -1) {
-    if (hoverIndex.value > idx) {
-      return style
-    }
-    else {
-      return { color: '#666F' }
-    }
-  }
-  else {
-    if (model.value >= idx + 1) {
-      return style
-    }
-    return { color: '#666F' }
-  }
-}
+const unactiveCS = useCS({
+  color: 'surface',
+  type: 'text',
+  index: { dark: 5, light: 4 },
+})
+
 function onPointerDown(i: number) {
   if (model.value === i && unselectable.value) {
     emit('select', 0)
@@ -206,15 +172,13 @@ const sizeCls = computed(() => {
       v-for="_, i in count"
       :key="i"
       class="pr-1"
-      :class="colorStyles[i]"
       @mouseover="hoverIndex = i + 1"
       @mouseleave="hoverIndex = -1"
       @pointerdown="onPointerDown(i)"
     >
       <i
-
-        class="active:scale-98" :class="[getCls(i)]"
-        :style="getStyle(i)"
+        v-bind="isActive(i) ? containerCS[i].value : unactiveCS"
+        class="active:translate-y-1px" :class="[getCls(i)]"
       />
     </div>
   </div>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Color } from '@/types'
-import { getColorCS, getSurfaceCS } from '@/shared'
+import { useColorCS, useSurfaceCS } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
 import { computed, ref } from 'vue'
 
@@ -80,9 +80,9 @@ const animateCls = computed(() => props.animate
 
 const id = useId(props)
 
-const wrapperBGCS = getSurfaceCS('bg', { dark: 7, light: 3 })
-const wrapperActiveBGCS = getColorCS(props.color, 'bg', 5)
-const activeTextCS = getColorCS(props.color, 'text', 5)
+const wrapperBGCS = useSurfaceCS('bg', { dark: 7, light: 3 })
+const wrapperActiveBGCS = useColorCS(props.color, 'bg', 5)
+const activeTextCS = useColorCS(props.color, 'text', 5)
 const colorCls = computed(() => {
   return {
     wrapper: model.value ? [wrapperActiveBGCS.value.class] : [wrapperBGCS.value.class],

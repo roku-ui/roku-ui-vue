@@ -141,7 +141,7 @@ watchEffect(() => {
         :style="getNotificationPositionStyle(notificationIndexList[i], notification.position)"
       >
         <Notification
-          closeable with-border
+          with-border closeable
           :title="notification.title"
           :message="notification.message"
           :icon="notification.icon"

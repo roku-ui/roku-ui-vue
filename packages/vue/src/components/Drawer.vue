@@ -38,7 +38,7 @@ const model = defineModel<boolean>()
             class="text-surface-on hover:text-surface-on"
             @pointerup="model = false"
           >
-            <i class="i-tabler-x" />
+            <i class="i-fluent-dismiss-12-filled" />
           </Btn>
         </div>
         <div class="h-full flex flex-col items-center justify-center px-4 md:px-6">
