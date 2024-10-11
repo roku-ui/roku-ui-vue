@@ -62,7 +62,7 @@ provide('docThemeColor', {
     <NuxtLoadingIndicator
       color="rgb(var(--r-color-primary-container))"
     />
-    <div class="fixed z-10 h-12 w-100vw flex items-center gap-2 border-b border-surface-border-base bg-surface-base pl-2 pr-2 transition-all md:pl-[calc(33vw-288px+32px)]!">
+    <div class="bg-surface-base border-surface-border-base fixed z-10 h-12 w-100vw flex items-center gap-2 border-b pl-2 pr-2 transition-all md:pl-[calc(33vw-288px+32px)]!">
       <div>
         <Btn
           icon

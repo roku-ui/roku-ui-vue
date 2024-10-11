@@ -14,7 +14,7 @@ const contentComponents = await queryContent('components').find()
       '-translate-x-100%': !isOpen,
       'translate-x-0': isOpen,
     }"
-    class="fixed top-12 z-10 h-100vh min-w-64 w-33vw flex flex-col items-end gap-2 bg-surface-low transition-transform,background-color md:translate-x-0"
+    class="bg-surface-low fixed top-12 z-10 h-100vh min-w-64 w-33vw flex flex-col items-end gap-2 transition-transform,background-color md:translate-x-0"
   >
     <div class="w-72 flex flex-col gap-8 px-8 py-6">
       <div>
@@ -35,7 +35,7 @@ const contentComponents = await queryContent('components').find()
       </div>
       <div class="flex flex-col gap-4">
         <div class="flex flex-col gap-2">
-          <div class="px-2 text-xs text-surface-on-low">
+          <div class="text-surface-on-low px-2 text-xs">
             工具
           </div>
           <div>
@@ -50,7 +50,7 @@ const contentComponents = await queryContent('components').find()
           </div>
         </div>
         <div class="flex flex-col gap-2">
-          <div class="px-2 text-xs text-surface-on-low">
+          <div class="text-surface-on-low px-2 text-xs">
             组件
           </div>
           <div>
@@ -59,7 +59,7 @@ const contentComponents = await queryContent('components').find()
               :key="content.slug"
               :to="content._path"
               :text="content.title"
-              class="content-link block rounded p-1 px-2 text-sm hover:bg-surface-border-base/25"
+              class="content-link hover:bg-surface-border-base/25 block rounded p-1 px-2 text-sm"
             >
               {{ content.title }}
             </NuxtLink>

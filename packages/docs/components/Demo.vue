@@ -26,15 +26,15 @@ const codeHtml = computed(() => highlighter.codeToHtml(props.code, {
 </script>
 
 <template>
-  <div class="overflow-hidden border border-surface-border-low rounded-xl bg-surface-low transition-background-color,border-color">
+  <div class="bg-surface-low border-surface-border-low overflow-hidden border rounded-xl transition-background-color,border-color">
     <div
-      class="flex border-b border-surface-border-low transition-border-color"
+      class="border-surface-border-low flex border-b transition-border-color"
     >
       <div
         :class="{
           'border-r': $slots.form,
         }"
-        class="gird-paper-background min-h-56 w-full flex flex-grow items-center justify-center border-surface-border-low transition-border-color"
+        class="border-surface-border-low gird-paper-background min-h-56 w-full flex flex-grow items-center justify-center transition-border-color"
       >
         <slot name="preview" />
       </div>
