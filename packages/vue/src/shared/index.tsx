@@ -33,52 +33,46 @@ export function useContainerCS(variant: MaybeRef<ContainerVariant>, color: Maybe
   })
 }
 
+function useTinycolor(color: MaybeRef<Color>) {
+  return computed(() => {
+    const colorValue = unref(color)
+    switch (colorValue) {
+      case 'surface':
+        return tinycolor(unref(surfaceColor))
+      case 'primary':
+        return tinycolor(unref(primaryColor))
+      case 'secondary':
+        return tinycolor(unref(secondaryColor))
+      case 'tertiary':
+        return tinycolor(unref(tertiaryColor))
+      case 'error':
+        return tinycolor(unref(errorColor))
+      default:
+        return tinycolor(colorValue)
+    }
+  })
+}
+
 const colorStyleCache = new Map<string, tinycolor.Instance[]>()
 export function useColors(color: MaybeRef<Color>) {
   return computed(() => {
-    const colorStr = unref(color)
-    if (colorStyleCache.has(colorStr)) {
-      return colorStyleCache.get(colorStr)!
+    const colorObj = useTinycolor(color).value
+    const colorHex = colorObj.toHexString()
+    if (colorStyleCache.has(colorHex)) {
+      return colorStyleCache.get(colorHex)!
     }
     function generatePredefinedColorList() {
-      switch (colorStr) {
-        case 'default':
-          return generateColorsObjMap(unref(surfaceColor), COLOR_LIGHTNESS_MAP).colors
-        case 'primary':
-          return generateColorsObjMap(unref(primaryColor), COLOR_LIGHTNESS_MAP).colors
-        case 'secondary':
-          return generateColorsObjMap(unref(secondaryColor), COLOR_LIGHTNESS_MAP).colors
-        case 'tertiary':
-          return generateColorsObjMap(unref(tertiaryColor), COLOR_LIGHTNESS_MAP).colors
-        case 'error':
-          return generateColorsObjMap(unref(errorColor), COLOR_LIGHTNESS_MAP).colors
-      }
-      const colorObj = tinycolor(colorStr)
-      const resp = generateColorsObjMap(colorObj.toHexString(), COLOR_LIGHTNESS_MAP).colors
-      colorStyleCache.set(colorStr, resp)
+      const resp = generateColorsObjMap(colorHex, COLOR_LIGHTNESS_MAP).colors
+      colorStyleCache.set(colorHex, resp)
       return resp
     }
-    const resp = generatePredefinedColorList()
-    colorStyleCache.set(colorStr, resp)
-    return resp
+    return generatePredefinedColorList()
   })
 }
 
 export function useSurfaceColors() {
   return computed(() => generateColorsObjMap(unref(surfaceColor), SURFACE_LIGHTNESS_MAP).colors)
 }
-
-// type ColorKey = ''
-
-// export function useColorClassAndStyle(color: MaybeRef<string>, keys: ColorKey[]) {
-//   return computed(() => {
-//     const className = []
-//     const style = []
-//     for (const key of keys) {
-//     }
-//     return { class: className, style }
-//   })
-// }
 
 const darkSurfaceBgIndex = 8
 const darkSurfaceBgVariantIndex = 7

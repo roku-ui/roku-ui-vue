@@ -41,9 +41,8 @@ watchEffect(() => {
   localStorage.setItem('scheme', document.documentElement.dataset.scheme)
 })
 
-provide(schemeSymbol, scheme)
-
 const styles = computed(() => useThemeStyles(themeData.value))
+provide(schemeSymbol, scheme)
 provide('currentThemeData', computed(() => themeData.value))
 </script>
 
