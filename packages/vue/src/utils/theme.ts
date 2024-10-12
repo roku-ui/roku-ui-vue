@@ -13,11 +13,11 @@ export interface SurfaceVariant {
 }
 
 export interface ThemeColorsColors {
-  primary: ColorsTuple
-  secondary: ColorsTuple
-  tertiary: ColorsTuple
-  error: ColorsTuple
-  surface: ColorsTuple
+  primary: ColorsTuple | string
+  secondary: ColorsTuple | string
+  tertiary: ColorsTuple | string
+  error: ColorsTuple | string
+  surface: ColorsTuple | string
 }
 
 export interface ThemeData {

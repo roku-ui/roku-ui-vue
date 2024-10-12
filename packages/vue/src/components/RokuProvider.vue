@@ -2,7 +2,7 @@
 import type { ThemeData } from '@/utils'
 import { isClient } from '@vueuse/core'
 import { type Component, computed, provide, watchEffect } from 'vue'
-import { defaultTheme } from '../shared'
+import { defaultTheme, errorColor, primaryColor, secondaryColor, surfaceColor, tertiaryColor } from '../shared'
 
 const props = withDefaults(
   defineProps<{
@@ -18,9 +18,17 @@ const props = withDefaults(
     }),
   },
 )
-const themeData = computed(() => props.themes[props.theme])
 const scheme = useSchemeString()
 const preferScheme = usePreferredColorScheme()
+const themeData = computed(() => props.themes[props.theme])
+watchEffect(() => {
+  // TODO: Add support for tuple colors
+  surfaceColor.value = typeof themeData.value.colors.surface === 'string' ? themeData.value.colors.surface : surfaceColor.value
+  primaryColor.value = typeof themeData.value.colors.primary === 'string' ? themeData.value.colors.primary : primaryColor.value
+  secondaryColor.value = typeof themeData.value.colors.secondary === 'string' ? themeData.value.colors.secondary : secondaryColor.value
+  tertiaryColor.value = typeof themeData.value.colors.tertiary === 'string' ? themeData.value.colors.tertiary : tertiaryColor.value
+  errorColor.value = typeof themeData.value.colors.error === 'string' ? themeData.value.colors.error : errorColor.value
+})
 
 watchEffect(() => {
   if (!isClient) {
@@ -41,7 +49,16 @@ watchEffect(() => {
   localStorage.setItem('scheme', document.documentElement.dataset.scheme)
 })
 
-const styles = computed(() => useThemeStyles(themeData.value))
+const styles = computed(() => useThemeStyles({
+  colors: {
+    surface: surfaceColor.value,
+    primary: primaryColor.value,
+    secondary: secondaryColor.value,
+    tertiary: tertiaryColor.value,
+    error: errorColor.value,
+  },
+  name: themeData.value.name,
+}))
 provide(schemeSymbol, scheme)
 provide('currentThemeData', computed(() => themeData.value))
 </script>
@@ -52,6 +69,7 @@ provide('currentThemeData', computed(() => themeData.value))
     :style="[
       styles,
     ]"
+    class="bg-[--l-bg] text-[--l-text] dark:bg-[--d-bg] dark:text-[--d-text]"
   >
     <slot />
   </component>

@@ -12,6 +12,26 @@ export const tertiaryColor = ref('#F76C22')
 export const errorColor = ref('#F95858')
 export const surfaceColor = ref('#121212')
 
+export const primaryColors = computed(() => {
+  return generateColorsObjMap(unref(primaryColor), COLOR_LIGHTNESS_MAP).colors
+})
+
+export const secondaryColors = computed(() => {
+  return generateColorsObjMap(unref(secondaryColor), COLOR_LIGHTNESS_MAP).colors
+})
+
+export const tertiaryColors = computed(() => {
+  return generateColorsObjMap(unref(tertiaryColor), COLOR_LIGHTNESS_MAP).colors
+})
+
+export const errorColors = computed(() => {
+  return generateColorsObjMap(unref(errorColor), COLOR_LIGHTNESS_MAP).colors
+})
+
+export const surfaceColors = computed(() => {
+  return generateColorsObjMap(unref(surfaceColor), SURFACE_LIGHTNESS_MAP).colors
+})
+
 export const defaultTheme = useThemeData('default', {
   primary: primaryColor,
   secondary: secondaryColor,
@@ -54,7 +74,7 @@ function useTinycolor(color: MaybeRef<Color>) {
 }
 
 const colorStyleCache = new Map<string, tinycolor.Instance[]>()
-export function useColors(color: MaybeRef<Color>) {
+export function useColors(color: MaybeRef<Color>, lightnessMap = COLOR_LIGHTNESS_MAP) {
   return computed(() => {
     const colorObj = useTinycolor(color).value
     const colorHex = colorObj.toHexString()
@@ -62,7 +82,7 @@ export function useColors(color: MaybeRef<Color>) {
       return colorStyleCache.get(colorHex)!
     }
     function generatePredefinedColorList() {
-      const resp = generateColorsObjMap(colorHex, COLOR_LIGHTNESS_MAP).colors
+      const resp = generateColorsObjMap(colorHex, lightnessMap).colors
       colorStyleCache.set(colorHex, resp)
       return resp
     }

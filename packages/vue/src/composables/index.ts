@@ -3,7 +3,7 @@ import { isClient } from '@vueuse/core'
 import tinycolor from 'tinycolor2'
 import { computed, inject, type MaybeRef, onMounted, type Ref, ref, unref } from 'vue'
 import { generateColors, type ThemeData } from '..'
-import { defaultTheme } from '../shared'
+import { defaultTheme, surfaceColors, useColors } from '../shared'
 
 export * from './dom'
 
@@ -112,13 +112,22 @@ export function useThemeData(
   })
 }
 
+function useColorTuple(color: MaybeRef<string | readonly [string, string, string, string, string, string, string, string, string, string, string, ...string[]]>, lightnessMap = COLOR_LIGHTNESS_MAP) {
+  return computed(() => {
+    const colorVal = unref(color)
+    return typeof colorVal === 'string' ? useColors(colorVal, lightnessMap).value.map(d => d.toHexString()) : colorVal
+  })
+}
+
 export function useThemeStyles(theme: ThemeData) {
   const currentTheme = ref(theme)
   type KeyOfThemeColors = keyof typeof currentTheme.value.colors
   const colorVars = Object.keys(currentTheme.value.colors).map((key) => {
     const color = key as KeyOfThemeColors
     const colorValue = currentTheme.value.colors[color]
-    return colorValue.reduce((acc, cur, idx) => {
+    const colorTuple = useColorTuple(colorValue, color === 'surface' ? SURFACE_LIGHTNESS_MAP : COLOR_LIGHTNESS_MAP)
+    const colorTupleValue = colorTuple.value as string[]
+    return colorTupleValue.reduce((acc, cur, idx) => {
       const c = tinycolor(cur).toRgb()
       acc[`--r-color-${color}-${idx}`] = `${c.r} ${c.g} ${c.b}`
       return acc
@@ -134,8 +143,10 @@ export function useThemeStyles(theme: ThemeData) {
     ...colorVars,
   }
   const themeStyles = {
-    'background-color': 'rgb(var(--r-color-surface-lowest))',
-    'color': 'rgb(var(--r-color-surface-on))',
+    '--d-bg': surfaceColors.value[10].toHexString(),
+    '--d-text': surfaceColors.value[3].toHexString(),
+    '--l-bg': surfaceColors.value[0].toHexString(),
+    '--l-text': surfaceColors.value[7].toHexString(),
   }
 
   return {
