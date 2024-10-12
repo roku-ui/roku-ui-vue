@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useSurfaceCS } from '@/shared'
 import { useElementBounding, useElementHover, useEventListener, useMouse, useParentElement, useScroll } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useClientHeight, useScrollHeight } from '../composables/dom'
@@ -93,6 +94,8 @@ defineExpose({
   $el: scrollDomRef,
 })
 const hover = useElementHover(() => scrollBarIndicatorRef.value)
+const bgNormal = useSurfaceCS('bg', { dark: 5, light: 6 }, 0.5)
+const bgHover = useSurfaceCS('bg', { dark: 2, light: 9 }, 0.5)
 </script>
 
 <template>
@@ -112,17 +115,18 @@ const hover = useElementHover(() => scrollBarIndicatorRef.value)
       <div
         v-show="scrollBarData.barHeight < clientHeight"
         ref="scrollBarIndicatorRef"
-        :class="{
-          'bg-surface-on/50': hover || dragging,
-          'bg-surface-on-low/50': !hover && !dragging,
-        }"
+        :class="[bgNormal.class]"
         class="absolute right-0 rounded-full"
-        :style="{
-          right: '0px',
-          width: `${barWidth}px`,
-          top: `${scrollBarData.barTop}px`,
-          height: `${scrollBarData.barHeight}px`,
-        }"
+        :style="[
+          {
+            right: '0px',
+            width: `${barWidth}px`,
+            top: `${scrollBarData.barTop}px`,
+            height: `${scrollBarData.barHeight}px`,
+          },
+          (!hover && !dragging) && bgNormal.style,
+          (hover || dragging) && bgHover.style,
+        ]"
       />
     </div>
     <div

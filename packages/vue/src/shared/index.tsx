@@ -333,13 +333,13 @@ export function useColorCS(color: MaybeRef<Color>, type: CSType, index: CSIndex,
   })
 }
 
-export function useSurfaceCS(type: CSType, index: CSIndex) {
+export function useSurfaceCS(type: CSType, index: CSIndex, alpha = 1.0) {
   return computed(() => {
     const { colors } = generateColorsObjMap(unref(surfaceColor), SURFACE_LIGHTNESS_MAP)
     if (typeof index === 'number') {
-      return getCSInner(colors, type, index, index)
+      return getCSInner(colors, type, index, index, alpha)
     }
-    return getCSInner(colors, type, index.dark, index.light)
+    return getCSInner(colors, type, index.dark, index.light, alpha)
   })
 }
 
