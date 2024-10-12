@@ -140,7 +140,7 @@ const containerCS = colors.value.map((color) => {
 const unactiveCS = useCS({
   color: 'surface',
   type: 'text',
-  index: { dark: 5, light: 4 },
+  index: { dark: 6, light: 4 },
 })
 
 function onPointerDown(i: number) {
