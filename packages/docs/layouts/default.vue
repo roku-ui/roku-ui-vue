@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Btn, RokuProvider, SchemeSwitch, useThemeData } from '@roku-ui/vue'
+import { Btn, RokuProvider, SchemeSwitch, useMergedCS, useThemeData } from '@roku-ui/vue'
+import { surfaceBorderCS, surfaceCS } from '~/utils/colors'
 
 useSeoMeta({
   title: 'Roku UI',
@@ -50,6 +51,7 @@ provide('docThemeColor', {
   error,
   surface,
 })
+const mergedCS = useMergedCS(surfaceBorderCS, surfaceCS)
 </script>
 
 <template>
@@ -62,7 +64,10 @@ provide('docThemeColor', {
     <NuxtLoadingIndicator
       color="rgb(var(--r-color-primary-container))"
     />
-    <div class="bg-surface-base border-surface-border-base fixed z-10 h-12 w-100vw flex items-center gap-2 border-b pl-2 pr-2 transition-all md:pl-[calc(33vw-288px+32px)]!">
+    <div
+      v-bind="mergedCS"
+      class="fixed z-10 h-12 w-100vw flex items-center gap-2 border-b pl-2 pr-2 md:pl-[calc(33vw-288px+32px)]!"
+    >
       <div>
         <Btn
           icon

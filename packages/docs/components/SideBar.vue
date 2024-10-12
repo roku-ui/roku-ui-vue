@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import { NuxtLink } from '#components'
-import { Btn } from '@roku-ui/vue'
+import { subTextCS } from '@/utils/colors'
+import { Btn, useButtonCS } from '@roku-ui/vue'
 
 defineProps<{
   isOpen: boolean
 }>()
 const contentComponents = await queryContent('components').find()
+const btnCS = useButtonCS('transparent', 'default')
+const btnActiveCS = useButtonCS('transparent', 'primary')
+const route = useRoute()
 </script>
 
 <template>
@@ -16,7 +20,7 @@ const contentComponents = await queryContent('components').find()
     }"
     class="bg-surface-low fixed top-12 z-10 h-100vh min-w-64 w-33vw flex flex-col items-end gap-2 transition-transform,background-color md:translate-x-0"
   >
-    <div class="w-72 flex flex-col gap-8 px-8 py-6">
+    <div class="w-86 flex flex-col gap-8 px-8 py-6">
       <div>
         <div>
           <NuxtLink
@@ -35,7 +39,10 @@ const contentComponents = await queryContent('components').find()
       </div>
       <div class="flex flex-col gap-4">
         <div class="flex flex-col gap-2">
-          <div class="text-surface-on-low px-2 text-xs">
+          <div
+            class="text-sm"
+            v-bind="subTextCS"
+          >
             工具
           </div>
           <div>
@@ -43,14 +50,17 @@ const contentComponents = await queryContent('components').find()
               :is="NuxtLink"
               icon
               href="/tools/theme"
-              variant="ghost"
+              variant="light"
             >
               <i class="i-tabler-color-filter" />
             </Btn>
           </div>
         </div>
         <div class="flex flex-col gap-2">
-          <div class="text-surface-on-low px-2 text-xs">
+          <div
+            v-bind="subTextCS"
+            class="text-sm"
+          >
             组件
           </div>
           <div>
@@ -59,7 +69,10 @@ const contentComponents = await queryContent('components').find()
               :key="content.slug"
               :to="content._path"
               :text="content.title"
-              class="content-link hover:bg-surface-border-base/25 block rounded p-1 px-2 text-sm"
+              class="block rounded p-1 px-2"
+              :class="[btnCS.class]"
+              v-bind="btnCS"
+              :style="[route.path === content._path ? btnActiveCS.style : btnCS.style]"
             >
               {{ content.title }}
             </NuxtLink>
@@ -72,7 +85,7 @@ const contentComponents = await queryContent('components').find()
 
 <style>
 .content-link.router-link-active {
-  color: rgb(var(--r-color-primary-containerl));
+  color: rgb(var(--r-color-primary-3));
 }
 </style>
 
@@ -84,7 +97,7 @@ const contentComponents = await queryContent('components').find()
 *:focus-visible {
   --un-outline-color-opacity: 1;
   outline-color: rgb(
-    var(--r-color-primary-container) / var(--un-outline-color-opacity)
+    var(--r-color-primary-3) / var(--un-outline-color-opacity)
   );
   outline-style: solid;
 }

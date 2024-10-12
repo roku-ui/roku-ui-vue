@@ -1,8 +1,8 @@
 <script setup lang="tsx">
-import {
-  transformerNotationHighlight,
-} from '@shikijs/transformers'
+import { useContainerDefaultCS } from '@roku-ui/vue'
+import { transformerNotationHighlight } from '@shikijs/transformers'
 import { getSingletonHighlighter } from 'shiki'
+import { surfaceBorderCS } from '~/utils/colors'
 
 const props = withDefaults(defineProps<{
   code?: string
@@ -23,18 +23,24 @@ const codeHtml = computed(() => highlighter.codeToHtml(props.code, {
   ],
 }),
 )
+const containerCS = useContainerDefaultCS()
 </script>
 
 <template>
-  <div class="bg-surface-low border-surface-border-low overflow-hidden border rounded-xl transition-background-color,border-color">
+  <div
+    class="overflow-hidden border rounded-xl transition-background-color,border-color"
+    v-bind="containerCS"
+  >
     <div
-      class="border-surface-border-low flex border-b transition-border-color"
+      class="flex border-b transition-border-color"
+      v-bind="surfaceBorderCS"
     >
       <div
         :class="{
           'border-r': $slots.form,
         }"
-        class="border-surface-border-low gird-paper-background min-h-56 w-full flex flex-grow items-center justify-center transition-border-color"
+        class="gird-paper-background min-h-56 w-full flex flex-grow items-center justify-center transition-border-color"
+        v-bind="surfaceBorderCS"
       >
         <slot name="preview" />
       </div>
@@ -71,7 +77,7 @@ const codeHtml = computed(() => highlighter.codeToHtml(props.code, {
   --size: 0.25rem;
   --color: rgb(var(--r-color-surface-5) / 0.05);
   background-color: transparent;
-  border-radius: 0.5rem;
+  border-radius: 0.5rem 0 0 0.5rem;
   background-image:
     linear-gradient(var(--color) 1px, transparent 1px),
     linear-gradient(90deg, var(--color) 1px, transparent 1px),

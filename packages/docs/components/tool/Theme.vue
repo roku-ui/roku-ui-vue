@@ -1,19 +1,5 @@
 <script setup lang="ts">
-import { ColorInput, Paper } from '@roku-ui/vue'
-
-const { primary, secondary, surface, tertiary, error } = inject<{
-  primary: Ref<string>
-  secondary: Ref<string>
-  surface: Ref<string>
-  tertiary: Ref<string>
-  error: Ref<string>
-}>('docThemeColor', {
-  primary: ref('#0067cc'),
-  secondary: ref('#5999A6'),
-  tertiary: ref('#F76C22'),
-  error: ref('#de3939'),
-  surface: ref('#121212'),
-})
+import { ColorInput, errorColor, Paper, primaryColor, secondaryColor, surfaceColor, tertiaryColor } from '@roku-ui/vue'
 </script>
 
 <template>
@@ -100,27 +86,27 @@ const { primary, secondary, surface, tertiary, error } = inject<{
     </Paper>
     <Paper class="flex flex-col gap-2">
       <ColorInput
-        v-model="surface"
+        v-model="surfaceColor"
         aria-label="surface"
         label="surface"
       />
       <ColorInput
-        v-model="primary"
+        v-model="primaryColor"
         aria-label="primary"
         label="primary"
       />
       <ColorInput
-        v-model="secondary"
+        v-model="secondaryColor"
         aria-label="secondary"
         label="secondary"
       />
       <ColorInput
-        v-model="tertiary"
+        v-model="tertiaryColor"
         aria-label="tertiary"
         label="tertiary"
       />
       <ColorInput
-        v-model="error"
+        v-model="errorColor"
         aria-label="error"
         label="error"
       />

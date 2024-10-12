@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { LazyWaterfall, ScrollArea } from '@roku-ui/vue'
+import { ScrollArea, VirtualWaterfall } from '@roku-ui/vue'
 
 const code = computed(() => `<script setup lang="ts">
 const tmps = ref(Array.from({ length: 20 }))
@@ -54,7 +54,7 @@ const items = computed(() => tmps.value.map(() => {
     <template #preview>
       <ClientOnly>
         <div class="relative h-full w-full p-2">
-          <LazyWaterfall
+          <VirtualWaterfall
             :is="ScrollArea"
             :gap="4"
             :item-width="width"
@@ -70,7 +70,7 @@ const items = computed(() => tmps.value.map(() => {
                 backgroundImage: `url(${item.src})`,
               }"
             >
-          </LazyWaterfall>
+          </VirtualWaterfall>
         </div>
       </ClientOnly>
     </template>
