@@ -134,9 +134,9 @@ export function useContainerDefaultCS() {
       type: 'border',
       index: { dark: 7, light: 4 },
     })
-    const cs = mergeCS(bgCS, borderCS)
-    cs.class.push('border')
-    return cs
+    const cs = useMergedCS(bgCS, borderCS)
+    cs.value.class = [...cs.value.class, 'border']
+    return cs.value
   })
 }
 
@@ -150,17 +150,17 @@ export function useContainerDefaultVariantCS() {
     const borderCS = useCS({
       color: 'surface',
       type: 'border',
-      index: { dark: 7, light: 4 },
+      index: { dark: 6, light: 4 },
     })
-    return mergeCS(bgCS, borderCS)
+    return useMergedCS(bgCS, borderCS).value
   })
 }
 
-function mergeCS(...cs: ReturnType<typeof useCS>[]) {
-  return {
+export function useMergedCS(...cs: ReturnType<typeof useCS>[]) {
+  return computed(() => ({
     style: cs.reduce((prev, curr) => ({ ...prev, ...curr.value.style }), {}),
     class: cs.reduce<string[]>((prev, curr) => [...prev, ...curr.value.class], []),
-  }
+  }))
 }
 
 export function useIndicatorFilledCS(color: MaybeRef<Color>) {
@@ -180,7 +180,7 @@ export function useIndicatorFilledCS(color: MaybeRef<Color>) {
       type: 'text',
       index: 0,
     })
-    return mergeCS(bgCS, borderCS, textCS)
+    return useMergedCS(bgCS, borderCS, textCS).value
   })
 }
 
@@ -201,7 +201,7 @@ export function useContainerFilledCS(color: MaybeRef<Color>) {
       type: 'text',
       index: 0,
     })
-    return mergeCS(bgCS, borderCS, textCS)
+    return useMergedCS(bgCS, borderCS, textCS).value
   })
 }
 
@@ -219,7 +219,7 @@ export function useContainerLightCS(color: MaybeRef<Color>) {
       type: 'text',
       index: { dark: 2, light: 5 },
     })
-    return mergeCS(bgCS, textCS)
+    return useMergedCS(bgCS, textCS).value
   })
 }
 

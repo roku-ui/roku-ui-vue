@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { Color } from '@/types'
+import { useContainerFilledCS, useSurfaceCS } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
 import { computed } from 'vue'
 
@@ -7,7 +9,7 @@ const props = withDefaults(defineProps<{
   max?: number | string
   min?: number | string
   size?: 'sm' | 'md' | 'lg'
-  color?: string
+  color?: Color
   rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full' | string | number
   loading?: boolean
 }>(), {
@@ -31,35 +33,24 @@ const sizeCls = computed(() => {
       return 'h-0.5'
   }
 })
-
-const colorCls = computed(() => {
-  switch (props.color) {
-    case 'primary':
-      return 'bg-primary-container'
-    case 'secondary':
-      return 'bg-secondary-container'
-    case 'tertiary':
-      return 'bg-tertiary-container'
-    case 'error':
-      return 'bg-error-container'
-    default:
-      return 'bg-primary-container'
-  }
-})
+const color = computed(() => props.color)
+const containerFilledCS = useContainerFilledCS(color)
+const surfaceVariantCS = useSurfaceCS('bg', { dark: 7, light: 3 })
 
 const rounded = useRounded(props)
 </script>
 
 <template>
   <div
-    class="bg-surface-high relative w-full self-center overflow-hidden transition-background-color,border-color,color"
+    class="relative w-full self-center overflow-hidden"
     :class="[sizeCls, rounded.class]"
     :style="[rounded.style]"
+    v-bind="surfaceVariantCS"
   >
     <div
       v-if="!loading"
       class="h-full"
-      :class="[colorCls]"
+      v-bind="containerFilledCS"
       :style="[{
         width: `${(Number(value) - Number(min)) / (Number(max) - Number(min)) * 100}%`,
       }]"
@@ -67,7 +58,7 @@ const rounded = useRounded(props)
     <div
       v-else
       class="loading-progress h-full"
-      :class="[colorCls]"
+      v-bind="containerFilledCS"
     />
   </div>
 </template>
