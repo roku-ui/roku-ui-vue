@@ -5,6 +5,7 @@ import { generateColors, Notifications, primaryColor, surfaceColor } from '..'
 import PopoverDemo from './demo/PopoverDemo.vue'
 import RatingDemo from './demo/RatingDemo.vue'
 import SelectAreaDemo from './demo/SelectAreaDemo.vue'
+import SelectDemo from './demo/SelectDemo.vue'
 import TagsDemo from './demo/TagsDemo.vue'
 import WaterfallDemo from './demo/WaterfallDemo.vue'
 
@@ -68,10 +69,11 @@ const btnGroupOptionSingle = [
 
 <template>
   <RokuProvider>
-    <ColorInput v-model="primaryColor" />
-    <ColorInput v-model="surfaceColor" />
     <NotificationSystem />
     <div class="flex flex-col items-center gap-2">
+      <SelectDemo />
+      <ColorInput v-model="primaryColor" />
+      <ColorInput v-model="surfaceColor" />
       <div class="theme-filled">
         test
       </div>

@@ -36,8 +36,7 @@ const emit = defineEmits<{
 
 const rounded = useRounded(props)
 
-const model = defineModel<T | undefined>({ default: undefined })
-
+const model = defineModel<T | undefined>()
 const inputRef = ref<null | HTMLInputElement>(null)
 const wrapperRef = ref(null)
 const focused = ref(false)
@@ -49,7 +48,6 @@ const hoverIndex = ref(-1)
 const keyboardIndex = ref(-1)
 
 watchEffect(() => {
-  //
   if (!focused.value) {
     keyboardIndex.value = -1
   }
@@ -62,6 +60,11 @@ watch(model, () => {
 const currentOption = computed(() => model.value)
 const currentLabel = computed(() => getLabel(currentOption.value))
 const currentIndex = computed(() => props.options.findIndex(d => optionIsEq(d, currentOption.value)))
+const searchText = ref(currentLabel.value)
+
+watch(currentLabel, () => {
+  searchText.value = currentLabel.value
+})
 
 function getLabel(option?: T) {
   if (!option) {
@@ -85,11 +88,6 @@ function getId(option?: T) {
   }
   return option.id
 }
-
-const searchText = ref('')
-watch(currentLabel, () => {
-  searchText.value = currentLabel.value
-})
 
 function onInput(event: Event) {
   focused.value = true
