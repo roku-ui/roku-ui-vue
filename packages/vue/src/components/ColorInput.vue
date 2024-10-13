@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { ref, useAttrs } from 'vue'
 
-defineProps<{
+withDefaults(defineProps<{
   label?: string
-}>()
+  withBorder?: boolean
+}>(), {
+  withBorder: false,
+})
 const model = defineModel<string>()
 const attrs = useAttrs()
 const id = useId(attrs)
@@ -25,6 +28,7 @@ const input = ref<HTMLInputElement | null>(null)
       :for="id"
     >
       <ColorSwatch
+        :with-border="withBorder"
         class="cursor-pointer"
         :color="model ?? '#222'"
       />

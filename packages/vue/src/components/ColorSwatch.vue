@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Component } from 'vue'
+import { useCS } from '@/shared'
 
 withDefaults(
   defineProps<{
@@ -12,6 +13,11 @@ withDefaults(
     withBorder: false,
   },
 )
+const borderCS = useCS({
+  color: 'default',
+  type: 'border',
+  index: 4,
+})
 </script>
 
 <template>
@@ -19,9 +25,9 @@ withDefaults(
     :is="is"
     class="h-6 w-6 border rounded-full"
     :class="[{
-      ['border border-surface-border-base']: withBorder,
-      ['border border-transparent']: !withBorder,
+      ['border']: withBorder,
     }]"
+    v-bind="borderCS"
     :style="{
       backgroundColor: color,
     }"

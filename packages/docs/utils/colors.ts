@@ -15,5 +15,5 @@ export const surfaceBorderCS = useCS({
 export const surfaceCS = useCS({
   color: 'surface',
   type: 'bg',
-  index: { dark: 8, light: 2 },
+  index: { dark: 8, light: 1 },
 })
