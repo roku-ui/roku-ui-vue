@@ -83,7 +83,7 @@ const btnGroupOptionSingle = [
       <TagsDemo />
       <WaterfallDemo />
       <PinInput with-border />
-      <Paper>
+      <Paper with-border>
         <BtnGroup
           v-model="btnGroupVal"
           :selections="btnGroupOptions"
@@ -180,6 +180,7 @@ const btnGroupOptionSingle = [
       </div>
       <Paper
         :loading="loading"
+        with-border
       >
         <Btn
           @click="loading = !loading"

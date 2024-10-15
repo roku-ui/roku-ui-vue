@@ -221,7 +221,7 @@ function onMousemove(i: number) {
 <template>
   <div
     ref="wrapperRef"
-    class="r-select-wrapper relative"
+    class="relative"
     :style="colorStyle"
   >
     <div class="w-full flex items-center">
@@ -230,7 +230,7 @@ function onMousemove(i: number) {
         :class="[sizeCls.wrapper, rounded.class, searchCls]"
         class="border outline-none outline-none focus-visible:outline-2 custom-input-colors"
         :placeholder="placeholder"
-        :style="[rounded.style]"
+        :style="[rounded.style, colorStyle]"
         :readonly="!searchable"
         :value="searchText"
         :aria-label="ariaLabel"

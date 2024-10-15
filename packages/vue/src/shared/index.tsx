@@ -492,32 +492,34 @@ function getWhiteVariantStyle(color: tinycolor.Instance[]): Record<string, strin
 }
 
 export function useInputColorStyle(color: MaybeRef<string>, variant: MaybeRef<InputVariant> = 'default') {
-  const colors = useColors(color).value
-  const surfaceColors = useSurfaceColors().value
-  switch (unref(variant)) {
-    case 'default':
-      return {
-        '--d-bg': surfaceColors[darkSurfaceBgIndex].toHexString(),
-        '--d-border-f': colors[darkBgIndex].toHexString(),
-        '--d-border': surfaceColors[darkSurfaceBorderIndex].toHexString(),
-        '--d-placeholder': surfaceColors[darkSurfaceTextVariantIndex].toHexString(),
-        '--d-text': 'white',
+  return computed(() => {
+    const colors = useColors(color).value
+    const surfaceColors = useSurfaceColors().value
+    switch (unref(variant)) {
+      case 'default':
+        return {
+          '--d-bg': surfaceColors[darkSurfaceBgIndex].toHexString(),
+          '--d-border-f': colors[darkBgIndex].toHexString(),
+          '--d-border': surfaceColors[darkSurfaceBorderIndex].toHexString(),
+          '--d-placeholder': surfaceColors[darkSurfaceTextVariantIndex].toHexString(),
+          '--d-text': 'white',
 
-        '--l-bg': surfaceColors[lightSurfaceBgIndex].toHexString(),
-        '--l-border-f': colors[3].toHexString(),
-        '--l-border': surfaceColors[lightSurfaceBorderIndex].toHexString(),
-        '--l-placeholder': surfaceColors[lightSurfaceTextVariantIndex].toHexString(),
-        '--l-text': 'black',
-      }
-    case 'filled':
-      return {
-        '--d-bg': colors[5].toHexString(),
-        '--d-bg-h': colors[6].toHexString(),
-        '--d-border': 'transparent',
-        '--l-bg': colors[5].toHexString(),
-        '--l-bg-h': colors[6].toHexString(),
-        '--l-border': 'transparent',
+          '--l-bg': surfaceColors[lightSurfaceBgIndex].toHexString(),
+          '--l-border-f': colors[3].toHexString(),
+          '--l-border': surfaceColors[lightSurfaceBorderIndex].toHexString(),
+          '--l-placeholder': surfaceColors[lightSurfaceTextVariantIndex].toHexString(),
+          '--l-text': 'black',
+        }
+      case 'filled':
+        return {
+          '--d-bg': colors[5].toHexString(),
+          '--d-bg-h': colors[6].toHexString(),
+          '--d-border': 'transparent',
+          '--l-bg': colors[5].toHexString(),
+          '--l-bg-h': colors[6].toHexString(),
+          '--l-border': 'transparent',
 
-      }
-  }
+        }
+    }
+  })
 }

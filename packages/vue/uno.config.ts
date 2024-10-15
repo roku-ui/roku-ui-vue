@@ -5,5 +5,4 @@ export default defineConfig({
   presets: [
     rokuPreset({}),
   ],
-  shortcuts: {},
 })

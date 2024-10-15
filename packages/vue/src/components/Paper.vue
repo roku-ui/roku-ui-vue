@@ -2,7 +2,7 @@
 import type { Color, Rounded } from '../types'
 import { useRounded } from '@/utils/classGenerator'
 import { type Component, computed, ref } from 'vue'
-import { useColors } from '../shared'
+import { useColors, useCS } from '../shared'
 
 const props = withDefaults(
   defineProps<{
@@ -66,7 +66,17 @@ const keyFrames = computed(() => {
 
 let ani: Animation | undefined
 
-const borderColor = computed(() => useColors(color.value).value[5])
+const mainColor = computed(() => useColors(color.value).value[5])
+
+// const surfaceCS = useCS({
+//   type: 'bg',
+//   color: 'surface',
+//   index: {
+//     light: 2,
+//     dark: 9,
+//   },
+// })
+
 const loadingStyle = computed(() => {
   if (props.loading) {
     if (ani) {
@@ -79,11 +89,13 @@ const loadingStyle = computed(() => {
       })
     }
     return {
-      '--border-color': borderColor.value,
+      '--main-color': mainColor.value,
+      '--gradient': `radial-gradient(circle at center, var(--main-color) ${shortEdge.value * 0.5}px, var(--border-color) ${shortEdge.value * 0.5}px)`,
+      '--border-color': 'rgb(var(--r-surface-border-color))',
+      '--bg': `rgb(var(--r-surface-background-color))`,
       'background': 'linear-gradient(var(--bg), var(--bg)) padding-box, var(--gradient) border-box',
+      'border-color': 'transparent',
       'background-color': 'var(--bg)',
-      '--bg': 'rgba(var(--r-color-surface-low) / 1)',
-      '--gradient': `radial-gradient(circle at center, var(--border-color) ${shortEdge.value * 0.5}px, var(--bg) ${shortEdge.value * 0.5}px)`,
       'background-size': '200% 200%',
     }
   }
@@ -92,7 +104,7 @@ const loadingStyle = computed(() => {
       ani.pause()
     }
     return {
-      background: 'rgba(var(--r-color-surface-low) / 1)',
+      background: 'rgb(var(--r-surface-background-color))',
     }
   }
 })
@@ -147,9 +159,10 @@ const traceAnimateStyle = computed(() => {
       }
     })
     return {
-      '--border-color': borderColor.value,
-      '--bg': `rgba(var(--r-color-surface-low) / 1)`,
-      '--gradient': `radial-gradient(circle at ${points.value.x - left.value}px ${points.value.y - top.value}px, var(--border-color) ${shortEdge.value * 0.5}px, var(--bg) ${shortEdge.value * 0.5}px)`,
+      '--main-color': mainColor.value,
+      '--border-color': 'rgb(var(--r-surface-border-color))',
+      '--bg': `rgb(var(--r-surface-background-color))`,
+      '--gradient': `radial-gradient(circle at ${points.value.x - left.value}px ${points.value.y - top.value}px, var(--main-color) ${shortEdge.value * 0.5}px, var(--border-color) ${shortEdge.value * 0.5}px)`,
       'background': 'linear-gradient(var(--bg), var(--bg)) padding-box, var(--gradient) border-box',
       'background-size': '200% 200%',
       'background-color': 'var(--bg)',
@@ -165,15 +178,23 @@ const traceAnimateStyle = computed(() => {
   <component
     :is="is"
     ref="paperRef"
-    class="container-low relative border"
+    class="relative border"
     :class="[
       {
-        'border-transparent': !withBorder,
         'p-4': !noPadding,
       },
       roundedCls.class,
     ]"
-    :style="[roundedCls.style, loadingStyle, traceAnimateStyle]"
+    :style="[
+      roundedCls.style,
+      loadingStyle,
+      traceAnimateStyle,
+    ]"
+    v-bind=" (withBorder && !traceAnimate && !loading) ? {
+      class: 'border-[rgb(var(--r-surface-border-color))]',
+    } : {
+      class: 'border-transparent',
+    }"
   >
     <slot />
   </component>

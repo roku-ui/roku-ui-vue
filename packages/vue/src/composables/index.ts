@@ -3,7 +3,7 @@ import { isClient } from '@vueuse/core'
 import tinycolor from 'tinycolor2'
 import { computed, inject, type MaybeRef, onMounted, type Ref, ref, unref } from 'vue'
 import { generateColors, type ThemeData } from '..'
-import { defaultTheme, surfaceColors, useColors } from '../shared'
+import { defaultTheme, useColors } from '../shared'
 
 export * from './dom'
 
@@ -143,10 +143,10 @@ export function useThemeStyles(theme: ThemeData) {
     ...colorVars,
   }
   const themeStyles = {
-    '--d-bg': surfaceColors.value[10].toHexString(),
-    '--d-text': surfaceColors.value[3].toHexString(),
-    '--l-bg': surfaceColors.value[0].toHexString(),
-    '--l-text': surfaceColors.value[7].toHexString(),
+    '--d-bg': 'rgb(var(--r-color-surface-10))',
+    '--d-text': 'rgb(var(--r-color-surface-3))',
+    '--l-bg': 'rgb(var(--r-color-surface-0))',
+    '--l-text': 'rgb(var(--r-color-surface-7))',
   }
 
   return {
