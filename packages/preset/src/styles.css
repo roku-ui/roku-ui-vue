@@ -10,7 +10,7 @@
 [data-scheme="light"] [data-scheme="dark"] *, [data-scheme="dark"] *, [data-scheme="dark"] {
     color-scheme: dark;
     --r-surface-background-base-color: rgb(var(--r-color-surface-10));
-    --r-surface-background-color: rgb(var(--r-color-surface-8));
+    --r-surface-background-color: rgb(var(--r-color-surface-9));
     --r-surface-background-variant-color: rgb(var(--r-color-surface-7));
     --r-surface-border-color: rgb(var(--r-color-surface-7));
     --r-surface-text-color: rgb(var(--r-color-surface-3));

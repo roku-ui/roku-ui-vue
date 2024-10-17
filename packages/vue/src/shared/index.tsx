@@ -7,7 +7,7 @@ import { computed, ref, unref } from 'vue'
 import { COLOR_LIGHTNESS_MAP, SURFACE_LIGHTNESS_MAP } from '..'
 
 // const darkSurfaceBgBaseIndex = 10
-const darkSurfaceBgIndex = 8
+const darkSurfaceBgIndex = 9
 const darkSurfaceBgVariantIndex = 7
 const darkBorderIndex = 7
 const darkBorderVariantIndex = 7
@@ -40,7 +40,7 @@ export const surfaceColor = ref('#121212')
 
 export const borderCS = computed(() => {
   return useCS({
-    color: 'default',
+    color: 'surface',
     type: 'border',
     index: { dark: darkBorderIndex, light: lightBorderIndex },
   }).value
