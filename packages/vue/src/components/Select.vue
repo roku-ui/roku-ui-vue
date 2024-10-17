@@ -21,6 +21,7 @@ const props = withDefaults(defineProps<{
     return []
   },
   size: 'md',
+  color: 'primary',
   noneText: 'No options',
   notFoundText: 'Not found',
   placeholder: '',
@@ -148,7 +149,7 @@ function onItemPointerDown(option: T) {
   model.value = option
   focused.value = false
 }
-const color = computed(() => props.color ?? 'primary')
+const color = computed(() => props.color)
 const colorStyle = useInputColorStyle(color, 'default')
 
 const sizeCls = computed(() => {

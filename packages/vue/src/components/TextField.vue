@@ -51,11 +51,11 @@ const labelSizeCls = computed(() => {
       return 'text-sm'
   }
 })
-
-const colorStyle = useInputColorStyle(props.color, 'default')
+const color = computed(() => props.color)
+const colorStyle = useInputColorStyle(color)
 const disabledCls = computed(() => {
   if (props.disabled) {
-    return 'pointer-events-none filter grayscale opacity-60'
+    return 'pointer-events-none select-none filter opacity-60'
   }
   return ''
 })

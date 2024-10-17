@@ -79,7 +79,7 @@ const cs = useButtonCS(variant, color)
       rounded.class,
       icon ? sizeCls.iconContent : sizeCls.normalContent,
       {
-        'filter-grayscale pointer-events-none select-none filter-brightness-80': disabled,
+        'opacity-60 pointer-events-none select-none': disabled,
         'active:translate-y-0.25': pressEffect === 'translate',
       },
     ]"
