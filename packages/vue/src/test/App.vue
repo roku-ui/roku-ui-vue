@@ -500,13 +500,13 @@ const btnGroupOptionSingle = [
             <Btn @click="modal5 = !modal5">
               Open Nested Modal
             </Btn>
-          </Paper>
-        </Modal>
-        <Modal
-          v-model="modal5"
-        >
-          <Paper class="h-16 w-full flex items-center justify-center md:w-md">
-            Inner Modal
+            <Modal
+              v-model="modal5"
+            >
+              <Paper class="h-16 w-full flex items-center justify-center md:w-md">
+                Inner Modal
+              </Paper>
+            </Modal>
           </Paper>
         </Modal>
       </Paper>

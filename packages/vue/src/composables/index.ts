@@ -143,10 +143,8 @@ export function useThemeStyles(theme: ThemeData) {
     ...colorVars,
   }
   const themeStyles = {
-    '--d-bg': 'rgb(var(--r-color-surface-10))',
-    '--d-text': 'rgb(var(--r-color-surface-3))',
-    '--l-bg': 'rgb(var(--r-color-surface-0))',
-    '--l-text': 'rgb(var(--r-color-surface-7))',
+    backgroundColor: 'var(--r-surface-background-base-color)',
+    color: 'var(--r-surface-text-color)',
   }
 
   return {

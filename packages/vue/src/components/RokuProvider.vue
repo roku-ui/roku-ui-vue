@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { ThemeData } from '@/utils'
+import { provideRokuProvider } from '@/composables/modal'
 import { isClient } from '@vueuse/core'
-import { type Component, computed, provide, watchEffect } from 'vue'
+import { type Component, computed, provide, ref, watchEffect } from 'vue'
 import { defaultTheme, errorColor, primaryColor, secondaryColor, surfaceColor, tertiaryColor } from '../shared'
 
 const props = withDefaults(
@@ -61,15 +62,19 @@ const styles = computed(() => useThemeStyles({
 }))
 provide(schemeSymbol, scheme)
 provide('currentThemeData', computed(() => themeData.value))
+const wrapperRef = ref(null)
+provideRokuProvider(wrapperRef)
 </script>
 
 <template>
   <component
     :is="is"
+    ref="wrapperRef"
     :style="[
       styles,
     ]"
-    class="bg-[--l-bg] text-[--l-text] dark:bg-[--d-bg] dark:text-[--d-text]"
+    :data-scheme="scheme"
+    :data-theme="themeData.name"
   >
     <slot />
   </component>

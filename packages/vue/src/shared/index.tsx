@@ -6,11 +6,45 @@ import { computed, ref, unref } from 'vue'
 
 import { COLOR_LIGHTNESS_MAP, SURFACE_LIGHTNESS_MAP } from '..'
 
+// const darkSurfaceBgBaseIndex = 10
+const darkSurfaceBgIndex = 8
+const darkSurfaceBgVariantIndex = 7
+const darkBorderIndex = 7
+const darkBorderVariantIndex = 7
+const darkTextIndex = 3
+const darkTextVariantIndex = 6
+
+const darkBgIndex = 5
+const darkBgVariantIndex = 6
+const lightBorderIndex = 3
+const lightBorderVariantIndex = 4
+const darkOpacity = 0.25
+const darkOpacityVariant = 0.3
+
+// const lightSurfaceBgBaseIndex = 0
+const lightSurfaceBgIndex = 1
+const lightSurfaceBgVariantIndex = 2
+const lightTextIndex = 7
+const lightTextVariantIndex = 5
+
+const lightBgIndex = 4
+const lightBgVariantIndex = 5
+const lightOpacity = 0.08
+const lightOpacityVariant = 0.15
+
 export const primaryColor = ref('#0067cc')
 export const secondaryColor = ref('#5999A6')
 export const tertiaryColor = ref('#F76C22')
 export const errorColor = ref('#F95858')
 export const surfaceColor = ref('#121212')
+
+export const borderCS = computed(() => {
+  return useCS({
+    color: 'default',
+    type: 'border',
+    index: { dark: darkBorderIndex, light: lightBorderIndex },
+  }).value
+})
 
 export const primaryColors = computed(() => {
   return generateColorsObjMap(unref(primaryColor), COLOR_LIGHTNESS_MAP).colors
@@ -94,35 +128,6 @@ export function useSurfaceColors() {
   return computed(() => generateColorsObjMap(unref(surfaceColor), SURFACE_LIGHTNESS_MAP).colors)
 }
 
-const darkSurfaceBgIndex = 8
-const darkSurfaceBgVariantIndex = 7
-const darkSurfaceBorderIndex = 7
-const darkSurfaceTextVariantIndex = 6
-
-const darkBgIndex = 5
-const darkBgVariantIndex = 6
-
-const darkTextIndex = 2
-
-const darkBorderIndex = 3
-
-const darkOpacity = 0.25
-const darkOpacityVariant = 0.3
-
-const lightSurfaceBgIndex = 1
-const lightSurfaceBgVariantIndex = 2
-const lightSurfaceBorderIndex = 4
-const lightSurfaceTextVariantIndex = 5
-
-const lightBgIndex = 4
-const lightBgVariantIndex = 5
-
-const lightTextIndex = 5
-const lightBorderIndex = 4
-
-const lightOpacity = 0.08
-const lightOpacityVariant = 0.15
-
 type CSType = 'bg' | 'border' | 'text' | 'placeholder' | 'hover:bg' | 'hover:border' | 'hover:text' | 'outline'
 type CSIndex = number | { dark: number, light: number }
 interface CSOptions {
@@ -146,7 +151,7 @@ export function useContainerDefaultCS() {
     const borderCS = useCS({
       color: 'surface',
       type: 'border',
-      index: { dark: 7, light: 4 },
+      index: { dark: 7, light: 3 },
     })
     const cs = useMergedCS(bgCS, borderCS)
     cs.value.class = [...cs.value.class, 'border']
@@ -338,8 +343,8 @@ export function useCS(cs: CSOptions) {
 }
 
 export function useColorCS(color: MaybeRef<Color>, type: CSType, index: CSIndex, alpha = 1.0) {
-  const colors = useColors(color)
   return computed(() => {
+    const colors = useColors(color)
     if (typeof index === 'number') {
       return getCSInner(unref(colors), type, index, index, alpha)
     }
@@ -382,10 +387,10 @@ function getDefaultVariantStyle(surface: tinycolor.Instance[]): Record<string, s
   return {
     '--d-bg': surface[darkSurfaceBgIndex].toHexString(),
     '--d-bg-h': surface[darkSurfaceBgVariantIndex].toHexString(),
-    '--d-border': surface[darkSurfaceBorderIndex].toHexString(),
+    '--d-border': surface[darkBorderVariantIndex].toHexString(),
     '--l-bg': surface[lightSurfaceBgIndex].toHexString(),
     '--l-bg-h': surface[lightSurfaceBgVariantIndex].toHexString(),
-    '--l-border': surface[lightSurfaceBorderIndex].toHexString(),
+    '--l-border': surface[lightBorderVariantIndex].toHexString(),
   }
 }
 
@@ -500,14 +505,14 @@ export function useInputColorStyle(color: MaybeRef<string>, variant: MaybeRef<In
         return {
           '--d-bg': surfaceColors[darkSurfaceBgIndex].toHexString(),
           '--d-border-f': colors[darkBgIndex].toHexString(),
-          '--d-border': surfaceColors[darkSurfaceBorderIndex].toHexString(),
-          '--d-placeholder': surfaceColors[darkSurfaceTextVariantIndex].toHexString(),
+          '--d-border': surfaceColors[darkBorderIndex].toHexString(),
+          '--d-placeholder': surfaceColors[darkTextVariantIndex].toHexString(),
           '--d-text': 'white',
 
           '--l-bg': surfaceColors[lightSurfaceBgIndex].toHexString(),
           '--l-border-f': colors[3].toHexString(),
-          '--l-border': surfaceColors[lightSurfaceBorderIndex].toHexString(),
-          '--l-placeholder': surfaceColors[lightSurfaceTextVariantIndex].toHexString(),
+          '--l-border': surfaceColors[lightBorderIndex].toHexString(),
+          '--l-placeholder': surfaceColors[lightTextVariantIndex].toHexString(),
           '--l-text': 'black',
         }
       case 'filled':

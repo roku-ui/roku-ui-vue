@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useRokuProvider } from '@/composables/modal'
 import { computed, ref, watchEffect } from 'vue'
 
 const props = withDefaults(defineProps<{
@@ -60,26 +61,21 @@ if (typeof window !== 'undefined') {
   })
   resizeObserver.observe(document.body)
 }
-
-const currentTheme = useCurrentThemeData()
+const provider = useRokuProvider()
 </script>
 
 <template>
-  <Teleport to="body">
-    <ThemeProvider
-      :theme="currentTheme"
+  <Teleport :to="provider ?? 'body'">
+    <div
+      ref="wrapperRef"
+      class="modal-wrapper fixed left-0 top-0 z-100 h-full w-full bg-surface-10/10 transition-all duration-100 md:items-center"
+      :class="[blurCls, wrapperClass, {
+        ['op0 pointer-events-none']: !model,
+        ['op100']: model,
+      }]"
+      @click="onClick"
     >
-      <div
-        ref="wrapperRef"
-        class="modal-wrapper fixed left-0 top-0 z-100 h-full w-full bg-surface-10/50 transition-all duration-300 md:items-center"
-        :class="[blurCls, wrapperClass, {
-          ['op0 pointer-events-none']: !model,
-          ['op100']: model,
-        }]"
-        @click="onClick"
-      >
-        <slot />
-      </div>
-    </ThemeProvider>
+      <slot />
+    </div>
   </Teleport>
 </template>

@@ -91,8 +91,8 @@ const loadingStyle = computed(() => {
     return {
       '--main-color': mainColor.value,
       '--gradient': `radial-gradient(circle at center, var(--main-color) ${shortEdge.value * 0.5}px, var(--border-color) ${shortEdge.value * 0.5}px)`,
-      '--border-color': 'rgb(var(--r-surface-border-color))',
-      '--bg': `rgb(var(--r-surface-background-color))`,
+      '--border-color': 'var(--r-surface-border-color)',
+      '--bg': `var(--r-surface-background-color)`,
       'background': 'linear-gradient(var(--bg), var(--bg)) padding-box, var(--gradient) border-box',
       'border-color': 'transparent',
       'background-color': 'var(--bg)',
@@ -104,7 +104,7 @@ const loadingStyle = computed(() => {
       ani.pause()
     }
     return {
-      background: 'rgb(var(--r-surface-background-color))',
+      background: 'var(--r-surface-background-color)',
     }
   }
 })
@@ -160,8 +160,8 @@ const traceAnimateStyle = computed(() => {
     })
     return {
       '--main-color': mainColor.value,
-      '--border-color': 'rgb(var(--r-surface-border-color))',
-      '--bg': `rgb(var(--r-surface-background-color))`,
+      '--border-color': 'var(--r-surface-border-color)',
+      '--bg': `var(--r-surface-background-color)`,
       '--gradient': `radial-gradient(circle at ${points.value.x - left.value}px ${points.value.y - top.value}px, var(--main-color) ${shortEdge.value * 0.5}px, var(--border-color) ${shortEdge.value * 0.5}px)`,
       'background': 'linear-gradient(var(--bg), var(--bg)) padding-box, var(--gradient) border-box',
       'background-size': '200% 200%',
@@ -191,7 +191,7 @@ const traceAnimateStyle = computed(() => {
       traceAnimateStyle,
     ]"
     v-bind=" (withBorder && !traceAnimate && !loading) ? {
-      class: 'border-[rgb(var(--r-surface-border-color))]',
+      class: 'border-[var(--r-surface-border-color)]',
     } : {
       class: 'border-transparent',
     }"

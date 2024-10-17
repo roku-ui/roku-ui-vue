@@ -9,15 +9,21 @@
 /* dark */
 [data-scheme="light"] [data-scheme="dark"] *, [data-scheme="dark"] *, [data-scheme="dark"] {
     color-scheme: dark;
-    --r-surface-background-color: var(--r-color-surface-8);
-    --r-surface-border-color: var(--r-color-surface-7);
+    --r-surface-background-base-color: rgb(var(--r-color-surface-10));
+    --r-surface-background-color: rgb(var(--r-color-surface-8));
+    --r-surface-background-variant-color: rgb(var(--r-color-surface-7));
+    --r-surface-border-color: rgb(var(--r-color-surface-7));
+    --r-surface-text-color: rgb(var(--r-color-surface-3));
 }
 
 /* light */
 [data-scheme="light"] *, [data-scheme="light"], * {
     color-scheme: light;
-    --r-surface-background-color: var(--r-color-surface-1);
-    --r-surface-border-color: var(--r-color-surface-3);
+    --r-surface-background-base-color: rgb(var(--r-color-surface-0));
+    --r-surface-background-color: rgb(var(--r-color-surface-1));
+    --r-surface-background-variant-color: rgb(var(--r-color-surface-2));
+    --r-surface-border-color: rgb(var(--r-color-surface-3));
+    --r-surface-text-color: rgb(var(--r-color-surface-7));
 }
 
 :root {

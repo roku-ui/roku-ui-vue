@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Component } from 'vue'
-import { useCS } from '@/shared'
+import { borderCS } from '@/shared'
 
 withDefaults(
   defineProps<{
@@ -13,11 +13,6 @@ withDefaults(
     withBorder: false,
   },
 )
-const borderCS = useCS({
-  color: 'default',
-  type: 'border',
-  index: 4,
-})
 </script>
 
 <template>
