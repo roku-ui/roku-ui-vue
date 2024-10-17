@@ -18,3 +18,10 @@ Paper 组件用来承载内容，提供一个基础的容器。它可以用来�
 
 ::demo-paper-loading
 ::
+
+## 边框鼠标追踪动画
+
+Paper 组件还支持鼠标追踪动画。当鼠标移动到 Paper 组件上时，边框颜色会跟随鼠标移动。
+
+::demo-paper-trace
+::

@@ -9,7 +9,7 @@
 
 <style>
 ::selection {
-  color: #FFF;
+  background: rgb(var(--r-color-surface-0) / 0.125);
 }
 :root {
   font-family: 'HarmonyOS Sans SC', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
