@@ -1,7 +1,11 @@
 <script setup lang="ts">
+import { useTextCS } from '@roku-ui/vue'
+
 defineProps<{
   features?: string[]
 }>()
+
+const textCS = useTextCS('primary')
 </script>
 
 <template>
@@ -14,7 +18,10 @@ defineProps<{
       :key="f"
       class="flex items-center gap-2 md:text-lg"
     >
-      <i class="text-primary-container i-tabler-circle-check mr-1 w-24px flex-shrink-0" />
+      <i
+        v-bind="textCS"
+        class="i-tabler-circle-check mr-1 w-24px flex-shrink-0"
+      />
       <span class="text-surface-on-low">{{ f }}</span>
     </div>
   </div>

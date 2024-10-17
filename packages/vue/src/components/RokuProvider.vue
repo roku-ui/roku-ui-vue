@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { ThemeData } from '@/utils'
 import { provideRokuProvider } from '@/composables/modal'
-import { isClient } from '@vueuse/core'
 import { type Component, computed, provide, ref, watchEffect } from 'vue'
 import { defaultTheme, errorColor, primaryColor, secondaryColor, surfaceColor, tertiaryColor } from '../shared'
 
@@ -20,7 +19,6 @@ const props = withDefaults(
   },
 )
 const scheme = useSchemeString()
-const preferScheme = usePreferredColorScheme()
 const themeData = computed(() => props.themes[props.theme])
 watchEffect(() => {
   // TODO: Add support for tuple colors
@@ -31,25 +29,7 @@ watchEffect(() => {
   errorColor.value = typeof themeData.value.colors.error === 'string' ? themeData.value.colors.error : errorColor.value
 })
 
-watchEffect(() => {
-  if (!isClient) {
-    return 'dark'
-  }
-  if (scheme.value === 'dark') {
-    document.documentElement.dataset.scheme = 'dark'
-  }
-  else if (scheme.value === 'light') {
-    document.documentElement.dataset.scheme = 'light'
-  }
-  else if (preferScheme.value === 'dark') {
-    document.documentElement.dataset.scheme = 'dark'
-  }
-  else {
-    document.documentElement.dataset.scheme = 'light'
-  }
-  localStorage.setItem('scheme', document.documentElement.dataset.scheme)
-})
-
+const wrapperRef = ref<any>(null)
 const styles = computed(() => useThemeStyles({
   colors: {
     surface: surfaceColor.value,
@@ -62,7 +42,6 @@ const styles = computed(() => useThemeStyles({
 }))
 provide(schemeSymbol, scheme)
 provide('currentThemeData', computed(() => themeData.value))
-const wrapperRef = ref(null)
 provideRokuProvider(wrapperRef)
 </script>
 
@@ -73,8 +52,6 @@ provideRokuProvider(wrapperRef)
     :style="[
       styles,
     ]"
-    :data-scheme="scheme"
-    :data-theme="themeData.name"
   >
     <slot />
   </component>

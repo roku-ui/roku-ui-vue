@@ -46,6 +46,10 @@ export const borderCS = computed(() => {
   }).value
 })
 
+export function useTextCS(color: MaybeRef<Color>) {
+  return useColorCS(color, 'text', { dark: darkTextIndex, light: lightTextIndex })
+}
+
 export const primaryColors = computed(() => {
   return generateColorsObjMap(unref(primaryColor), COLOR_LIGHTNESS_MAP).colors
 })
