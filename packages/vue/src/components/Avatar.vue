@@ -75,7 +75,8 @@ const containerCS = useContainerCS(props.variant, color)
     :style="[containerCS.style, sizeStyle]"
     v-bind="$attrs"
   >
-    <template v-if="name">
+    <slot v-if="$slots.default" />
+    <template v-else-if="name">
       {{ getAvatarDisplayString(name) }}
     </template>
     <template v-else>
