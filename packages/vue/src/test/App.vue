@@ -71,6 +71,26 @@ const btnGroupOptionSingle = [
   <RokuProvider>
     <NotificationSystem />
     <div class="flex flex-col items-center gap-2">
+      <div>
+        <div class="bg-surface-base">
+          bg-surface-base
+        </div>
+        <div class="bg-surface">
+          bg-surface
+        </div>
+        <div class="bg-surface-variant">
+          bg-surface-variant
+        </div>
+        <div class="border-surface border">
+          border-surface
+        </div>
+        <div class="text-surface">
+          text-surface
+        </div>
+        <div class="text-surface-dimmed">
+          text-surface-on
+        </div>
+      </div>
       <div class="flex items-center gap-2">
         <Avatar name="Jannchie" />
         <Avatar name="Jannchie Pan" />
