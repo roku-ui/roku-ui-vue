@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import type { Color, ContainerVariant } from '@/types'
+import type { Color, ContainerVariant, Rounded } from '@/types'
 import { useContainerCS } from '@/shared'
+import { useRounded } from '@/utils'
 import { type Component, computed, onMounted, ref } from 'vue'
 
 const props = withDefaults(
@@ -11,17 +12,23 @@ const props = withDefaults(
     name?: string
     variant?: ContainerVariant
     color?: Color
+    rounded?: Rounded
   }>(),
   {
     size: 'md',
     is: 'img',
     variant: 'default',
     color: 'default',
+    rounded: 'full',
   },
 )
+
+const rounded = useRounded(props)
 const name = computed(() => props.name || '')
 const sizeStyle = computed(() => {
   switch (props.size) {
+    case 'xs':
+      return '--size: 2rem; --font-size: 1rem;'
     case 'sm':
       return '--size: 3rem; --font-size: 1.25rem;'
     case 'md':
@@ -61,8 +68,8 @@ const containerCS = useContainerCS(props.variant, color)
     v-if="src"
     ref="img"
     :alt="name"
-    :class="[containerCS.class, { hidden: !loaded }]"
-    :style="[containerCS.style, sizeStyle]"
+    :class="[rounded.class, containerCS.class, { hidden: !loaded }]"
+    :style="[rounded.style, containerCS.style, sizeStyle]"
     :src="src"
     class="inline-block h-[var(--size)] w-[var(--size)] rounded-full object-cover"
     v-bind="$attrs"
@@ -71,8 +78,8 @@ const containerCS = useContainerCS(props.variant, color)
   <div
     v-if="!loaded || !src"
     class="inline-block h-[--size] w-[--size] flex items-center justify-center border-4 rounded-full object-cover font-size-[--font-size]"
-    :class="containerCS.class"
-    :style="[containerCS.style, sizeStyle]"
+    :class="[rounded.class, containerCS.class]"
+    :style="[rounded.style, containerCS.style, sizeStyle]"
     v-bind="$attrs"
   >
     <slot v-if="$slots.default" />

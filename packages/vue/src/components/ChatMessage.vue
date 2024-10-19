@@ -25,7 +25,7 @@ const bubbleCS = useContainerCS(variant, color)
 
 <template>
   <div
-    class="flex gap-2"
+    class="flex items-start gap-2"
     :class="[
       {
         'flex-row-reverse': position === 'right',
@@ -39,6 +39,7 @@ const bubbleCS = useContainerCS(variant, color)
     />
     <Avatar
       v-else-if="avatar"
+      size="xs"
       :src="avatar"
     />
     <div
