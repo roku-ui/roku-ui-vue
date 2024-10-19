@@ -28,6 +28,18 @@
       </template>
     </Popover>
 
+    <Tooltip>
+      <Btn>Click me</Btn>
+      <template #content>
+        <div class="text-sm">
+          Popover content
+        </div>
+        <div class="text-xs">
+          This is a popover
+        </div>
+      </template>
+    </Tooltip>
+
     <Popover>
       <Btn>Click me</Btn>
       <template #content>

@@ -4,7 +4,7 @@ import { ref, watch } from 'vue'
 const props = withDefaults(defineProps<{
   timeout?: number
 }>(), {
-  timeout: 1000,
+  timeout: 200,
 })
 const mouse = useMouse()
 const hoverableRef = ref<HTMLElement | null>(null)
