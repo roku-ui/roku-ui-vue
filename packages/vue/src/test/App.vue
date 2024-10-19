@@ -71,6 +71,17 @@ const btnGroupOptionSingle = [
   <RokuProvider>
     <NotificationSystem />
     <div class="flex flex-col items-center gap-2">
+      <div class="flex items-center gap-2">
+        <Avatar name="Jannchie" />
+        <Avatar name="Jannchie Pan" />
+        <Avatar size="sm" name="Jannchie Pan" />
+        <Avatar size="sm" name="见齐" />
+        <Avatar />
+        <Avatar name="见齐" />
+        <Avatar name="あ" />
+        <Avatar size="lg" name="あ" />
+        <Avatar size="xl" name="あ" />
+      </div>
       <SelectDemo />
       <ColorInput v-model="primaryColor" />
       <ColorInput v-model="surfaceColor" />

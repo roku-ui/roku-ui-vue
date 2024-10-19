@@ -215,7 +215,7 @@ export function useContainerFilledCS(color: MaybeRef<Color>) {
       index: { dark: 5, light: 4 },
     })
     const borderCS = useCS({
-      color: 'surface',
+      color,
       type: 'border',
       index: { dark: 5, light: 4 },
     })
@@ -236,13 +236,18 @@ export function useContainerLightCS(color: MaybeRef<Color>) {
       index: { dark: 5, light: 4 },
       alpha: 0.15,
     })
-
     const textCS = useCS({
       color,
       type: 'text',
       index: { dark: 2, light: 5 },
     })
-    return useMergedCS(bgCS, textCS).value
+    const borderCS = useCS({
+      color,
+      type: 'border',
+      index: { dark: 5, light: 4 },
+      alpha: 0,
+    })
+    return useMergedCS(bgCS, textCS, borderCS).value
   })
 }
 
