@@ -32,14 +32,14 @@
     "watch": "rollup --config --watch"
   },
   "devDependencies": {
-    "@jannchie/eslint-config": "^3.4.1",
+    "@jannchie/eslint-config": "^3.4.2",
     "@rollup/plugin-commonjs": "^28.0.1",
     "@rollup/plugin-node-resolve": "^15.3.0",
     "@rollup/plugin-typescript": "^12.1.1",
-    "@types/node": "^22.7.6",
+    "@types/node": "^22.7.7",
     "@unocss/preset-icons": "^0.63.4",
     "@unocss/reset": "^0.63.4",
-    "eslint": "^9.12.0",
+    "eslint": "^9.13.0",
     "eslint-plugin-format": "^0.1.2",
     "rollup": "^4.24.0",
     "rollup-plugin-dts": "^6.1.1",

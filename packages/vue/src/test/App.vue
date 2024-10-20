@@ -81,7 +81,7 @@ const btnGroupOptionSingle = [
         <div class="bg-surface-variant">
           bg-surface-variant
         </div>
-        <div class="border-surface border">
+        <div class="border border-surface">
           border-surface
         </div>
         <div class="text-surface">
