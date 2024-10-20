@@ -25,7 +25,7 @@
     --r-surface-background-variant-color: rgb(var(--r-color-surface-2));
     --r-surface-border-color: rgb(var(--r-color-surface-3));
     --r-surface-text-color: rgb(var(--r-color-surface-7));
-    --r-surface-text-dimmed-color: rgb(var(--r-color-surface-5));
+    --r-surface-text-dimmed-color: rgb(var(--r-color-surface-6));
 }
 
 :root {
