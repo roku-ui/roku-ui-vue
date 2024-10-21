@@ -3,7 +3,7 @@ import { computed } from 'vue'
 export function useRounded(props: { rounded: 'none' | 'sm' | 'md' | 'lg' | 'full' | string | number }) {
   return computed(() => {
     const style = getRoundedStyle(props.rounded)
-    return { style, class: 'rounded-[var(--r-rounded)]' }
+    return { style, class: 'rounded-[--r-rounded]' }
   },
   )
 }
@@ -28,6 +28,6 @@ function getRoundedStyle(rounded: 'none' | 'sm' | 'md' | 'lg' | 'full' | string 
       if (typeof rounded === 'number' || !Number.isNaN(Number(rounded))) {
         return `--r-rounded: ${rounded}rem;`
       }
-      return 'rounded-[var(--r-rounded)]'
+      return 'rounded-[--r-rounded]'
   }
 }

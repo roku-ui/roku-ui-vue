@@ -132,46 +132,67 @@ const rounded = useRounded(props)
           :style="[rounded.style, colorStyle.indicator]"
           :class="[sizeCls.indicator, colorCls.indicator, animateCls.indicator, model ? sizeCls.active : sizeCls.inactive, rounded.class]"
         >
-
-          <i
-            v-if="props.indicatorIcon"
-            class="h-full w-full"
-            :class="[props.indicatorIcon, model ? activeTextCS.class : 'text-black']"
-            :style="activeTextCS.style"
-          />
-          <i
-            v-else-if="model && props.onIndicatorIcon"
-            class="h-full w-full"
-            :class="[props.onIndicatorIcon, model ? activeTextCS.class : 'text-black']"
-            :style="activeTextCS.style"
-          />
-          <i
-            v-else-if="!model && props.offIndicatorIcon"
-            class="h-full w-full"
-            :class="[props.offIndicatorIcon, model ? activeTextCS.class : 'text-black']"
-            :style="activeTextCS.style"
-          />
+          <Transition
+            name="fade"
+            mode="out-in"
+            enter-active-class="transition-all duration-300"
+            enter-from-class="scale-0 "
+            enter-to-class="scale-100"
+            leave-active-class="transition-all duration-300"
+            leave-from-class="scale-100"
+            leave-to-class="scale-0"
+          >
+            <i
+              v-if="props.indicatorIcon"
+              class="h-full w-full"
+              :class="[props.indicatorIcon, model ? activeTextCS.class : 'text-black']"
+              :style="activeTextCS.style"
+            />
+            <i
+              v-else-if="model && props.onIndicatorIcon"
+              class="h-full w-full"
+              :class="[props.onIndicatorIcon, model ? activeTextCS.class : 'text-black']"
+              :style="activeTextCS.style"
+            />
+            <i
+              v-else-if="!model && props.offIndicatorIcon"
+              class="h-full w-full"
+              :class="[props.offIndicatorIcon, model ? activeTextCS.class : 'text-black']"
+              :style="activeTextCS.style"
+            />
+          </Transition>
         </div>
-        <i
-          v-if="model"
-          key="on"
-          class="absolute top-1/2 -translate-y-50%"
-          :class="[sizeCls.icon, {
-            [`left-0 text-${color}-on-container-low`]: model,
-            [onIcon ?? '']: model && onIcon,
-            [offIcon ?? '']: !model && offIcon,
-          }]"
-        />
-        <i
-          v-else
-          key="off"
-          class="absolute top-1/2 -translate-y-50%"
-          :class="[sizeCls.icon, {
-            'right-0': !model,
-            [onIcon ?? '']: model && onIcon,
-            [offIcon ?? '']: !model && offIcon,
-          }]"
-        />
+        <Transition
+          name="fade"
+          mode="out-in"
+          enter-active-class="transition-all duration-300"
+          enter-from-class="scale-0 rotate-50"
+          enter-to-class="scale-100 rotate-0"
+          leave-active-class="transition-all duration-300"
+          leave-from-class="scale-100 rotate-0"
+          leave-to-class="scale-0 rotate-50 "
+        >
+          <i
+            v-if="model"
+            key="on"
+            class="absolute top-1/2 -translate-y-50%"
+            :class="[sizeCls.icon, {
+              [`left-0 text-${color}-on-container-low`]: model,
+              [onIcon ?? '']: model && onIcon,
+              [offIcon ?? '']: !model && offIcon,
+            }]"
+          />
+          <i
+            v-else
+            key="off"
+            class="absolute top-1/2 -translate-y-50%"
+            :class="[sizeCls.icon, {
+              'right-0': !model,
+              [onIcon ?? '']: model && onIcon,
+              [offIcon ?? '']: !model && offIcon,
+            }]"
+          />
+        </Transition>
       </div>
     </label>
     <label

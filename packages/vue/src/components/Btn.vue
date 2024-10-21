@@ -16,6 +16,7 @@ const props = withDefaults(
     color?: string
     rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full' | string | number
     disabled?: boolean
+    skeleton?: boolean
   }>(),
   {
     rounded: 'md',
@@ -64,8 +65,10 @@ const cs = useButtonCS(variant, color)
 </script>
 
 <template>
+  <div v-if="skeleton" class="inline-block animate-pulse rounded-md bg-surface-variant" />
   <component
     :is="is"
+    v-else
     ref="btn"
     :data-size="size"
     :type="type"

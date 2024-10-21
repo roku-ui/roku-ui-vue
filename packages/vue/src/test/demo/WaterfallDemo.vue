@@ -19,12 +19,15 @@ const items = computed(() => tmps.value.map(() => {
 
 <template>
   <div>
-    <div style="height: 40vh">
+    <ScrollArea
+      floating
+      style="height: 40vh"
+    >
       <VirtualWaterfall
-        :is="ScrollArea"
         :gap="4"
         :item-width="width"
         :items="items"
+        floating
       >
         <img
           v-for="item, i in items"
@@ -37,6 +40,6 @@ const items = computed(() => tmps.value.map(() => {
           }"
         >
       </VirtualWaterfall>
-    </div>
+    </ScrollArea>
   </div>
 </template>

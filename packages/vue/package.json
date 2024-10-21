@@ -40,10 +40,10 @@
     "@vueuse/core": "^11.1.0",
     "tinycolor2": "^1.6.0",
     "vue": "^3.5.12",
-    "vue-wf": "^0.4.0"
+    "vue-wf": "^0.4.1"
   },
   "devDependencies": {
-    "@iconify/json": "^2.2.261",
+    "@iconify/json": "^2.2.262",
     "@jannchie/eslint-config": "^3.4.2",
     "@roku-ui/preset": "workspace:^",
     "@types/tinycolor2": "^1.4.6",
