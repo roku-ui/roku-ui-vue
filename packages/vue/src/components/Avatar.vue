@@ -13,6 +13,7 @@ const props = withDefaults(
     variant?: ContainerVariant
     color?: Color
     rounded?: Rounded
+    skeleton?: boolean
   }>(),
   {
     size: 'md',
@@ -63,9 +64,14 @@ const containerCS = useContainerCS(props.variant, color)
 </script>
 
 <template>
+  <div
+    v-if="skeleton"
+    class="inline-block min-h-[--size] min-w-[--size] animate-pulse rounded-full bg-surface-variant"
+    :style="[rounded.style, sizeStyle]"
+  />
   <component
     :is="is"
-    v-if="src"
+    v-else-if="src"
     ref="img"
     :alt="name"
     :class="[rounded.class, containerCS.class, { hidden: !loaded }]"
@@ -76,7 +82,7 @@ const containerCS = useContainerCS(props.variant, color)
     @load="onload"
   />
   <div
-    v-if="!loaded || !src"
+    v-else-if="!loaded || !src"
     class="inline-block h-[--size] w-[--size] flex items-center justify-center border-4 rounded-full object-cover font-size-[--font-size]"
     :class="[rounded.class, containerCS.class]"
     :style="[rounded.style, containerCS.style, sizeStyle]"
