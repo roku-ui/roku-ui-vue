@@ -3,6 +3,7 @@ import fs from 'node:fs'
 import tailwindReset from '@unocss/reset/tailwind.css'
 
 import { presetIcons, presetTypography, presetUno } from 'unocss'
+import { presetScrollbar } from 'unocss-preset-scrollbar'
 import baseStyle from './styles.css'
 
 const colorKeys = ['surface', 'primary', 'secondary', 'tertiary', 'error']
@@ -14,23 +15,28 @@ const colors = colorKeys.reduce<Record<string, any>>((colors, key) => {
   return colors
 }, {})
 
-interface PresetOptions {
-  icon?: any
-}
-const rokuPreset: (options?: PresetOptions) => Preset<object> = (options = {}) => () => {
+const rokuPreset: () => Preset<object> = () => () => {
   let file = ''
   try {
     file = fs.readFileSync('node_modules/@roku-ui/vue/dist/index.js', 'utf-8')
   }
   catch {}
-  return {
+  const option: Preset = {
     name: 'roku',
     theme: {
       colors: {
         ...colors,
       },
     },
-    safelist: ['rounded-[var(--r-rounded)]'],
+    rules: [
+      [
+        /^scrollbar-thumb-hover-color-(.*)$/,
+        ([,color]) => {
+          return `.scrollbar::-webkit-scrollbar-thumb:hover { background-color: rgba(var(--r-color-${color})); }`
+        },
+      ],
+    ],
+    safelist: ['rounded-[--r-rounded]'],
     shortcuts: {
       'custom-colors': 'border dark:text-[var(--d-text)] text-[var(--l-text)] dark:bg-[var(--d-bg)] bg-[var(--l-bg)] dark:border-[var(--d-border)] border-[var(--l-border)] dark:hover:bg-[var(--d-bg-h)] hover:bg-[var(--l-bg-h)] hover:text-[var(--l-text-h)] dark:hover:text-[var(--d-text-h)]',
       'custom-input-colors': 'border bg-[var(--l-bg)] dark:bg-[var(--d-bg)] text-[var(--l-text)] dark:text-[var(--d-text)] placeholder-[var(--l-placeholder)] dark:placeholder-[var(--d-placeholder)] border-[var(--l-border)] dark:border-[var(--d-border)] focus:border-[var(--l-border-f)] dark:focus:border-[var(--d-border-f)]',
@@ -40,6 +46,7 @@ const rokuPreset: (options?: PresetOptions) => Preset<object> = (options = {}) =
       'border-surface': 'border-[--r-surface-border-color]',
       'text-surface': 'text-[--r-surface-text-color]',
       'text-surface-dimmed': 'text-[--r-surface-text-dimmed-color]',
+      'roku-scrollbar': 'scrollbar scrollbar-rounded scrollbar-thin scrollbar-thumb-color-surface-4 scrollbar-track-color-surface-3 dark:scrollbar-thumb-color-surface-7 dark:scrollbar-thumb-color-surface-7 dark:scrollbar-track-color-surface-8 scrollbar-thumb-hover-color-surface-4 dark:scrollbar-thumb-hover-color-surface-5',
     },
     presets: [
       presetUno({
@@ -55,18 +62,19 @@ const rokuPreset: (options?: PresetOptions) => Preset<object> = (options = {}) =
           'display': 'inline-block',
           'vertical-align': 'middle',
         },
-        ...options?.icon,
       }),
+      presetScrollbar(),
     ],
     content: {
       inline: [file],
     },
     preflights: [
-      { getCSS: () => tailwindReset },
+      { getCSS: () => tailwindReset as string },
       {
-        getCSS: () => baseStyle,
+        getCSS: () => baseStyle as string,
       },
     ],
   }
+  return option
 }
 export { rokuPreset }
