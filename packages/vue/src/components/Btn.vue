@@ -65,7 +65,15 @@ const cs = useButtonCS(variant, color)
 </script>
 
 <template>
-  <div v-if="skeleton" class="inline-block animate-pulse rounded-md bg-surface-variant" />
+  <div
+    v-if="skeleton"
+    :style="[
+      cs.style,
+      rounded.style,
+    ]"
+    :class="sizeCls.normalContent"
+    class="inline-block animate-pulse rounded-md bg-surface-variant"
+  />
   <component
     :is="is"
     v-else

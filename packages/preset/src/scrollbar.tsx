@@ -256,7 +256,7 @@ dark:scrollbar-thumb-hover-color-surface-5
       [
         /^scrollbar-thumb-hover-color-(.*)$/,
         ([,color]) => {
-          return `.scrollbar::-webkit-scrollbar-thumb:hover { background-color: rgba(var(--r-color-${color}) / 1); }`
+          return `.scrollbar::-webkit-scrollbar-thumb:hover { background-color: rgba(var(--r-color-${color})); }`
         },
       ],
       [
