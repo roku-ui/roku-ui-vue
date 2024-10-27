@@ -1,5 +1,6 @@
 <script setup lang="ts" generic="T extends { id: number | string | symbol;  [key: string]: any;} | string | symbol | number">
 import type { Color } from '@/types'
+import type { Reactive } from 'vue'
 import { useContainerDefaultCS, useContainerDefaultVariantCS, useContainerFilledCS, useInputColorStyle } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
 import { isClient } from '@vueuse/core'
@@ -31,13 +32,13 @@ const props = withDefaults(defineProps<{
 })
 
 const emit = defineEmits<{
-  change: [option: T | undefined]
+  change: [option: T | Reactive<T> | undefined]
   input: [searchWord: string]
 }>()
 
 const rounded = useRounded(props)
 
-const model = defineModel<T | undefined>()
+const model = defineModel<T | Reactive<T> | undefined>()
 const inputRef = ref<null | HTMLInputElement>(null)
 const wrapperRef = ref(null)
 const focused = ref(false)
@@ -67,7 +68,7 @@ watch(currentLabel, () => {
   searchText.value = currentLabel.value
 })
 
-function getLabel(option?: T) {
+function getLabel(option?: Reactive<T> | T) {
   if (!option) {
     return ''
   }
@@ -80,7 +81,7 @@ function getLabel(option?: T) {
   return option.id
 }
 
-function getId(option?: T) {
+function getId(option?: Reactive<T>) {
   if (!option) {
     return undefined
   }
@@ -140,7 +141,7 @@ onKeyStroke('Enter', () => {
     focused.value = false
   }
 })
-function onItemPointerDown(option: T) {
+function onItemPointerDown(option: T | Reactive<T>) {
   inputRef.value!.focus()
   if (!focused.value) {
     focused.value = true
@@ -191,7 +192,7 @@ const hasArea = computed(() => {
   }
   return false
 })
-function optionIsEq(a: T, b: T | undefined) {
+function optionIsEq(a: Reactive<T> | T, b: Reactive<T> | T | undefined) {
   if (!b) {
     return false
   }

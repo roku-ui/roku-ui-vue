@@ -32,12 +32,20 @@ const rokuPreset: () => Preset<object> = () => () => {
     shortcuts: {
       'custom-colors': 'border dark:text-[var(--d-text)] text-[var(--l-text)] dark:bg-[var(--d-bg)] bg-[var(--l-bg)] dark:border-[var(--d-border)] border-[var(--l-border)] dark:hover:bg-[var(--d-bg-h)] hover:bg-[var(--l-bg-h)] hover:text-[var(--l-text-h)] dark:hover:text-[var(--d-text-h)]',
       'custom-input-colors': 'border bg-[var(--l-bg)] dark:bg-[var(--d-bg)] text-[var(--l-text)] dark:text-[var(--d-text)] placeholder-[var(--l-placeholder)] dark:placeholder-[var(--d-placeholder)] border-[var(--l-border)] dark:border-[var(--d-border)] focus:border-[var(--l-border-f)] dark:focus:border-[var(--d-border-f)]',
-      'bg-surface-base': 'bg-[--r-surface-background-base-color]',
       'bg-surface': 'bg-[--r-surface-background-color]',
+      'bg-surface-base': 'bg-[--r-surface-background-base-color]',
       'bg-surface-variant': 'bg-[--r-surface-background-variant-color]',
       'border-surface': 'border-[--r-surface-border-color]',
       'text-surface': 'text-[--r-surface-text-color]',
       'text-surface-dimmed': 'text-[--r-surface-text-dimmed-color]',
+      'bg-primary': 'bg-[--r-primary-background-color]',
+      'bg-secondary': 'bg-[--r-secondary-background-color]',
+      'bg-tertiary': 'bg-[--r-tertiary-background-color]',
+      'bg-error': 'bg-[--r-error-background-color]',
+      'text-priamry': 'text-[--r-primary-text-color]',
+      'text-secondary': 'text-[--r-secondary-text-color]',
+      'text-tertiary': 'text-[--r-tertiary-text-color]',
+      'text-error': 'text-[--r-error-text-color]',
     },
     presets: [
       presetUno({

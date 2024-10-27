@@ -24,7 +24,7 @@ const darkOpacityVariant = 0.3
 // const lightSurfaceBgBaseIndex = 0
 const lightSurfaceBgIndex = 1
 const lightSurfaceBgVariantIndex = 2
-const lightTextIndex = 7
+const lightTextIndex = 6
 const lightTextVariantIndex = 5
 
 const lightBgIndex = 4
@@ -212,12 +212,12 @@ export function useContainerFilledCS(color: MaybeRef<Color>) {
     const bgCS = useCS({
       color,
       type: 'bg',
-      index: { dark: 5, light: 4 },
+      index: { dark: darkBgIndex, light: lightBgIndex },
     })
     const borderCS = useCS({
       color,
       type: 'border',
-      index: { dark: 5, light: 4 },
+      index: { dark: darkBgIndex, light: lightBgIndex },
     })
     const textCS = useCS({
       color,
@@ -233,13 +233,13 @@ export function useContainerLightCS(color: MaybeRef<Color>) {
     const bgCS = useCS({
       color,
       type: 'bg',
-      index: { dark: 5, light: 4 },
+      index: { dark: darkBgIndex, light: lightBgIndex },
       alpha: 0.15,
     })
     const textCS = useCS({
       color,
       type: 'text',
-      index: { dark: 2, light: 5 },
+      index: { dark: darkTextIndex, light: lightTextIndex },
     })
     const borderCS = useCS({
       color,

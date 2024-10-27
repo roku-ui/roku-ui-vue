@@ -15,6 +15,18 @@
     --r-surface-border-color: rgb(var(--r-color-surface-7));
     --r-surface-text-color: rgb(var(--r-color-surface-3));
     --r-surface-text-dimmed-color: rgb(var(--r-color-surface-5));
+
+    --r-primary-background-color: rgb(var(--r-color-primary-5));
+    --r-secondary-background-color: rgb(var(--r-color-secondary-5));
+    --r-tertiary-background-color: rgb(var(--r-color-tertiary-5));
+    --r-error-background-color: rgb(var(--r-color-error-5));
+
+    --r-primary-text-color: rgb(var(--r-color-primary-3));
+    --r-secondary-text-color: rgb(var(--r-color-secondary-3));
+    --r-tertiary-text-color: rgb(var(--r-color-tertiary-3));
+    --r-error-text-color: rgb(var(--r-color-error-3));
+
+
 }
 
 /* light */
@@ -26,6 +38,16 @@
     --r-surface-border-color: rgb(var(--r-color-surface-3));
     --r-surface-text-color: rgb(var(--r-color-surface-7));
     --r-surface-text-dimmed-color: rgb(var(--r-color-surface-6));
+
+    --r-primary-background-color: rgb(var(--r-color-primary-4));
+    --r-secondary-background-color: rgb(var(--r-color-secondary-4));
+    --r-tertiary-background-color: rgb(var(--r-color-tertiary-4));
+    --r-error-background-color: rgb(var(--r-color-error-4));
+
+    --r-primary-text-color: rgb(var(--r-color-primary-6));
+    --r-secondary-text-color: rgb(var(--r-color-secondary-6));
+    --r-tertiary-text-color: rgb(var(--r-color-tertiary-6));
+    --r-error-text-color: rgb(var(--r-color-error-6));
 }
 
 :root {

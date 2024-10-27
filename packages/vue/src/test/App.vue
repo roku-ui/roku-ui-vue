@@ -96,6 +96,8 @@ const btnGroupOptionSingle = [
         <Avatar name="Jannchie Pan" />
         <Avatar size="sm" name="Jannchie Pan" />
         <Avatar size="sm" name="见齐" />
+        <Avatar variant="light" name="Light" />
+        <Avatar variant="light" name="Light" color="primary" />
         <Avatar />
         <Avatar skeleton />
         <Avatar name="见齐" />
