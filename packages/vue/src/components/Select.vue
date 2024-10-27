@@ -81,7 +81,7 @@ function getLabel(option?: Reactive<T> | T) {
   return option.id
 }
 
-function getId(option?: Reactive<T>) {
+function getId(option?: Reactive<T> | T) {
   if (!option) {
     return undefined
   }
