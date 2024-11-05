@@ -10,11 +10,11 @@
     "preview": "nuxt preview"
   },
   "dependencies": {
-    "@iconify/json": "^2.2.267",
+    "@iconify/json": "^2.2.268",
     "@nuxt/image": "^1.8.1",
     "@roku-ui/preset": "workspace:^",
     "@roku-ui/vue": "workspace:^",
-    "unocss": "^0.63.6"
+    "unocss": "^0.64.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^3.8.0",
@@ -23,15 +23,15 @@
     "@nuxt/devtools": "^1.6.0",
     "@nuxtjs/robots": "^4.1.11",
     "@shikijs/transformers": "^1.22.2",
-    "@unocss/eslint-config": "^0.63.6",
-    "@unocss/eslint-plugin": "^0.63.6",
-    "@unocss/nuxt": "^0.63.6",
-    "@unocss/preset-icons": "^0.63.6",
-    "@unocss/preset-typography": "^0.63.6",
+    "@unocss/eslint-config": "^0.64.0",
+    "@unocss/eslint-plugin": "^0.64.0",
+    "@unocss/nuxt": "^0.64.0",
+    "@unocss/preset-icons": "^0.64.0",
+    "@unocss/preset-typography": "^0.64.0",
     "@vueuse/nuxt": "^11.2.0",
     "eslint": "^9.14.0",
     "eslint-plugin-format": "^0.1.2",
-    "nuxt": "^3.13.2",
+    "nuxt": "^3.14.0",
     "shiki": "^1.22.2",
     "vue": "^3.5.12",
     "vue-router": "^4.4.5"
