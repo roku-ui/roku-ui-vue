@@ -86,9 +86,7 @@ const mergedCS = useMergedCS(surfaceBorderCS, surfaceCS)
           >
         </NuxtLink>
       </div>
-      <div>
-        <SchemeSwitch />
-      </div>
+      <SchemeSwitch circle-translation />
     </div>
     <div class="min-h-100vh flex">
       <SideBar :is-open="sideBarOpen" />
@@ -100,3 +98,15 @@ const mergedCS = useMergedCS(surfaceBorderCS, surfaceCS)
     </div>
   </RokuProvider>
 </template>
+
+<style>
+::view-transition-image-pair(root) {
+  isolation: auto;
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+  display: block;
+}
+</style>

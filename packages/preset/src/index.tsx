@@ -3,7 +3,6 @@ import fs from 'node:fs'
 import tailwindReset from '@unocss/reset/tailwind.css'
 
 import { presetIcons, presetTypography, presetUno } from 'unocss'
-import { presetScrollbar } from './scrollbar'
 import baseStyle from './styles.css'
 
 const colorKeys = ['surface', 'primary', 'secondary', 'tertiary', 'error']
@@ -62,7 +61,6 @@ const rokuPreset: () => Preset<object> = () => () => {
           'vertical-align': 'middle',
         },
       }),
-      presetScrollbar({}),
     ],
     content: {
       inline: [file],
