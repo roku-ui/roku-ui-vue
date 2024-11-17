@@ -7,8 +7,9 @@ import { computed, ref, unref } from 'vue'
 import { COLOR_LIGHTNESS_MAP, SURFACE_LIGHTNESS_MAP } from '..'
 
 // const darkSurfaceBgBaseIndex = 10
-const darkSurfaceBgIndex = 8
-const darkSurfaceBgVariantIndex = 7
+const darkSurfaceBgIndex = 9
+const darkSurfaceBgVariant1Index = 8
+const darkSurfaceBgVariant2Index = 7
 const darkBorderIndex = 7
 const darkBorderVariantIndex = 7
 const darkTextIndex = 3
@@ -394,8 +395,8 @@ export function useButtonCS(variant: MaybeRef<BtnVariant> = 'default', color: Ma
 
 function getDefaultVariantStyle(surface: tinycolor.Instance[]): Record<string, string> {
   return {
-    '--d-bg': surface[darkSurfaceBgIndex].toHexString(),
-    '--d-bg-h': surface[darkSurfaceBgVariantIndex].toHexString(),
+    '--d-bg': surface[darkSurfaceBgVariant1Index].toHexString(),
+    '--d-bg-h': surface[darkSurfaceBgVariant2Index].toHexString(),
     '--d-border': surface[darkBorderVariantIndex].toHexString(),
     '--l-bg': surface[lightSurfaceBgIndex].toHexString(),
     '--l-bg-h': surface[lightSurfaceBgVariantIndex].toHexString(),

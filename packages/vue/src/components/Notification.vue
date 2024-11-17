@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { Size } from '@/types'
+import { useContainerDefaultCS, useContainerFilledCS, useTextCS } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
 import { computed } from 'vue'
-import { useContainerDefaultCS, useContainerFilledCS } from '@/shared'
 
 const props = withDefaults(
   defineProps<{
@@ -32,6 +32,7 @@ defineEmits(['close'])
 const rounded = useRounded(props)
 const color = computed(() => props.color)
 const containerFilledCS = useContainerFilledCS(color)
+const textColor = useTextCS(color)
 const containerSurfaceCS = useContainerDefaultCS()
 const shapeClass = computed(() => {
   switch (props.size) {
@@ -90,11 +91,12 @@ const shapeClass = computed(() => {
       <div
         v-if="title"
         class="text-[var(--l-text)] dark:text-[var(--d-text)]"
-        :class="{
+        :style="textColor.style"
+        :class="[{
           'text-xs': size === 'sm',
           'text-sm': size === 'md',
           'text-base': size === 'lg',
-        }"
+        }, textColor.class]"
       >
         {{ title }}
       </div>
@@ -118,6 +120,7 @@ const shapeClass = computed(() => {
       v-if="closeable"
       icon
       variant="transparent"
+      color="white"
       @click="$emit('close')"
     >
       <slot
