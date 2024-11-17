@@ -7,7 +7,7 @@ import { computed, ref, unref } from 'vue'
 import { COLOR_LIGHTNESS_MAP, SURFACE_LIGHTNESS_MAP } from '..'
 
 // const darkSurfaceBgBaseIndex = 10
-const darkSurfaceBgIndex = 9
+const darkSurfaceBgIndex = 8
 const darkSurfaceBgVariantIndex = 7
 const darkBorderIndex = 7
 const darkBorderVariantIndex = 7

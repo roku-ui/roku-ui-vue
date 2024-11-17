@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { isClient } from '@vueuse/core'
+import { isClient, useEventListener } from '@vueuse/core'
 import { nextTick, onMounted, ref, watch } from 'vue'
 
 const props = withDefaults(defineProps<{

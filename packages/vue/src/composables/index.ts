@@ -28,7 +28,7 @@ export const SURFACE_LIGHTNESS_MAP = [
   0.7,
   0.5,
   0.4,
-  0.2,
+  0.16,
   0.1,
   0.075,
   0.05,

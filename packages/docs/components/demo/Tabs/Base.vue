@@ -15,9 +15,9 @@ const code = computed(() => {
 </template>`
 })
 const direction = ref<'horizontal' | 'vertical'>('horizontal')
-const isVertical = computed({
+const isVertical = computed<boolean>({
   get: () => direction.value === 'vertical',
-  set: (val) => {
+  set: (val: boolean) => {
     direction.value = val ? 'vertical' : 'horizontal'
   },
 })

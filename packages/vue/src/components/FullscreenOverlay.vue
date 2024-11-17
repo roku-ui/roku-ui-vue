@@ -51,16 +51,17 @@ watchEffect(() => {
     }, 300)
   }
 })
-
-if (typeof window !== 'undefined') {
-  const resizeObserver = new ResizeObserver(() => {
-    const curWidth = window.innerWidth - document.body.clientWidth
-    if (curWidth !== 0) {
-      scrollbarWidth.value = curWidth
-    }
-  })
-  resizeObserver.observe(document.body)
-}
+watchEffect(() => {
+  if (typeof window !== 'undefined') {
+    const resizeObserver = new ResizeObserver(() => {
+      const curWidth = window.innerWidth - document.body.clientWidth
+      if (curWidth !== 0) {
+        scrollbarWidth.value = curWidth
+      }
+    })
+    resizeObserver.observe(document.body)
+  }
+})
 const provider = useRokuProvider()
 </script>
 
@@ -68,10 +69,10 @@ const provider = useRokuProvider()
   <Teleport :to="provider ?? 'body'">
     <div
       ref="wrapperRef"
-      class="modal-wrapper fixed left-0 top-0 z-100 h-full w-full bg-surface-10/10 transition-all duration-100 md:items-center"
+      class="fixed left-0 top-0 z-100 h-full w-full bg-surface-10/33 p-2 transition-all duration-100"
       :class="[blurCls, wrapperClass, {
-        ['op0 pointer-events-none']: !model,
-        ['op100']: model,
+        ['op-0 pointer-events-none']: !model,
+        ['op-100']: model,
       }]"
       @click="onClick"
     >

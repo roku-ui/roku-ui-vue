@@ -488,12 +488,14 @@ const btnGroupOptionSingle = [
         <Btn @click="modal1 = !modal1">
           Open Model
         </Btn>
-        <Modal v-model="modal1">
-          <Paper class="h-16 w-full flex items-center justify-center md:w-md">
-            <Paper>
-              Basic Modal
-            </Paper>
-          </Paper>
+
+        <Modal
+          v-model="modal1"
+          title="This is a modal."
+        >
+          <template #body>
+            Modal
+          </template>
         </Modal>
 
         <Btn @click="modal2 = !modal2">
@@ -503,7 +505,7 @@ const btnGroupOptionSingle = [
           v-model="modal2"
           blur="lg"
         >
-          <Paper class="h-16 w-full flex items-center justify-center md:w-md">
+          <Paper class="h-16 w-full w-md flex items-center justify-center">
             <Paper>
               Blur Modal
             </Paper>
@@ -518,7 +520,7 @@ const btnGroupOptionSingle = [
           blur="lg"
           persistent
         >
-          <Paper class="h-16 w-full flex items-center justify-center md:w-md">
+          <Paper class="h-16 w-full w-md flex items-center justify-center">
             <Btn @click="modal3 = !modal3">
               Close
             </Btn>
@@ -530,14 +532,14 @@ const btnGroupOptionSingle = [
         <Modal
           v-model="modal4"
         >
-          <Paper class="h-16 w-full flex items-center justify-center md:w-md">
+          <Paper class="h-16 w-full w-md flex items-center justify-center">
             <Btn @click="modal5 = !modal5">
               Open Nested Modal
             </Btn>
             <Modal
               v-model="modal5"
             >
-              <Paper class="h-16 w-full flex items-center justify-center md:w-md">
+              <Paper class="h-16 w-full flex items-center justify-center">
                 Inner Modal
               </Paper>
             </Modal>

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { Color, Rounded } from '@/types'
+import { useColors } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
 import { type Component, computed, ref } from 'vue'
-import { useColors } from '@/shared'
 
 const props = withDefaults(
   defineProps<{
