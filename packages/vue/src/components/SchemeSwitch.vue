@@ -12,7 +12,8 @@ const props = withDefaults(defineProps<{
 
 const isDark = ref(false)
 let lastClick: MouseEvent | undefined
-addEventListener('click', event => (lastClick = event))
+
+useEventListener('click', event => (lastClick = event))
 
 watch([isDark], () => {
   if (isClient) {
