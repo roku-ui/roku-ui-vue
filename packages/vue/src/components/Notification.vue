@@ -32,7 +32,7 @@ defineEmits(['close'])
 const rounded = useRounded(props)
 const color = computed(() => props.color)
 const containerFilledCS = useContainerFilledCS(color)
-const textColor = useTextCS(color)
+const textCS = useTextCS(color)
 const containerSurfaceCS = useContainerDefaultCS()
 const shapeClass = computed(() => {
   switch (props.size) {
@@ -49,7 +49,7 @@ const shapeClass = computed(() => {
 
 <template>
   <div
-    class="container-low relative min-w-80 w-full flex items-center gap-2 pl-4"
+    class="relative min-w-80 w-full flex items-center gap-2 pl-4"
     :class="[
       { 'border-0': !withBorder },
       rounded.class,
@@ -64,7 +64,9 @@ const shapeClass = computed(() => {
   >
     <div
       v-if="icon"
-      class="text-[var(--l-text)] leading-0 dark:text-[var(--d-text)]"
+      :class="[textCS.class]"
+      :style="textCS.style"
+      class="leading-0"
     >
       <i
         v-if="loading"
@@ -91,12 +93,12 @@ const shapeClass = computed(() => {
       <div
         v-if="title"
         class="text-[var(--l-text)] dark:text-[var(--d-text)]"
-        :style="textColor.style"
+        :style="textCS.style"
         :class="[{
           'text-xs': size === 'sm',
           'text-sm': size === 'md',
           'text-base': size === 'lg',
-        }, textColor.class]"
+        }, textCS.class]"
       >
         {{ title }}
       </div>

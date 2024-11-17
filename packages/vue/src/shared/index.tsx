@@ -151,12 +151,12 @@ export function useContainerDefaultCS() {
     const bgCS = useCS({
       color: 'surface',
       type: 'bg',
-      index: { dark: 8, light: 1 },
+      index: { dark: darkSurfaceBgIndex, light: lightSurfaceBgIndex },
     })
     const borderCS = useCS({
       color: 'surface',
       type: 'border',
-      index: { dark: 7, light: 3 },
+      index: { dark: darkBorderIndex, light: lightBorderIndex },
     })
     const cs = useMergedCS(bgCS, borderCS)
     cs.value.class = [...cs.value.class, 'border']
