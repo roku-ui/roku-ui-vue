@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { useNotifications } from '@roku-ui/vue'
+import { useNotifications } from '@/utils/notifications'
 import { computed, ref, watchEffect } from 'vue'
 
 const props = withDefaults(defineProps<{
   position?: 'top-left' | 'top-right' | 'top' | 'bottom-left' | 'bottom-right' | 'bottom'
+  topN?: number
   gap?: number
   pt?: number
   pl?: number
@@ -12,12 +13,13 @@ const props = withDefaults(defineProps<{
 }>(), {
   position: 'top-right',
   gap: 8,
-  pt: 16,
+  pt: 8,
   pl: 8,
   pr: 8,
-  pb: 16,
+  pb: 8,
+  topN: 5,
 })
-const notifications = useNotifications()
+const notifications = useNotifications(props.topN)
 const notificationRefs = ref<HTMLElement[]>([])
 const notificationBounds = computed(() => notificationRefs.value.map(ref => ref.getBoundingClientRect()))
 const notificationIndexList = computed(() => {
@@ -121,6 +123,15 @@ watchEffect(() => {
     }
   })
 })
+const isTop = computed(() => {
+  return ['top-left', 'top-right', 'top'].includes(props.position)
+})
+const enterFromClass = computed(() => {
+  return isTop.value ? 'op-0 -translate-y-8' : 'op-0 translate-y-8'
+})
+const leaveToClass = computed(() => {
+  return isTop.value ? 'op-0 translate-y-8' : 'op-0 -translate-y-8'
+})
 </script>
 
 <template>
@@ -128,16 +139,16 @@ watchEffect(() => {
     class="pointer-events-none fixed z-20 h-full w-full children:pointer-events-auto"
   >
     <TransitionGroup
-      enter-from-class="op0"
-      enter-to-class="op100"
-      leave-from-class="op100"
-      leave-to-class="op0"
+      :enter-from-class="enterFromClass"
+      enter-to-class="op-100 translate-y-0"
+      leave-from-class="op-100 translate-y-0"
+      :leave-to-class="leaveToClass"
     >
       <div
         v-for="notification, i in notifications"
         :key="notification.hash"
         ref="notificationRefs"
-        class="absolute transition-top,bottom,opacity"
+        class="absolute transition-top,bottom,opacity,transform"
         :style="getNotificationPositionStyle(notificationIndexList[i], notification.position)"
       >
         <Notification
