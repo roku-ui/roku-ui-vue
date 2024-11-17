@@ -22,7 +22,7 @@ const textCS = useTextCS('primary')
         v-bind="textCS"
         class="i-tabler-circle-check mr-1 w-24px flex-shrink-0"
       />
-      <span class="text-surface-on-low">{{ f }}</span>
+      <span class="text-surface-dimmed">{{ f }}</span>
     </div>
   </div>
 </template>

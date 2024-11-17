@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { ContainerVariant } from '../types'
+import type { ContainerVariant } from '@/types'
 import { computed } from 'vue'
-import { useContainerCS } from '../shared'
+import { useContainerCS } from '@/shared'
 
 const props = withDefaults(
   defineProps<{

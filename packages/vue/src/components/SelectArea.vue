@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useElementBounding, useEventListener, useMagicKeys, useMouse, useParentElement } from '@vueuse/core'
 import { computed, ref } from 'vue'
-import { useColors } from '../shared'
+import { useColors } from '@/shared'
 
 const props = withDefaults(defineProps<{
   target?: HTMLElement

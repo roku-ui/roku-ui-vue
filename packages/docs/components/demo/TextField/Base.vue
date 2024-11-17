@@ -14,7 +14,7 @@ const code = computed(() => `<template>
     <template #form>
       <div class="flex flex-col gap-6">
         <div class="flex flex-col gap-1">
-          <div class="text-surface-on-low">
+          <div class="text-surface-dimmed">
             Size
           </div>
           <Slider
@@ -23,7 +23,7 @@ const code = computed(() => `<template>
           />
         </div>
         <div class="flex flex-col gap-1">
-          <div class="text-surface-on-low">
+          <div class="text-surface-dimmed">
             Placeholder
           </div>
           <TextField

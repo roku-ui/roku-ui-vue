@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { Size } from '../types'
+import type { Size } from '@/types'
 import { useRounded } from '@/utils/classGenerator'
 import { computed } from 'vue'
-import { useContainerDefaultCS, useContainerFilledCS } from '../shared'
+import { useContainerDefaultCS, useContainerFilledCS } from '@/shared'
 
 const props = withDefaults(
   defineProps<{
@@ -105,7 +105,7 @@ const shapeClass = computed(() => {
       />
       <div
         v-else-if="message"
-        class="text-surface-on-low op-50"
+        class="text-surface-dimmed op-50"
         :class="{
           'text-xs': size === 'sm',
           'text-sm': size === 'md' || size === 'lg',

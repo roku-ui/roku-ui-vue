@@ -1,9 +1,9 @@
 import type { RemovableRef } from '@vueuse/core'
+import { defaultTheme, useColors } from '@/shared'
 import { isClient } from '@vueuse/core'
 import tinycolor from 'tinycolor2'
 import { computed, inject, type MaybeRef, onMounted, type Ref, ref, unref } from 'vue'
 import { generateColors, type ThemeData } from '..'
-import { defaultTheme, useColors } from '../shared'
 
 export * from './dom'
 

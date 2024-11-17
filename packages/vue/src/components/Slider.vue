@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useElementBounding, useEventListener } from '@vueuse/core'
 import { computed, onMounted, ref, watchEffect } from 'vue'
-import { useColors, useContainerFilledCS } from '../shared'
+import { useColors, useContainerFilledCS } from '@/shared'
 
 const props = withDefaults(
   defineProps<{
@@ -271,7 +271,7 @@ const animateCls = computed(() => props.animate
     </div>
     <div
       v-if="ticks.length > 0"
-      class="text-surface-on-low relative mx-1 h-1em text-xs"
+      class="text-surface-dimmed relative mx-1 h-1em text-xs"
       :style="{
         width: `${props.width}rem`,
       }"

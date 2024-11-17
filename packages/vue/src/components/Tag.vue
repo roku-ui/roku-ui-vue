@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { BtnVariant } from '../types'
+import type { BtnVariant } from '@/types'
 import { computed } from 'vue'
 import { useRounded } from '..'
-import { useButtonCS } from '../shared'
+import { useButtonCS } from '@/shared'
 
 const props = withDefaults(defineProps<{
   color?: string

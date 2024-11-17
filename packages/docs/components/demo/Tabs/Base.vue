@@ -27,7 +27,7 @@ const isVertical = computed({
   <Demo :code="code">
     <template #form>
       <div>
-        <div class="text-surface-on-low">
+        <div class="text-surface-dimmed">
           Direction
         </div>
         <Switch v-model="isVertical" />

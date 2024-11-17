@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRounded } from '@/utils/classGenerator'
 import { computed, ref, useAttrs } from 'vue'
-import { useInputColorStyle } from '../shared'
+import { useInputColorStyle } from '@/shared'
 
 const props = withDefaults(
   defineProps<{

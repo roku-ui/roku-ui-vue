@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { Size } from '../types'
+import type { Size } from '@/types'
+import { useContainerCS, useCS } from '@/shared'
 import { computed, ref } from 'vue'
-import { useContainerCS, useCS } from '../shared'
 
 const props = withDefaults(defineProps<{
   count?: number
@@ -18,7 +18,7 @@ const emit = defineEmits<{
 }>()
 const defaultColor = '#ffeb91'
 const activeCls = 'text-[var(--d-text)]'
-const inactiveCls = 'text-surface-on-low'
+const inactiveCls = 'text-surface-dimmed'
 const hoverCls = 'text-[var(--d-text-h)]'
 const defaultIcon = 'i-fluent-star-12-filled'
 const defaultActionIcon = 'i-fluent-star-12-filled'

@@ -16,7 +16,7 @@ const options = ['apple', 'banana', 'orange', 'pear']
     <template #form>
       <div class="flex flex-col gap-6">
         <div class="flex flex-col gap-1">
-          <div class="texttext-surface-on-low">
+          <div class="texttext-surface-dimmed">
             Size
           </div>
           <Slider
@@ -25,7 +25,7 @@ const options = ['apple', 'banana', 'orange', 'pear']
           />
         </div>
         <div class="flex flex-col gap-1">
-          <div class="texttext-surface-on-low">
+          <div class="texttext-surface-dimmed">
             Placeholder
           </div>
           <TextField

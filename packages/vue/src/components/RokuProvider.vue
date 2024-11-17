@@ -2,7 +2,7 @@
 import type { ThemeData } from '@/utils'
 import { provideRokuProvider } from '@/composables/modal'
 import { type Component, computed, provide, ref, watchEffect } from 'vue'
-import { defaultTheme, errorColor, primaryColor, secondaryColor, surfaceColor, tertiaryColor } from '../shared'
+import { defaultTheme, errorColor, primaryColor, secondaryColor, surfaceColor, tertiaryColor } from '@/shared'
 
 const props = withDefaults(
   defineProps<{

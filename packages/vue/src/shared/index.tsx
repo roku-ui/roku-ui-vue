@@ -1,5 +1,5 @@
+import type { BtnVariant, Color, ContainerVariant, InputVariant } from '@/types'
 import type { ComputedRef, MaybeRef } from 'vue'
-import type { BtnVariant, Color, ContainerVariant, InputVariant } from '../types'
 import { generateColorsObjMap } from '@/utils'
 import tinycolor from 'tinycolor2'
 import { computed, ref, unref } from 'vue'

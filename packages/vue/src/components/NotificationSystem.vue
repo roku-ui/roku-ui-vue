@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { useNotifications } from '@roku-ui/vue'
 import { computed, ref, watchEffect } from 'vue'
-import { useNotifications } from '..'
 
 const props = withDefaults(defineProps<{
   position?: 'top-left' | 'top-right' | 'top' | 'bottom-left' | 'bottom-right' | 'bottom'

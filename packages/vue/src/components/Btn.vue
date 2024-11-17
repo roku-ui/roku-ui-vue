@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { BtnVariant } from '../types'
+import type { BtnVariant } from '@/types'
+import { useButtonCS } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
 import { type Component, computed, ref } from 'vue'
-import { useButtonCS } from '../shared'
 
 const props = withDefaults(
   defineProps<{

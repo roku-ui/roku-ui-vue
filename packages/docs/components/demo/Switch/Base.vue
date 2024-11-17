@@ -17,7 +17,7 @@ const value = ref(false)
     <template #form>
       <div class="flex flex-col gap-6">
         <div>
-          <div class="texttext-surface-on-low">
+          <div class="texttext-surface-dimmed">
             Size
           </div>
           <Slider
