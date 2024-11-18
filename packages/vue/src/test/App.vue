@@ -68,9 +68,25 @@ const btnGroupOptionSingle = [
 </script>
 
 <template>
-  <RokuProvider class="roku-scrollbar !scrollbar-thumb-hover-color-surface-4 !dark:scrollbar-thumb-hover-color-surface-5 max-h-100vh overflow-auto">
+  <RokuProvider class="roku-scrollbar !scrollbar-thumb-hover-color-surface-4 !dark:scrollbar-thumb-hover-color-surface-5 max-h-100vh">
     <NotificationSystem />
     <div class="flex flex-col items-center gap-2">
+      <Menu
+        :items="[
+          { label: 'Item 1', icon: 'i-tabler-activity' },
+          { label: 'Item 2', icon: 'i-tabler-alert-triangle' },
+          {
+            label: 'Item 3',
+            icon: 'i-tabler-alert-circle',
+            children: [
+              { label: 'Item 3.1', icon: 'i-tabler-alert-triangle' },
+              { label: 'Item 3.2', icon: 'i-tabler-alert-circle' },
+            ],
+          },
+        ]"
+      >
+        <Btn>Menu</Btn>
+      </Menu>
       <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 5000, position: 'top-left' })">
         Push Left
       </Btn>

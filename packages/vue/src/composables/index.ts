@@ -143,8 +143,9 @@ export function useThemeStyles(theme: ThemeData) {
     ...colorVars,
   }
   const themeStyles = {
-    backgroundColor: 'var(--r-surface-background-base-color)',
-    color: 'var(--r-surface-text-color)',
+    'backgroundColor': 'var(--r-surface-background-base-color)',
+    'color': 'var(--r-surface-text-color)',
+    '--un-default-border-color': 'var(--r-surface-border-color)',
   }
 
   return {
