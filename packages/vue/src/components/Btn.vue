@@ -72,7 +72,7 @@ const cs = useButtonCS(variant, color)
       rounded.style,
     ]"
     :class="sizeCls.normalContent"
-    class="inline-block animate-pulse rounded-md bg-surface-variant"
+    class="inline-block animate-pulse rounded-md bg-surface-variant-1"
   />
   <component
     :is="is"

@@ -1,6 +1,6 @@
 <!-- eslint-disable no-console -->
 <script setup lang="tsx">
-import { computed, h, onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { generateColors, Notifications, primaryColor, surfaceColor } from '..'
 import PopoverDemo from './demo/PopoverDemo.vue'
 import RatingDemo from './demo/RatingDemo.vue'
@@ -68,26 +68,25 @@ const btnGroupOptionSingle = [
 </script>
 
 <template>
-  <RokuProvider class="max-h-100vh overflow-auto !scrollbar-thumb-hover-color-surface-4 roku-scrollbar !dark:scrollbar-thumb-hover-color-surface-5">
+  <RokuProvider class="!scrollbar-thumb-hover-color-surface-4 roku-scrollbar !dark:scrollbar-thumb-hover-color-surface-5 max-h-100vh overflow-auto">
     <NotificationSystem />
-
     <div class="flex flex-col items-center gap-2">
-      <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 50000, position: 'top-left' })">
+      <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 5000, position: 'top-left' })">
         Push Left
       </Btn>
-      <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 50000, position: 'top' })">
+      <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 5000, position: 'top' })">
         Push Center
       </Btn>
-      <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 50000, position: 'top-right' })">
+      <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 5000, position: 'top-right' })">
         Push Right
       </Btn>
-      <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 50000, position: 'bottom-left' })">
+      <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 5000, position: 'bottom-left' })">
         Push BL
       </Btn>
-      <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 50000, position: 'bottom' })">
+      <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 5000, position: 'bottom' })">
         Push BC
       </Btn>
-      <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 50000, position: 'bottom-right' })">
+      <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 5000, position: 'bottom-right' })">
         Push BR
       </Btn>
       <div>
@@ -97,8 +96,8 @@ const btnGroupOptionSingle = [
         <div class="bg-surface">
           bg-surface
         </div>
-        <div class="bg-surface-variant">
-          bg-surface-variant
+        <div class="bg-surface-variant-1">
+          bg-surface-variant-1
         </div>
         <div class="border border-surface">
           border-surface

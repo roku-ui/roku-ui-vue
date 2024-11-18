@@ -14,8 +14,8 @@
     --r-surface-background-variant-1-color: rgb(var(--r-color-surface-8));
     --r-surface-background-variant-2-color: rgb(var(--r-color-surface-7));
     --r-surface-border-color: rgb(var(--r-color-surface-7));
-    --r-surface-text-color: rgb(var(--r-color-surface-1));
-    --r-surface-text-dimmed-color: rgb(var(--r-color-surface-2));
+    --r-surface-text-color: rgb(var(--r-color-surface-3));
+    --r-surface-text-dimmed-color: rgb(var(--r-color-surface-5));
 
     --r-primary-background-color: rgb(var(--r-color-primary-5));
     --r-secondary-background-color: rgb(var(--r-color-secondary-5));
@@ -38,8 +38,8 @@
     --r-surface-background-variant-1-color: rgb(var(--r-color-surface-2));
     --r-surface-background-variant-2-color: rgb(var(--r-color-surface-2));
     --r-surface-border-color: rgb(var(--r-color-surface-3));
-    --r-surface-text-color: rgb(var(--r-color-surface-10));
-    --r-surface-text-dimmed-color: rgb(var(--r-color-surface-9));
+    --r-surface-text-color: rgb(var(--r-color-surface-7));
+    --r-surface-text-dimmed-color: rgb(var(--r-color-surface-6));
 
     --r-primary-background-color: rgb(var(--r-color-primary-4));
     --r-secondary-background-color: rgb(var(--r-color-secondary-4));
