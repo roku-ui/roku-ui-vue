@@ -22,6 +22,7 @@ declare module 'vue' {
     FullscreenOverlay: typeof import('./components/FullscreenOverlay.vue')['default']
     Image: typeof import('./components/Image.vue')['default']
     Indicator: typeof import('./components/Indicator.vue')['default']
+    Menu: typeof import('./components/Menu.vue')['default']
     Modal: typeof import('./components/Modal.vue')['default']
     Notification: typeof import('./components/Notification.vue')['default']
     NotificationSystem: typeof import('./components/NotificationSystem.vue')['default']

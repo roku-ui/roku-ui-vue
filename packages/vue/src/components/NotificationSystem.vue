@@ -3,7 +3,7 @@ import type { NotificationData } from '@/utils/notifications'
 import type { Ref } from 'vue'
 import { useNotifications } from '@/utils/notifications'
 import { useElementHover } from '@vueuse/core'
-import { computed, ref, shallowRef, watch, watchEffect } from 'vue'
+import { computed, ref, shallowRef, watch } from 'vue'
 
 const props = withDefaults(defineProps<{
   position?: 'top-left' | 'top-right' | 'top' | 'bottom-left' | 'bottom-right' | 'bottom'

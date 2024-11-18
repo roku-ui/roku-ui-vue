@@ -68,7 +68,7 @@ const btnGroupOptionSingle = [
 </script>
 
 <template>
-  <RokuProvider class="!scrollbar-thumb-hover-color-surface-4 roku-scrollbar !dark:scrollbar-thumb-hover-color-surface-5 max-h-100vh overflow-auto">
+  <RokuProvider class="roku-scrollbar !scrollbar-thumb-hover-color-surface-4 !dark:scrollbar-thumb-hover-color-surface-5 max-h-100vh overflow-auto">
     <NotificationSystem />
     <div class="flex flex-col items-center gap-2">
       <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 5000, position: 'top-left' })">
