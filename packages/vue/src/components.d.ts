@@ -17,7 +17,6 @@ declare module 'vue' {
     Chip: typeof import('./components/Chip.vue')['default']
     ColorInput: typeof import('./components/ColorInput.vue')['default']
     ColorSwatch: typeof import('./components/ColorSwatch.vue')['default']
-    copy: typeof import('./components/MenuItem.vue')['default']
     Drawer: typeof import('./components/Drawer.vue')['default']
     Dropzone: typeof import('./components/Dropzone.vue')['default']
     FullscreenOverlay: typeof import('./components/FullscreenOverlay.vue')['default']

@@ -5,7 +5,8 @@ import { useRounded } from '@/utils'
 import { computed, provide, ref, watchEffect } from 'vue'
 
 export interface MenuItemData {
-  label: string
+  label?: string
+  value?: number | string | symbol
   icon?: string
   render?: () => VNodeChild
   children?: MenuItemData[]
@@ -24,6 +25,10 @@ const props = withDefaults(defineProps<{
   rounded: 'md',
   size: 'md',
 })
+
+const emits = defineEmits<{
+  select: [value: number | string | symbol]
+}>()
 
 const model = defineModel<boolean>({
   default: undefined,
@@ -51,7 +56,12 @@ useEventListener(menuTriggerRef, 'pointerup', (e) => {
 onClickOutside(menuDropdownRef, () => {
   toggle(false)
 })
-const menuCurrentIdx = ref<number[]>([])
+const menuCurrentIdx = ref<number[]>([-1])
+watchEffect(() => {
+  if (!finalValue.value) {
+    menuCurrentIdx.value = [-1]
+  }
+})
 provide('menuCurrentIdx', menuCurrentIdx)
 
 function getLength(items: MenuItemData[], idx: number[]): number {
@@ -71,21 +81,19 @@ const maxIdx = computed(() => {
   }
   return getLength(props.items, menuCurrentIdx.value)
 })
-watchEffect(() => {
-  console.log(maxIdx.value, menuCurrentIdx.value)
-})
+
 onKeyStroke('ArrowDown', (e) => {
   if (!finalValue.value) {
     return
   }
   e.preventDefault()
   const idx = menuCurrentIdx.value
-  if (idx.length === 0) {
-    menuCurrentIdx.value = [0]
-    return
-  }
+
   const lastIdx = idx[idx.length - 1]
-  const nextIdx = (lastIdx + 1) % maxIdx.value
+  let nextIdx = (lastIdx + 1) % maxIdx.value
+  while (getMenuItemData(props.items, [...idx.slice(0, idx.length - 1), nextIdx])?.render) {
+    nextIdx = (nextIdx + 1) % maxIdx.value
+  }
   menuCurrentIdx.value = [...idx.slice(0, idx.length - 1), nextIdx]
 })
 
@@ -95,12 +103,16 @@ onKeyStroke('ArrowUp', (e) => {
   }
   e.preventDefault()
   const idx = menuCurrentIdx.value
-  if (idx.length === 0) {
-    menuCurrentIdx.value = [0]
+  const lastIdx = idx[idx.length - 1]
+  if (lastIdx === -1 && idx.length === 1) {
+    menuCurrentIdx.value = [maxIdx.value - 1]
     return
   }
-  const lastIdx = idx[idx.length - 1]
-  const nextIdx = (lastIdx - 1 + maxIdx.value) % maxIdx.value
+  let nextIdx = (lastIdx - 1 + maxIdx.value) % maxIdx.value
+  // jump to the next item that is not render
+  while (getMenuItemData(props.items, [...idx.slice(0, idx.length - 1), nextIdx])?.render) {
+    nextIdx = (nextIdx - 1 + maxIdx.value) % maxIdx.value
+  }
   menuCurrentIdx.value = [...idx.slice(0, idx.length - 1), nextIdx]
 })
 
@@ -121,8 +133,8 @@ onKeyStroke('ArrowRight', (e) => {
     }
     // 如果目前 menuCurrentIdx 所指示的 item 有 children
     if (cur !== undefined) {
-      // 添加一个 -1
-      menuCurrentIdx.value = [...menuCurrentIdx.value, -1]
+      // 添加一个 0
+      menuCurrentIdx.value = [...menuCurrentIdx.value, 0]
     }
   }
 })
@@ -135,6 +147,38 @@ onKeyStroke('ArrowLeft', (e) => {
   // 如果 menuCurrentIdx 不为空，则删除最后一个
   if (menuCurrentIdx.value.length > 0) {
     menuCurrentIdx.value = menuCurrentIdx.value.slice(0, menuCurrentIdx.value.length - 1)
+  }
+})
+
+function getMenuItemData(items: MenuItemData[] | undefined, idx: number[]): MenuItemData | undefined {
+  if (idx.length === 0) {
+    return undefined
+  }
+  let cur = items
+  for (let i = 0; i < idx.length - 1; i++) {
+    if (cur === undefined) {
+      return undefined
+    }
+    cur = cur[idx[i]].children
+  }
+  if (cur === undefined) {
+    return undefined
+  }
+  return cur[idx[idx.length - 1]]
+}
+provide('selectMenuItem', (value: number | string | symbol) => {
+  emits('select', value)
+  toggle(false)
+})
+onKeyStroke('Enter', (e) => {
+  if (!finalValue.value) {
+    return
+  }
+  e.preventDefault()
+  const val = getMenuItemData(props.items, menuCurrentIdx.value)?.value
+  if (val) {
+    emits('select', val)
+    toggle(false)
   }
 })
 </script>
@@ -151,11 +195,17 @@ onKeyStroke('ArrowLeft', (e) => {
       :style="[rounded.style]"
       class="absolute left-1/2 mt-2 w-64 border border bg-surface bg-surface p-2 -translate-x-1/2"
     >
-      <MenuItem
-        v-for="item, i in items"
-        :key="i" :data="item" v-bind="props"
-        :idx="[i]"
-      />
+      <template
+        v-for="item, i in props.items"
+        :key="i"
+      >
+        <component :is="item.render" v-if="item.render" />
+        <MenuItem
+          v-else
+          :data="item" v-bind="props"
+          :idx="[i]"
+        />
+      </template>
     </menu>
   </div>
 </template>

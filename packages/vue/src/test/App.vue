@@ -1,6 +1,7 @@
 <!-- eslint-disable no-console -->
 <script setup lang="tsx">
-import { computed, onMounted, ref } from 'vue'
+import Avatar from '@/components/Avatar.vue'
+import { computed, onMounted, ref, watchEffect } from 'vue'
 import { generateColors, Notifications, primaryColor, surfaceColor } from '..'
 import PopoverDemo from './demo/PopoverDemo.vue'
 import RatingDemo from './demo/RatingDemo.vue'
@@ -65,6 +66,17 @@ const btnGroupOptions = [
 const btnGroupOptionSingle = [
   { label: 'Is Active', value: 'active', icon: 'i-fluent-checkmark-12-filled' },
 ]
+function customRender() {
+  return (
+    <div class="flex gap-2">
+      <Avatar size="sm" name="Avatar" />
+      <div>
+        <div class="text-surface">Custom Render</div>
+        <div class="text-surface-dimmed">Custom Render</div>
+      </div>
+    </div>
+  )
+}
 </script>
 
 <template>
@@ -73,17 +85,28 @@ const btnGroupOptionSingle = [
     <div class="flex flex-col items-center gap-2">
       <Menu
         :items="[
-          { label: 'Item 1', icon: 'i-tabler-activity' },
-          { label: 'Item 2', icon: 'i-tabler-alert-triangle' },
+          {
+            render: customRender,
+          },
+          { value: 'item1', label: 'Item 1', icon: 'i-tabler-activity' },
+          { value: 'item2', label: 'Item 2', icon: 'i-tabler-alert-triangle' },
           {
             label: 'Item 3',
             icon: 'i-tabler-alert-circle',
             children: [
-              { label: 'Item 3.1', icon: 'i-tabler-alert-triangle' },
-              { label: 'Item 3.2', icon: 'i-tabler-alert-circle' },
+              {
+                value: 'item3.1',
+                label: 'Item 3.1',
+                icon: 'i-tabler-alert-triangle' },
+              {
+                value: 'item3.2',
+                label: 'Item 3.2',
+                icon: 'i-tabler-alert-circle',
+              },
             ],
           },
         ]"
+        @select="console.log"
       >
         <Btn>Menu</Btn>
       </Menu>

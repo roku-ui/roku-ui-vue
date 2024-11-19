@@ -398,9 +398,11 @@ function getDefaultVariantStyle(surface: tinycolor.Instance[]): Record<string, s
     '--d-bg': surface[darkSurfaceBgVariant1Index].toHexString(),
     '--d-bg-h': surface[darkSurfaceBgVariant2Index].toHexString(),
     '--d-border': surface[darkBorderVariantIndex].toHexString(),
+    '--d-outline': surface[darkBorderVariantIndex].toHexString(),
     '--l-bg': surface[lightSurfaceBgIndex].toHexString(),
     '--l-bg-h': surface[lightSurfaceBgVariantIndex].toHexString(),
     '--l-border': surface[lightBorderVariantIndex].toHexString(),
+    '--l-outline': surface[lightBorderVariantIndex].toHexString(),
   }
 }
 

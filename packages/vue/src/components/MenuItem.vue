@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { MenuItemData, MenuProps } from './Menu.vue'
 import { useRounded } from '@/utils'
-import { computed, inject, ref } from 'vue'
+import { computed, inject, provide, ref } from 'vue'
 
 const props = withDefaults(defineProps<{
   data: MenuItemData
@@ -29,17 +29,22 @@ const isOpen = computed(() => {
   return menuCurrentIdx.value.length > props.idx.length
     && menuCurrentIdx.value.slice(0, props.idx.length).join() === props.idx.join()
 })
+
+const select = inject<(value: number | string | symbol) => void>('selectMenuItem', () => {
+  console.error('selectMenuItem is not provided')
+})
 </script>
 
 <template>
   <button
     ref="menuItemRef"
     :tabindex="-1"
-    class="relative inline-block h-8 w-full flex cursor-pointer items-center gap-2 px-2"
+    class="relative inline-block h-8 w-full flex cursor-pointer items-center gap-2 px-2 outline-none"
     :class="[rounded.class, {
       'bg-surface-variant-2': isHovering,
     }]"
     :style="[rounded.style]"
+    @pointerdown="() => data.value ? select(data.value) : undefined"
   >
     <i v-if="data.icon" :class="data.icon" />
     <div>{{ data.label }}</div>
