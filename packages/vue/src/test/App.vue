@@ -94,6 +94,8 @@ function customRender() {
                 {
                   value: 'child1',
                   title: 'Child 1',
+                  attrs: {
+                  },
                 },
                 {
                   title: 'Child 2',
@@ -101,6 +103,9 @@ function customRender() {
                     {
                       value: 'child2.1',
                       title: 'Child 2.1',
+                    },
+                    {
+                      title: 'HEADER',
                     },
                     {
                       value: 'child2.2',

@@ -1,11 +1,14 @@
 <script setup lang="tsx">
 import type { Rounded } from '@/types'
+import type { VNode } from 'vue'
 import { useRounded } from '@/utils'
-import { computed, ref, Transition, watchEffect } from 'vue'
+import { computed, h, ref, Transition, watchEffect } from 'vue'
 
-interface TreeListButtonData {
+interface TreeListLinkData {
   title: string
   value: string
+  attrs?: Record<string, any>
+  is?: string | VNode
 }
 
 interface TreeListHeaderData {
@@ -18,7 +21,7 @@ interface TreeListTitleData {
   open?: boolean
 }
 
-type TreeListItemData = TreeListButtonData | TreeListHeaderData | TreeListTitleData
+type TreeListItemData = TreeListLinkData | TreeListHeaderData | TreeListTitleData
 
 const props = withDefaults(defineProps<{
   items: TreeListItemData[]
@@ -34,15 +37,15 @@ const model = defineModel<string>()
 function isTitle(item: TreeListItemData): item is TreeListTitleData {
   return 'children' in item
 }
-function isButton(item: TreeListItemData): item is TreeListButtonData {
+function isLink(item: TreeListItemData): item is TreeListLinkData {
   return 'value' in item
 }
 
-const buttonLeftIndicator = 'before:absolute before:left-4 before:h-full before:border-l-1 before:content-[""]'
-const buttonItemClass = 'relative py-1 w-full flex items-center gap-2 cursor-pointer'
-const buttonNormalItemClass = computed(() => `${buttonItemClass} hover:bg-surface-variant-1 hover:text-surface text-surface-dimmed`)
-const buttonActiveItemClass = computed(() => `${buttonItemClass} text-primary before:border-primary bg-surface-variant-1 hover:bg-surface-variant-2`)
-const titleNormalItemClass = computed(() => [buttonItemClass, 'text-surface font-bold hover:bg-surface-variant-1'])
+const linkLeftIndicator = 'before:absolute before:left-4 before:h-full before:border-r before:content-[""]'
+const linkItemClass = 'relative h-8 py-1 w-full flex items-center gap-2 cursor-pointer'
+const linkNormalItemClass = computed(() => `${linkItemClass} hover:bg-surface-variant-1 hover:text-surface text-surface-dimmed`)
+const linkActiveItemClass = computed(() => `${linkItemClass} text-primary before:border-primary bg-surface-variant-1 hover:bg-surface-variant-2`)
+const titleNormalItemClass = computed(() => [linkItemClass, 'text-surface font-bold hover:bg-surface-variant-1'])
 const treeListRef = ref<HTMLUListElement | null>(null)
 
 const status = ref<Map<TreeListItemData, boolean>>(new Map())
@@ -64,16 +67,41 @@ watchEffect(() => {
   })
 })
 
-function TreeListButton({ data, level }: { data: TreeListButtonData, level: number }) {
+function TreeListLink({ data, level }: { data: TreeListLinkData, level: number }) {
+  const Comp = (props: any) => data.is ? h(data.is, props, data.title) : h('a', props, data.title)
+  return (
+    <li>
+      <Comp
+        {...data.attrs}
+        class={[
+          rounded.value.class,
+          linkLeftIndicator,
+          {
+            [linkNormalItemClass.value]: model.value !== data.value,
+            [linkActiveItemClass.value]: model.value === data.value,
+          },
+        ]}
+        style={
+          [
+            {
+              paddingLeft: `${32 + level * 4}px`,
+            },
+            rounded.value.style,
+          ]
+        }
+        onClick={() => model.value = data.value}
+      >
+        {data.title}
+      </Comp>
+    </li>
+  )
+}
+
+function TreeListHeader({ data, level }: { data: TreeListHeaderData, level: number }) {
   return (
     <li
       class={[
-        rounded.value.class,
-        buttonLeftIndicator,
-        {
-          [buttonNormalItemClass.value]: model.value !== data.value,
-          [buttonActiveItemClass.value]: model.value === data.value,
-        },
+        'flex items-center relative py-2 text-surface-dimmed font-bold tracking-widest',
       ]}
       style={
         [
@@ -83,8 +111,9 @@ function TreeListButton({ data, level }: { data: TreeListButtonData, level: numb
           rounded.value.style,
         ]
       }
-      onClick={() => model.value = data.value}
     >
+      <div class="absolute left-4 h-1/2 translate-y-1/2 border-r" />
+      <div class="absolute left-[calc(1rem+0.6px)] h-2 w-2 border rounded-sm bg-surface-variant-1 -translate-x-1/2" />
       {data.title}
     </li>
   )
@@ -152,13 +181,15 @@ function TreeListTitle({ data, level }: { data: TreeListTitleData, level: number
           && (
             <ul class="overflow-hidden transition-height">
               {data.children.map((child) => {
-                if (isButton(child)) {
-                  return <TreeListButton data={child} level={level + 1} />
+                if (isLink(child)) {
+                  return <TreeListLink data={child} level={level + 1} />
                 }
                 else if (isTitle(child)) {
                   return <TreeListTitle data={child} level={level + 1} />
                 }
-                return null
+                else {
+                  return <TreeListHeader data={child} level={level + 1} />
+                }
               })}
             </ul>
           )
@@ -172,12 +203,12 @@ function TreeListTitle({ data, level }: { data: TreeListTitleData, level: number
 <template>
   <ul
     ref="treeListRef"
-    class="flex flex-col"
+    class="flex flex-col text-sm"
   >
     <template
       v-for="item, i in items" :key="i"
     >
-      <TreeListButton v-if="isButton(item)" :data="item" :level="0" />
+      <TreeListLink v-if="isLink(item)" :data="item" :level="0" />
       <TreeListTitle
         v-else-if="isTitle(item)"
         :data="item"
