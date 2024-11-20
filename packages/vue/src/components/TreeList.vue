@@ -1,7 +1,7 @@
 <script setup lang="tsx">
 import type { Rounded } from '@/types'
 import { useRounded } from '@/utils'
-import { computed, nextTick, onMounted, ref, Transition, watch, watchEffect } from 'vue'
+import { computed, ref, Transition, watchEffect } from 'vue'
 
 interface TreeListButtonData {
   title: string
@@ -38,48 +38,12 @@ function isButton(item: TreeListItemData): item is TreeListButtonData {
   return 'value' in item
 }
 
-// function flattenTree(tree: TreeListItem[], parent?: TreeListItem, level: number = 0): TreeListItemFlat[] {
-//   return tree.reduce((acc, item) => {
-//     const flatItem: TreeListItemFlat = { ...item, parent, level }
-//     if (isTitle(item)) {
-//       const children = flattenTree(item.children, flatItem, level + 1)
-//       return [...acc, flatItem, ...children]
-//     }
-//     return [...acc, flatItem]
-//   }, [] as TreeListItemFlat[])
-// }
-
-// const flatItems = computed(() => flattenTree(props.items))
 const buttonLeftIndicator = 'before:absolute before:left-4 before:h-full before:border-l-1 before:content-[""]'
 const buttonItemClass = 'relative py-1 w-full flex items-center gap-2 cursor-pointer'
 const buttonNormalItemClass = computed(() => `${buttonItemClass} hover:bg-surface-variant-1 hover:text-surface text-surface-dimmed`)
 const buttonActiveItemClass = computed(() => `${buttonItemClass} text-primary before:border-primary bg-surface-variant-1 hover:bg-surface-variant-2`)
 const titleNormalItemClass = computed(() => [buttonItemClass, 'text-surface font-bold hover:bg-surface-variant-1'])
 const treeListRef = ref<HTMLUListElement | null>(null)
-
-const lastUpdate = ref(0)
-
-onMounted(() => {
-  const treeListDom = treeListRef.value
-  if (treeListDom) {
-    const observer = new MutationObserver(() => {
-      nextTick(() => {
-        lastUpdate.value += 1
-      })
-    })
-    observer.observe(treeListDom, {
-      childList: true,
-      subtree: true,
-      attributes: true,
-    })
-    // 当子树动画结束时，更新高度
-    treeListDom.addEventListener('transitionend', () => {
-      setTimeout(() => {
-        lastUpdate.value += 1
-      }, 100)
-    })
-  }
-})
 
 const status = ref<Map<TreeListItemData, boolean>>(new Map())
 
@@ -130,16 +94,6 @@ function TreeListTitle({ data, level }: { data: TreeListTitleData, level: number
   const isOpen = computed(() => status.value.get(data))
   const dom = ref<HTMLLIElement | null>(null)
   const self = ref<HTMLButtonElement | null>(null)
-  //   watch([dom, self, isOpen, lastUpdate], () => {
-  //     if (dom.value && self.value) {
-  //       if (isOpen.value) {
-  //         dom.value.style.height = `${dom.value.scrollHeight}px`
-  //       }
-  //       else {
-  //         dom.value.style.height = `${self.value.scrollHeight}px`
-  //       }
-  //     }
-  //   })
   return (
     <li
       class="transition-height"
