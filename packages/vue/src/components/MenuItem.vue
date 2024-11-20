@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { MenuItemData, MenuProps } from './Menu.vue'
 import { useRounded } from '@/utils'
-import { computed, inject, provide, ref } from 'vue'
+import { computed, inject, ref } from 'vue'
 
 const props = withDefaults(defineProps<{
   data: MenuItemData
@@ -23,7 +23,7 @@ useEventListener(menuItemRef, 'pointermove', () => {
 const isHovering = computed(() => {
   return menuCurrentIdx.value.join() === props.idx.join()
 })
-// [3], [3, 0], [3, 1], [3, 2]
+
 const isOpen = computed(() => {
   // 如果 idx 是 menuCurrentIdx 的前缀，且不完全相等，则返回 true
   return menuCurrentIdx.value.length > props.idx.length

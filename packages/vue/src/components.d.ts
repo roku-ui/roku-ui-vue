@@ -46,5 +46,6 @@ declare module 'vue' {
     TextField: typeof import('./components/TextField.vue')['default']
     ThemeProvider: typeof import('./components/ThemeProvider.vue')['default']
     Tooltip: typeof import('./components/Tooltip.vue')['default']
+    TreeList: typeof import('./components/TreeList.vue')['default']
   }
 }

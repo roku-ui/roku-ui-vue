@@ -1,7 +1,7 @@
 <!-- eslint-disable no-console -->
 <script setup lang="tsx">
 import Avatar from '@/components/Avatar.vue'
-import { computed, onMounted, ref, watchEffect } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { generateColors, Notifications, primaryColor, surfaceColor } from '..'
 import PopoverDemo from './demo/PopoverDemo.vue'
 import RatingDemo from './demo/RatingDemo.vue'
@@ -80,9 +80,52 @@ function customRender() {
 </script>
 
 <template>
-  <RokuProvider class="roku-scrollbar !scrollbar-thumb-hover-color-surface-4 !dark:scrollbar-thumb-hover-color-surface-5 max-h-100vh">
+  <RokuProvider class="roku-scrollbar !scrollbar-thumb-hover-color-surface-4 !dark:scrollbar-thumb-hover-color-surface-5">
     <NotificationSystem />
     <div class="flex flex-col items-center gap-2">
+      <Paper class="min-h-50" with-border no-padding>
+        <TreeList
+          class="min-w-60"
+          :items="[
+            {
+              title: 'Root',
+              open: true,
+              children: [
+                {
+                  value: 'child1',
+                  title: 'Child 1',
+                },
+                {
+                  title: 'Child 2',
+                  children: [
+                    {
+                      value: 'child2.1',
+                      title: 'Child 2.1',
+                    },
+                    {
+                      value: 'child2.2',
+                      title: 'Child 2.2',
+                    },
+                  ],
+                },
+                {
+                  title: 'Child 3',
+                  children: [
+                    {
+                      value: 'child3.1',
+                      title: 'Child 3.1',
+                    },
+                    {
+                      value: 'child3.2',
+                      title: 'Child 3.2',
+                    },
+                  ],
+                },
+              ],
+            },
+          ]"
+        />
+      </Paper>
       <Menu
         :items="[
           {
