@@ -1,7 +1,7 @@
 <script setup lang="tsx">
 import type { Rounded } from '@/types'
 import { useRounded } from '@/utils'
-import { computed, nextTick, onMounted, ref, watch, watchEffect } from 'vue'
+import { computed, nextTick, onMounted, ref, Transition, watch, watchEffect } from 'vue'
 
 interface TreeListButtonData {
   title: string
@@ -74,8 +74,9 @@ onMounted(() => {
     })
     // 当子树动画结束时，更新高度
     treeListDom.addEventListener('transitionend', () => {
-      lastUpdate.value += 1
-      console.log('transitionend')
+      setTimeout(() => {
+        lastUpdate.value += 1
+      }, 100)
     })
   }
 })
@@ -129,16 +130,16 @@ function TreeListTitle({ data, level }: { data: TreeListTitleData, level: number
   const isOpen = computed(() => status.value.get(data))
   const dom = ref<HTMLLIElement | null>(null)
   const self = ref<HTMLButtonElement | null>(null)
-  watch([dom, self, isOpen, lastUpdate], () => {
-    if (dom.value && self.value) {
-      if (isOpen.value) {
-        dom.value.style.height = `${dom.value.scrollHeight}px`
-      }
-      else {
-        dom.value.style.height = `${self.value.scrollHeight}px`
-      }
-    }
-  })
+  //   watch([dom, self, isOpen, lastUpdate], () => {
+  //     if (dom.value && self.value) {
+  //       if (isOpen.value) {
+  //         dom.value.style.height = `${dom.value.scrollHeight}px`
+  //       }
+  //       else {
+  //         dom.value.style.height = `${self.value.scrollHeight}px`
+  //       }
+  //     }
+  //   })
   return (
     <li
       class="transition-height"
@@ -163,22 +164,52 @@ function TreeListTitle({ data, level }: { data: TreeListTitleData, level: number
         <i class={['i-tabler-chevron-down absolute left-2 h-4 w-4 py-1 transition-transform', isOpen.value ? 'rotate-0' : '-rotate-90']} />
         {data.title}
       </button>
-      {
-        status.value.get(data)
-        && (
-          <ul>
-            {data.children.map((child) => {
-              if (isButton(child)) {
-                return <TreeListButton data={child} level={level + 1} />
-              }
-              else if (isTitle(child)) {
-                return <TreeListTitle data={child} level={level + 1} />
-              }
-              return null
-            })}
-          </ul>
-        )
-      }
+      <Transition
+        onBeforeEnter={(el) => {
+          if (el instanceof HTMLElement) {
+            el.style.height = `${0}px`
+          }
+        }}
+        onEnter={(el) => {
+          if (el instanceof HTMLElement) {
+            el.style.height = `${el.scrollHeight}px`
+          }
+        }}
+        onAfterEnter={(el) => {
+          if (el instanceof HTMLElement) {
+            el.style.height = 'auto'
+          }
+        }}
+        onBeforeLeave={(el) => {
+          if (el instanceof HTMLElement) {
+            el.style.height = `${el.scrollHeight}px`
+          }
+        }}
+        onLeave={(el) => {
+          if (el instanceof HTMLElement) {
+            el.style.height = `${0}px`
+          }
+        }}
+        css
+        mode="out-in"
+      >
+        {
+          status.value.get(data)
+          && (
+            <ul class="overflow-hidden transition-height">
+              {data.children.map((child) => {
+                if (isButton(child)) {
+                  return <TreeListButton data={child} level={level + 1} />
+                }
+                else if (isTitle(child)) {
+                  return <TreeListTitle data={child} level={level + 1} />
+                }
+                return null
+              })}
+            </ul>
+          )
+        }
+      </Transition>
     </li>
   )
 }
