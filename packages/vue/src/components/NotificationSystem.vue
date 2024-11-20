@@ -5,8 +5,9 @@ import { useNotifications } from '@/utils/notifications'
 import { useElementHover } from '@vueuse/core'
 import { computed, ref, shallowRef, watch } from 'vue'
 
+type NotificationPosition = 'top-left' | 'top-right' | 'top' | 'bottom-left' | 'bottom-right' | 'bottom'
 const props = withDefaults(defineProps<{
-  position?: 'top-left' | 'top-right' | 'top' | 'bottom-left' | 'bottom-right' | 'bottom'
+  position?: NotificationPosition
   progress?: boolean
   topN?: number
   gap?: number
@@ -17,7 +18,7 @@ const props = withDefaults(defineProps<{
 }>(), {
   position: 'top-right',
   progress: true,
-  topN: 1,
+  topN: 3,
   gap: 8,
   pt: 8,
   pl: 8,
@@ -78,60 +79,80 @@ const notificationIndexList = computed(() => {
   })
 })
 
-function getNotificationPositionStyle(y: number = 0, position: string | undefined) {
+function isTop(position: string) {
+  return ['top-left', 'top-right', 'top'].includes(position)
+}
+
+function notificationYStyle(y: number = 0, position: string | undefined) {
   if (!position) {
     position = props.position
   }
-  if (position === 'top-left') {
+  if (isTop(position)) {
     return {
       top: `${y + props.pt}px`,
-      left: `${props.pl}px`,
     }
   }
-  else if (position === 'top-right') {
-    return {
-      top: `${y + props.pt}px`,
-      right: `${props.pr}px`,
-    }
-  }
-  else if (position === 'top') {
-    return {
-      top: `${y + props.pt}px`,
-      left: '50%',
-      transform: 'translateX(-50%)',
-    }
-  }
-  else if (position === 'bottom-left') {
+  else {
     return {
       bottom: `${y + props.pb}px`,
-      left: `${props.pl}px`,
     }
-  }
-  else if (position === 'bottom-right') {
-    return {
-      bottom: `${y + props.pb}px`,
-      right: `${props.pr}px`,
-    }
-  }
-  else if (position === 'bottom') {
-    const resp = {
-      bottom: `${y + props.pb}px`,
-      left: '50%',
-      transform: 'translateX(-50%)',
-    }
-    return resp
   }
 }
 
-const isTop = computed(() => {
-  return ['top-left', 'top-right', 'top'].includes(props.position)
-})
-const enterFromClass = computed(() => {
-  return isTop.value ? 'op-0 -translate-y-8' : 'op-0 translate-y-8'
-})
-const leaveToClass = computed(() => {
-  return isTop.value ? 'op-0 translate-y-8' : 'op-0 -translate-y-8'
-})
+function notificationXStyle(position: NotificationPosition) {
+  if (position.includes('right')) {
+    return {
+      transform: `translateX(-100%)`,
+    }
+  }
+  else if (position.includes('left')) {
+    return {
+    }
+  }
+  else {
+    return {
+      transform: `translateX(-50%)`,
+    }
+  }
+}
+
+function groupXStyle(position: NotificationPosition) {
+  if (position.includes('right')) {
+    return {
+      right: `${props.pr}px`,
+    }
+  }
+  else if (position.includes('left')) {
+    return {
+      left: `${props.pl}px`,
+    }
+  }
+  else {
+    return {
+      left: '50%',
+    }
+  }
+}
+
+function groupYStyle(position: NotificationPosition) {
+  if (position.includes('top')) {
+    return {
+      top: `${props.pt}px`,
+    }
+  }
+  else {
+    return {
+      bottom: `${props.pb}px`,
+    }
+  }
+}
+
+const enterClass = function (position: string) {
+  return isTop(position) ? 'animate-keyframes-fade-in-down animate-duration-0.5s' : 'animate-keyframes-fade-in-up animate-duration-0.5s'
+}
+const leaveClass = function (position: string) {
+  return isTop(position) ? 'animate-keyframes-fade-out-down animate-duration-0.5s' : 'animate-keyframes-fade-out-up animate-duration-0.5s'
+}
 function onClose(notification: NotificationData) {
   const index = notifications.value.indexOf(notification)
   if (index !== -1) {
@@ -146,37 +167,51 @@ function getNotificationDurationPercentage(notification: NotificationData) {
   const initDuration = notification.initialDurationMS
   return (initDuration - duration) / initDuration
 }
+const posList: NotificationPosition[] = ['top-left', 'top-right', 'top', 'bottom-left', 'bottom-right', 'bottom']
 </script>
 
 <template>
   <div
     class="pointer-events-none fixed z-20 h-full w-full children:pointer-events-auto"
   >
-    <TransitionGroup
-      :enter-from-class="enterFromClass"
-      enter-to-class="op-100 translate-y-0"
-      leave-from-class="op-100 translate-y-0"
-      :leave-to-class="leaveToClass"
+    <div
+      v-for="pos in posList"
+      :key="pos"
+      :style="[groupYStyle(pos), groupXStyle(pos)]" class="absolute"
     >
-      <div
-        v-for="notification, i in notifications"
-        ref="notificationRefs"
-        :key="notification.hash"
-        :data-hash="notification.hash"
-        class="absolute transition-top,bottom,opacity,transform"
-        :style="getNotificationPositionStyle(notificationIndexList[i], notification.position)"
+      <TransitionGroup
+        :enter-active-class="enterClass(pos)"
+        :leave-active-class="leaveClass(pos)"
       >
-        <Notification
-          with-border closeable
-          :title="notification.title"
-          :message="notification.message"
-          :icon="notification.icon"
-          :loading="notification.loading"
-          :color="notification.color"
-          :complete="progress ? getNotificationDurationPercentage(notification) * 100 : undefined"
-          @close="onClose(notification)"
-        />
-      </div>
-    </TransitionGroup>
+        <template
+          v-for="notification, i in notifications"
+          :key="notification.hash"
+        >
+          <div
+            v-if="notification.position === pos"
+            class="absolute transition-top,bottom,transform duration-0.5s"
+            :style="[notificationYStyle(notificationIndexList[i], notification.position)]"
+          >
+            <div
+              ref="notificationRefs"
+              :data-hash="notification.hash"
+              :style="[notificationXStyle(pos), notificationYStyle(notificationIndexList[i], notification.position)]"
+            >
+              <Notification
+                with-border
+                closeable
+                :title="notification.title"
+                :message="notification.message"
+                :icon="notification.icon"
+                :loading="notification.loading"
+                :color="notification.color"
+                :complete="progress ? getNotificationDurationPercentage(notification) * 100 : undefined"
+                @close="onClose(notification)"
+              />
+            </div>
+          </div>
+        </template>
+      </TransitionGroup>
+    </div>
   </div>
 </template>
