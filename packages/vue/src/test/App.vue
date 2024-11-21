@@ -124,6 +124,14 @@ function customRender() {
                       value: 'child3.2',
                       title: 'Child 3.2',
                     },
+                    {
+                      value: 'child3.3',
+                      title: 'Child 3.3',
+                      attrs: {
+                        href: 'https://www.google.com',
+                        target: '_blank',
+                      },
+                    },
                   ],
                 },
               ],
