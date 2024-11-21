@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Color } from '@/types'
-import { useColorCS, useSurfaceCS } from '@/shared'
+import { useColorCS, useOutlineColor as useOutlineColorCS, useSurfaceCS } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
 import { computed, ref } from 'vue'
 
@@ -96,15 +96,30 @@ const colorStyle = computed(() => {
   }
 })
 const rounded = useRounded(props)
+const outlineColor = computed(() => props.color)
+const outlineColorCS = useOutlineColorCS(outlineColor)
+const wrapperRef = ref<HTMLElement | null>(null)
+useEventListener(wrapperRef, 'keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    model.value = !model.value
+  }
+})
 </script>
 
 <template>
   <div
+    ref="wrapperRef"
     role="switch"
-    class="relative flex items-center gap-2"
-    :class="{
-      'pointer-events-none filter-grayscale op-60': props.disabled,
-    }"
+    tabindex="0"
+    class="relative flex items-center gap-2 outline-none"
+    :style="[outlineColorCS.style, rounded.style]"
+    :class="[
+      outlineColorCS.class,
+      rounded.class,
+      {
+        'pointer-events-none filter-grayscale op-60': props.disabled,
+      },
+    ]"
   >
     <input
       :id="id"

@@ -372,6 +372,14 @@ export function useSurfaceCS(type: CSType, index: CSIndex, alpha = 1.0) {
   })
 }
 
+export function useOutlineColor(color: MaybeRef<Color>) {
+  return useCS({
+    color,
+    type: 'outline',
+    index: { dark: darkBorderIndex, light: lightBorderIndex },
+  })
+}
+
 export function useButtonCS(variant: MaybeRef<BtnVariant> = 'default', color: MaybeRef<Color> = 'primary'): ComputedRef<CS> {
   return computed(() => {
     const colors = useColors(color).value
@@ -398,11 +406,9 @@ function getDefaultVariantStyle(surface: tinycolor.Instance[]): Record<string, s
     '--d-bg': surface[darkSurfaceBgVariant1Index].toHexString(),
     '--d-bg-h': surface[darkSurfaceBgVariant2Index].toHexString(),
     '--d-border': surface[darkBorderVariantIndex].toHexString(),
-    '--d-outline': surface[darkBorderVariantIndex].toHexString(),
     '--l-bg': surface[lightSurfaceBgIndex].toHexString(),
     '--l-bg-h': surface[lightSurfaceBgVariantIndex].toHexString(),
     '--l-border': surface[lightBorderVariantIndex].toHexString(),
-    '--l-outline': surface[lightBorderVariantIndex].toHexString(),
   }
 }
 
