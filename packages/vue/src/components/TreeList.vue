@@ -42,9 +42,9 @@ function isLink(item: TreeListItemData): item is TreeListLinkData {
 }
 
 const linkLeftIndicator = 'before:absolute before:left-4 before:h-full before:border-r before:content-[""]'
-const linkItemClass = 'relative h-8 py-1 w-full flex items-center gap-2 cursor-pointer'
+const linkItemClass = 'relative h-8 py-1 w-full flex items-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:bg-surface-variant-1'
 const linkNormalItemClass = computed(() => `${linkItemClass} hover:bg-surface-variant-1 hover:text-surface text-surface-dimmed`)
-const linkActiveItemClass = computed(() => `${linkItemClass} text-primary before:border-primary bg-surface-variant-1 hover:bg-surface-variant-2`)
+const linkActiveItemClass = computed(() => `${linkItemClass} text-primary before:border-primary bg-surface-variant-1`)
 const titleNormalItemClass = computed(() => [linkItemClass, 'text-surface font-bold hover:bg-surface-variant-1'])
 const treeListRef = ref<HTMLUListElement | null>(null)
 
@@ -68,11 +68,11 @@ watchEffect(() => {
 })
 
 function TreeListLink({ data, level }: { data: TreeListLinkData, level: number }) {
-  const Comp = (props: any) => data.is ? h(data.is, props, data.title) : h('a', props, data.title)
+  const Comp = (props: any) => data.is ? h(data.is, props, { default: () => data.title }) : h('a', props, data.title)
   return (
     <li>
       <Comp
-        {...data.attrs}
+        tabindex={0}
         class={[
           rounded.value.class,
           linkLeftIndicator,
@@ -90,6 +90,12 @@ function TreeListLink({ data, level }: { data: TreeListLinkData, level: number }
           ]
         }
         onClick={() => model.value = data.value}
+        onKeyup={(e: KeyboardEvent) => {
+          if (e.key === 'Enter') {
+            model.value = data.value
+          }
+        }}
+        {...data.attrs}
       >
         {data.title}
       </Comp>
@@ -101,7 +107,7 @@ function TreeListHeader({ data, level }: { data: TreeListHeaderData, level: numb
   return (
     <li
       class={[
-        'flex items-center relative py-2 text-surface-dimmed font-bold tracking-widest',
+        'flex items-center relative py-2 text-surface-dimmed font-bold tracking-widest text-xs',
       ]}
       style={
         [
