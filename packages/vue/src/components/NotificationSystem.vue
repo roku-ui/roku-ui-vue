@@ -148,10 +148,10 @@ function groupYStyle(position: NotificationPosition) {
 }
 
 const enterClass = function (position: string) {
-  return isTop(position) ? 'animate-keyframes-fade-in-down animate-duration-0.5s' : 'animate-keyframes-fade-in-up animate-duration-0.5s'
+  return isTop(position) ? 'animate-keyframes-fade-in-down animate-duration-0.3s' : 'animate-keyframes-fade-in-up animate-duration-0.3s'
 }
 const leaveClass = function (position: string) {
-  return isTop(position) ? 'animate-keyframes-fade-out-down animate-duration-0.5s' : 'animate-keyframes-fade-out-up animate-duration-0.5s'
+  return isTop(position) ? 'animate-keyframes-fade-out-down animate-duration-0.3s' : 'animate-keyframes-fade-out-up animate-duration-0.3s'
 }
 function onClose(notification: NotificationData) {
   const index = notifications.value.indexOf(notification)
@@ -189,7 +189,7 @@ const posList: NotificationPosition[] = ['top-left', 'top-right', 'top', 'bottom
         >
           <div
             v-if="notification.position === pos"
-            class="absolute transition-top,bottom,transform duration-0.5s"
+            class="absolute transition-top,bottom,transform duration-0.3s"
             :style="[notificationYStyle(notificationIndexList[i], notification.position)]"
           >
             <div
