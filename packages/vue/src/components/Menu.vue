@@ -20,10 +20,14 @@ export interface MenuProps {
 
 const props = withDefaults(defineProps<{
   rounded?: Rounded
+  enterActiveClass?: string
+  leaveActiveClass?: string
   items?: MenuItemData[]
 }>(), {
   rounded: 'md',
   size: 'md',
+  enterActiveClass: 'animate-keyframes-zoom-in animate-duration-0.3s',
+  leaveActiveClass: 'animate-keyframes-zoom-out animate-duration-0.3s',
 })
 
 const emits = defineEmits<{
@@ -188,24 +192,33 @@ onKeyStroke('Enter', (e) => {
     <div ref="menuTriggerRef" class="inline-block">
       <slot ref="menuTriggerRef" />
     </div>
-    <menu
-      v-if="finalValue"
-      ref="menuDropdownRef"
-      :class="[rounded.class]"
-      :style="[rounded.style]"
-      class="absolute left-1/2 mt-2 w-64 border border bg-surface bg-surface p-2 -translate-x-1/2"
+    <Transition
+      :enter-active-class="props.enterActiveClass"
+      :leave-active-class="props.leaveActiveClass"
     >
-      <template
-        v-for="item, i in props.items"
-        :key="i"
+      <menu
+        v-if="finalValue"
+        class="relative flex justify-center"
       >
-        <component :is="item.render" v-if="item.render" />
-        <MenuItem
-          v-else
-          :data="item" v-bind="props"
-          :idx="[i]"
-        />
-      </template>
-    </menu>
+        <div
+          ref="menuDropdownRef"
+          :class="[rounded.class]"
+          :style="[rounded.style]"
+          class="absolute mt-2 w-64 border bg-surface p-2"
+        >
+          <template
+            v-for="item, i in props.items"
+            :key="i"
+          >
+            <component :is="item.render" v-if="item.render" />
+            <MenuItem
+              v-else
+              :data="item" v-bind="props"
+              :idx="[i]"
+            />
+          </template>
+        </div>
+      </menu>
+    </Transition>
   </div>
 </template>
