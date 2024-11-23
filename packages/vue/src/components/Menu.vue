@@ -26,8 +26,8 @@ const props = withDefaults(defineProps<{
 }>(), {
   rounded: 'md',
   size: 'md',
-  enterActiveClass: 'animate-keyframes-zoom-in animate-duration-0.3s',
-  leaveActiveClass: 'animate-keyframes-zoom-out animate-duration-0.3s',
+  enterActiveClass: 'animate-keyframes-zoom-in animate-duration-0.1s',
+  leaveActiveClass: 'animate-keyframes-zoom-out animate-duration-0.1s',
 })
 
 const emits = defineEmits<{

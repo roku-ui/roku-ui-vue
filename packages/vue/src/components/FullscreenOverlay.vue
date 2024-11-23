@@ -69,7 +69,7 @@ const provider = useRokuProvider()
   <Teleport :to="provider ?? 'body'">
     <div
       ref="wrapperRef"
-      class="fixed left-0 top-0 z-100 h-full w-full bg-surface-10/33 p-2 transition-all duration-100"
+      class="fixed left-0 top-0 z-100 h-full w-full bg-surface-10/50 p-2 transition-all duration-100"
       :class="[blurCls, wrapperClass, {
         ['op-0 pointer-events-none']: !model,
         ['op-100']: model,
