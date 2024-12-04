@@ -68,15 +68,6 @@ let ani: Animation | undefined
 
 const mainColor = computed(() => useColors(color.value).value[5])
 
-// const surfaceCS = useCS({
-//   type: 'bg',
-//   color: 'surface',
-//   index: {
-//     light: 2,
-//     dark: 9,
-//   },
-// })
-
 const loadingStyle = computed(() => {
   if (props.loading) {
     if (ani) {

@@ -23,11 +23,13 @@ const props = withDefaults(defineProps<{
   enterActiveClass?: string
   leaveActiveClass?: string
   items?: MenuItemData[]
+  trigger?: 'click' | 'hover' | 'contextmenu'
 }>(), {
   rounded: 'md',
   size: 'md',
   enterActiveClass: 'animate-keyframes-zoom-in animate-duration-0.1s',
   leaveActiveClass: 'animate-keyframes-zoom-out animate-duration-0.1s',
+  trigger: 'click',
 })
 
 const emits = defineEmits<{
@@ -51,10 +53,46 @@ const rounded = useRounded(props)
 const menuWrapperRef = ref<HTMLElement | null>(null)
 const menuTriggerRef = ref<HTMLElement | null>(null)
 const menuDropdownRef = ref<HTMLElement | null>(null)
+
 useEventListener(menuTriggerRef, 'pointerup', (e) => {
+  if (props.trigger !== 'click' || e.button !== 0) {
+    return
+  }
   e.stopPropagation()
   e.preventDefault()
   toggle()
+})
+
+const hover = useElementHover(menuTriggerRef, {
+  delayLeave: 100,
+})
+
+const dropdownHover = useElementHover(menuDropdownRef, {
+  delayLeave: 100,
+})
+
+watchEffect(() => {
+  if (props.trigger !== 'hover') {
+    return
+  }
+  if (hover.value || dropdownHover.value) {
+    toggle(true)
+  }
+  else {
+    toggle(false)
+  }
+})
+
+const openPosition = ref<{ x: number, y: number }>({ x: 0, y: 0 })
+
+useEventListener(menuTriggerRef, 'contextmenu', (e) => {
+  if (props.trigger !== 'contextmenu') {
+    return
+  }
+  e.stopPropagation()
+  e.preventDefault()
+  toggle()
+  openPosition.value = { x: e.offsetX, y: e.offsetY }
 })
 
 onClickOutside(menuDropdownRef, () => {
@@ -185,6 +223,28 @@ onKeyStroke('Enter', (e) => {
     toggle(false)
   }
 })
+
+const dropdownPositionClass = computed(() => {
+  if (props.trigger === 'contextmenu') {
+    return ''
+  }
+  else {
+    return 'absolute mt-2'
+  }
+})
+
+const dropdownPositionStyle = computed(() => {
+  if (props.trigger === 'contextmenu') {
+    return {
+      left: `${openPosition.value.x}px`,
+      top: `${openPosition.value.y}px`,
+      position: 'absolute',
+    } as const
+  }
+  else {
+    return {}
+  }
+})
 </script>
 
 <template>
@@ -198,13 +258,14 @@ onKeyStroke('Enter', (e) => {
     >
       <menu
         v-if="finalValue"
-        class="relative flex justify-center"
+        class="relative z-1 flex justify-center"
+        :style="dropdownPositionStyle"
       >
         <div
           ref="menuDropdownRef"
-          :class="[rounded.class]"
+          :class="[rounded.class, dropdownPositionClass]"
           :style="[rounded.style]"
-          class="absolute mt-2 w-64 border bg-surface p-2"
+          class="w-64 border bg-surface p-2"
         >
           <template
             v-for="item, i in props.items"
