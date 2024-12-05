@@ -16,7 +16,7 @@ features:
 
 ## 自定义滚动
 
-waterfall 布局一般会内置一个滚动条，但是如果你想要自定义滚动条，可以使用轻松使用 [ScrollArea 组件](/components/scroll-area)替代之。
+waterfall 布局一般会内置一个滚动条，但是如果你想要自定义滚动条，可以使用轻松使用 [ScrollArea 组件](/components/layout/scroll-area)替代之。
 
 ::demo-waterfall-lazy-custom-scroll
 ::

@@ -20,9 +20,6 @@ useEventListener(menuItemRef, 'pointermove', () => {
 }, {
   capture: true,
 })
-const isHovering = computed(() => {
-  return menuCurrentIdx.value.join() === props.idx.join()
-})
 
 const isOpen = computed(() => {
   // 如果 idx 是 menuCurrentIdx 的前缀，且不完全相等，则返回 true
@@ -39,18 +36,21 @@ const select = inject<(value: number | string | symbol) => void>('selectMenuItem
   <button
     ref="menuItemRef"
     :tabindex="-1"
-    class="relative inline-block h-8 w-full flex cursor-pointer items-center gap-2 px-2 outline-none"
-    :class="[rounded.class, {
-      'bg-surface-variant-2': isHovering,
-    }]"
+    class="relative inline-block h-8 w-full flex cursor-pointer items-center gap-2 hover:bg-surface-variant-2 px-2 outline-none"
+    :class="[rounded.class]"
     :style="[rounded.style]"
     @pointerdown="() => data.value ? select(data.value) : undefined"
   >
     <i v-if="data.icon" :class="data.icon" />
-    <div>{{ data.label }}</div>
+    <div class="flex-grow text-truncate text-left">
+      {{ data.label }}
+    </div>
+    <div v-if="data.children">
+      <i class="i-tabler-chevron-right" />
+    </div>
     <menu
       v-if="data.children && (hover || isOpen)"
-      class="absolute left-100% top-0 ml-2 w-64 border border bg-surface bg-surface p-2"
+      class="absolute left-100% top-0 ml-1 w-64 border border bg-surface bg-surface p-2"
       :class="rounded.class"
       :style="rounded.style"
     >

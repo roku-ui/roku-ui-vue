@@ -16,7 +16,7 @@ const model = defineModel<boolean>()
     v-model="model"
     :blur="props.blur"
     :persistent="props.persistent"
-    wrapper-class="flex justify-center items-end  md:items-start md:pt-5%"
+    wrapper-class="flex justify-center items-end md:items-start md:pt-5%"
   >
     <Transition
       enter-from-class="translate-y-1/2"

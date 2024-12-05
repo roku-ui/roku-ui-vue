@@ -43,10 +43,12 @@ watchEffect(() => {
   }
   else {
     setTimeout(() => {
-      // if all modals are closed
-      if (!document.querySelector('.modal-wrapper.op100')) {
-        document.body.style.overflow = ''
-        document.body.style.marginRight = ''
+      if (document) {
+        // if all modals are closed
+        if (!document.querySelector('.modal-wrapper.op100')) {
+          document.body.style.overflow = ''
+          document.body.style.marginRight = ''
+        }
       }
     }, 300)
   }
