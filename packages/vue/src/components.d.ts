@@ -25,6 +25,7 @@ declare module 'vue' {
     Menu: typeof import('./components/Menu.vue')['default']
     MenuItem: typeof import('./components/MenuItem.vue')['default']
     Modal: typeof import('./components/Modal.vue')['default']
+    ModalSystem: typeof import('./components/ModalSystem.vue')['default']
     Notification: typeof import('./components/Notification.vue')['default']
     NotificationSystem: typeof import('./components/NotificationSystem.vue')['default']
     Overlay: typeof import('./components/Overlay.vue')['default']

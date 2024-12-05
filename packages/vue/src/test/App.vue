@@ -1,6 +1,7 @@
 <!-- eslint-disable no-console -->
 <script setup lang="tsx">
 import Avatar from '@/components/Avatar.vue'
+import { Modals } from '@/utils/modals'
 import { computed, onMounted, ref } from 'vue'
 import { generateColors, Notifications, primaryColor, surfaceColor } from '..'
 import PopoverDemo from './demo/PopoverDemo.vue'
@@ -82,7 +83,21 @@ function customRender() {
 <template>
   <RokuProvider class="roku-scrollbar !scrollbar-thumb-hover-color-surface-4 !dark:scrollbar-thumb-hover-color-surface-5">
     <NotificationSystem />
+    <ModalSystem />
     <div class="flex flex-col items-center gap-2">
+      <Btn
+        @click="Modals.open({
+          id: 'test',
+          title: 'Modal Title',
+          type: 'confirm',
+          message: '',
+          onConfirm (): void {
+            throw new Error('Function not implemented.')
+          },
+        })"
+      >
+        Open a modal
+      </Btn>
       <Paper class="min-h-50" with-border no-padding>
         <TreeList
           class="min-w-60"
@@ -140,24 +155,43 @@ function customRender() {
         />
       </Paper>
       <Menu
-        :items="[
+        :data="[
           {
             render: customRender,
           },
-          { value: 'item1', label: 'Item 1', icon: 'i-tabler-activity' },
-          { value: 'item2', label: 'Item 2', icon: 'i-tabler-alert-triangle' },
+          { role: 'divider' },
+          { role: 'label', title: 'Item 1' },
+          { value: 'item1', title: 'Item 1', icon: 'i-tabler-activity' },
+          { value: 'item2', title: 'Item2Item2Item2Item2Item2', icon: 'i-tabler-alert-triangle' },
+          { role: 'divider' },
           {
-            label: 'Item 3',
+            title: 'Item 3Item 3Item 3Item 3Item 3Item 3',
             icon: 'i-tabler-alert-circle',
             children: [
               {
                 value: 'item3.1',
-                label: 'Item 3.1',
-                icon: 'i-tabler-alert-triangle' },
+                title: 'Item 3.1',
+              },
+              {
+                value: 'item3.1',
+                title: 'Item 3.1',
+                icon: 'i-tabler-alert-triangle',
+              },
+              { role: 'divider' },
               {
                 value: 'item3.2',
-                label: 'Item 3.2',
+                title: 'Item 3.2',
                 icon: 'i-tabler-alert-circle',
+                children: [
+                  {
+                    value: 'item3.2.1',
+                    title: 'Item 3.2.1',
+                  },
+                  {
+                    value: 'item3.2.2',
+                    title: 'Item 3.2.2',
+                  },
+                ],
               },
             ],
           },
@@ -167,23 +201,23 @@ function customRender() {
         <Btn>Menu</Btn>
       </Menu>
       <Menu
-        :items="[
+        :data="[
           {
             render: customRender,
           },
-          { value: 'item1', label: 'Item 1', icon: 'i-tabler-activity' },
-          { value: 'item2', label: 'Item 2', icon: 'i-tabler-alert-triangle' },
+          { value: 'item1', title: 'Item 1', icon: 'i-tabler-activity' },
+          { value: 'item2', title: 'Item 2', icon: 'i-tabler-alert-triangle' },
           {
-            label: 'Item 3',
+            title: 'Item 3',
             icon: 'i-tabler-alert-circle',
             children: [
               {
                 value: 'item3.1',
-                label: 'Item 3.1',
+                title: 'Item 3.1',
                 icon: 'i-tabler-alert-triangle' },
               {
                 value: 'item3.2',
-                label: 'Item 3.2',
+                title: 'Item 3.2',
                 icon: 'i-tabler-alert-circle',
               },
             ],
