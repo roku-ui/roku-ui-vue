@@ -228,6 +228,9 @@ function customRender() {
       >
         <Paper>
           Context Menu
+          <div>
+            123
+          </div>
         </Paper>
       </Menu>
       <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 5000, position: 'top-left' })">

@@ -110,7 +110,12 @@ useEventListener(menuTriggerRef, 'contextmenu', (e) => {
   e.stopPropagation()
   e.preventDefault()
   toggle()
-  openPosition.value = { x: e.offsetX, y: e.offsetY }
+  const baseDom = menuWrapperRef.value
+  const rect = baseDom?.getBoundingClientRect()
+  if (!rect) {
+    return
+  }
+  openPosition.value = { x: e.clientX - rect.left, y: e.clientY - rect.top }
 })
 
 onClickOutside(menuDropdownRef, () => {
