@@ -287,8 +287,8 @@ const dropdownPositionStyle = computed(() => {
 </script>
 
 <template>
-  <div ref="menuWrapperRef" class="relative inline-block">
-    <div ref="menuTriggerRef" class="inline-block">
+  <div ref="menuWrapperRef" class="relative">
+    <div ref="menuTriggerRef">
       <slot ref="menuTriggerRef" />
     </div>
     <Transition
