@@ -51,6 +51,10 @@ const rokuPreset: () => Preset<object> = () => () => {
       'border-secondary': 'border-[--r-secondary-background-color]',
       'border-tertiary': 'border-[--r-tertiary-background-color]',
       'border-error': 'border-[--r-error-background-color]',
+      'outline-primary': 'outline-[--r-primary-background-color]',
+      'outline-secondary': 'outline-[--r-secondary-background-color]',
+      'outline-tertiary': 'outline-[--r-tertiary-background-color]',
+      'outline-error': 'outline-[--r-error-background-color]',
     },
     presets: [
       presetUno({

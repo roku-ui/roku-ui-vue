@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { BtnVariant } from '@/types'
-import { useButtonCS, useOutlineColor } from '@/shared'
+import { useButtonCS, useOutlineCS } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
 import { type Component, computed, ref } from 'vue'
 
@@ -64,7 +64,7 @@ const variant = computed(() => {
 const color = computed(() => props.color ?? 'primary')
 const cs = useButtonCS(variant, color)
 const outlineColor = computed(() => props.outlineColor ?? color.value)
-const outlineCS = useOutlineColor(outlineColor)
+const outlineCS = useOutlineCS(outlineColor)
 </script>
 
 <template>

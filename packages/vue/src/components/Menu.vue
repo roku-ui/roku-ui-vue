@@ -2,34 +2,47 @@
 import type { Rounded, Size } from '@/types'
 import type { VNodeChild } from 'vue'
 import { useRounded } from '@/utils'
+import { isDivider, isLabel, isMenuItem, someHasIcon } from '@/utils/menu'
 import { computed, provide, ref, watchEffect } from 'vue'
 
+export type MenuData = MenuItemData | MenuDividerData | MenuLabelData
+
 export interface MenuItemData {
-  label?: string
+  title?: string
   value?: number | string | symbol
   icon?: string
   render?: () => VNodeChild
-  children?: MenuItemData[]
+  children?: MenuData[]
   size?: Size
+}
+
+export interface MenuDividerData {
+  role: 'divider'
+}
+
+export interface MenuLabelData {
+  role: 'label'
+  title: string
 }
 
 export interface MenuProps {
   rounded?: Rounded
-  items?: MenuItemData[]
+  color?: string
 }
 
 const props = withDefaults(defineProps<{
   rounded?: Rounded
   enterActiveClass?: string
   leaveActiveClass?: string
-  items?: MenuItemData[]
+  data?: MenuData[]
   trigger?: 'click' | 'hover' | 'contextmenu'
-}>(), {
+} & MenuProps>(), {
   rounded: 'md',
   size: 'md',
   enterActiveClass: 'animate-keyframes-zoom-in animate-duration-0.1s',
   leaveActiveClass: 'animate-keyframes-zoom-out animate-duration-0.1s',
   trigger: 'click',
+  color: 'primary',
 })
 
 const emits = defineEmits<{
@@ -106,24 +119,28 @@ watchEffect(() => {
 })
 provide('menuCurrentIdx', menuCurrentIdx)
 
-function getLength(items: MenuItemData[], idx: number[]): number {
+function getLength(data: MenuData[], idx: number[]): number {
+  const items = data
   if (idx.length <= 1) {
     return items.length
   }
-  const children = items[idx[0]].children
-  if (children === undefined) {
+  const cur = items[idx[0]]
+  if (!isMenuItem(cur) || cur.children === undefined) {
     return 0
   }
+  const children = cur.children
   return getLength(children, idx.slice(1))
 }
 
 const maxIdx = computed(() => {
-  if (props.items === undefined) {
+  if (props.data === undefined) {
     return 0
   }
-  return getLength(props.items, menuCurrentIdx.value)
+  return getLength(props.data, menuCurrentIdx.value)
 })
-
+const items = computed(() => {
+  return props.data
+})
 onKeyStroke('ArrowDown', (e) => {
   if (!finalValue.value) {
     return
@@ -133,7 +150,8 @@ onKeyStroke('ArrowDown', (e) => {
 
   const lastIdx = idx[idx.length - 1]
   let nextIdx = (lastIdx + 1) % maxIdx.value
-  while (getMenuItemData(props.items, [...idx.slice(0, idx.length - 1), nextIdx])?.render) {
+  while (
+    !isMenuItem(getMenuItemData(items.value, [...idx.slice(0, idx.length - 1), nextIdx])) || getMenuItemData(items.value, [...idx.slice(0, idx.length - 1), nextIdx])?.render) {
     nextIdx = (nextIdx + 1) % maxIdx.value
   }
   menuCurrentIdx.value = [...idx.slice(0, idx.length - 1), nextIdx]
@@ -152,7 +170,10 @@ onKeyStroke('ArrowUp', (e) => {
   }
   let nextIdx = (lastIdx - 1 + maxIdx.value) % maxIdx.value
   // jump to the next item that is not render
-  while (getMenuItemData(props.items, [...idx.slice(0, idx.length - 1), nextIdx])?.render) {
+  while (
+    !isMenuItem(getMenuItemData(items.value, [...idx.slice(0, idx.length - 1), nextIdx]))
+    || getMenuItemData(items.value, [...idx.slice(0, idx.length - 1), nextIdx])?.render
+  ) {
     nextIdx = (nextIdx - 1 + maxIdx.value) % maxIdx.value
   }
   menuCurrentIdx.value = [...idx.slice(0, idx.length - 1), nextIdx]
@@ -163,15 +184,25 @@ onKeyStroke('ArrowRight', (e) => {
     return
   }
   e.preventDefault()
+
+  // 如果当前的 Data 不是 ItemData 则什么都不做
+  if (!isMenuItem(getMenuItemData(items.value, menuCurrentIdx.value))) {
+    return
+  }
+
   // 如果末尾不是 - 1
   if (menuCurrentIdx.value[menuCurrentIdx.value.length - 1] !== -1) {
     // 找到目前 menuCurrentIdx 所指示的 item
-    let cur = props.items
+    let cur = items.value
     for (let i = 0; i < menuCurrentIdx.value.length; i++) {
       if (cur === undefined) {
         return
       }
-      cur = cur[menuCurrentIdx.value[i]].children
+      const ci = cur[menuCurrentIdx.value[i]]
+      if (!isMenuItem(ci) || ci.children === undefined) {
+        return
+      }
+      cur = ci.children
     }
     // 如果目前 menuCurrentIdx 所指示的 item 有 children
     if (cur !== undefined) {
@@ -186,13 +217,17 @@ onKeyStroke('ArrowLeft', (e) => {
     return
   }
   e.preventDefault()
-  // 如果 menuCurrentIdx 不为空，则删除最后一个
-  if (menuCurrentIdx.value.length > 0) {
+  // 如果当前的 Data 不是 ItemData 则什么都不做
+  if (!isMenuItem(getMenuItemData(items.value, menuCurrentIdx.value))) {
+    return
+  }
+  // 如果 menuCurrentIdx 长度 > 1，说明存在父级
+  if (menuCurrentIdx.value.length > 1) {
     menuCurrentIdx.value = menuCurrentIdx.value.slice(0, menuCurrentIdx.value.length - 1)
   }
 })
 
-function getMenuItemData(items: MenuItemData[] | undefined, idx: number[]): MenuItemData | undefined {
+function getMenuItemData(items: MenuData[] | undefined, idx: number[]): MenuItemData | undefined {
   if (idx.length === 0) {
     return undefined
   }
@@ -201,12 +236,16 @@ function getMenuItemData(items: MenuItemData[] | undefined, idx: number[]): Menu
     if (cur === undefined) {
       return undefined
     }
-    cur = cur[idx[i]].children
+    const ci = cur[idx[i]]
+    if (!isMenuItem(ci) || ci.children === undefined) {
+      return undefined
+    }
+    cur = ci.children
   }
   if (cur === undefined) {
     return undefined
   }
-  return cur[idx[idx.length - 1]]
+  return cur[idx[idx.length - 1]] as MenuItemData
 }
 provide('selectMenuItem', (value: number | string | symbol) => {
   emits('select', value)
@@ -217,7 +256,7 @@ onKeyStroke('Enter', (e) => {
     return
   }
   e.preventDefault()
-  const val = getMenuItemData(props.items, menuCurrentIdx.value)?.value
+  const val = getMenuItemData(items.value, menuCurrentIdx.value)?.value
   if (val) {
     emits('select', val)
     toggle(false)
@@ -268,15 +307,25 @@ const dropdownPositionStyle = computed(() => {
           class="w-64 border bg-surface p-2"
         >
           <template
-            v-for="item, i in props.items"
+            v-for="item, i in props.data"
             :key="i"
           >
-            <component :is="item.render" v-if="item.render" />
-            <MenuItem
-              v-else
-              :data="item" v-bind="props"
-              :idx="[i]"
-            />
+            <div v-if="isLabel(item)" class="text-surface-variant-3 px-2 py-1 text-xs text-surface-dimmed">
+              {{ item.title }}
+            </div>
+            <div v-else-if="isDivider(item)" class="my-2 border-t border-surface" />
+            <template v-else>
+              <component
+                :is="item.render"
+                v-if="item.render"
+              />
+              <MenuItem
+                v-else
+                v-bind="{ ...props, data: item }"
+                :idx="[i]"
+                :has-icon="someHasIcon(props.data)"
+              />
+            </template>
           </template>
         </div>
       </menu>

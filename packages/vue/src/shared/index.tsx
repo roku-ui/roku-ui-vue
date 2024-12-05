@@ -372,7 +372,7 @@ export function useSurfaceCS(type: CSType, index: CSIndex, alpha = 1.0) {
   })
 }
 
-export function useOutlineColor(color: MaybeRef<Color>) {
+export function useOutlineCS(color: MaybeRef<Color>) {
   return useCS({
     color,
     type: 'outline',

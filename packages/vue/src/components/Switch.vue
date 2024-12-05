@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Color } from '@/types'
-import { useColorCS, useOutlineColor as useOutlineColorCS, useSurfaceCS } from '@/shared'
+import { useColorCS, useOutlineCS as useOutlineColorCS, useSurfaceCS } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
 import { computed, ref } from 'vue'
 
