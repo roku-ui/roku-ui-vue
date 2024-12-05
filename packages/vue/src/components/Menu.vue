@@ -36,6 +36,11 @@ const props = withDefaults(defineProps<{
   leaveActiveClass?: string
   data?: MenuData[]
   trigger?: 'click' | 'hover' | 'contextmenu'
+  classes?: {
+    wrapper?: string | string[] | Record<string, boolean>
+    trigger?: string | string[] | Record<string, boolean>
+    dropdown?: string | string[] | Record<string, boolean>
+  }
 } & MenuProps>(), {
   rounded: 'md',
   size: 'md',
@@ -110,7 +115,14 @@ useEventListener(menuTriggerRef, 'contextmenu', (e) => {
 
 onClickOutside(menuDropdownRef, () => {
   toggle(false)
+}, {
+  capture: true,
 })
+
+useEventListener(window, 'contextmenu', () => {
+  toggle(false)
+})
+
 const menuCurrentIdx = ref<number[]>([-1])
 watchEffect(() => {
   if (!finalValue.value) {
@@ -287,16 +299,29 @@ const dropdownPositionStyle = computed(() => {
 </script>
 
 <template>
-  <div ref="menuWrapperRef" class="relative">
-    <div ref="menuTriggerRef">
-      <slot ref="menuTriggerRef" />
+  <div
+    ref="menuWrapperRef"
+    :class="[props.classes?.wrapper, {
+      relative: !props.classes?.wrapper,
+    }]"
+  >
+    <div
+      ref="menuTriggerRef"
+      :class="[
+        props.classes?.trigger,
+        {
+          'w-inherit h-inherit': !props.classes?.trigger,
+        },
+      ]"
+    >
+      <slot />
     </div>
     <Transition
       :enter-active-class="props.enterActiveClass"
       :leave-active-class="props.leaveActiveClass"
     >
       <menu
-        v-if="finalValue"
+        v-if="finalValue && data"
         class="relative z-1 flex justify-center"
         :style="dropdownPositionStyle"
       >
