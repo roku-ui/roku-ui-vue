@@ -3,7 +3,6 @@ import type { Rounded, Size } from '@/types'
 import type { VNodeChild } from 'vue'
 import { useRounded } from '@/utils'
 import { isDivider, isLabel, isMenuItem, someHasIcon } from '@/utils/menu'
-import { isClient } from '@vueuse/core'
 import { computed, provide, ref, watchEffect } from 'vue'
 
 export type MenuData = MenuItemData | MenuDividerData | MenuLabelData
