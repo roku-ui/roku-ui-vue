@@ -226,11 +226,8 @@ function customRender() {
         trigger="contextmenu"
         @select="console.log"
       >
-        <Paper>
+        <Paper class="w-100vw">
           Context Menu
-          <div>
-            123
-          </div>
         </Paper>
       </Menu>
       <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 5000, position: 'top-left' })">

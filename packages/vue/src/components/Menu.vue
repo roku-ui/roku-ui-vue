@@ -3,6 +3,7 @@ import type { Rounded, Size } from '@/types'
 import type { VNodeChild } from 'vue'
 import { useRounded } from '@/utils'
 import { isDivider, isLabel, isMenuItem, someHasIcon } from '@/utils/menu'
+import { isClient } from '@vueuse/core'
 import { computed, provide, ref, watchEffect } from 'vue'
 
 export type MenuData = MenuItemData | MenuDividerData | MenuLabelData
@@ -289,11 +290,27 @@ const dropdownPositionClass = computed(() => {
   }
 })
 
+useEventListener(window, 'scroll', () => {
+  if (finalValue.value) {
+    toggle(false)
+  }
+})
+
 const dropdownPositionStyle = computed(() => {
+  const windowWidth = window.innerWidth
+  const dropDownWidth = menuDropdownRef.value?.clientWidth ?? 0
+  const dropDownLeft = menuDropdownRef.value?.getBoundingClientRect().left ?? 0
+  const hasRightPosition = windowWidth - dropDownLeft > dropDownWidth
+
+  const windowHeight = window.innerHeight
+  const dropDownHeight = menuDropdownRef.value?.clientHeight ?? 0
+  const dropDownTop = menuDropdownRef.value?.getBoundingClientRect().top ?? 0
+  const hasBottomPosition = windowHeight - dropDownTop > dropDownHeight
+
   if (props.trigger === 'contextmenu') {
     return {
-      left: `${openPosition.value.x}px`,
-      top: `${openPosition.value.y}px`,
+      left: `${hasRightPosition ? openPosition.value.x : openPosition.value.x - dropDownWidth}px`,
+      top: `${hasBottomPosition ? openPosition.value.y : openPosition.value.y - dropDownHeight}px`,
       position: 'absolute',
     } as const
   }

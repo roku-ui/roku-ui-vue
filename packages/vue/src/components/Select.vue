@@ -180,6 +180,8 @@ watch([focused], () => {
   keyboardIndex.value = -1
   hoverIndex.value = -1
 })
+
+// 细节 5：判断下拉框是否有足够的空间
 const hasArea = computed(() => {
   if (!focused.value) {
     return false
@@ -192,6 +194,7 @@ const hasArea = computed(() => {
   }
   return false
 })
+
 function optionIsEq(a: Reactive<T> | T, b: Reactive<T> | T | undefined) {
   if (!b) {
     return false

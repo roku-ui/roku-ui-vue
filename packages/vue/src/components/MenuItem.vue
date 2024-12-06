@@ -42,6 +42,24 @@ const outlineCS = useOutlineCS(color)
 const select = inject<(value: number | string | symbol) => void>('selectMenuItem', () => {
   console.error('selectMenuItem is not provided')
 })
+const menuDropdownRef = ref<HTMLElement | null>(null)
+const menuPositionStyle = computed(() => {
+  const windowWidth = window.innerWidth
+  const dropDownWidth = menuDropdownRef.value?.clientWidth ?? 0
+  const dropDownLeft = menuDropdownRef.value?.getBoundingClientRect().left ?? 0
+  const hasRightPosition = windowWidth - dropDownLeft > dropDownWidth
+
+  const windowHeight = window.innerHeight
+  const dropDownHeight = menuDropdownRef.value?.clientHeight ?? 0
+  const dropDownTop = menuDropdownRef.value?.getBoundingClientRect().top ?? 0
+  const hasBottomPosition = windowHeight - dropDownTop > dropDownHeight
+  return {
+    left: hasRightPosition ? '100%' : 'auto',
+    right: hasRightPosition ? 'auto' : '100%',
+    top: hasBottomPosition ? '0' : 'auto',
+    bottom: hasBottomPosition ? 'auto' : '0',
+  }
+})
 </script>
 
 <template>
@@ -79,9 +97,10 @@ const select = inject<(value: number | string | symbol) => void>('selectMenuItem
       <i v-if="data.children" class="i-tabler-chevron-right flex-shrink-0" />
       <menu
         v-if="data.children && (hover || isOpen)"
+        ref="menuDropdownRef"
         class="absolute left-100% top-0 ml-1 w-64 border border bg-surface bg-surface p-2"
         :class="rounded.class"
-        :style="rounded.style"
+        :style="[rounded.style, menuPositionStyle]"
       >
         <MenuItem
           v-for="child, i in data.children"
