@@ -4,24 +4,24 @@ import type { VNode } from 'vue'
 import { useRounded } from '@/utils'
 import { computed, h, ref, Transition, watchEffect } from 'vue'
 
-interface TreeListLinkData {
+export interface TreeListLinkData {
   title: string
   value: string
   attrs?: Record<string, any>
   is?: string | VNode
 }
 
-interface TreeListHeaderData {
+export interface TreeListHeaderData {
   title: string
 }
 
-interface TreeListTitleData {
+export interface TreeListTitleData {
   title: string
   children: TreeListItemData[]
   open?: boolean
 }
 
-type TreeListItemData = TreeListLinkData | TreeListHeaderData | TreeListTitleData
+export type TreeListItemData = TreeListLinkData | TreeListHeaderData | TreeListTitleData
 
 const props = withDefaults(defineProps<{
   items: TreeListItemData[]
