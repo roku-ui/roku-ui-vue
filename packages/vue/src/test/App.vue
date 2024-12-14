@@ -85,6 +85,11 @@ function customRender() {
     <NotificationSystem />
     <ModalSystem />
     <div class="flex flex-col items-center gap-2">
+      <Switch
+        indicator-icon="i-tabler-123"
+        :model-value="true"
+        @change="console.log"
+      />
       <Btn
         @click="Modals.open({
           id: 'test',
@@ -226,7 +231,7 @@ function customRender() {
         trigger="contextmenu"
         @select="console.log"
       >
-        <Paper class="w-100vw">
+        <Paper class="w-80vw">
           Context Menu
         </Paper>
       </Menu>
