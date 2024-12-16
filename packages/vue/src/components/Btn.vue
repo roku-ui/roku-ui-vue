@@ -82,7 +82,7 @@ const outlineCS = useOutlineCS(outlineColor)
     ref="btn"
     :data-size="size"
     :type="type"
-    class="flex items-center justify-center gap-1 decoration-none outline-none"
+    class="flex items-center justify-center gap-1 decoration-none outline-none children:flex-shrink-0"
     :style="[
       cs.style,
       rounded.style,
