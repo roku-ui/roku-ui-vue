@@ -13,15 +13,15 @@ const props = withDefaults(defineProps<{
 const slots = useSlots()
 
 const valueList = computed(() => {
-  const children = slots.default?.()
-  const childList = children?.flatMap<any>((child) => {
+  const children = slots.default?.({})
+  const childList = children?.flatMap((child: any) => {
     if (child.type === Fragment) {
       return child.children!
     }
     return child
-  }).filter((child) => {
+  }).filter((child: any) => {
     return child?.props?.value !== undefined
-  }).map(d => d.props.value) ?? []
+  }).map((d: { props: { value: any } }) => d.props.value) ?? []
   return childList as (string | number | symbol)[]
 })
 

@@ -16,6 +16,12 @@ const props = withDefaults(defineProps<{
   rounded: 'md',
 })
 
+const _slots = defineSlots<{
+  default?: (props: any) => any
+  rightIcon?: (props: any) => any
+  leftIcon?: (props: any) => any
+}>()
+
 const sizeCls = computed(() => {
   switch (props.size) {
     case 'sm':
@@ -48,7 +54,7 @@ const cs = useButtonCS(variant, color)
     />
     <slot
       v-else-if="$slots.leftIcon"
-      name="left-icon"
+      name="leftIcon"
     />
     <slot />
     <i
@@ -58,7 +64,7 @@ const cs = useButtonCS(variant, color)
     />
     <slot
       v-else-if="$slots.rightIcon"
-      name="right-icon"
+      name="rightIcon"
     />
   </span>
 </template>

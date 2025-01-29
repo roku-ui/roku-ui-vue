@@ -68,8 +68,19 @@ const btnGroupOptionSingle = [
 </script>
 
 <template>
-  <RokuProvider class="max-h-100vh overflow-auto !scrollbar-thumb-hover-color-surface-4 roku-scrollbar !dark:scrollbar-thumb-hover-color-surface-5">
+  <RokuProvider class="!scrollbar-thumb-hover-color-surface-4 roku-scrollbar !dark:scrollbar-thumb-hover-color-surface-5 max-h-100vh overflow-auto">
     <NotificationSystem />
+    <div class="flex flex-col items-center gap-2">
+      <Tag>
+        <template #leftIcon>
+          Left
+        </template>
+        <template #rightIcon>
+          Right
+        </template>
+        Abc
+      </Tag>
+    </div>
     <div class="flex flex-col items-center gap-2">
       <div>
         <div class="bg-surface-base">
