@@ -22,7 +22,10 @@ declare module 'vue' {
     FullscreenOverlay: typeof import('./components/FullscreenOverlay.vue')['default']
     Image: typeof import('./components/Image.vue')['default']
     Indicator: typeof import('./components/Indicator.vue')['default']
+    Menu: typeof import('./components/Menu.vue')['default']
+    MenuItem: typeof import('./components/MenuItem.vue')['default']
     Modal: typeof import('./components/Modal.vue')['default']
+    ModalSystem: typeof import('./components/ModalSystem.vue')['default']
     Notification: typeof import('./components/Notification.vue')['default']
     NotificationSystem: typeof import('./components/NotificationSystem.vue')['default']
     Overlay: typeof import('./components/Overlay.vue')['default']
@@ -44,5 +47,6 @@ declare module 'vue' {
     TextField: typeof import('./components/TextField.vue')['default']
     ThemeProvider: typeof import('./components/ThemeProvider.vue')['default']
     Tooltip: typeof import('./components/Tooltip.vue')['default']
+    TreeList: typeof import('./components/TreeList.vue')['default']
   }
 }

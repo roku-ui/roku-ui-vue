@@ -1,15 +1,83 @@
 <script setup lang="ts">
 import { NuxtLink } from '#components'
 import { subTextCS } from '@/utils/colors'
-import { Btn, useButtonCS } from '@roku-ui/vue'
+import { Btn, TreeList, useButtonCS } from '@roku-ui/vue'
 
 defineProps<{
   isOpen: boolean
 }>()
-const contentComponents = await queryContent('components').find()
-const btnCS = useButtonCS('transparent', 'default')
-const btnActiveCS = useButtonCS('transparent', 'primary')
-const route = useRoute()
+const { data: contentComponents } = await useAsyncData('home', () => queryContent('components').sort({ title: 1 }).find({}))
+
+const currentPath = useRoute().path
+function dir2Title(dir: string) {
+  switch (dir) {
+    case 'components':
+      return '组件'
+    case 'display':
+      return '显示'
+    case 'feedback':
+      return '反馈'
+    case 'form':
+      return '表单'
+    case 'layout':
+      return '布局'
+    case 'navigation':
+      return '导航'
+    case 'overlay':
+      return '覆盖'
+    case 'inputs':
+      return '输入'
+    default:
+      return dir
+  }
+}
+
+const treeListItems = computed(() => {
+  if (!contentComponents.value) {
+    return
+  }
+  const sortedA = [...contentComponents.value].sort((a, b) => {
+    const aDir = a._dir
+    const bDir = b._dir
+    if (!aDir) {
+      return -1
+    }
+    if (!bDir) {
+      return 1
+    }
+    return aDir.localeCompare(bDir)
+  })
+  const res = sortedA.map((cc) => {
+    return {
+      value: cc._path,
+      title: cc.title,
+      is: NuxtLink,
+      attrs: {
+        to: cc._path,
+      },
+      dir: cc._dir,
+    }
+  })
+  let currentDir = ''
+  for (const r of res) {
+    if (r.dir !== currentDir) {
+      currentDir = r.dir
+      if (currentDir === 'components') {
+        continue
+      }
+      res.splice(res.indexOf(r), 0, {
+        title: dir2Title(currentDir),
+      })
+    }
+  }
+  return [
+    {
+      title: dir2Title('components'),
+      open: true,
+      children: res,
+    },
+  ]
+})
 </script>
 
 <template>
@@ -18,9 +86,9 @@ const route = useRoute()
       '-translate-x-100%': !isOpen,
       'translate-x-0': isOpen,
     }"
-    class="fixed top-12 z-10 h-100vh min-w-64 w-33vw flex flex-col items-end gap-2 bg-surface-low transition-transform,background-color md:translate-x-0"
+    class="fixed top-12 z-10 h-100vh min-w-64 w-33vw flex flex-col items-end gap-2 bg-surface md:translate-x-0"
   >
-    <div class="w-86 flex flex-col gap-8 px-8 py-6">
+    <div class="h-100vh w-86 flex flex-col gap-8 overflow-y-auto px-8 py-6">
       <div>
         <div>
           <NuxtLink
@@ -57,25 +125,11 @@ const route = useRoute()
           </div>
         </div>
         <div class="flex flex-col gap-2">
-          <div
-            v-bind="subTextCS"
-            class="text-sm"
-          >
-            组件
-          </div>
           <div>
-            <NuxtLink
-              v-for="content in contentComponents"
-              :key="content.slug"
-              :to="content._path"
-              :text="content.title"
-              class="block rounded p-1 px-2"
-              :class="[btnCS.class]"
-              v-bind="btnCS"
-              :style="[route.path === content._path ? btnActiveCS.style : btnCS.style]"
-            >
-              {{ content.title }}
-            </NuxtLink>
+            <TreeList
+              :model-value="currentPath"
+              :items="treeListItems"
+            />
           </div>
         </div>
       </div>

@@ -1,9 +1,9 @@
 import type { RemovableRef } from '@vueuse/core'
+import { defaultTheme, useColors } from '@/shared'
 import { isClient } from '@vueuse/core'
 import tinycolor from 'tinycolor2'
 import { computed, inject, type MaybeRef, onMounted, type Ref, ref, unref } from 'vue'
 import { generateColors, type ThemeData } from '..'
-import { defaultTheme, useColors } from '../shared'
 
 export * from './dom'
 
@@ -28,7 +28,7 @@ export const SURFACE_LIGHTNESS_MAP = [
   0.7,
   0.5,
   0.4,
-  0.2,
+  0.16,
   0.1,
   0.075,
   0.05,
@@ -143,8 +143,9 @@ export function useThemeStyles(theme: ThemeData) {
     ...colorVars,
   }
   const themeStyles = {
-    backgroundColor: 'var(--r-surface-background-base-color)',
-    color: 'var(--r-surface-text-color)',
+    'backgroundColor': 'var(--r-surface-background-base-color)',
+    'color': 'var(--r-surface-text-color)',
+    '--un-default-border-color': 'var(--r-surface-border-color)',
   }
 
   return {

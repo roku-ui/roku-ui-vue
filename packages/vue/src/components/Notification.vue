@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { Size } from '../types'
+import type { Size } from '@/types'
+import { useContainerDefaultCS, useContainerFilledCS, useTextCS } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
 import { computed } from 'vue'
-import { useContainerDefaultCS, useContainerFilledCS } from '../shared'
 
 const props = withDefaults(
   defineProps<{
@@ -16,6 +16,8 @@ const props = withDefaults(
     block?: boolean
     color?: string
     size?: Size
+    complete?: number
+    total?: number
   }>(),
   {
     type: 'info',
@@ -24,6 +26,7 @@ const props = withDefaults(
     rounded: 'md',
     block: false,
     size: 'md',
+    total: 100,
   },
 )
 
@@ -32,6 +35,7 @@ defineEmits(['close'])
 const rounded = useRounded(props)
 const color = computed(() => props.color)
 const containerFilledCS = useContainerFilledCS(color)
+const textCS = useTextCS(color)
 const containerSurfaceCS = useContainerDefaultCS()
 const shapeClass = computed(() => {
   switch (props.size) {
@@ -48,11 +52,9 @@ const shapeClass = computed(() => {
 
 <template>
   <div
-    class="container-low relative min-w-80 w-full flex items-center gap-2 pl-4"
-    :class="[
+    class="overflow-hidden" :class="[
       { 'border-0': !withBorder },
       rounded.class,
-      shapeClass,
       {
         'max-w-100': !block,
         'w-full': block,
@@ -62,69 +64,79 @@ const shapeClass = computed(() => {
     v-bind="containerSurfaceCS"
   >
     <div
-      v-if="icon"
-      class="text-[var(--l-text)] leading-0 dark:text-[var(--d-text)]"
+      class="relative min-w-80 w-full flex items-center gap-2 pl-4"
+      :class="[shapeClass, textCS.class]"
     >
-      <i
-        v-if="loading"
-        class="h-container w-container i-tabler-loader-2 shrink-0 animate-spin"
-      />
-      <i
+      <div
+        v-if="icon"
+        :class="[textCS.class]"
+        :style="textCS.style"
+        class="leading-0"
+      >
+        <i
+          v-if="loading"
+          class="h-container w-container i-tabler-loader-2 shrink-0 animate-spin"
+        />
+        <i
+          v-else
+          class="h-container w-container shrink-0"
+          :class="icon"
+        />
+      </div>
+      <div
         v-else
-        class="h-container w-container shrink-0"
-        :class="icon"
-      />
-    </div>
-    <div
-      v-else
-    >
-      <div
-        class="absolute left-[0.25rem] top-[0.25rem] h-[calc(100%-0.5rem)] w-1 rounded-full bg-[var(--d-bg)] dark:bg-[var(--d-bg)]"
-        :class="[{
-          'animate-pulse': loading,
-        }]"
-        v-bind="containerFilledCS"
-      />
-    </div>
-    <div class="grow-1">
-      <div
-        v-if="title"
-        class="text-[var(--l-text)] dark:text-[var(--d-text)]"
-        :class="{
-          'text-xs': size === 'sm',
-          'text-sm': size === 'md',
-          'text-base': size === 'lg',
-        }"
       >
-        {{ title }}
+        <div
+          class="absolute left-[0.25rem] top-[0.25rem] h-[calc(100%-0.5rem)] w-1 rounded-full bg-[var(--d-bg)] dark:bg-[var(--d-bg)]"
+          :class="[{
+            'animate-pulse': loading,
+          }]"
+          v-bind="containerFilledCS"
+        />
       </div>
+      <div class="grow-1">
+        <div
+          v-if="title"
+          class="text-[var(--l-text)] dark:text-[var(--d-text)]"
+          :style="textCS.style"
+          :class="[{
+            'text-xs': size === 'sm',
+            'text-sm': size === 'md',
+            'text-base': size === 'lg',
+          }, textCS.class]"
+        >
+          {{ title }}
+        </div>
 
-      <slot
-        v-if="$slots.message"
-        name="message"
-      />
-      <div
-        v-else-if="message"
-        class="text-surface-on-low op-50"
-        :class="{
-          'text-xs': size === 'sm',
-          'text-sm': size === 'md' || size === 'lg',
-        }"
-      >
-        {{ message }}
+        <slot
+          v-if="$slots.message"
+          name="message"
+        />
+        <div
+          v-else-if="message"
+          class="text-surface-dimmed"
+          :class="{
+            'text-xs': size === 'sm',
+            'text-sm': size === 'md' || size === 'lg',
+          }"
+        >
+          {{ message }}
+        </div>
       </div>
+      <Btn
+        v-if="closeable"
+        icon
+        variant="transparent"
+        color="white"
+        @click="$emit('close')"
+      >
+        <slot
+          v-if="$slots.closeIcon"
+          name="close-icon"
+        />
+        <i v-else class="i-fluent-dismiss-12-filled" />
+      </Btn>
     </div>
-    <Btn
-      v-if="closeable"
-      icon
-      variant="transparent"
-      @click="$emit('close')"
-    >
-      <slot
-        v-if="$slots.closeIcon"
-        name="close-icon"
-      />
-      <i v-else class="i-fluent-dismiss-12-filled" />
-    </Btn>
+    <Progress v-if="complete" :value="complete" :max="total" />
   </div>
 </template>

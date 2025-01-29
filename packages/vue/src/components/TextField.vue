@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { useInputColorStyle } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
 import { computed, ref, useAttrs } from 'vue'
-import { useInputColorStyle } from '../shared'
 
 const props = withDefaults(
   defineProps<{
@@ -93,6 +93,7 @@ const id = useId(attrs)
       v-bind="$attrs"
       ref="input"
       v-model="model"
+      :disabled="disabled"
       class="w-full border px-2 py-1 outline-none custom-input-colors"
       :class="[disabledCls, rounded.class, sizeCls.base]"
       :style="[rounded.style]"

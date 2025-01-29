@@ -15,9 +15,9 @@ const code = computed(() => {
 </template>`
 })
 const direction = ref<'horizontal' | 'vertical'>('horizontal')
-const isVertical = computed({
+const isVertical = computed<boolean>({
   get: () => direction.value === 'vertical',
-  set: (val) => {
+  set: (val: boolean) => {
     direction.value = val ? 'vertical' : 'horizontal'
   },
 })
@@ -27,7 +27,7 @@ const isVertical = computed({
   <Demo :code="code">
     <template #form>
       <div>
-        <div class="text-surface-on-low">
+        <div class="text-surface-dimmed">
           Direction
         </div>
         <Switch v-model="isVertical" />

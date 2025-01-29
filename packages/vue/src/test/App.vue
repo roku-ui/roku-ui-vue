@@ -1,5 +1,8 @@
 <!-- eslint-disable no-console -->
-<script setup lang="ts">
+<script setup lang="tsx">
+import Avatar from '@/components/Avatar.vue'
+import SchemeSwitch from '@/components/SchemeSwitch.vue'
+import { Modals } from '@/utils/modals'
 import { computed, onMounted, ref } from 'vue'
 import { generateColors, Notifications, primaryColor, surfaceColor } from '..'
 import PopoverDemo from './demo/PopoverDemo.vue'
@@ -65,12 +68,25 @@ const btnGroupOptions = [
 const btnGroupOptionSingle = [
   { label: 'Is Active', value: 'active', icon: 'i-fluent-checkmark-12-filled' },
 ]
+function customRender() {
+  return (
+    <div class="flex gap-2">
+      <Avatar size="sm" name="Avatar" />
+      <div>
+        <div class="text-surface">Custom Render</div>
+        <div class="text-surface-dimmed">Custom Render</div>
+      </div>
+    </div>
+  )
+}
 </script>
 
 <template>
   <RokuProvider class="!scrollbar-thumb-hover-color-surface-4 roku-scrollbar !dark:scrollbar-thumb-hover-color-surface-5 max-h-100vh overflow-auto">
     <NotificationSystem />
+    <ModalSystem />
     <div class="flex flex-col items-center gap-2">
+      <SchemeSwitch />
       <Tag>
         <template #leftIcon>
           Left
@@ -82,6 +98,175 @@ const btnGroupOptionSingle = [
       </Tag>
     </div>
     <div class="flex flex-col items-center gap-2">
+      <Switch
+        indicator-icon="i-tabler-123"
+        :model-value="true"
+        @change="console.log"
+      />
+      <Btn
+        @click="Modals.open({
+          id: 'test',
+          title: 'Modal Title',
+          type: 'confirm',
+          message: '',
+          onConfirm (): void {
+            throw new Error('Function not implemented.')
+          },
+        })"
+      >
+        Open a modal
+      </Btn>
+      <Paper class="min-h-50" with-border no-padding>
+        <TreeList
+          class="min-w-60"
+          :items="[
+            {
+              title: 'Root',
+              open: true,
+              children: [
+                {
+                  value: 'child1',
+                  title: 'Child 1',
+                  attrs: {
+                  },
+                },
+                {
+                  title: 'Child 2',
+                  children: [
+                    {
+                      value: 'child2.1',
+                      title: 'Child 2.1',
+                    },
+                    {
+                      title: 'HEADER',
+                    },
+                    {
+                      value: 'child2.2',
+                      title: 'Child 2.2',
+                    },
+                  ],
+                },
+                {
+                  title: 'Child 3',
+                  children: [
+                    {
+                      value: 'child3.1',
+                      title: 'Child 3.1',
+                    },
+                    {
+                      value: 'child3.2',
+                      title: 'Child 3.2',
+                    },
+                    {
+                      value: 'child3.3',
+                      title: 'Child 3.3',
+                      attrs: {
+                        href: 'https://www.google.com',
+                        target: '_blank',
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+          ]"
+        />
+      </Paper>
+      <Menu
+        :data="[
+          {
+            render: customRender,
+          },
+          { role: 'divider' },
+          { role: 'label', title: 'Item 1' },
+          { value: 'item1', title: 'Item 1', icon: 'i-tabler-activity' },
+          { value: 'item2', title: 'Item2Item2Item2Item2Item2', icon: 'i-tabler-alert-triangle' },
+          { role: 'divider' },
+          {
+            title: 'Item 3Item 3Item 3Item 3Item 3Item 3',
+            icon: 'i-tabler-alert-circle',
+            children: [
+              {
+                value: 'item3.1',
+                title: 'Item 3.1',
+              },
+              {
+                value: 'item3.1',
+                title: 'Item 3.1',
+                icon: 'i-tabler-alert-triangle',
+              },
+              { role: 'divider' },
+              {
+                value: 'item3.2',
+                title: 'Item 3.2',
+                icon: 'i-tabler-alert-circle',
+                children: [
+                  {
+                    value: 'item3.2.1',
+                    title: 'Item 3.2.1',
+                  },
+                  {
+                    value: 'item3.2.2',
+                    title: 'Item 3.2.2',
+                  },
+                ],
+              },
+            ],
+          },
+        ]"
+        @select="console.log"
+      >
+        <Btn>Menu</Btn>
+      </Menu>
+      <Menu
+        :data="[
+          {
+            render: customRender,
+          },
+          { value: 'item1', title: 'Item 1', icon: 'i-tabler-activity' },
+          { value: 'item2', title: 'Item 2', icon: 'i-tabler-alert-triangle' },
+          {
+            title: 'Item 3',
+            icon: 'i-tabler-alert-circle',
+            children: [
+              {
+                value: 'item3.1',
+                title: 'Item 3.1',
+                icon: 'i-tabler-alert-triangle' },
+              {
+                value: 'item3.2',
+                title: 'Item 3.2',
+                icon: 'i-tabler-alert-circle',
+              },
+            ],
+          },
+        ]"
+        trigger="contextmenu"
+        @select="console.log"
+      >
+        <Paper class="w-80vw">
+          Context Menu
+        </Paper>
+      </Menu>
+      <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 5000, position: 'top-left' })">
+        Push Left
+      </Btn>
+      <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 5000, position: 'top' })">
+        Push Center
+      </Btn>
+      <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 5000, position: 'top-right' })">
+        Push Right
+      </Btn>
+      <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 5000, position: 'bottom-left' })">
+        Push BL
+      </Btn>
+      <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 5000, position: 'bottom' })">
+        Push BC
+      </Btn>
+      <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 5000, position: 'bottom-right' })">
+        Push BR
+      </Btn>
+      >>>>>>> dd2b1ede79f0c9dffeb4cd17c9f1253cc6b34e7f
       <div>
         <div class="bg-surface-base">
           bg-surface-base
@@ -89,8 +274,8 @@ const btnGroupOptionSingle = [
         <div class="bg-surface">
           bg-surface
         </div>
-        <div class="bg-surface-variant">
-          bg-surface-variant
+        <div class="bg-surface-variant-1">
+          bg-surface-variant-1
         </div>
         <div class="border border-surface">
           border-surface
@@ -499,12 +684,14 @@ const btnGroupOptionSingle = [
         <Btn @click="modal1 = !modal1">
           Open Model
         </Btn>
-        <Modal v-model="modal1">
-          <Paper class="h-16 w-full flex items-center justify-center md:w-md">
-            <Paper>
-              Basic Modal
-            </Paper>
-          </Paper>
+
+        <Modal
+          v-model="modal1"
+          title="This is a modal."
+        >
+          <template #body>
+            Modal
+          </template>
         </Modal>
 
         <Btn @click="modal2 = !modal2">
@@ -514,7 +701,7 @@ const btnGroupOptionSingle = [
           v-model="modal2"
           blur="lg"
         >
-          <Paper class="h-16 w-full flex items-center justify-center md:w-md">
+          <Paper class="h-16 w-full w-md flex items-center justify-center">
             <Paper>
               Blur Modal
             </Paper>
@@ -529,7 +716,7 @@ const btnGroupOptionSingle = [
           blur="lg"
           persistent
         >
-          <Paper class="h-16 w-full flex items-center justify-center md:w-md">
+          <Paper class="h-16 w-full w-md flex items-center justify-center">
             <Btn @click="modal3 = !modal3">
               Close
             </Btn>
@@ -541,14 +728,14 @@ const btnGroupOptionSingle = [
         <Modal
           v-model="modal4"
         >
-          <Paper class="h-16 w-full flex items-center justify-center md:w-md">
+          <Paper class="h-16 w-full w-md flex items-center justify-center">
             <Btn @click="modal5 = !modal5">
               Open Nested Modal
             </Btn>
             <Modal
               v-model="modal5"
             >
-              <Paper class="h-16 w-full flex items-center justify-center md:w-md">
+              <Paper class="h-16 w-full flex items-center justify-center">
                 Inner Modal
               </Paper>
             </Modal>
@@ -690,24 +877,6 @@ const btnGroupOptionSingle = [
         <TextField color="error" />
         <TextField />
       </Paper>
-      <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 5000, position: 'top-left' })">
-        Push Left
-      </Btn>
-      <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 5000, position: 'top' })">
-        Push Center
-      </Btn>
-      <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 5000, position: 'top-right' })">
-        Push Right
-      </Btn>
-      <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 5000, position: 'bottom-left' })">
-        Push BL
-      </Btn>
-      <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 5000, position: 'bottom' })">
-        Push BC
-      </Btn>
-      <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 5000, position: 'bottom-right' })">
-        Push BR
-      </Btn>
       <Paper class="flex flex-wrap gap-2">
         <Switch disabled />
       </Paper>

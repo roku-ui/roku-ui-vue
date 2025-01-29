@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { Color, Rounded } from '../types'
+import type { Color, Rounded } from '@/types'
+import { useColors } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
 import { type Component, computed, ref } from 'vue'
-import { useColors } from '../shared'
 
 const props = withDefaults(
   defineProps<{
@@ -67,15 +67,6 @@ const keyFrames = computed(() => {
 let ani: Animation | undefined
 
 const mainColor = computed(() => useColors(color.value).value[5])
-
-// const surfaceCS = useCS({
-//   type: 'bg',
-//   color: 'surface',
-//   index: {
-//     light: 2,
-//     dark: 9,
-//   },
-// })
 
 const loadingStyle = computed(() => {
   if (props.loading) {

@@ -66,7 +66,7 @@ const containerCS = useContainerCS(props.variant, color)
 <template>
   <div
     v-if="skeleton"
-    class="inline-block min-h-[--size] min-w-[--size] animate-pulse rounded-full bg-surface-variant"
+    class="inline-block min-h-[--size] min-w-[--size] animate-pulse rounded-full bg-surface-variant-1"
     :style="[rounded.style, sizeStyle]"
   />
   <component

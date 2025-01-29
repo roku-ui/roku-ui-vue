@@ -22,7 +22,7 @@ const variant = ref<Variant>('default')
     <template #form>
       <div class="flex flex-col gap-6">
         <div>
-          <div class="text-surface-on-low">
+          <div class="text-surface-dimmed">
             Variant
           </div>
           <Select
@@ -32,7 +32,7 @@ const variant = ref<Variant>('default')
           />
         </div>
         <div>
-          <div class="text-surface-on-low">
+          <div class="text-surface-dimmed">
             Size
           </div>
           <Slider
@@ -41,7 +41,7 @@ const variant = ref<Variant>('default')
           />
         </div>
         <div>
-          <div class="text-surface-on-low">
+          <div class="text-surface-dimmed">
             Disabled
           </div>
           <Switch

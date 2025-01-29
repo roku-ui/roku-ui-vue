@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { Color } from '@/types'
-import { useColorCS, useSurfaceCS } from '@/shared'
+import { useColorCS, useOutlineCS as useOutlineColorCS, useSurfaceCS } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 defineOptions({
   inheritAttrs: false,
@@ -20,7 +20,6 @@ const props = withDefaults(
     disabled?: boolean
     offIcon?: string
     onIcon?: string
-    value?: boolean
     indicatorIcon?: string
     onIndicatorIcon?: string
     offIndicatorIcon?: string
@@ -32,10 +31,12 @@ const props = withDefaults(
     color: 'primary',
   },
 )
-const model = defineModel<boolean>()
-if (props.value) {
-  model.value = props.value
-}
+const emit = defineEmits<{
+  change: [boolean ]
+}>()
+const model = defineModel<boolean>({
+  default: false,
+})
 const wrapper = ref<HTMLElement | null>(null)
 const isActivated = ref(false)
 const sizeCls = computed(() => {
@@ -96,15 +97,34 @@ const colorStyle = computed(() => {
   }
 })
 const rounded = useRounded(props)
+const outlineColor = computed(() => props.color)
+const outlineColorCS = useOutlineColorCS(outlineColor)
+const wrapperRef = ref<HTMLElement | null>(null)
+useEventListener(wrapperRef, 'keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    model.value = !model.value
+  }
+})
+
+watch(model, (value) => {
+  emit('change', value)
+})
 </script>
 
 <template>
   <div
+    ref="wrapperRef"
     role="switch"
-    class="relative flex items-center gap-2"
-    :class="{
-      'pointer-events-none filter-grayscale op-60': props.disabled,
-    }"
+    tabindex="0"
+    class="relative flex items-center gap-2 outline-none"
+    :style="[outlineColorCS.style, rounded.style]"
+    :class="[
+      outlineColorCS.class,
+      rounded.class,
+      {
+        'pointer-events-none filter-grayscale op-60': props.disabled,
+      },
+    ]"
   >
     <input
       :id="id"

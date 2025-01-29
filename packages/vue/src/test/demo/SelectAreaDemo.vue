@@ -27,7 +27,7 @@ function onSelectChange(area: Area) {
 </script>
 
 <template>
-  <div ref="areaRef" class="bg-surface-base relative h-200px w-200px flex flex flex-wrap select-none">
+  <div ref="areaRef" class="relative h-200px w-200px flex flex flex-wrap select-none bg-surface-base">
     <SelectArea
       color="#f10"
       @select-start="onSelectStart"

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { BtnVariant } from '../types'
+import type { BtnVariant } from '@/types'
+import { useButtonCS, useOutlineCS } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
 import { type Component, computed, ref } from 'vue'
-import { useButtonCS } from '../shared'
 
 const props = withDefaults(
   defineProps<{
@@ -17,6 +17,7 @@ const props = withDefaults(
     rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full' | string | number
     disabled?: boolean
     skeleton?: boolean
+    outlineColor?: string
   }>(),
   {
     rounded: 'md',
@@ -62,17 +63,18 @@ const variant = computed(() => {
 })
 const color = computed(() => props.color ?? 'primary')
 const cs = useButtonCS(variant, color)
+const outlineColor = computed(() => props.outlineColor ?? color.value)
+const outlineCS = useOutlineCS(outlineColor)
 </script>
 
 <template>
   <div
     v-if="skeleton"
     :style="[
-      cs.style,
       rounded.style,
     ]"
     :class="sizeCls.normalContent"
-    class="inline-block animate-pulse rounded-md bg-surface-variant"
+    class="inline-block animate-pulse rounded-md bg-surface-variant-1"
   />
   <component
     :is="is"
@@ -80,14 +82,16 @@ const cs = useButtonCS(variant, color)
     ref="btn"
     :data-size="size"
     :type="type"
-    class="flex items-center justify-center gap-1 decoration-none"
+    class="flex items-center justify-center gap-1 decoration-none outline-none children:flex-shrink-0"
     :style="[
       cs.style,
       rounded.style,
+      outlineCS.style,
     ]"
     :class="[
       cs.class,
       rounded.class,
+      outlineCS.class,
       icon ? sizeCls.iconContent : sizeCls.normalContent,
       {
         'opacity-60 pointer-events-none select-none': disabled,

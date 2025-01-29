@@ -15,7 +15,7 @@ defineProps<{
         {{ title }}
       </a>
     </h1>
-    <div class="text-surface-on-low text-sm">
+    <div class="text-sm text-surface-dimmed">
       <slot name="description" />
     </div>
   </div>

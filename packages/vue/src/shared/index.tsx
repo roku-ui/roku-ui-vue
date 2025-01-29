@@ -1,5 +1,5 @@
+import type { BtnVariant, Color, ContainerVariant, InputVariant } from '@/types'
 import type { ComputedRef, MaybeRef } from 'vue'
-import type { BtnVariant, Color, ContainerVariant, InputVariant } from '../types'
 import { generateColorsObjMap } from '@/utils'
 import tinycolor from 'tinycolor2'
 import { computed, ref, unref } from 'vue'
@@ -8,7 +8,8 @@ import { COLOR_LIGHTNESS_MAP, SURFACE_LIGHTNESS_MAP } from '..'
 
 // const darkSurfaceBgBaseIndex = 10
 const darkSurfaceBgIndex = 9
-const darkSurfaceBgVariantIndex = 7
+const darkSurfaceBgVariant1Index = 8
+const darkSurfaceBgVariant2Index = 7
 const darkBorderIndex = 7
 const darkBorderVariantIndex = 7
 const darkTextIndex = 3
@@ -150,12 +151,12 @@ export function useContainerDefaultCS() {
     const bgCS = useCS({
       color: 'surface',
       type: 'bg',
-      index: { dark: 8, light: 1 },
+      index: { dark: darkSurfaceBgIndex, light: lightSurfaceBgIndex },
     })
     const borderCS = useCS({
       color: 'surface',
       type: 'border',
-      index: { dark: 7, light: 3 },
+      index: { dark: darkBorderIndex, light: lightBorderIndex },
     })
     const cs = useMergedCS(bgCS, borderCS)
     cs.value.class = [...cs.value.class, 'border']
@@ -371,6 +372,14 @@ export function useSurfaceCS(type: CSType, index: CSIndex, alpha = 1.0) {
   })
 }
 
+export function useOutlineCS(color: MaybeRef<Color>) {
+  return useCS({
+    color,
+    type: 'outline',
+    index: { dark: darkBorderIndex, light: lightBorderIndex },
+  })
+}
+
 export function useButtonCS(variant: MaybeRef<BtnVariant> = 'default', color: MaybeRef<Color> = 'primary'): ComputedRef<CS> {
   return computed(() => {
     const colors = useColors(color).value
@@ -394,8 +403,8 @@ export function useButtonCS(variant: MaybeRef<BtnVariant> = 'default', color: Ma
 
 function getDefaultVariantStyle(surface: tinycolor.Instance[]): Record<string, string> {
   return {
-    '--d-bg': surface[darkSurfaceBgIndex].toHexString(),
-    '--d-bg-h': surface[darkSurfaceBgVariantIndex].toHexString(),
+    '--d-bg': surface[darkSurfaceBgVariant1Index].toHexString(),
+    '--d-bg-h': surface[darkSurfaceBgVariant2Index].toHexString(),
     '--d-border': surface[darkBorderVariantIndex].toHexString(),
     '--l-bg': surface[lightSurfaceBgIndex].toHexString(),
     '--l-bg-h': surface[lightSurfaceBgVariantIndex].toHexString(),
