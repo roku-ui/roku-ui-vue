@@ -1,4 +1,5 @@
 export { default as AspectRatio } from './AspectRatio.vue'
+export { default as AutoHeightTransition } from './AutoHeightTransition.vue'
 export { default as Avatar } from './Avatar.vue'
 export { default as Btn } from './Btn.vue'
 export { default as BtnGroup } from './BtnGroup.vue'

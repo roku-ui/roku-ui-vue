@@ -1,10 +1,12 @@
 <script setup lang="tsx">
 import type { Rounded } from '@/types'
 import type { VNode } from 'vue'
-import { useRounded } from '@/utils'
-import { computed, h, ref, Transition, watchEffect } from 'vue'
+import { useRounded } from '@roku-ui/vue'
+import { computed, h, ref, watchEffect } from 'vue'
+import { AutoHeightTransition } from '.'
 
-export interface TreeListLinkData {
+export interface TreeListLeafData {
+  icon?: string | VNode
   title: string
   value: string
   attrs?: Record<string, any>
@@ -12,16 +14,19 @@ export interface TreeListLinkData {
 }
 
 export interface TreeListHeaderData {
+  icon?: string | VNode
   title: string
 }
 
-export interface TreeListTitleData {
+export interface TreeListCollapseData {
   title: string
-  children: TreeListItemData[]
+  icon?: string | VNode
+  value?: string
+  children?: TreeListItemData[]
   open?: boolean
 }
 
-export type TreeListItemData = TreeListLinkData | TreeListHeaderData | TreeListTitleData
+export type TreeListItemData = TreeListLeafData | TreeListHeaderData | TreeListCollapseData
 
 const props = withDefaults(defineProps<{
   items: TreeListItemData[]
@@ -30,30 +35,36 @@ const props = withDefaults(defineProps<{
   rounded: 'md',
 })
 
+const slots = defineSlots<{
+  link?: (props: { data: TreeListLeafData, level: number }) => any
+  title?: (props: { data: TreeListCollapseData, level: number }) => any
+  header?: (props: { data: TreeListHeaderData, level: number }) => any
+}>()
+
 const rounded = useRounded(props)
 
 const model = defineModel<string>()
 
-function isTitle(item: TreeListItemData): item is TreeListTitleData {
+function hasChildren(item: TreeListItemData): item is TreeListCollapseData {
   return 'children' in item
 }
-function isLink(item: TreeListItemData): item is TreeListLinkData {
-  return 'value' in item
+function isLink(item: TreeListItemData): item is TreeListLeafData {
+  return 'value' in item && !('children' in item)
 }
 
-const linkLeftIndicator = 'before:absolute before:left-4 before:h-full before:border-r before:content-[""]'
-const linkItemClass = 'relative h-8 py-1 w-full flex items-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:bg-surface-variant-1'
-const linkNormalItemClass = computed(() => `${linkItemClass} hover:bg-surface-variant-1 hover:text-surface text-surface-dimmed`)
-const linkActiveItemClass = computed(() => `${linkItemClass} text-primary before:border-primary bg-surface-variant-1`)
-const titleNormalItemClass = computed(() => [linkItemClass, 'text-surface font-bold hover:bg-surface-variant-1'])
+const itemLeftIndicator = 'before:absolute before:left-4 before:h-full before:border-r before:content-[""]'
+const itemClass = 'relative h-8 py-1 pr-1 w-full flex items-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:bg-surface-variant-1'
+const linkNormalItemClass = computed(() => `${itemClass} hover:bg-surface-variant-1 hover:text-surface text-surface-dimmed`)
+const linkActiveItemClass = computed(() => `${itemClass} text-primary before:border-primary bg-surface-variant-2`)
+const titleNormalItemClass = computed(() => [itemClass, 'text-surface font-bold hover:bg-surface-variant-1'])
+const titleActiveItemClass = computed(() => [itemClass, 'text-primary font-bold bg-surface-variant-1'])
 const treeListRef = ref<HTMLUListElement | null>(null)
-
 const status = ref<Map<TreeListItemData, boolean>>(new Map())
 
 function travel(data: TreeListItemData, level: number) {
-  if (isTitle(data)) {
+  if (hasChildren(data)) {
     status.value.set(data, data.open ?? false)
-    data.children.forEach((child) => {
+    data.children?.forEach((child) => {
       travel(child, level + 1)
     })
   }
@@ -61,21 +72,32 @@ function travel(data: TreeListItemData, level: number) {
 
 watchEffect(() => {
   props.items.forEach((item) => {
-    if (isTitle(item)) {
+    if (hasChildren(item)) {
       travel(item, 0)
     }
   })
 })
 
-function TreeListLink({ data, level }: { data: TreeListLinkData, level: number }) {
-  const Comp = (props: any) => data.is ? h(data.is, props, { default: () => data.title }) : h('a', props, data.title)
+function TreeListLink({ data, level }: { data: TreeListLeafData, level: number }) {
+  if (slots.link) {
+    return slots.link({ data, level })
+  }
+  const content = data.title
+  const Comp = (props: any) => data.is
+    ? h(data.is, props, { default: () => {
+        return content
+      } })
+    : h('a', props, { default: () => content })
+
   return (
-    <li>
+    <li
+      class="relative"
+    >
       <Comp
         tabindex={0}
         class={[
           rounded.value.class,
-          linkLeftIndicator,
+          itemLeftIndicator,
           {
             [linkNormalItemClass.value]: model.value !== data.value,
             [linkActiveItemClass.value]: model.value === data.value,
@@ -84,7 +106,7 @@ function TreeListLink({ data, level }: { data: TreeListLinkData, level: number }
         style={
           [
             {
-              paddingLeft: `${32 + level * 4}px`,
+              paddingLeft: `${32 + level * 8}px`,
             },
             rounded.value.style,
           ]
@@ -96,9 +118,7 @@ function TreeListLink({ data, level }: { data: TreeListLinkData, level: number }
           }
         }}
         {...data.attrs}
-      >
-        {data.title}
-      </Comp>
+      />
     </li>
   )
 }
@@ -112,20 +132,39 @@ function TreeListHeader({ data, level }: { data: TreeListHeaderData, level: numb
       style={
         [
           {
-            paddingLeft: `${32 + level * 4}px`,
+            paddingLeft: `${32 + level * 8}px`,
           },
           rounded.value.style,
         ]
       }
     >
       <div class="absolute left-4 h-1/2 translate-y-1/2 border-r" />
-      <div class="absolute left-[calc(1rem+0.6px)] h-2 w-2 border rounded-sm bg-surface-variant-1 -translate-x-1/2" />
-      {data.title}
+      <div class="bg-surface-variant-1 absolute left-[calc(1rem+0.6px)] h-2 w-2 border rounded-sm -translate-x-1/2" />
+
+      {
+        slots.header
+          ? slots.header({ data, level })
+          : (
+              <>
+                {
+                  data.icon && (
+                    <i
+                      class={[
+                        'h-4 w-4 py-1',
+                        data.icon,
+                      ]}
+                    />
+                  )
+                }
+                {data.title}
+              </>
+            )
+      }
     </li>
   )
 }
 
-function TreeListTitle({ data, level }: { data: TreeListTitleData, level: number }) {
+function TreeListCollapse({ data, level }: { data: TreeListCollapseData, level: number }) {
   const isOpen = computed(() => status.value.get(data))
   const dom = ref<HTMLLIElement | null>(null)
   const self = ref<HTMLButtonElement | null>(null)
@@ -136,73 +175,95 @@ function TreeListTitle({ data, level }: { data: TreeListTitleData, level: number
     >
       <button
         ref={self}
-        onClick={() => status.value.set(data, !status.value.get(data))}
+        onClick={() => {
+          if (data.value) {
+            if (model.value === data.value && isOpen.value) {
+              status.value.set(data, false)
+            }
+            else {
+              model.value = data.value
+              status.value.set(data, true)
+            }
+          }
+          else {
+            status.value.set(data, !status.value.get(data))
+          }
+        }}
         class={[
           rounded.value.class,
-          titleNormalItemClass.value,
+          model.value === data.value ? titleActiveItemClass.value : titleNormalItemClass.value,
         ]}
         style={
           [
             {
-              paddingLeft: `${32 + level * 4}px`,
+              paddingLeft: `${32 + level * 8}px`,
             },
             rounded.value.style,
           ]
         }
       >
-        <i class={['i-tabler-chevron-down absolute left-2 h-4 w-4 py-1 transition-transform', isOpen.value ? 'rotate-0' : '-rotate-90']} />
-        {data.title}
+        <i class={[
+          'i-tabler-chevron-down absolute left-2 h-4 w-4 py-1 transition-transform',
+          isOpen.value ? 'rotate-0' : '-rotate-90',
+        ]}
+        />
+        {
+          slots.title
+            ? slots.title({ data, level })
+            : (
+                <>
+                  {data.icon && (
+                    <i
+                      class={[
+                        'h-4 w-4 py-1',
+                        data.icon,
+                      ]}
+                    />
+                  )}
+                  <span class="truncate">
+                    {data.title}
+                  </span>
+                </>
+              )
+        }
+
       </button>
-      <Transition
-        onBeforeEnter={(el) => {
-          if (el instanceof HTMLElement) {
-            el.style.height = `${0}px`
-          }
-        }}
-        onEnter={(el) => {
-          if (el instanceof HTMLElement) {
-            el.style.height = `${el.scrollHeight}px`
-          }
-        }}
-        onAfterEnter={(el) => {
-          if (el instanceof HTMLElement) {
-            el.style.height = 'auto'
-          }
-        }}
-        onBeforeLeave={(el) => {
-          if (el instanceof HTMLElement) {
-            el.style.height = `${el.scrollHeight}px`
-          }
-        }}
-        onLeave={(el) => {
-          if (el instanceof HTMLElement) {
-            el.style.height = `${0}px`
-          }
-        }}
-        css
-        mode="out-in"
-      >
+      <AutoHeightTransition>
         {
           status.value.get(data)
           && (
             <ul class="overflow-hidden transition-height">
-              {data.children.map((child) => {
-                if (isLink(child)) {
-                  return <TreeListLink data={child} level={level + 1} />
-                }
-                else if (isTitle(child)) {
-                  return <TreeListTitle data={child} level={level + 1} />
-                }
-                else {
-                  return <TreeListHeader data={child} level={level + 1} />
-                }
-              })}
+              {
+                data.children?.map((child) => {
+                  if (isLink(child)) {
+                    return <TreeListLink data={child} level={level + 1} />
+                  }
+                  else if (hasChildren(child)) {
+                    return <TreeListCollapse data={child} level={level + 1} />
+                  }
+                  else {
+                    return <TreeListHeader data={child} level={level + 1} />
+                  }
+                })
+              }
             </ul>
           )
         }
-      </Transition>
+      </AutoHeightTransition>
     </li>
   )
+}
+
+function TreeListItem({ data, level }: { data: TreeListItemData, level: number }) {
+  if (isLink(data)) {
+    return <TreeListLink data={data} level={level} />
+  }
+  else if (hasChildren(data)) {
+    return <TreeListCollapse data={data} level={level} />
+  }
+  else {
+    return <TreeListHeader data={data} level={level} />
+  }
 }
 </script>
 
@@ -211,15 +272,11 @@ function TreeListTitle({ data, level }: { data: TreeListTitleData, level: number
     ref="treeListRef"
     class="flex flex-col text-sm"
   >
-    <template
-      v-for="item, i in items" :key="i"
-    >
-      <TreeListLink v-if="isLink(item)" :data="item" :level="0" />
-      <TreeListTitle
-        v-else-if="isTitle(item)"
-        :data="item"
-        :level="0"
-      />
-    </template>
+    <TreeListItem
+      v-for="item, i in items"
+      :key="i"
+      :data="item"
+      :level="0"
+    />
   </ul>
 </template>

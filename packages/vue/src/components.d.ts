@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AspectRatio: typeof import('./components/AspectRatio.vue')['default']
+    AutoHeightTransition: typeof import('./components/AutoHeightTransition.vue')['default']
     Avatar: typeof import('./components/Avatar.vue')['default']
     Btn: typeof import('./components/Btn.vue')['default']
     BtnGroup: typeof import('./components/BtnGroup.vue')['default']
