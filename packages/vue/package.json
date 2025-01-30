@@ -43,7 +43,7 @@
     "vue-wf": "^0.4.1"
   },
   "devDependencies": {
-    "@iconify/json": "^2.2.300",
+    "@iconify/json": "^2.2.301",
     "@jannchie/eslint-config": "^3.4.3",
     "@roku-ui/preset": "workspace:^",
     "@types/tinycolor2": "^1.4.6",

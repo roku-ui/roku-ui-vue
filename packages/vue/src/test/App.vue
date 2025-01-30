@@ -266,7 +266,6 @@ function customRender() {
       <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 5000, position: 'bottom-right' })">
         Push BR
       </Btn>
-      >>>>>>> dd2b1ede79f0c9dffeb4cd17c9f1253cc6b34e7f
       <div>
         <div class="bg-surface-base">
           bg-surface-base

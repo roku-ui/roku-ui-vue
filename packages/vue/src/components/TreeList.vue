@@ -138,9 +138,8 @@ function TreeListHeader({ data, level }: { data: TreeListHeaderData, level: numb
         ]
       }
     >
-      <div class="absolute left-4 h-1/2 translate-y-1/2 border-r" />
+      <div class="absolute left-4 h-1/2 translate-y-[calc(50%+3px)] border-r" />
       <div class="bg-surface-variant-1 absolute left-[calc(1rem+0.6px)] h-2 w-2 border rounded-sm -translate-x-1/2" />
-
       {
         slots.header
           ? slots.header({ data, level })
