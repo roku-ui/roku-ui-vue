@@ -31,6 +31,10 @@ const props = withDefaults(
 )
 
 defineEmits(['close'])
+defineSlots<{
+  closeIcon?: (props: any) => any
+  message?: (props: any) => any
+}>()
 
 const rounded = useRounded(props)
 const color = computed(() => props.color)
@@ -132,7 +136,7 @@ const shapeClass = computed(() => {
       >
         <slot
           v-if="$slots.closeIcon"
-          name="close-icon"
+          name="closeIcon"
         />
         <i v-else class="i-fluent-dismiss-12-filled" />
       </Btn>
