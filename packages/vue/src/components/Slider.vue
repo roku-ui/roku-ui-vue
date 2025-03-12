@@ -15,6 +15,7 @@ const props = withDefaults(
     tickNum?: number
     color?: string
     minWidth?: number
+    reverse?: boolean
   }>(),
   {
     size: 'md',
@@ -24,6 +25,7 @@ const props = withDefaults(
     step: 1,
     color: 'primary',
     minWidth: 12,
+    reverse: false,
   },
 )
 
@@ -90,14 +92,14 @@ function optionToIndex(option: any) {
   }
   return res
 }
+
 const color = computed(() => props.color)
 const colors = useColors(color.value)
-
 const filledColor = computed(() => colors.value[4])
 const indicatorOuterCls = 'dark:bg-white bg-[var(--i-bg)]'
 const indicatorInnerCls = 'dark:bg-[var(--i-bg)] bg-white'
-
 const containerFilledCS = useContainerFilledCS(color)
+
 watchEffect(() => {
   if (currentIndex.value < 0) {
     return
@@ -130,7 +132,10 @@ function pointEventCallback(event: PointerEvent) {
   const left = rect.left.value
   const right = rect.right.value
   const width = right - left
-  const index = Math.round(((clientX - left) / width) * (length.value - 1))
+  let index = Math.round(((clientX - left) / width) * (length.value - 1))
+  if (props.reverse) {
+    index = length.value - 1 - index
+  }
   if (index < 0) {
     currentIndex.value = 0
     return
@@ -230,7 +235,7 @@ const animateCls = computed(() => props.animate
             v-for="option in ticks"
             :key="option"
             :style="{
-              left: `${(optionToIndex(option) / (length - 1)) * 100}%`,
+              left: `${props.reverse ? 100 - (optionToIndex(option) / (length - 1)) * 100 : (optionToIndex(option) / (length - 1)) * 100}%`,
             }"
             class="absolute top-50% rounded-full bg-surface-0"
             :class="sizeCls.tick"
@@ -243,7 +248,7 @@ const animateCls = computed(() => props.animate
             :style="[
               `--i-bg: ${filledColor}`,
               {
-                left: `${(currentIndex / (length - 1)) * 100}%`,
+                left: `${props.reverse ? 100 - (currentIndex / (length - 1)) * 100 : (currentIndex / (length - 1)) * 100}%`,
               },
             ]"
           >
@@ -262,7 +267,7 @@ const animateCls = computed(() => props.animate
             :style="[
               containerFilledCS.style,
               {
-                width: `${(currentIndex / (length - 1)) * 100}%`,
+                width: `${props.reverse ? 100 - (currentIndex / (length - 1)) * 100 : (currentIndex / (length - 1)) * 100}%`,
               },
             ]"
           />
