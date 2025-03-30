@@ -30,7 +30,6 @@ onMounted(() => {
     onload()
   }
 })
-// get px from string, e.g. '1rem' -> 16
 
 const rounded = useRounded(props)
 </script>

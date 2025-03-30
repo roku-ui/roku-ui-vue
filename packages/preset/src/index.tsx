@@ -2,7 +2,7 @@ import type { Preset } from 'unocss'
 import fs from 'node:fs'
 import tailwindReset from '@unocss/reset/tailwind.css'
 
-import { presetIcons, presetTypography, presetUno } from 'unocss'
+import { presetIcons, presetTypography, presetWind3 } from 'unocss'
 import baseStyle from './styles.css'
 
 const colorKeys = ['surface', 'primary', 'secondary', 'tertiary', 'error']
@@ -57,7 +57,7 @@ const rokuPreset: () => Preset<object> = () => () => {
       'outline-error': 'outline-[--r-error-background-color]',
     },
     presets: [
-      presetUno({
+      presetWind3({
         dark: {
           dark: '[data-scheme="dark"]',
           light: '[data-scheme="light"]',
