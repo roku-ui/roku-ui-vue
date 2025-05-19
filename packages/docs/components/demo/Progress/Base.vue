@@ -2,7 +2,7 @@
 import { Progress } from '@roku-ui/vue'
 
 const code = computed(() => `<template>
-  <Progress value="47" ${getpropsString({ })} /> // [!code highlight]
+  <Progress value="47" ${getpropsString({})} /> // [!code highlight]
 </template>`)
 </script>
 

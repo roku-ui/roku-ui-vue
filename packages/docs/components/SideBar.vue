@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { NuxtLink } from '#components'
+import { Btn, TreeList } from '@roku-ui/vue'
 import { subTextCS } from '@/utils/colors'
-import { Btn, TreeList, useButtonCS } from '@roku-ui/vue'
 
 defineProps<{
   isOpen: boolean
@@ -11,24 +11,33 @@ const { data: contentComponents } = await useAsyncData('home', () => queryConten
 const currentPath = useRoute().path
 function dir2Title(dir: string) {
   switch (dir) {
-    case 'components':
+    case 'components': {
       return '组件'
-    case 'display':
+    }
+    case 'display': {
       return '显示'
-    case 'feedback':
+    }
+    case 'feedback': {
       return '反馈'
-    case 'form':
+    }
+    case 'form': {
       return '表单'
-    case 'layout':
+    }
+    case 'layout': {
       return '布局'
-    case 'navigation':
+    }
+    case 'navigation': {
       return '导航'
-    case 'overlay':
+    }
+    case 'overlay': {
       return '覆盖'
-    case 'inputs':
+    }
+    case 'inputs': {
       return '输入'
-    default:
+    }
+    default: {
       return dir
+    }
   }
 }
 

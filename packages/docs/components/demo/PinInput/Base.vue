@@ -2,7 +2,7 @@
 import { PinInput } from '@roku-ui/vue'
 
 const code = computed(() => `<template>
-  <PinInput${getpropsString({ })} /> // [!code highlight]
+  <PinInput${getpropsString({})} /> // [!code highlight]
 </template>`)
 const value = ref('')
 </script>
