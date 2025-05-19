@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Size } from '@/types'
-import { useContainerCS, useCS } from '@/shared'
 import { computed, ref } from 'vue'
+import { useContainerCS, useCS } from '@/shared'
 
 const props = withDefaults(defineProps<{
   count?: number
@@ -81,11 +81,8 @@ function unifyInput(
     }
     else {
       // If the array contains multiple elements, ensure it has exactly `n` elements
-      return normalizedArray
-        .slice(0, n) // Use existing elements up to n
-        .concat( // Fill remaining with default values
-          Array.from({ length: Math.max(0, n - normalizedArray.length) }, () => ({ active: defaultActiveIcon, normal: defaultNormalIcon })),
-        )
+      return [...normalizedArray
+        .slice(0, n), ...Array.from({ length: Math.max(0, n - normalizedArray.length) }, () => ({ active: defaultActiveIcon, normal: defaultNormalIcon }))]
     }
   }
   else {
@@ -125,11 +122,11 @@ const colors = computed(() => {
   }
   // 如果 color 是数组, 对应位置使用数组中的颜色, 其余使用默认颜色
   const resp = Array.from({ length: count.value }).map(() => defaultColor)
-  props.color.forEach((d, i) => {
+  for (const [i, d] of props.color.entries()) {
     if (d) {
       resp[i] = d
     }
-  })
+  }
   return resp
 })
 
@@ -155,19 +152,25 @@ function onPointerDown(i: number) {
 }
 const sizeCls = computed(() => {
   switch (props.size) {
-    case 'sm':
+    case 'sm': {
       return 'text-xs'
-    case 'lg':
+    }
+    case 'lg': {
       return 'text-lg'
-    case 'md':
-    default:
+    }
+    // case 'md':
+    default: {
       return 'text-base'
+    }
   }
 })
 </script>
 
 <template>
-  <div class="flex cursor-pointer" :class="sizeCls">
+  <div
+    class="flex cursor-pointer"
+    :class="sizeCls"
+  >
     <div
       v-for="_, i in count"
       :key="i"
@@ -178,7 +181,8 @@ const sizeCls = computed(() => {
     >
       <i
         v-bind="isActive(i) ? containerCS[i].value : unactiveCS"
-        class="active:translate-y-1px" :class="[getCls(i)]"
+        class="active:translate-y-1px"
+        :class="[getCls(i)]"
       />
     </div>
   </div>

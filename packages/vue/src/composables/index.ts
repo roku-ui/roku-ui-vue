@@ -1,23 +1,25 @@
 import type { RemovableRef } from '@vueuse/core'
-import { defaultTheme, useColors } from '@/shared'
+import type { MaybeRef, Ref } from 'vue'
+import type { ThemeData } from '..'
 import { isClient } from '@vueuse/core'
 import tinycolor from 'tinycolor2'
-import { computed, inject, type MaybeRef, onMounted, type Ref, ref, unref } from 'vue'
-import { generateColors, type ThemeData } from '..'
+import { computed, inject, onMounted, ref, unref } from 'vue'
+import { defaultTheme, useColors } from '@/shared'
+import { generateColors } from '..'
 
 export * from './dom'
 
 export const COLOR_LIGHTNESS_MAP = [
   0.98,
-  0.80,
-  0.70,
-  0.60,
+  0.8,
+  0.7,
+  0.6,
   0.43,
-  0.40,
+  0.4,
   0.36,
-  0.30,
-  0.20,
-  0.10,
+  0.3,
+  0.2,
+  0.1,
   0.01,
 ]
 export const SURFACE_LIGHTNESS_MAP = [
@@ -39,11 +41,11 @@ export function useRootTheme() {
   }
   const theme = ref(document.documentElement.dataset.scheme)
   const observer = new MutationObserver((mutations) => {
-    mutations.forEach((mutation) => {
+    for (const mutation of mutations) {
       if (mutation.type === 'attributes' && mutation.attributeName === 'data-scheme') {
         theme.value = document.documentElement.dataset.scheme
       }
-    })
+    }
   })
   observer.observe(document.documentElement, {
     attributes: true,
@@ -157,12 +159,7 @@ export function useThemeStyles(theme: ThemeData) {
 export function useId(props: { id?: string }) {
   const id = ref('')
   onMounted(() => {
-    if (props.id) {
-      id.value = props.id
-    }
-    else {
-      id.value = `switch-${Math.random().toString(36).slice(2)}-${Date.now().toString(36)}`
-    }
+    id.value = props.id ? props.id : `switch-${Math.random().toString(36).slice(2)}-${Date.now().toString(36)}`
   })
   return id
 }

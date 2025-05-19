@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useRokuProvider } from '@/composables/modal'
 import { computed, ref, watchEffect } from 'vue'
+import { useRokuProvider } from '@/composables/modal'
 
 const props = withDefaults(defineProps<{
   persistent?: boolean
@@ -15,24 +15,26 @@ const model = defineModel<boolean>()
 
 const wrapperRef = ref(null)
 function onClick(event: any) {
-  if (!props.persistent) {
-    if (event.target === wrapperRef.value) {
-      model.value = false
-    }
+  if (!props.persistent && event.target === wrapperRef.value) {
+    model.value = false
   }
 }
 
 const blurCls = computed(() => {
   switch (props.blur) {
-    case 'sm':
+    case 'sm': {
       return 'backdrop-blur-sm'
+    }
     case 'md':
-    case true:
+    case true: {
       return 'backdrop-blur-md'
-    case 'lg':
+    }
+    case 'lg': {
       return 'backdrop-blur-lg'
-    default:
+    }
+    default: {
       return ''
+    }
   }
 })
 const scrollbarWidth = ref(0)
@@ -43,18 +45,16 @@ watchEffect(() => {
   }
   else {
     setTimeout(() => {
-      if (document) {
-        // if all modals are closed
-        if (!document.querySelector('.modal-wrapper.op100')) {
-          document.body.style.overflow = ''
-          document.body.style.marginRight = ''
-        }
+      if (document // if all modals are closed
+        && !document.querySelector('.modal-wrapper.op100')) {
+        document.body.style.overflow = ''
+        document.body.style.marginRight = ''
       }
     }, 300)
   }
 })
 watchEffect(() => {
-  if (typeof window !== 'undefined') {
+  if (globalThis.window !== undefined) {
     const resizeObserver = new ResizeObserver(() => {
       const curWidth = window.innerWidth - document.body.clientWidth
       if (curWidth !== 0) {

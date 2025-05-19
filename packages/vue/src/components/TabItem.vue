@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import type { ComputedRef, Ref } from 'vue'
+import { computed, inject, onMounted, ref } from 'vue'
 import { useCS } from '@/shared'
 import { childrenElementMapSymbol, directionSymbol, tabCurrentSymbol } from '@/utils'
-import { computed, type ComputedRef, inject, onMounted, type Ref, ref } from 'vue'
 
 const props = withDefaults(defineProps<{
   value: string | number | symbol
@@ -26,20 +27,24 @@ onMounted(() => {
 const direction = inject<ComputedRef<'horizontal' | 'vertical'>>(directionSymbol, computed(() => 'horizontal'))
 const directionCls = computed(() => {
   switch (direction.value) {
-    case 'vertical':
+    case 'vertical': {
       return 'flex-row-reverse rounded-tr-lg rounded-br-lg'
+    }
     case 'horizontal':
-    default:
+    default: {
       return 'flex-col rounded-tr-lg rounded-tl-lg'
+    }
   }
 })
 const indicatorCls = computed(() => {
   switch (direction.value) {
-    case 'vertical':
+    case 'vertical': {
       return 'absolute inset-0 right-100% h-full w-2px'
+    }
     case 'horizontal':
-    default:
+    default: {
       return 'absolute inset-0 top-100% h-2px w-full'
+    }
   }
 })
 // const colorCls = computed(() => {

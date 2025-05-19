@@ -25,7 +25,7 @@ function onInput(e: InputEvent) {
   const currentIndex = inputs.value.findIndex(d => d.el === e.target)
   const val = (e.target as any).value ?? '';
   (e.target as any).value = ''
-  Array.from<string>(val).forEach((d: string, i: number) => {
+  ;[...val].forEach((d: string, i: number) => {
     if (currentIndex + i >= inputs.value.length) {
       return
     }

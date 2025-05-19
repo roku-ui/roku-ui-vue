@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { NotificationData } from '@/utils/notifications'
 import type { Ref } from 'vue'
-import { useNotifications } from '@/utils/notifications'
+import type { NotificationData } from '@/utils/notifications'
 import { useElementHover } from '@vueuse/core'
 import { computed, ref, shallowRef, watch } from 'vue'
+import { useNotifications } from '@/utils/notifications'
 
 type NotificationPosition = 'top-left' | 'top-right' | 'top' | 'bottom-left' | 'bottom-right' | 'bottom'
 const props = withDefaults(defineProps<{
@@ -87,16 +87,13 @@ function notificationYStyle(y: number = 0, position: string | undefined) {
   if (!position) {
     position = props.position
   }
-  if (isTop(position)) {
-    return {
-      top: `${y + props.pt}px`,
-    }
-  }
-  else {
-    return {
-      bottom: `${y + props.pb}px`,
-    }
-  }
+  return isTop(position)
+    ? {
+        top: `${y + props.pt}px`,
+      }
+    : {
+        bottom: `${y + props.pb}px`,
+      }
 }
 
 function notificationXStyle(position: NotificationPosition) {
@@ -106,8 +103,7 @@ function notificationXStyle(position: NotificationPosition) {
     }
   }
   else if (position.includes('left')) {
-    return {
-    }
+    return {}
   }
   else {
     return {
@@ -135,22 +131,19 @@ function groupXStyle(position: NotificationPosition) {
 }
 
 function groupYStyle(position: NotificationPosition) {
-  if (position.includes('top')) {
-    return {
-      top: `${props.pt}px`,
-    }
-  }
-  else {
-    return {
-      bottom: `${props.pb}px`,
-    }
-  }
+  return position.includes('top')
+    ? {
+        top: `${props.pt}px`,
+      }
+    : {
+        bottom: `${props.pb}px`,
+      }
 }
 
-const enterClass = function (position: string) {
+function enterClass(position: string) {
   return isTop(position) ? 'animate-keyframes-fade-in-down animate-duration-0.3s' : 'animate-keyframes-fade-in-up animate-duration-0.3s'
 }
-const leaveClass = function (position: string) {
+function leaveClass(position: string) {
   return isTop(position) ? 'animate-keyframes-fade-out-down animate-duration-0.3s' : 'animate-keyframes-fade-out-up animate-duration-0.3s'
 }
 function onClose(notification: NotificationData) {
@@ -177,7 +170,8 @@ const posList: NotificationPosition[] = ['top-left', 'top-right', 'top', 'bottom
     <div
       v-for="pos in posList"
       :key="pos"
-      :style="[groupYStyle(pos), groupXStyle(pos)]" class="absolute"
+      :style="[groupYStyle(pos), groupXStyle(pos)]"
+      class="absolute"
     >
       <TransitionGroup
         :enter-active-class="enterClass(pos)"

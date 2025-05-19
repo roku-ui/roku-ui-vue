@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import type { Component } from 'vue'
 import type { ThemeData } from '@/utils'
+import { computed, provide, ref, watchEffect } from 'vue'
 import { provideRokuProvider } from '@/composables/modal'
 import { defaultTheme, errorColor, primaryColor, secondaryColor, surfaceColor, tertiaryColor } from '@/shared'
-import { type Component, computed, provide, ref, watchEffect } from 'vue'
 
 const props = withDefaults(
   defineProps<{

@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import type { Component } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRounded } from '@/utils/classGenerator'
-import { type Component, onMounted, ref } from 'vue'
 
 const props = withDefaults(
   defineProps<{

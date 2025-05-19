@@ -48,10 +48,10 @@ export function useNotifications(topN?: number) {
   })
 }
 
-export class Notifications {
-  static show(data: Partial<NotificationDataInterface>) {
+export const Notifications = {
+  show(data: Partial<NotificationDataInterface>) {
     data.hash = Math.random().toString(36)
     data.initialDurationMS = data.durationMS
     notifications.value = [data as NotificationData, ...notifications.value]
-  }
+  },
 }

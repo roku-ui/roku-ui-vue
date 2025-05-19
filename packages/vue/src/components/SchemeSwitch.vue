@@ -26,14 +26,18 @@ watch([isDark], () => {
       Math.max(y, innerHeight - y),
     )
 
-    if (!props.disableViewTranslation) {
+    if (props.disableViewTranslation) {
+      document.documentElement.dataset.scheme = isDark.value ? 'dark' : 'light'
+      localStorage.setItem('scheme', isDark.value ? 'dark' : 'light')
+    }
+    else {
       const transition = document.startViewTransition(() => {
         if (isDark.value) {
-          document.documentElement.setAttribute('data-scheme', 'dark')
+          document.documentElement.dataset.scheme = 'dark'
           localStorage.setItem('scheme', 'dark')
         }
         else {
-          document.documentElement.setAttribute('data-scheme', 'light')
+          document.documentElement.dataset.scheme = 'light'
           localStorage.setItem('scheme', 'light')
         }
       })
@@ -64,10 +68,6 @@ watch([isDark], () => {
           )
         })
       }
-    }
-    else {
-      document.documentElement.setAttribute('data-scheme', isDark.value ? 'dark' : 'light')
-      localStorage.setItem('scheme', isDark.value ? 'dark' : 'light')
     }
   }
 })

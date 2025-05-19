@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useColors, useContainerFilledCS } from '@/shared'
 import { useElementBounding, useEventListener } from '@vueuse/core'
 import { computed, onMounted, ref, watchEffect } from 'vue'
+import { useColors, useContainerFilledCS } from '@/shared'
 
 const props = withDefaults(
   defineProps<{
@@ -34,7 +34,7 @@ function minMaxStepToOptions(min: number, max: number, step: number) {
   for (let i = min; i <= max; i += step) {
     options.push(i)
   }
-  if (options[options.length - 1] !== max) {
+  if (options.at(-1) !== max) {
     options.push(max)
   }
   return options
@@ -50,17 +50,12 @@ function getTicks(tickNum: number, options: any[]) {
   for (let i = 1; i < tickNum - 1; i++) {
     ticks.push(options[Math.round(i * step)])
   }
-  ticks.push(options[options.length - 1])
+  ticks.push(options.at(-1))
   return ticks
 }
 
 const tickNum = computed(() => {
-  if (props.options) {
-    return props.options.length
-  }
-  else {
-    return props.tickNum ?? 0
-  }
+  return props.options ? props.options.length : props.tickNum ?? 0
 })
 const options = computed(() => props.options === undefined ? minMaxStepToOptions(props.min, props.max, props.step) : props.options)
 const ticks = computed(() => getTicks(tickNum.value, options.value))
@@ -70,7 +65,7 @@ const model = defineModel<any>({
 
 })
 const length = computed(() => options.value.length ?? 0)
-const currentIndex = ref(!options.value.includes(model.value) ? 0 : options.value.indexOf(model.value))
+const currentIndex = ref(options.value.includes(model.value) ? options.value.indexOf(model.value) : 0)
 
 function optionToIndex(option: any) {
   let res = options.value.indexOf(option)
@@ -165,7 +160,7 @@ onMounted(() => {
 })
 const sizeCls = computed(() => {
   switch (props.size) {
-    case 'sm':
+    case 'sm': {
       return {
         wrapper: 'h-2',
         innerWrapper: 'px-0.5 h-1',
@@ -175,8 +170,9 @@ const sizeCls = computed(() => {
         indicatorInner: 'h-1.5 w-1.5 -translate-x-0.75 -translate-y-0.75',
         progress: '-mx-0.5',
       }
+    }
 
-    case 'lg':
+    case 'lg': {
       return {
         wrapper: 'h-6',
         innerWrapper: 'px-1.5 h-3',
@@ -186,8 +182,9 @@ const sizeCls = computed(() => {
         indicatorInner: 'h-3 w-3 -translate-x-1.5 -translate-y-1.5',
         progress: '-mx-1.5',
       }
-    case 'md':
-    default:
+    }
+    // case 'md':
+    default: {
       return {
         wrapper: 'h-4',
         innerWrapper: 'px-1 h-2',
@@ -197,6 +194,7 @@ const sizeCls = computed(() => {
         indicatorInner: 'h-2 w-2 -translate-x-1 -translate-y-1',
         progress: '-mx-1',
       }
+    }
   }
 })
 const animateCls = computed(() => props.animate

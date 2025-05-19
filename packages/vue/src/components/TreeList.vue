@@ -1,6 +1,6 @@
 <script setup lang="tsx">
-import type { Rounded } from '@/types'
 import type { VNode } from 'vue'
+import type { Rounded } from '@/types'
 import { useRounded } from '@roku-ui/vue'
 import { computed, h, ref, watchEffect } from 'vue'
 import { AutoHeightTransition } from '.'
@@ -64,18 +64,20 @@ const status = ref<Map<TreeListItemData, boolean>>(new Map())
 function travel(data: TreeListItemData, level: number) {
   if (hasChildren(data)) {
     status.value.set(data, data.open ?? false)
-    data.children?.forEach((child) => {
-      travel(child, level + 1)
-    })
+    if (data.children) {
+      for (const child of data.children) {
+        travel(child, level + 1)
+      }
+    }
   }
 }
 
 watchEffect(() => {
-  props.items.forEach((item) => {
+  for (const item of props.items) {
     if (hasChildren(item)) {
       travel(item, 0)
     }
-  })
+  }
 })
 
 function TreeListLink({ data, level }: { data: TreeListLeafData, level: number }) {

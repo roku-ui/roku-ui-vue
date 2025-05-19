@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { Color, ContainerVariant } from '@/types'
+import { computed } from 'vue'
 import { useContainerCS } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
-import { computed } from 'vue'
 
 const props = withDefaults(
   defineProps<{
@@ -24,14 +24,18 @@ const props = withDefaults(
 const rounded = useRounded(props)
 const sizeCls = computed(() => {
   switch (props.size) {
-    case 'sm':
+    case 'sm': {
       return 'px-3 py-0.5 text-xs'
-    case 'md':
+    }
+    case 'md': {
       return 'px-4 py-0.5 text-sm'
-    case 'lg':
+    }
+    case 'lg': {
       return 'px-5 py-0.5 text-base'
-    default:
+    }
+    default: {
       return ''
+    }
   }
 })
 

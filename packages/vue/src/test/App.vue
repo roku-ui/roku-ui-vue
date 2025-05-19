@@ -1,9 +1,9 @@
 <!-- eslint-disable no-console -->
 <script setup lang="tsx">
+import { computed, onMounted, ref } from 'vue'
 import Avatar from '@/components/Avatar.vue'
 import SchemeSwitch from '@/components/SchemeSwitch.vue'
 import { Modals } from '@/utils/modals'
-import { computed, onMounted, ref } from 'vue'
 import { generateColors, Notifications, primaryColor, surfaceColor } from '..'
 import PopoverDemo from './demo/PopoverDemo.vue'
 import RatingDemo from './demo/RatingDemo.vue'
@@ -29,7 +29,7 @@ const color = ref('#5474B4')
 const colors = computed(() => generateColors(color.value))
 const file = ref<File | null>(null)
 function onDrop(files: File[] | null) {
-  if (files && files.length) {
+  if (files && files.length > 0) {
     file.value = files[0]
     Notifications.show({
       title: 'Files dropped',
@@ -82,7 +82,7 @@ function customRender() {
 </script>
 
 <template>
-  <RokuProvider class="!scrollbar-thumb-hover-color-surface-4 roku-scrollbar !dark:scrollbar-thumb-hover-color-surface-5 max-h-100vh overflow-auto">
+  <RokuProvider class="roku-scrollbar !scrollbar-thumb-hover-color-surface-4 !dark:scrollbar-thumb-hover-color-surface-5 max-h-100vh overflow-auto">
     <NotificationSystem />
     <ModalSystem />
     <div class="flex flex-col items-center gap-2">
@@ -116,7 +116,11 @@ function customRender() {
       >
         Open a modal
       </Btn>
-      <Paper class="min-h-50" with-border no-padding>
+      <Paper
+        class="min-h-50"
+        with-border
+        no-padding
+      >
         <TreeList
           class="min-w-60"
           :items="[
@@ -287,18 +291,41 @@ function customRender() {
         </div>
       </div>
       <div class="flex items-center gap-2">
+        <Avatar
+          name="x"
+          src="https://www.example.com"
+        />
         <Avatar name="Jannchie" />
         <Avatar name="Jannchie Pan" />
-        <Avatar size="sm" name="Jannchie Pan" />
-        <Avatar size="sm" name="见齐" />
-        <Avatar variant="light" name="Light" />
-        <Avatar variant="light" name="Light" color="primary" />
+        <Avatar
+          size="sm"
+          name="Jannchie Pan"
+        />
+        <Avatar
+          size="sm"
+          name="见齐"
+        />
+        <Avatar
+          variant="light"
+          name="Light"
+        />
+        <Avatar
+          variant="light"
+          name="Light"
+          color="primary"
+        />
         <Avatar />
         <Avatar skeleton />
         <Avatar name="见齐" />
         <Avatar name="あ" />
-        <Avatar size="lg" name="あ" />
-        <Avatar size="xl" name="あ" />
+        <Avatar
+          size="lg"
+          name="あ"
+        />
+        <Avatar
+          size="xl"
+          name="あ"
+        />
       </div>
       <SelectDemo />
       <ColorInput v-model="primaryColor" />
@@ -804,10 +831,16 @@ function customRender() {
         <Chip variant="filled">
           Chip
         </Chip>
-        <Chip variant="filled" color="secondary">
+        <Chip
+          variant="filled"
+          color="secondary"
+        >
           Chip
         </Chip>
-        <Chip variant="filled" color="tertiary">
+        <Chip
+          variant="filled"
+          color="tertiary"
+        >
           Chip
         </Chip>
       </Paper>
@@ -815,10 +848,16 @@ function customRender() {
         <Chip variant="light">
           Chip
         </Chip>
-        <Chip variant="light" color="secondary">
+        <Chip
+          variant="light"
+          color="secondary"
+        >
           Chip
         </Chip>
-        <Chip variant="light" color="tertiary">
+        <Chip
+          variant="light"
+          color="tertiary"
+        >
           Chip
         </Chip>
       </Paper>

@@ -13,7 +13,7 @@ const props = withDefaults(defineProps<{
 }>(), {
   trigger: 'click',
   position: 'bottom',
-  zIndex: 10000,
+  zIndex: 10_000,
   offset: 4,
   overlay: false,
 })
@@ -29,74 +29,91 @@ const wrapperBounds = useElementBounding(wrapperRef)
 const contentBounds = useElementBounding(contentRef)
 const positionClass = computed(() => {
   switch (props.position) {
-    case 'top-start':
+    case 'top-start': {
       return 'top-0 left-0'
-    case 'top-end':
+    }
+    case 'top-end': {
       return 'top-0 right-0'
-    case 'bottom-end':
+    }
+    case 'bottom-end': {
       return 'top-100% right-0'
-    case 'bottom-start':
+    }
+    case 'bottom-start': {
       return 'top-100% left-0'
-    case 'bottom':
+    }
+    case 'bottom': {
       return 'top-100% left-50%'
-    default:
+    }
+    default: {
       return 'top-100%'
+    }
   }
 })
 const positionStyle = computed(() => {
   switch (props.position) {
     case 'top-start':
-    case 'top-end':
+    case 'top-end': {
       return {
         top: `${-contentBounds.height.value - props.offset}px`,
       }
-    case 'top':
+    }
+    case 'top': {
       return {
         top: `${-contentBounds.height.value - props.offset}px`,
         left: `${-contentBounds.width.value / 2 + wrapperBounds.width.value / 2}px`,
       }
+    }
     case 'bottom-start':
-    case 'bottom-end':
+    case 'bottom-end': {
       return {
         marginTop: `${props.offset}px`,
       }
-    case 'bottom':
+    }
+    case 'bottom': {
       return {
         top: `${wrapperBounds.height.value + props.offset}px`,
         left: `${-contentBounds.width.value / 2 + wrapperBounds.width.value / 2}px`,
       }
-    case 'left-start':
+    }
+    case 'left-start': {
       return {
         left: `${-contentBounds.width.value - props.offset}px`,
         top: 0,
       }
-    case 'left-end':
+    }
+    case 'left-end': {
       return {
         left: `${-contentBounds.width.value - props.offset}px`,
         top: `${-contentBounds.height.value + wrapperBounds.height.value}px`,
       }
-    case 'left':
+    }
+    case 'left': {
       return {
         left: `${-contentBounds.width.value - props.offset}px`,
         top: `${-contentBounds.height.value / 2 + wrapperBounds.height.value / 2}px`,
       }
-    case 'right-start':
+    }
+    case 'right-start': {
       return {
         left: `${props.offset + wrapperBounds.width.value}px`,
         top: 0,
       }
-    case 'right-end':
+    }
+    case 'right-end': {
       return {
         left: `${props.offset + wrapperBounds.width.value}px`,
         top: `${-contentBounds.height.value + wrapperBounds.height.value}px`,
       }
-    case 'right':
+    }
+    case 'right': {
       return {
         left: `${wrapperBounds.width.value + props.offset}px`,
         top: `${-contentBounds.height.value / 2 + wrapperBounds.height.value / 2}px`,
       }
-    default:
+    }
+    default: {
       return {}
+    }
   }
 })
 const hover = useElementHover(wrapperRef)
@@ -114,12 +131,7 @@ function onPointerUp(e: PointerEvent) {
   active.value = !active.value
 }
 onClickOutside(contentRef, (e) => {
-  if (wrapperRef.value?.contains(e.target as HTMLElement)) {
-    active.value = true
-  }
-  else {
-    active.value = false
-  }
+  active.value = !!wrapperRef.value?.contains(e.target as HTMLElement)
 })
 </script>
 

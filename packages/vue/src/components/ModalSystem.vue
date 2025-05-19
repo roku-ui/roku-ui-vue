@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useModals } from '@/utils/modals'
 import { computed, watchEffect } from 'vue'
+import { useModals } from '@/utils/modals'
 
 const modals = useModals()
 watchEffect(() => {

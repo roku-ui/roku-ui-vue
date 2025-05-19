@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useButtonCS, useContainerDefaultVariantCS } from '@/shared'
 import { useDropZone } from '@vueuse/core'
 import { ref } from 'vue'
+import { useButtonCS, useContainerDefaultVariantCS } from '@/shared'
 
 const props = withDefaults(
   defineProps<{
@@ -24,7 +24,7 @@ const { onChange, open } = useFileDialog({
 
 onChange((files) => {
   if (files) {
-    emits('drop', Array.from(files))
+    emits('drop', [...files])
   }
   else {
     emits('drop', null)

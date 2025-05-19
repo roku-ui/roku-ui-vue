@@ -11,17 +11,22 @@ export function useRounded(props: { rounded: 'none' | 'sm' | 'md' | 'lg' | 'full
 function getRoundedStyle(rounded: 'none' | 'sm' | 'md' | 'lg' | 'full' | string | number) {
   const regex = /^-?(?:\d+(?:\.\d+)?|\.\d+)(?:px|em|rem|vh|vw|in|cm|mm|pt|pc|%)?$/
   switch (rounded) {
-    case 'none':
+    case 'none': {
       return '--r-rounded: 0'
-    case 'sm':
+    }
+    case 'sm': {
       return '--r-rounded: 0.125rem'
-    case 'md':
+    }
+    case 'md': {
       return '--r-rounded: 0.25rem'
-    case 'lg':
+    }
+    case 'lg': {
       return '--r-rounded: 0.5rem'
-    case 'full':
+    }
+    case 'full': {
       return '--r-rounded: 9999px'
-    default:
+    }
+    default: {
       if (typeof rounded === 'string' && regex.test(rounded)) {
         return `--r-rounded: ${rounded};`
       }
@@ -29,5 +34,6 @@ function getRoundedStyle(rounded: 'none' | 'sm' | 'md' | 'lg' | 'full' | string 
         return `--r-rounded: ${rounded}rem;`
       }
       return 'rounded-[--r-rounded]'
+    }
   }
 }

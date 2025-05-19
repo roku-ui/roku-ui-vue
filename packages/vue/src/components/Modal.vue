@@ -29,12 +29,21 @@ const model = defineModel<boolean>()
       <template v-if="model">
         <slot v-if="$slots.default" />
         <template v-else>
-          <Paper with-border class="w-full flex flex flex-col gap-2 md:w-md">
-            <div v-if="title || $slots.title" class="text-lg">
+          <Paper
+            with-border
+            class="w-full flex flex flex-col gap-2 md:w-md"
+          >
+            <div
+              v-if="title || $slots.title"
+              class="text-lg"
+            >
               <div v-if="title">
                 {{ title }}
               </div>
-              <slot v-else name="title" />
+              <slot
+                v-else
+                name="title"
+              />
             </div>
             <div>
               <slot name="body" />

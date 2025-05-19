@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { Color } from '@/types'
+import { computed, ref, watch } from 'vue'
 import { useColorCS, useOutlineCS as useOutlineColorCS, useSurfaceCS } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
-import { computed, ref, watch } from 'vue'
 
 defineOptions({
   inheritAttrs: false,
@@ -41,7 +41,7 @@ const wrapper = ref<HTMLElement | null>(null)
 const isActivated = ref(false)
 const sizeCls = computed(() => {
   switch (props.size) {
-    case 'sm':
+    case 'sm': {
       return {
         icon: 'text-xs mx-0.5',
         wrapper: 'h-4 w-8',
@@ -49,7 +49,8 @@ const sizeCls = computed(() => {
         inactive: 'left-[calc(0.125rem-1px)]',
         active: isActivated.value ? 'left-[calc(0.875rem-1px)]' : 'left-[calc(1.125rem-1px)]',
       }
-    case 'lg':
+    }
+    case 'lg': {
       return {
         icon: 'text-lg mx-2',
         wrapper: 'h-8 w-16',
@@ -57,8 +58,9 @@ const sizeCls = computed(() => {
         inactive: 'left-[calc(0.25rem-1px)]',
         active: isActivated.value ? 'left-[calc(1.75rem-1px)]' : 'left-[calc(2.25rem-1px)]',
       }
-    case 'md':
-    default:
+    }
+    // md
+    default: {
       return {
         icon: 'text-sm mx-1',
         wrapper: 'h-6 w-12',
@@ -66,6 +68,7 @@ const sizeCls = computed(() => {
         inactive: 'left-[calc(0.25rem-1px)]',
         active: isActivated.value ? 'left-[calc(1.5rem-1px)]' : 'left-[calc(1.75rem-1px)]',
       }
+    }
   }
 })
 

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { MenuData, MenuItemData, MenuProps } from './Menu.vue'
+import { computed, inject, ref, watchEffect } from 'vue'
 import { useRounded } from '@/utils'
 import { isDivider, isLabel, someHasIcon } from '@/utils/menu'
-import { computed, inject, ref, watchEffect } from 'vue'
 import { useOutlineCS } from '..'
 
 const props = withDefaults(defineProps<{
@@ -21,7 +21,7 @@ const rounded = useRounded({ rounded: props.rounded })
 const menuCurrentIdx = inject('menuCurrentIdx', ref<number[]>([]))
 
 const isFocusing = computed(() => {
-  return menuCurrentIdx.value.join() === props.idx.join()
+  return menuCurrentIdx.value.join(',') === props.idx.join(',')
 })
 watchEffect(() => {
   if (isFocusing.value) {
@@ -32,7 +32,7 @@ watchEffect(() => {
 const isOpen = computed(() => {
   // 如果 idx 是 menuCurrentIdx 的前缀，且不完全相等，则返回 true
   return menuCurrentIdx.value.length > props.idx.length
-    && menuCurrentIdx.value.slice(0, props.idx.length).join() === props.idx.join()
+    && menuCurrentIdx.value.slice(0, props.idx.length).join(',') === props.idx.join(',')
 })
 
 const color = computed(() => {
@@ -63,15 +63,22 @@ const menuPositionStyle = computed(() => {
 </script>
 
 <template>
-  <div v-if="isLabel(data)" class="px-2 py-1 text-xs text-surface-dimmed">
+  <div
+    v-if="isLabel(data)"
+    class="px-2 py-1 text-xs text-surface-dimmed"
+  >
     {{ data.title }}
   </div>
-  <div v-else-if="isDivider(data)" class="my-2 border-t border-surface" />
+  <div
+    v-else-if="isDivider(data)"
+    class="my-2 border-t border-surface"
+  />
   <template
     v-else
   >
     <button
       ref="menuItemRef"
+      type="button"
       :tabindex="-1"
       class="relative inline-block h-8 w-full flex cursor-pointer items-center gap-2 hover:bg-surface-variant-2 px-2 outline-2 focus-visible:outline"
       :class="[
@@ -89,12 +96,22 @@ const menuPositionStyle = computed(() => {
         }
       }"
     >
-      <i v-if="data.icon" :class="data.icon" class="w-5 flex-shrink-0" />
-      <i v-else-if="props.hasIcon" class="w-5 flex-shrink-0" />
+      <i
+        v-if="data.icon"
+        :class="data.icon"
+        class="w-5 flex-shrink-0"
+      />
+      <i
+        v-else-if="props.hasIcon"
+        class="w-5 flex-shrink-0"
+      />
       <div class="flex-grow text-truncate text-left">
         {{ data.title }}
       </div>
-      <i v-if="data.children" class="i-tabler-chevron-right flex-shrink-0" />
+      <i
+        v-if="data.children"
+        class="i-tabler-chevron-right flex-shrink-0"
+      />
       <menu
         v-if="data.children && (hover || isOpen)"
         ref="menuDropdownRef"

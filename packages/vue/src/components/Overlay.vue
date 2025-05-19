@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useRounded } from '@/utils/classGenerator'
 import tinycolor from 'tinycolor2'
 import { computed, ref } from 'vue'
+import { useRounded } from '@/utils/classGenerator'
 
 const props = withDefaults(defineProps<{
   blur?: boolean | 'sm' | 'md' | 'lg'
@@ -17,15 +17,19 @@ const props = withDefaults(defineProps<{
 
 const blurCls = computed(() => {
   switch (props.blur) {
-    case 'sm':
+    case 'sm': {
       return 'backdrop-blur-sm'
+    }
     case 'md':
-    case true:
+    case true: {
       return 'backdrop-blur-md'
-    case 'lg':
+    }
+    case 'lg': {
       return 'backdrop-blur-lg'
-    default:
+    }
+    default: {
       return ''
+    }
   }
 })
 const rounded = useRounded(props)

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { BtnVariant } from '@/types'
-import { useButtonCS } from '@/shared'
 import { computed } from 'vue'
+import { useButtonCS } from '@/shared'
 import { useRounded } from '..'
 
 const props = withDefaults(defineProps<{
@@ -24,13 +24,16 @@ const _slots = defineSlots<{
 
 const sizeCls = computed(() => {
   switch (props.size) {
-    case 'sm':
+    case 'sm': {
       return 'px-2 py-0.5 text-xs'
-    case 'lg':
+    }
+    case 'lg': {
       return 'px-4 py-1 text-base'
-    case 'md':
-    default:
+    }
+    // case 'md':
+    default: {
       return 'px-3 py-0.5 text-sm'
+    }
   }
 })
 

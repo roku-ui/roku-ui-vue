@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { Size } from '@/types'
+import { computed } from 'vue'
 import { useContainerDefaultCS, useContainerFilledCS, useTextCS } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
-import { computed } from 'vue'
 
 const props = withDefaults(
   defineProps<{
@@ -43,20 +43,24 @@ const textCS = useTextCS(color)
 const containerSurfaceCS = useContainerDefaultCS()
 const shapeClass = computed(() => {
   switch (props.size) {
-    case 'sm':
+    case 'sm': {
       return 'min-h-10 p-1'
-    case 'lg':
+    }
+    case 'lg': {
       return 'min-h-16 p-4'
-    case 'md':
-    default:
+    }
+    // case 'md':
+    default: {
       return 'min-h-16 p-3'
+    }
   }
 })
 </script>
 
 <template>
   <div
-    class="overflow-hidden" :class="[
+    class="overflow-hidden"
+    :class="[
       { 'border-0': !withBorder },
       rounded.class,
       {
@@ -138,9 +142,16 @@ const shapeClass = computed(() => {
           v-if="$slots.closeIcon"
           name="closeIcon"
         />
-        <i v-else class="i-fluent-dismiss-12-filled" />
+        <i
+          v-else
+          class="i-fluent-dismiss-12-filled"
+        />
       </Btn>
     </div>
-    <Progress v-if="complete" :value="complete" :max="total" />
+    <Progress
+      v-if="complete"
+      :value="complete"
+      :max="total"
+    />
   </div>
 </template>

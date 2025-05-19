@@ -1,8 +1,8 @@
-import type { BtnVariant, Color, ContainerVariant, InputVariant } from '@/types'
 import type { ComputedRef, MaybeRef } from 'vue'
-import { generateColorsObjMap } from '@/utils'
+import type { BtnVariant, Color, ContainerVariant, InputVariant } from '@/types'
 import tinycolor from 'tinycolor2'
 import { computed, ref, unref } from 'vue'
+import { generateColorsObjMap } from '@/utils'
 
 import { COLOR_LIGHTNESS_MAP, SURFACE_LIGHTNESS_MAP } from '..'
 
@@ -82,12 +82,15 @@ export const defaultTheme = useThemeData('default', {
 export function useContainerCS(variant: MaybeRef<ContainerVariant>, color: MaybeRef<Color>) {
   return computed(() => {
     switch (unref(variant)) {
-      case 'filled':
+      case 'filled': {
         return useContainerFilledCS(color).value
-      case 'light':
+      }
+      case 'light': {
         return useContainerLightCS(color).value
-      default:
+      }
+      default: {
         return useContainerDefaultCS().value
+      }
     }
   })
 }
@@ -96,18 +99,24 @@ function useTinycolor(color: MaybeRef<Color>) {
   return computed(() => {
     const colorValue = unref(color)
     switch (colorValue) {
-      case 'surface':
+      case 'surface': {
         return tinycolor(unref(surfaceColor))
-      case 'primary':
+      }
+      case 'primary': {
         return tinycolor(unref(primaryColor))
-      case 'secondary':
+      }
+      case 'secondary': {
         return tinycolor(unref(secondaryColor))
-      case 'tertiary':
+      }
+      case 'tertiary': {
         return tinycolor(unref(tertiaryColor))
-      case 'error':
+      }
+      case 'error': {
         return tinycolor(unref(errorColor))
-      default:
+      }
+      default: {
         return tinycolor(colorValue)
+      }
     }
   })
 }
@@ -252,9 +261,9 @@ export function useContainerLightCS(color: MaybeRef<Color>) {
   })
 }
 
-export function getCSInner(colors: tinycolor.Instance[], type: CSType, darkIndex: number, lightIndex: number, alpha = 1.0): CS {
+export function getCSInner(colors: tinycolor.Instance[], type: CSType, darkIndex: number, lightIndex: number, alpha = 1): CS {
   switch (type) {
-    case 'outline':
+    case 'outline': {
       return {
         style: {
           [`--d-outline`]: colors[darkIndex].clone().setAlpha(alpha).toHex8String(),
@@ -265,7 +274,8 @@ export function getCSInner(colors: tinycolor.Instance[], type: CSType, darkIndex
           `focus-visible:outline-[--l-outline]`,
         ],
       }
-    case 'bg':
+    }
+    case 'bg': {
       return {
         style: {
           [`--d-bg`]: colors[darkIndex].clone().setAlpha(alpha).toHex8String(),
@@ -276,7 +286,8 @@ export function getCSInner(colors: tinycolor.Instance[], type: CSType, darkIndex
           `bg-[--l-bg]`,
         ],
       }
-    case 'border':
+    }
+    case 'border': {
       return {
         style: {
           [`--d-border`]: colors[darkIndex].clone().setAlpha(alpha).toHex8String(),
@@ -287,7 +298,8 @@ export function getCSInner(colors: tinycolor.Instance[], type: CSType, darkIndex
           `border-[--l-border]`,
         ],
       }
-    case 'text':
+    }
+    case 'text': {
       return {
         style: {
           [`--d-text`]: colors[darkIndex].clone().setAlpha(alpha).toHex8String(),
@@ -298,7 +310,8 @@ export function getCSInner(colors: tinycolor.Instance[], type: CSType, darkIndex
           `text-[--l-text]`,
         ],
       }
-    case 'placeholder':
+    }
+    case 'placeholder': {
       return {
         style: {
           [`--d-placeholder`]: colors[darkIndex].clone().setAlpha(alpha).toHex8String(),
@@ -309,7 +322,8 @@ export function getCSInner(colors: tinycolor.Instance[], type: CSType, darkIndex
           'placeholder-[--l-placeholder]',
         ],
       }
-    case 'hover:bg':
+    }
+    case 'hover:bg': {
       return {
         style: {
           [`--d-bg-h`]: colors[darkIndex].clone().setAlpha(alpha).toHexString(),
@@ -320,7 +334,8 @@ export function getCSInner(colors: tinycolor.Instance[], type: CSType, darkIndex
           `hover:bg-[--l-bg-h]`,
         ],
       }
-    case 'hover:border':
+    }
+    case 'hover:border': {
       return {
         style: {
           [`--d-border-h`]: colors[darkIndex].clone().setAlpha(alpha).toHexString(),
@@ -331,7 +346,8 @@ export function getCSInner(colors: tinycolor.Instance[], type: CSType, darkIndex
           'hover:border-[--l-border-h]',
         ],
       }
-    case 'hover:text':
+    }
+    case 'hover:text': {
       return {
         style: {
           [`--d-text-h`]: colors[darkIndex].clone().setAlpha(alpha).toHexString(),
@@ -342,6 +358,7 @@ export function getCSInner(colors: tinycolor.Instance[], type: CSType, darkIndex
           'hover:text-[--l-text-h]',
         ],
       }
+    }
   }
 }
 
@@ -352,7 +369,7 @@ export function useCS(cs: CSOptions) {
   return useColorCS(cs.color, cs.type, cs.index, cs.alpha)
 }
 
-export function useColorCS(color: MaybeRef<Color>, type: CSType, index: CSIndex, alpha = 1.0) {
+export function useColorCS(color: MaybeRef<Color>, type: CSType, index: CSIndex, alpha = 1) {
   return computed(() => {
     const colors = useColors(color)
     if (typeof index === 'number') {
@@ -362,7 +379,7 @@ export function useColorCS(color: MaybeRef<Color>, type: CSType, index: CSIndex,
   })
 }
 
-export function useSurfaceCS(type: CSType, index: CSIndex, alpha = 1.0) {
+export function useSurfaceCS(type: CSType, index: CSIndex, alpha = 1) {
   return computed(() => {
     const { colors } = generateColorsObjMap(unref(surfaceColor), SURFACE_LIGHTNESS_MAP)
     if (typeof index === 'number') {
@@ -519,7 +536,7 @@ export function useInputColorStyle(color: MaybeRef<string>, variant: MaybeRef<In
     const colors = useColors(color).value
     const surfaceColors = useSurfaceColors().value
     switch (unref(variant)) {
-      case 'default':
+      case 'default': {
         return {
           '--d-bg': surfaceColors[darkSurfaceBgIndex].toHexString(),
           '--d-border-f': colors[darkBgIndex].toHexString(),
@@ -533,7 +550,8 @@ export function useInputColorStyle(color: MaybeRef<string>, variant: MaybeRef<In
           '--l-placeholder': surfaceColors[lightTextVariantIndex].toHexString(),
           '--l-text': 'black',
         }
-      case 'filled':
+      }
+      case 'filled': {
         return {
           '--d-bg': colors[5].toHexString(),
           '--d-bg-h': colors[6].toHexString(),
@@ -543,6 +561,7 @@ export function useInputColorStyle(color: MaybeRef<string>, variant: MaybeRef<In
           '--l-border': 'transparent',
 
         }
+      }
     }
   })
 }

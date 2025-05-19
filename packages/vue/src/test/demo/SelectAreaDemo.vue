@@ -27,14 +27,20 @@ function onSelectChange(area: Area) {
 </script>
 
 <template>
-  <div ref="areaRef" class="relative h-200px w-200px flex flex flex-wrap select-none bg-surface-base">
+  <div
+    ref="areaRef"
+    class="relative h-200px w-200px flex flex flex-wrap select-none bg-surface-base"
+  >
     <SelectArea
       color="#f10"
       @select-start="onSelectStart"
       @select-change="onSelectChange"
     />
     <div
-      v-for="item in items" :key="item" class="h-100px w-100px flex items-center justify-center" :class="{
+      v-for="item in items"
+      :key="item"
+      class="h-100px w-100px flex items-center justify-center"
+      :class="{
         'bg-primary-container text-white': selectingItems.includes(item),
       }"
     >

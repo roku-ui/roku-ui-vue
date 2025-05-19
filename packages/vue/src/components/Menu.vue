@@ -1,9 +1,9 @@
 <script lang="tsx" setup>
-import type { Rounded, Size } from '@/types'
 import type { VNodeChild } from 'vue'
+import type { Rounded, Size } from '@/types'
+import { computed, provide, ref, watchEffect } from 'vue'
 import { useRounded } from '@/utils'
 import { isDivider, isLabel, isMenuItem, someHasIcon } from '@/utils/menu'
-import { computed, provide, ref, watchEffect } from 'vue'
 
 export type MenuData = MenuItemData | MenuDividerData | MenuLabelData
 
@@ -124,7 +124,7 @@ onClickOutside(menuDropdownRef, () => {
   capture: true,
 })
 
-useEventListener(window, 'contextmenu', () => {
+useEventListener(globalThis, 'contextmenu', () => {
   toggle(false)
 })
 
@@ -165,13 +165,17 @@ onKeyStroke('ArrowDown', (e) => {
   e.preventDefault()
   const idx = menuCurrentIdx.value
 
-  const lastIdx = idx[idx.length - 1]
+  const lastIdx = idx.at(-1)
+  if (!lastIdx) {
+    menuCurrentIdx.value = [0]
+    return
+  }
   let nextIdx = (lastIdx + 1) % maxIdx.value
   while (
-    !isMenuItem(getMenuItemData(items.value, [...idx.slice(0, idx.length - 1), nextIdx])) || getMenuItemData(items.value, [...idx.slice(0, idx.length - 1), nextIdx])?.render) {
+    !isMenuItem(getMenuItemData(items.value, [...idx.slice(0, -1), nextIdx])) || getMenuItemData(items.value, [...idx.slice(0, -1), nextIdx])?.render) {
     nextIdx = (nextIdx + 1) % maxIdx.value
   }
-  menuCurrentIdx.value = [...idx.slice(0, idx.length - 1), nextIdx]
+  menuCurrentIdx.value = [...idx.slice(0, -1), nextIdx]
 })
 
 onKeyStroke('ArrowUp', (e) => {
@@ -180,7 +184,11 @@ onKeyStroke('ArrowUp', (e) => {
   }
   e.preventDefault()
   const idx = menuCurrentIdx.value
-  const lastIdx = idx[idx.length - 1]
+  const lastIdx = idx.at(-1)
+  if (lastIdx === undefined) {
+    menuCurrentIdx.value = [maxIdx.value - 1]
+    return
+  }
   if (lastIdx === -1 && idx.length === 1) {
     menuCurrentIdx.value = [maxIdx.value - 1]
     return
@@ -188,12 +196,12 @@ onKeyStroke('ArrowUp', (e) => {
   let nextIdx = (lastIdx - 1 + maxIdx.value) % maxIdx.value
   // jump to the next item that is not render
   while (
-    !isMenuItem(getMenuItemData(items.value, [...idx.slice(0, idx.length - 1), nextIdx]))
-    || getMenuItemData(items.value, [...idx.slice(0, idx.length - 1), nextIdx])?.render
+    !isMenuItem(getMenuItemData(items.value, [...idx.slice(0, -1), nextIdx]))
+    || getMenuItemData(items.value, [...idx.slice(0, -1), nextIdx])?.render
   ) {
     nextIdx = (nextIdx - 1 + maxIdx.value) % maxIdx.value
   }
-  menuCurrentIdx.value = [...idx.slice(0, idx.length - 1), nextIdx]
+  menuCurrentIdx.value = [...idx.slice(0, -1), nextIdx]
 })
 
 onKeyStroke('ArrowRight', (e) => {
@@ -208,7 +216,7 @@ onKeyStroke('ArrowRight', (e) => {
   }
 
   // 如果末尾不是 - 1
-  if (menuCurrentIdx.value[menuCurrentIdx.value.length - 1] !== -1) {
+  if (menuCurrentIdx.value.at(-1) !== -1) {
     // 找到目前 menuCurrentIdx 所指示的 item
     let cur = items.value
     for (let i = 0; i < menuCurrentIdx.value.length; i++) {
@@ -240,7 +248,7 @@ onKeyStroke('ArrowLeft', (e) => {
   }
   // 如果 menuCurrentIdx 长度 > 1，说明存在父级
   if (menuCurrentIdx.value.length > 1) {
-    menuCurrentIdx.value = menuCurrentIdx.value.slice(0, menuCurrentIdx.value.length - 1)
+    menuCurrentIdx.value = menuCurrentIdx.value.slice(0, -1)
   }
 })
 
@@ -262,7 +270,11 @@ function getMenuItemData(items: MenuData[] | undefined, idx: number[]): MenuItem
   if (cur === undefined) {
     return undefined
   }
-  return cur[idx[idx.length - 1]] as MenuItemData
+  const lastIdx = idx.at(-1)
+  if (lastIdx === undefined) {
+    return undefined
+  }
+  return cur[lastIdx] as MenuItemData
 }
 provide('selectMenuItem', (value: number | string | symbol) => {
   emits('select', value)
@@ -281,15 +293,10 @@ onKeyStroke('Enter', (e) => {
 })
 
 const dropdownPositionClass = computed(() => {
-  if (props.trigger === 'contextmenu') {
-    return ''
-  }
-  else {
-    return 'absolute mt-2'
-  }
+  return props.trigger === 'contextmenu' ? '' : 'absolute mt-2'
 })
 
-useEventListener(window, 'scroll', () => {
+useEventListener(globalThis, 'scroll', () => {
   if (finalValue.value) {
     toggle(false)
   }
@@ -306,16 +313,13 @@ const dropdownPositionStyle = computed(() => {
   const dropDownTop = menuDropdownRef.value?.getBoundingClientRect().top ?? 0
   const hasBottomPosition = windowHeight - dropDownTop > dropDownHeight
 
-  if (props.trigger === 'contextmenu') {
-    return {
-      left: `${hasRightPosition ? openPosition.value.x : openPosition.value.x - dropDownWidth}px`,
-      top: `${hasBottomPosition ? openPosition.value.y : openPosition.value.y - dropDownHeight}px`,
-      position: 'absolute',
-    } as const
-  }
-  else {
-    return {}
-  }
+  return props.trigger === 'contextmenu'
+    ? {
+        left: `${hasRightPosition ? openPosition.value.x : openPosition.value.x - dropDownWidth}px`,
+        top: `${hasBottomPosition ? openPosition.value.y : openPosition.value.y - dropDownHeight}px`,
+        position: 'absolute',
+      } as const
+    : {}
 })
 </script>
 
@@ -356,10 +360,16 @@ const dropdownPositionStyle = computed(() => {
             v-for="item, i in props.data"
             :key="i"
           >
-            <div v-if="isLabel(item)" class="text-surface-variant-3 px-2 py-1 text-xs text-surface-dimmed">
+            <div
+              v-if="isLabel(item)"
+              class="text-surface-variant-3 px-2 py-1 text-xs text-surface-dimmed"
+            >
               {{ item.title }}
             </div>
-            <div v-else-if="isDivider(item)" class="my-2 border-t border-surface" />
+            <div
+              v-else-if="isDivider(item)"
+              class="my-2 border-t border-surface"
+            />
             <template v-else>
               <component
                 :is="item.render"

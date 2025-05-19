@@ -1,10 +1,10 @@
 <script setup lang="ts" generic="T extends { id: number | string | symbol;  [key: string]: any;} | string | symbol | number">
-import type { Color } from '@/types'
 import type { Reactive } from 'vue'
-import { useContainerDefaultCS, useContainerDefaultVariantCS, useContainerFilledCS, useInputColorStyle } from '@/shared'
-import { useRounded } from '@/utils/classGenerator'
+import type { Color } from '@/types'
 import { isClient } from '@vueuse/core'
 import { computed, ref, watch, watchEffect } from 'vue'
+import { useContainerDefaultCS, useContainerDefaultVariantCS, useContainerFilledCS, useInputColorStyle } from '@/shared'
+import { useRounded } from '@/utils/classGenerator'
 
 const props = withDefaults(defineProps<{
   ariaLabel?: string
@@ -83,7 +83,7 @@ function getLabel(option?: Reactive<T> | T) {
 
 function getId(option?: Reactive<T> | T) {
   if (!option) {
-    return undefined
+    return
   }
   if (typeof option === 'string' || typeof option === 'symbol' || typeof option === 'number') {
     return option
@@ -155,21 +155,24 @@ const colorStyle = useInputColorStyle(color, 'default')
 
 const sizeCls = computed(() => {
   switch (props.size) {
-    case 'sm':
+    case 'sm': {
       return {
         wrapper: 'h-6 w-full py-1 pl-1.5 pr-6 text-sm',
         dropdown: 'text-sm children:py-1',
       }
-    case 'lg':
+    }
+    case 'lg': {
       return {
         wrapper: 'h-10 w-full py-2 pl-3 pr-10 text-lg',
         dropdown: 'text-lg children:py-2',
       }
-    default:
+    }
+    default: {
       return {
         wrapper: 'h-8 w-full py-1 pl-2 pr-8 text-base',
         dropdown: 'text-base children:py-1',
       }
+    }
   }
 })
 const dropdownRef = ref(null)

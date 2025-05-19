@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { computed, ref, useAttrs } from 'vue'
 import { useInputColorStyle } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
-import { computed, ref, useAttrs } from 'vue'
 
 const props = withDefaults(
   defineProps<{
@@ -24,31 +24,37 @@ const props = withDefaults(
 const model = defineModel<string | number>()
 const sizeCls = computed(() => {
   switch (props.size) {
-    case 'sm':
+    case 'sm': {
       return {
         base: 'h-6 px-2 py-1 text-xs',
       }
-    case 'lg':
+    }
+    case 'lg': {
       return {
         base: 'h-10 px-4 py-2 text-base',
       }
-    case 'md':
-    default:
+    }
+    // case 'md':
+    default: {
       return {
         base: 'h-8 px-3 py-1 text-sm',
       }
+    }
   }
 })
 
 const labelSizeCls = computed(() => {
   switch (props.size) {
-    case 'sm':
+    case 'sm': {
       return 'text-xs'
-    case 'lg':
+    }
+    case 'lg': {
       return 'md-md'
-    case 'md':
-    default:
+    }
+    // case 'md':
+    default: {
       return 'text-sm'
+    }
   }
 })
 const color = computed(() => props.color)

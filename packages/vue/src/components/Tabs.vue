@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
-import { childrenElementMapSymbol, directionSymbol, tabCurrentSymbol } from '@/utils'
 import { computed, Fragment, onMounted, provide, ref, useSlots } from 'vue'
+import { childrenElementMapSymbol, directionSymbol, tabCurrentSymbol } from '@/utils'
 
 const props = withDefaults(defineProps<{
   defaultValue?: string | number | symbol
@@ -56,8 +56,11 @@ onKeyStroke('ArrowLeft', (e) => {
     return
   }
   const index = model.value ? valueList.value.indexOf(model.value) : 0
-  const newValue = index > 0 ? valueList.value[index - 1] : valueList.value[valueList.value.length - 1]
+  const newValue = index > 0 ? valueList.value[index - 1] : valueList.value.at(-1)
   model.value = newValue
+  if (newValue === undefined) {
+    return
+  }
   const elRef = childrenElementMap.get(newValue)
   if (elRef) {
     const el = elRef.value
@@ -96,8 +99,11 @@ onKeyStroke('ArrowUp', (e) => {
     return
   }
   const index = model.value ? valueList.value.indexOf(model.value) : 0
-  const newValue = index > 0 ? valueList.value[index - 1] : valueList.value[valueList.value.length - 1]
+  const newValue = index > 0 ? valueList.value[index - 1] : valueList.value.at(-1)
   model.value = newValue
+  if (newValue === undefined) {
+    return
+  }
   const elRef = childrenElementMap.get(newValue)
   if (elRef) {
     const el = elRef.value
@@ -129,12 +135,15 @@ onKeyStroke('ArrowDown', (e) => {
 
 const directionCls = computed(() => {
   switch (props.direction) {
-    case 'horizontal':
+    case 'horizontal': {
       return 'flex-row'
-    case 'vertical':
+    }
+    case 'vertical': {
       return 'flex-col'
-    default:
+    }
+    default: {
       return 'flex-row'
+    }
   }
 })
 </script>

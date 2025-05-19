@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useColors } from '@/shared'
 import { useElementBounding, useEventListener, useMagicKeys, useMouse, useParentElement } from '@vueuse/core'
 import { computed, ref } from 'vue'
+import { useColors } from '@/shared'
 
 const props = withDefaults(defineProps<{
   target?: HTMLElement
@@ -60,7 +60,7 @@ useEventListener(target, 'pointerdown', (e) => {
   emit('selectStart', { target: e.target, shift: shift.value, ctrl: ctrl.value })
 }, { capture: true })
 // 捕获任意元素的 mouseup 事件
-useEventListener(window, 'pointerup', (e) => {
+useEventListener(globalThis, 'pointerup', (e) => {
   dragging.value = false
   emit('selectEnd', {
     left: Math.min(startPoint.value.x, endPoint.value.x),
@@ -109,13 +109,16 @@ useEventListener(parent, 'scroll', (e) => {
   }, { target: e.target, shift: shift.value, ctrl: ctrl.value })
 })
 
-useEventListener(window, 'dragend', () => {
+useEventListener(globalThis, 'dragend', () => {
   dragging.value = false
 })
 </script>
 
 <template>
-  <Teleport v-if="target" :to="target">
+  <Teleport
+    v-if="target"
+    :to="target"
+  >
     <div
       v-if="dragging"
       class="absolute z-10000 h-1 border border border-[var(--border-color)] bg-[var(--fill-color)]"

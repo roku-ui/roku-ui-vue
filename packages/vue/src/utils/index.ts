@@ -21,7 +21,7 @@ export function generateColorsMap(color: tinycolor.ColorInput, lightnessMap = CO
 export function generateColorsObjMap(color: tinycolor.ColorInput, lightnessMap = COLOR_LIGHTNESS_MAP) {
   const baseColor = tinycolor(color)
   const closestLightness = getClosestLightness(baseColor)
-  const baseColorIndex = lightnessMap.findIndex(l => l === closestLightness)
+  const baseColorIndex = lightnessMap.indexOf(closestLightness)
 
   const colors = lightnessMap.map((lightness) => {
     const modifiedColor = tinycolor({ h: baseColor.toHsl().h, s: baseColor.toHsl().s, l: lightness })

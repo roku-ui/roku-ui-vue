@@ -32,12 +32,7 @@ function getIcon(selection: T) {
 }
 const model = defineModel<string | undefined>()
 function onClick(selection: T) {
-  if (getValue(selection) === model.value && unselectable.value) {
-    model.value = undefined
-  }
-  else {
-    model.value = getValue(selection)
-  }
+  model.value = getValue(selection) === model.value && unselectable.value ? undefined : getValue(selection)
 }
 const isSingle = computed(() => props.selections.length === 1)
 const childClass = computed(() => isSingle.value ? null : 'first-children:rounded-r-0 first-children:border-r-none last-children:rounded-l-0 last-children:border-l-none not-first-children:rounded-l-0 not-last-children:rounded-r-0')

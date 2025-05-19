@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { Color } from '@/types'
+import { computed } from 'vue'
 import { useContainerFilledCS, useSurfaceCS } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
-import { computed } from 'vue'
 
 const props = withDefaults(defineProps<{
   value?: number | string
@@ -23,14 +23,18 @@ const props = withDefaults(defineProps<{
 })
 const sizeCls = computed(() => {
   switch (props.size) {
-    case 'sm':
+    case 'sm': {
       return 'h-0.25'
-    case 'md':
+    }
+    case 'md': {
       return 'h-0.5'
-    case 'lg':
+    }
+    case 'lg': {
       return 'h-1'
-    default:
+    }
+    default: {
       return 'h-0.5'
+    }
   }
 })
 const color = computed(() => props.color)

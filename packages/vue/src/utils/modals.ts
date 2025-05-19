@@ -37,8 +37,8 @@ export function useModals() {
   return modals
 }
 
-export class Modals {
-  static open(data: ModalDataType) {
+export const Modals = {
+  open(data: ModalDataType) {
     if (!data.id) {
       data.id = Math.random().toString(36)
     }
@@ -47,5 +47,5 @@ export class Modals {
       return
     }
     modals.value = [data as ModalData, ...modals.value]
-  }
+  },
 }

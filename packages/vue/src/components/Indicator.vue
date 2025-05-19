@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Color } from '@/types'
-import { useIndicatorFilledCS } from '@/shared'
 import { computed, useSlots } from 'vue'
+import { useIndicatorFilledCS } from '@/shared'
 
 const props = withDefaults(
   defineProps<{
@@ -18,17 +18,21 @@ const props = withDefaults(
 )
 const sizeCls = computed(() => {
   switch (props.size) {
-    case 'sm':
+    case 'sm': {
       return 'w-2 h-2'
-    case 'md':
+    }
+    case 'md': {
       return 'w-3 h-3'
-    case 'lg':
+    }
+    case 'lg': {
       return 'w-4 h-4'
-    default:
+    }
+    default: {
       if (typeof props.size === 'number' || !Number.isNaN(Number(props.size))) {
         return `w-${props.size} h-${props.size}`
       }
       return props.size
+    }
   }
 })
 const slots = useSlots()
@@ -37,26 +41,33 @@ const labelCls = computed(() => {
     return ''
   }
   switch (props.size) {
-    case 'sm':
+    case 'sm': {
       return 'text-sm children:px-1.5'
-    case 'lg':
+    }
+    case 'lg': {
       return 'text-lg children:px-2.5'
+    }
     case 'md':
-    default:
+    default: {
       return 'text-md children:px-2'
+    }
   }
 })
 const posCls = computed(() => {
   switch (props.position) {
-    case 'bottom-left':
+    case 'bottom-left': {
       return 'bottom-0 left-0 -translate-x-1/2 translate-y-1/2'
-    case 'bottom-right':
+    }
+    case 'bottom-right': {
       return 'bottom-0 right-0 translate-x-1/2 translate-y-1/2'
-    case 'top-left':
+    }
+    case 'top-left': {
       return 'top-0 left-0 -translate-x-1/2 -translate-y-1/2'
+    }
     case 'top-right':
-    default:
+    default: {
       return 'top-0 right-0 translate-x-1/2 -translate-y-1/2'
+    }
   }
 })
 
