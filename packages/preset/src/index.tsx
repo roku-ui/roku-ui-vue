@@ -6,21 +6,22 @@ import { presetIcons, presetTypography, presetWind3 } from 'unocss'
 import baseStyle from './styles.css'
 
 const colorKeys = ['surface', 'primary', 'secondary', 'tertiary', 'error']
-const colors = colorKeys.reduce<Record<string, any>>((colors, key) => {
-  colors[key] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(c => `rgb(var(--r-color-${key}-${c}))`).reduce((pre, cur, i) => {
-    pre[i] = cur
-    return pre
-  }, {} as any)
-  return colors
-}, {})
+const colors: Record<string, Record<number, string>> = {}
+for (const key of colorKeys) {
+  const obj: Record<number, string> = {}
+  for (let c = 0; c <= 10; c++) {
+    obj[c] = `rgb(var(--r-color-${key}-${c}))`
+  }
+  colors[key] = obj
+}
 
-const rokuPreset: () => Preset<object> = () => () => {
+function rokuPresetImpl(): Preset {
   let file = ''
   try {
-    file = fs.readFileSync('node_modules/@roku-ui/vue/dist/index.js', 'utf-8')
+    file = fs.readFileSync('node_modules/@roku-ui/vue/dist/index.js', 'utf8')
   }
   catch {}
-  const option: Preset = {
+  return {
     name: 'roku',
     theme: {
       colors: {
@@ -82,6 +83,7 @@ const rokuPreset: () => Preset<object> = () => () => {
       },
     ],
   }
-  return option
 }
+
+const rokuPreset = (): Preset => rokuPresetImpl()
 export { rokuPreset }
