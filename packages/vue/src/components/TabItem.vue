@@ -30,9 +30,11 @@ const directionCls = computed(() => {
     case 'vertical': {
       return 'flex-row-reverse rounded-tr-lg rounded-br-lg'
     }
-    case 'horizontal':
-    default: {
+    case 'horizontal': {
       return 'flex-col rounded-tr-lg rounded-tl-lg'
+    }
+    default: {
+      return ''
     }
   }
 })
@@ -41,9 +43,11 @@ const indicatorCls = computed(() => {
     case 'vertical': {
       return 'absolute inset-0 right-100% h-full w-2px'
     }
-    case 'horizontal':
-    default: {
+    case 'horizontal': {
       return 'absolute inset-0 top-100% h-2px w-full'
+    }
+    default: {
+      return ''
     }
   }
 })

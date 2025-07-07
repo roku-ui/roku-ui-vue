@@ -24,14 +24,14 @@ export function useNotifications(topN?: number) {
         return notifications.value
       }
 
-      const groups = notifications.value.reduce<Record<string, NotificationData[]>>((acc, notification) => {
+      const groups: Record<string, NotificationData[]> = {}
+      for (const notification of notifications.value) {
         const { position } = notification
-        if (!acc[position]) {
-          acc[position] = []
+        if (!groups[position]) {
+          groups[position] = []
         }
-        acc[position].push(notification)
-        return acc
-      }, {})
+        groups[position].push(notification)
+      }
 
       const topNotifications: NotificationData[] = []
       for (const position in groups) {

@@ -8,9 +8,13 @@ export * from './symbols'
 
 function getClosestLightness(color: string | tinycolor.ColorFormats.PRGB | tinycolor.ColorFormats.RGB | tinycolor.ColorFormats.HSL | tinycolor.ColorFormats.HSV | tinycolor.Instance | undefined) {
   const lightnessGoal = tinycolor(color).toHsl().l
-  return COLOR_LIGHTNESS_MAP.reduce((prev, curr) =>
-    Math.abs(curr - lightnessGoal) < Math.abs(prev - lightnessGoal) ? curr : prev,
-  )
+  let closest = COLOR_LIGHTNESS_MAP[0]
+  for (const curr of COLOR_LIGHTNESS_MAP) {
+    if (Math.abs(curr - lightnessGoal) < Math.abs(closest - lightnessGoal)) {
+      closest = curr
+    }
+  }
+  return closest
 }
 
 export function generateColorsMap(color: tinycolor.ColorInput, lightnessMap = COLOR_LIGHTNESS_MAP) {

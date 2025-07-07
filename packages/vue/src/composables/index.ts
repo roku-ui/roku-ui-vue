@@ -124,22 +124,17 @@ function useColorTuple(color: MaybeRef<string | readonly [string, string, string
 export function useThemeStyles(theme: ThemeData) {
   const currentTheme = ref(theme)
   type KeyOfThemeColors = keyof typeof currentTheme.value.colors
-  const colorVars = Object.keys(currentTheme.value.colors).map((key) => {
+  const colorVars: Record<string, string> = {}
+  for (const key of Object.keys(currentTheme.value.colors)) {
     const color = key as KeyOfThemeColors
     const colorValue = currentTheme.value.colors[color]
     const colorTuple = useColorTuple(colorValue, color === 'surface' ? SURFACE_LIGHTNESS_MAP : COLOR_LIGHTNESS_MAP)
     const colorTupleValue = colorTuple.value as string[]
-    return colorTupleValue.reduce((acc, cur, idx) => {
+    for (const [idx, cur] of colorTupleValue.entries()) {
       const c = tinycolor(cur).toRgb()
-      acc[`--r-color-${color}-${idx}`] = `${c.r} ${c.g} ${c.b}`
-      return acc
-    }, {} as Record<string, string>)
-  }).reduce((acc, cur) => {
-    return {
-      ...acc,
-      ...cur,
+      colorVars[`--r-color-${color}-${idx}`] = `${c.r} ${c.g} ${c.b}`
     }
-  }, {} as Record<string, string>)
+  }
 
   const colorStyles = {
     ...colorVars,
@@ -159,7 +154,7 @@ export function useThemeStyles(theme: ThemeData) {
 export function useId(props: { id?: string }) {
   const id = ref('')
   onMounted(() => {
-    id.value = props.id ? props.id : `switch-${Math.random().toString(36).slice(2)}-${Date.now().toString(36)}`
+    id.value = props.id || `switch-${Math.random().toString(36).slice(2)}-${Date.now().toString(36)}`
   })
   return id
 }

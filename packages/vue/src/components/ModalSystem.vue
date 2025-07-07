@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { computed, watchEffect } from 'vue'
+import { computed } from 'vue'
 import { useModals } from '@/utils/modals'
 
 const modals = useModals()
-watchEffect(() => {
-  console.log(modals.value)
-})
+
 const hasModal = computed(() => modals.value.length > 0)
 </script>
 

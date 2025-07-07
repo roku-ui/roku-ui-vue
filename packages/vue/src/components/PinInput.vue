@@ -25,9 +25,9 @@ function onInput(e: InputEvent) {
   const currentIndex = inputs.value.findIndex(d => d.el === e.target)
   const val = (e.target as any).value ?? '';
   (e.target as any).value = ''
-  ;[...val].forEach((d: string, i: number) => {
+  for (const [i, d] of [...val].entries()) {
     if (currentIndex + i >= inputs.value.length) {
-      return
+      break
     }
     inputs.value[currentIndex + i].el.value = d
     if (currentIndex + i + 1 < inputs.value.length) {
@@ -37,7 +37,7 @@ function onInput(e: InputEvent) {
     else {
       inputs.value[currentIndex + i].el.blur()
     }
-  })
+  }
 }
 function onBackspace(e: KeyboardEvent) {
   e.preventDefault()

@@ -190,10 +190,24 @@ export function useContainerDefaultVariantCS() {
 }
 
 export function useMergedCS(...cs: ReturnType<typeof useCS>[]) {
-  return computed(() => ({
-    style: cs.reduce((prev, curr) => ({ ...prev, ...curr.value.style }), {}),
-    class: cs.reduce<string[]>((prev, curr) => [...prev, ...curr.value.class], []),
-  }))
+  return computed(() => {
+    const style: Record<string, string> = {}
+    const classList: string[] = []
+    for (const c of cs) {
+      Object.assign(style, c.value.style)
+      const classToAdd = c.value.class
+      if (Array.isArray(classToAdd)) {
+        classList.push(...classToAdd)
+      }
+      else {
+        classList.push(classToAdd)
+      }
+    }
+    return {
+      style,
+      class: classList,
+    }
+  })
 }
 
 export function useIndicatorFilledCS(color: MaybeRef<Color>) {

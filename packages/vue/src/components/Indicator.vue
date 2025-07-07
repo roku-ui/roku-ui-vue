@@ -47,7 +47,9 @@ const labelCls = computed(() => {
     case 'lg': {
       return 'text-lg children:px-2.5'
     }
-    case 'md':
+    case 'md': {
+      return 'text-md children:px-2'
+    }
     default: {
       return 'text-md children:px-2'
     }
@@ -64,9 +66,11 @@ const posCls = computed(() => {
     case 'top-left': {
       return 'top-0 left-0 -translate-x-1/2 -translate-y-1/2'
     }
-    case 'top-right':
-    default: {
+    case 'top-right': {
       return 'top-0 right-0 translate-x-1/2 -translate-y-1/2'
+    }
+    default: {
+      return ''
     }
   }
 })
