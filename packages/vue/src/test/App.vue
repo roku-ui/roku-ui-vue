@@ -16,6 +16,8 @@ import PopoverDemo from './demo/PopoverDemo.vue'
 import RatingDemo from './demo/RatingDemo.vue'
 import SelectAreaDemo from './demo/SelectAreaDemo.vue'
 import SelectDemo from './demo/SelectDemo.vue'
+import SliderDemo from './demo/SliderDemo.vue'
+import SwitchDemo from './demo/SwitchDemo.vue'
 import TagsDemo from './demo/TagsDemo.vue'
 import TooltipDemo from './demo/TooltipDemo.vue'
 import WaterfallDemo from './demo/WaterfallDemo.vue'
@@ -40,33 +42,20 @@ const demoPages = [
   { key: 'Tags', title: 'Tags', component: TagsDemo },
   { key: 'Tooltip', title: 'Tooltip', component: TooltipDemo },
   { key: 'Waterfall', title: 'Waterfall', component: WaterfallDemo },
+  { key: 'Slider', title: 'Slider', component: SliderDemo },
+  { key: 'Switch', title: 'Switch', component: SwitchDemo },
 ]
 
-const treeListItems = [
+const treeListItems = computed(() => [
   {
     title: 'Components',
     open: true,
-    children: [
-      { value: 'AppShell', title: 'App Shell' },
-      { value: 'Avatar', title: 'Avatar' },
-      { value: 'Button', title: 'Button' },
-      { value: 'Chat', title: 'Chat' },
-      { value: 'Form', title: 'Form Controls' },
-      { value: 'Layout', title: 'Layout' },
-      { value: 'Media', title: 'Media & Colors' },
-      { value: 'Modal', title: 'Modal & Drawer' },
-      { value: 'Navigation', title: 'Navigation' },
-      { value: 'Notification', title: 'Notification' },
-      { value: 'Popover', title: 'Popover' },
-      { value: 'Rating', title: 'Rating' },
-      { value: 'Select', title: 'Select' },
-      { value: 'SelectArea', title: 'Select Area' },
-      { value: 'Tags', title: 'Tags' },
-      { value: 'Tooltip', title: 'Tooltip' },
-      { value: 'Waterfall', title: 'Waterfall' },
-    ],
+    children: demoPages.map(page => ({
+      value: page.key,
+      title: page.title,
+    })),
   },
-]
+])
 
 const currentComponent = computed(() => {
   const page = demoPages.find(p => p.key === currentPage.value)

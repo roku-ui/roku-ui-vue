@@ -121,7 +121,11 @@ watch(model, (value) => {
     role="switch"
     tabindex="0"
     class="relative flex items-center gap-2 outline-none"
-    :style="[outlineColorCS.style, rounded.style]"
+    :style="[
+      outlineColorCS.style,
+      rounded.style,
+      { minHeight: size === 'sm' ? '24px' : size === 'lg' ? '40px' : '32px' },
+    ]"
     :class="[
       outlineColorCS.class,
       rounded.class,

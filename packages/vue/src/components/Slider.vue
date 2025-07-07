@@ -31,12 +31,19 @@ const props = withDefaults(
 
 function minMaxStepToOptions(min: number, max: number, step: number) {
   const options = []
-  for (let i = min; i <= max; i += step) {
-    options.push(i)
+  const numSteps = Math.round((max - min) / step)
+
+  for (let i = 0; i <= numSteps; i++) {
+    const value = Number((min + i * step).toFixed(10))
+    options.push(value)
   }
-  if (options.at(-1) !== max) {
+
+  // Ensure max is included if it's not already the last option
+  const lastOption = options.at(-1)
+  if (lastOption !== undefined && Math.abs(lastOption - max) > Number.EPSILON) {
     options.push(max)
   }
+
   return options
 }
 
@@ -209,17 +216,30 @@ const animateCls = computed(() => props.animate
 </script>
 
 <template>
-  <div class="relative w-full">
+  <div
+    class="relative w-full"
+    :style="{ minHeight: size === 'sm' ? '24px' : size === 'lg' ? '40px' : '32px' }"
+  >
     <div
       ref="wrapper"
       type="size"
-      class="w-full flex cursor-pointer items-center"
-      :class="sizeCls.wrapper"
+      class="flex cursor-pointer items-center"
+      :class="[
+        sizeCls.wrapper,
+        tickNum > 0 ? '' : 'absolute top-1/2 transform -translate-y-1/2',
+      ]"
+      :style="{
+        width: props.width ? `${props.width}rem` : '100%',
+        minWidth: `${props.minWidth}rem`,
+      }"
       @touchmove.prevent
     >
       <div
-        class="w-full rounded-full bg-surface-3 dark:bg-surface-7"
+        class="rounded-full bg-surface-3 dark:bg-surface-7"
         :class="sizeCls.innerWrapper"
+        :style="{
+          width: '100%',
+        }"
       >
         <div
           class="relative flex"
@@ -276,7 +296,8 @@ const animateCls = computed(() => props.animate
       v-if="ticks.length > 0"
       class="relative mx-1 h-1em text-xs text-surface-dimmed"
       :style="{
-        width: `${props.width}rem`,
+        width: props.width ? `${props.width}rem` : '100%',
+        minWidth: `${props.minWidth}rem`,
       }"
     >
       <div
