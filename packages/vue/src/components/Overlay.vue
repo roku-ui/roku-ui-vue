@@ -8,11 +8,13 @@ const props = withDefaults(defineProps<{
   rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full' | string | number
   opacity?: number
   color?: string
+  animation?: boolean
 }>(), {
   blur: false,
   rounded: 'none',
   opacity: 30,
   color: 'black',
+  animation: false,
 })
 
 const blurCls = computed(() => {
@@ -32,6 +34,11 @@ const blurCls = computed(() => {
     }
   }
 })
+
+const animationCls = computed(() => {
+  return props.animation ? 'transition-all duration-300 ease-in-out' : ''
+})
+
 const rounded = useRounded(props)
 const wrapperRef = ref(null)
 const colorRGB = tinycolor(props.color).toRgb()
@@ -48,7 +55,7 @@ const colorStyle = computed(() => {
     <div
       v-bind="$attrs"
       ref="wrapperRef"
-      :class="[blurCls, rounded.class]"
+      :class="[blurCls, rounded.class, animationCls]"
       :style="[rounded.style, colorStyle]"
       class="absolute left-0 top-0 h-full w-full overflow-hidden md:items-center"
     >

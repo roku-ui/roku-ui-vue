@@ -6,7 +6,7 @@ import { subTextCS } from '@/utils/colors'
 defineProps<{
   isOpen: boolean
 }>()
-const { data: contentComponents } = await useAsyncData('home', () => queryContent('components').sort({ title: 1 }).find({}))
+const { data: contentComponents } = await useAsyncData('home', () => queryCollection('content').where('path', 'LIKE', '/components%').all())
 
 const currentPath = useRoute().path
 function dir2Title(dir: string) {
@@ -42,12 +42,12 @@ function dir2Title(dir: string) {
 }
 
 const treeListItems = computed(() => {
-  if (!contentComponents.value) {
-    return
+  if (!contentComponents.value || !Array.isArray(contentComponents.value)) {
+    return []
   }
   const sortedA = [...contentComponents.value].sort((a, b) => {
-    const aDir = a._dir
-    const bDir = b._dir
+    const aDir = a.stem.split('/')[1] // components/display/avatar -> display
+    const bDir = b.stem.split('/')[1]
     if (!aDir) {
       return -1
     }
@@ -58,13 +58,13 @@ const treeListItems = computed(() => {
   })
   const res = sortedA.map((cc) => {
     return {
-      value: cc._path,
+      value: cc.path,
       title: cc.title,
       is: NuxtLink,
       attrs: {
-        to: cc._path,
+        to: cc.path,
       },
-      dir: cc._dir,
+      dir: cc.stem.split('/')[1], // components/display/avatar -> display
     }
   })
   let currentDir = ''
@@ -137,7 +137,7 @@ const treeListItems = computed(() => {
           <div>
             <TreeList
               :model-value="currentPath"
-              :items="treeListItems"
+              :items="treeListItems || []"
             />
           </div>
         </div>

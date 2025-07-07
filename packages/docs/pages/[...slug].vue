@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const route = useRoute()
-const { data } = await useAsyncData(route.path, queryContent(route.path).findOne)
+const { data } = await useAsyncData(route.path, () => queryCollection('content').path(route.path).first())
 const titleList = computed(() => {
   if (!data.value) {
     return ['Roku UI']
@@ -31,6 +31,9 @@ useHead({
       </template>
     </ContentTitle>
     <FeatureList :features="data?.features" />
-    <ContentDoc :head="false" />
+    <ContentRenderer
+      v-if="data"
+      :value="data"
+    />
   </main>
 </template>

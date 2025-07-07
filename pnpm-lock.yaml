@@ -146,10 +146,10 @@ importers:
         version: 5.8.3
       unocss:
         specifier: 66.3.3
-        version: 66.3.3(@unocss/webpack@66.3.3(webpack@5.96.1))(postcss@8.5.6)(vite@7.0.2(@types/node@24.0.10)(jiti@2.4.2)(terser@5.43.1)(tsx@4.19.2)(yaml@2.8.0))(vue@3.5.17(typescript@5.8.3))
+        version: 66.3.3(@unocss/webpack@66.3.3(webpack@5.96.1))(postcss@8.5.6)(vite@7.0.2(@types/node@24.0.10)(jiti@2.4.2)(terser@5.43.1)(tsx@4.19.2)(yaml@2.8.0))
       unocss-preset-scrollbar:
         specifier: ^3.2.0
-        version: 3.2.0(unocss@66.3.3(@unocss/webpack@66.3.3(webpack@5.96.1))(postcss@8.5.6)(vite@7.0.2(@types/node@24.0.10)(jiti@2.4.2)(terser@5.43.1)(tsx@4.19.2)(yaml@2.8.0))(vue@3.5.17(typescript@5.8.3)))
+        version: 3.2.0(unocss@66.3.3(@unocss/webpack@66.3.3(webpack@5.96.1))(postcss@8.5.6)(vite@7.0.2(@types/node@24.0.10)(jiti@2.4.2)(terser@5.43.1)(tsx@4.19.2)(yaml@2.8.0)))
 
   packages/vue:
     dependencies:
@@ -8031,6 +8031,16 @@ snapshots:
     transitivePeerDependencies:
       - vue
 
+  '@unocss/astro@66.3.3(vite@7.0.2(@types/node@24.0.10)(jiti@2.4.2)(terser@5.43.1)(tsx@4.19.2)(yaml@2.8.0))':
+    dependencies:
+      '@unocss/core': 66.3.3
+      '@unocss/reset': 66.3.3
+      '@unocss/vite': 66.3.3(vite@7.0.2(@types/node@24.0.10)(jiti@2.4.2)(terser@5.43.1)(tsx@4.19.2)(yaml@2.8.0))(vue@3.5.17(typescript@5.8.3))
+    optionalDependencies:
+      vite: 7.0.2(@types/node@24.0.10)(jiti@2.4.2)(terser@5.43.1)(tsx@4.19.2)(yaml@2.8.0)
+    transitivePeerDependencies:
+      - vue
+
   '@unocss/astro@66.3.3(vite@7.0.2(@types/node@24.0.10)(jiti@2.4.2)(terser@5.43.1)(tsx@4.19.2)(yaml@2.8.0))(vue@3.5.17(typescript@5.8.3))':
     dependencies:
       '@unocss/core': 66.3.3
@@ -12959,10 +12969,10 @@ snapshots:
     dependencies:
       normalize-path: 2.1.1
 
-  unocss-preset-scrollbar@3.2.0(unocss@66.3.3(@unocss/webpack@66.3.3(webpack@5.96.1))(postcss@8.5.6)(vite@7.0.2(@types/node@24.0.10)(jiti@2.4.2)(terser@5.43.1)(tsx@4.19.2)(yaml@2.8.0))(vue@3.5.17(typescript@5.8.3))):
+  unocss-preset-scrollbar@3.2.0(unocss@66.3.3(@unocss/webpack@66.3.3(webpack@5.96.1))(postcss@8.5.6)(vite@7.0.2(@types/node@24.0.10)(jiti@2.4.2)(terser@5.43.1)(tsx@4.19.2)(yaml@2.8.0))):
     dependencies:
       '@unocss/preset-mini': 65.5.0
-      unocss: 66.3.3(@unocss/webpack@66.3.3(webpack@5.96.1))(postcss@8.5.6)(vite@7.0.2(@types/node@24.0.10)(jiti@2.4.2)(terser@5.43.1)(tsx@4.19.2)(yaml@2.8.0))(vue@3.5.17(typescript@5.8.3))
+      unocss: 66.3.3(@unocss/webpack@66.3.3(webpack@5.96.1))(postcss@8.5.6)(vite@7.0.2(@types/node@24.0.10)(jiti@2.4.2)(terser@5.43.1)(tsx@4.19.2)(yaml@2.8.0))
 
   unocss@66.3.3(@unocss/webpack@66.3.3(webpack@5.96.1(esbuild@0.25.5)))(postcss@8.5.6)(vite@7.0.2(@types/node@24.0.10)(jiti@2.4.2)(terser@5.43.1)(tsx@4.19.2)(yaml@2.8.0))(vue@3.5.17(typescript@5.8.3)):
     dependencies:
@@ -13022,9 +13032,9 @@ snapshots:
       - supports-color
       - vue
 
-  unocss@66.3.3(@unocss/webpack@66.3.3(webpack@5.96.1))(postcss@8.5.6)(vite@7.0.2(@types/node@24.0.10)(jiti@2.4.2)(terser@5.43.1)(tsx@4.19.2)(yaml@2.8.0))(vue@3.5.17(typescript@5.8.3)):
+  unocss@66.3.3(@unocss/webpack@66.3.3(webpack@5.96.1))(postcss@8.5.6)(vite@7.0.2(@types/node@24.0.10)(jiti@2.4.2)(terser@5.43.1)(tsx@4.19.2)(yaml@2.8.0)):
     dependencies:
-      '@unocss/astro': 66.3.3(vite@7.0.2(@types/node@24.0.10)(jiti@2.4.2)(terser@5.43.1)(tsx@4.19.2)(yaml@2.8.0))(vue@3.5.17(typescript@5.8.3))
+      '@unocss/astro': 66.3.3(vite@7.0.2(@types/node@24.0.10)(jiti@2.4.2)(terser@5.43.1)(tsx@4.19.2)(yaml@2.8.0))
       '@unocss/cli': 66.3.3
       '@unocss/core': 66.3.3
       '@unocss/postcss': 66.3.3(postcss@8.5.6)
