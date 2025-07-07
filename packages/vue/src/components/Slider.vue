@@ -200,7 +200,7 @@ const sizeCls = computed(() => {
 const animateCls = computed(() => props.animate
   ? {
       indicator: 'transition-left',
-      progress: 'transition-width',
+      progress: '',
     }
   : {
       indicator: '',
@@ -218,7 +218,7 @@ const animateCls = computed(() => props.animate
       @touchmove.prevent
     >
       <div
-        class="w-full rounded-full bg-surface-3 transition-background-color,border-color,color dark:bg-surface-7"
+        class="w-full rounded-full bg-surface-3 dark:bg-surface-7"
         :class="sizeCls.innerWrapper"
       >
         <div
@@ -241,7 +241,7 @@ const animateCls = computed(() => props.animate
           <div
             v-if="currentIndex !== -1"
             ref="indicator"
-            class="absolute top-50% cursor-pointer rounded-full transition-background-color,border-color,color"
+            class="absolute top-50% cursor-pointer rounded-full"
             :class="[sizeCls.indicator, animateCls.indicator, indicatorOuterCls]"
             :style="[
               `--i-bg: ${filledColor}`,

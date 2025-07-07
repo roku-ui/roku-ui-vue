@@ -1,1152 +1,133 @@
-<!-- eslint-disable no-console -->
 <script setup lang="tsx">
-import { computed, onMounted, ref } from 'vue'
-import Avatar from '@/components/Avatar.vue'
-import SchemeSwitch from '@/components/SchemeSwitch.vue'
-import { Modals } from '@/utils/modals'
-import { generateColors, Notifications, primaryColor, surfaceColor } from '..'
+import { computed, ref } from 'vue'
+import { primaryColor, surfaceColor } from '..'
+
 import AppShellDemo from './demo/AppShellDemo.vue'
+import AvatarDemo from './demo/AvatarDemo.vue'
+import ButtonDemo from './demo/ButtonDemo.vue'
+import ChatDemo from './demo/ChatDemo.vue'
+import FormDemo from './demo/FormDemo.vue'
+import LayoutDemo from './demo/LayoutDemo.vue'
+import MediaDemo from './demo/MediaDemo.vue'
+import ModalDemo from './demo/ModalDemo.vue'
+import NavigationDemo from './demo/NavigationDemo.vue'
+import NotificationDemo from './demo/NotificationDemo.vue'
 import PopoverDemo from './demo/PopoverDemo.vue'
 import RatingDemo from './demo/RatingDemo.vue'
 import SelectAreaDemo from './demo/SelectAreaDemo.vue'
 import SelectDemo from './demo/SelectDemo.vue'
 import TagsDemo from './demo/TagsDemo.vue'
+import TooltipDemo from './demo/TooltipDemo.vue'
 import WaterfallDemo from './demo/WaterfallDemo.vue'
 
-const isLoading = refAutoReset(false, 3000)
-onMounted(() => {
-  isLoading.value = true
-})
-const modal1 = ref(false)
-const modal2 = ref(false)
-const modal3 = ref(false)
-const modal4 = ref(false)
-const modal5 = ref(false)
-const drawerLeft = ref(false)
-const drawerRight = ref(false)
-const select = ref()
-const slider = ref(47)
-const color = ref('#5474B4')
-const colors = computed(() => generateColors(color.value))
-const file = ref<File | null>(null)
-function onDrop(files: File[] | null) {
-  if (files && files.length > 0) {
-    file.value = files[0]
-    Notifications.show({
-      title: 'Files dropped',
-      message: files.map(file => file.name).join(', '),
-    })
-  }
-  else {
-    Notifications.show({
-      title: 'Files dropped',
-      message: 'No files dropped',
-    })
-  }
-}
-const text = ref('1')
-const tab = ref(0)
-const loading = ref(false)
-const tabs = ref(0)
-const selectObj = ref()
+const currentPage = ref('AppShell')
 
-const apiSearch = ref('')
-const apiSelected = ref<undefined | { id: number, label: string }>()
-const apiOptions = computed(() => {
-  const options = [
-    { id: 1, label: 'apple' },
-    { id: 2, label: 'banana' },
-    { id: 3, label: 'orange' },
-  ].filter(option => option.label.includes(apiSearch.value))
-  return options
+const demoPages = [
+  { key: 'AppShell', title: 'App Shell', component: AppShellDemo },
+  { key: 'Avatar', title: 'Avatar', component: AvatarDemo },
+  { key: 'Button', title: 'Button', component: ButtonDemo },
+  { key: 'Chat', title: 'Chat', component: ChatDemo },
+  { key: 'Form', title: 'Form Controls', component: FormDemo },
+  { key: 'Layout', title: 'Layout', component: LayoutDemo },
+  { key: 'Media', title: 'Media & Colors', component: MediaDemo },
+  { key: 'Modal', title: 'Modal & Drawer', component: ModalDemo },
+  { key: 'Navigation', title: 'Navigation', component: NavigationDemo },
+  { key: 'Notification', title: 'Notification', component: NotificationDemo },
+  { key: 'Popover', title: 'Popover', component: PopoverDemo },
+  { key: 'Rating', title: 'Rating', component: RatingDemo },
+  { key: 'Select', title: 'Select', component: SelectDemo },
+  { key: 'SelectArea', title: 'Select Area', component: SelectAreaDemo },
+  { key: 'Tags', title: 'Tags', component: TagsDemo },
+  { key: 'Tooltip', title: 'Tooltip', component: TooltipDemo },
+  { key: 'Waterfall', title: 'Waterfall', component: WaterfallDemo },
+]
+
+const treeListItems = [
+  {
+    title: 'Components',
+    open: true,
+    children: [
+      { value: 'AppShell', title: 'App Shell' },
+      { value: 'Avatar', title: 'Avatar' },
+      { value: 'Button', title: 'Button' },
+      { value: 'Chat', title: 'Chat' },
+      { value: 'Form', title: 'Form Controls' },
+      { value: 'Layout', title: 'Layout' },
+      { value: 'Media', title: 'Media & Colors' },
+      { value: 'Modal', title: 'Modal & Drawer' },
+      { value: 'Navigation', title: 'Navigation' },
+      { value: 'Notification', title: 'Notification' },
+      { value: 'Popover', title: 'Popover' },
+      { value: 'Rating', title: 'Rating' },
+      { value: 'Select', title: 'Select' },
+      { value: 'SelectArea', title: 'Select Area' },
+      { value: 'Tags', title: 'Tags' },
+      { value: 'Tooltip', title: 'Tooltip' },
+      { value: 'Waterfall', title: 'Waterfall' },
+    ],
+  },
+]
+
+const currentComponent = computed(() => {
+  const page = demoPages.find(p => p.key === currentPage.value)
+  return page?.component || AppShellDemo
 })
-const btnGroupVal = ref()
-const btnGroupOptions = [
-  { label: 'Left', value: 'left', icon: 'i-tabler-align-left' },
-  { label: 'Center', value: 'center', icon: 'i-tabler-align-center' },
-  { label: 'Right', value: 'right', icon: 'i-tabler-align-right' },
-]
-const btnGroupOptionSingle = [
-  { label: 'Is Active', value: 'active', icon: 'i-fluent-checkmark-12-filled' },
-]
-function customRender() {
-  return (
-    <div class="flex gap-2">
-      <Avatar size="sm" name="Avatar" />
-      <div>
-        <div class="text-surface">Custom Render</div>
-        <div class="text-surface-dimmed">Custom Render</div>
-      </div>
-    </div>
-  )
-}
 </script>
 
 <template>
-  <RokuProvider class="roku-scrollbar !scrollbar-thumb-hover-color-surface-4 !dark:scrollbar-thumb-hover-color-surface-5 max-h-100vh overflow-auto">
+  <RokuProvider class="roku-scrollbar !scrollbar-thumb-hover-color-surface-4 !dark:scrollbar-thumb-hover-color-surface-5">
     <NotificationSystem />
     <ModalSystem />
-    <AppShellDemo />
-    <div class="flex flex-col items-center gap-2">
-      <SchemeSwitch />
-      <Tag>
-        <template #leftIcon>
-          Left
-        </template>
-        <template #rightIcon>
-          Right
-        </template>
-        Abc
-      </Tag>
-    </div>
-    <div class="flex flex-col items-center gap-2">
-      <Switch
-        indicator-icon="i-tabler-123"
-        :model-value="true"
-        @change="console.log"
-      />
-      <Btn
-        @click="Modals.open({
-          id: 'test',
-          title: 'Modal Title',
-          type: 'confirm',
-          message: '',
-          onConfirm (): void {
-            throw new Error('Function not implemented.')
-          },
-        })"
-      >
-        Open a modal
-      </Btn>
-      <Paper
-        class="min-h-50"
-        with-border
-        no-padding
-      >
-        <TreeList
-          class="min-w-60"
-          :items="[
-            {
-              title: 'Root',
-              open: true,
-              children: [
-                {
-                  value: 'child1',
-                  title: 'Child 1',
-                  attrs: {
-                  },
-                },
-                {
-                  title: 'Child 2',
-                  children: [
-                    {
-                      value: 'child2.1',
-                      title: 'Child 2.1',
-                    },
-                    {
-                      title: 'HEADER',
-                    },
-                    {
-                      value: 'child2.2',
-                      title: 'Child 2.2',
-                    },
-                  ],
-                },
-                {
-                  title: 'Child 3',
-                  children: [
-                    {
-                      value: 'child3.1',
-                      title: 'Child 3.1',
-                    },
-                    {
-                      value: 'child3.2',
-                      title: 'Child 3.2',
-                    },
-                    {
-                      value: 'child3.3',
-                      title: 'Child 3.3',
-                      attrs: {
-                        href: 'https://www.google.com',
-                        target: '_blank',
-                      },
-                    },
-                  ],
-                },
-              ],
-            },
-          ]"
-        />
-      </Paper>
-      <Menu
-        :data="[
-          {
-            render: customRender,
-          },
-          { role: 'divider' },
-          { role: 'label', title: 'Item 1' },
-          { value: 'item1', title: 'Item 1', icon: 'i-tabler-activity' },
-          { value: 'item2', title: 'Item2Item2Item2Item2Item2', icon: 'i-tabler-alert-triangle' },
-          { role: 'divider' },
-          {
-            title: 'Item 3Item 3Item 3Item 3Item 3Item 3',
-            icon: 'i-tabler-alert-circle',
-            children: [
-              {
-                value: 'item3.1',
-                title: 'Item 3.1',
-              },
-              {
-                value: 'item3.1',
-                title: 'Item 3.1',
-                icon: 'i-tabler-alert-triangle',
-              },
-              { role: 'divider' },
-              {
-                value: 'item3.2',
-                title: 'Item 3.2',
-                icon: 'i-tabler-alert-circle',
-                children: [
-                  {
-                    value: 'item3.2.1',
-                    title: 'Item 3.2.1',
-                  },
-                  {
-                    value: 'item3.2.2',
-                    title: 'Item 3.2.2',
-                  },
-                ],
-              },
-            ],
-          },
-        ]"
-        @select="console.log"
-      >
-        <Btn>Menu</Btn>
-      </Menu>
-      <Menu
-        :data="[
-          {
-            render: customRender,
-          },
-          { value: 'item1', title: 'Item 1', icon: 'i-tabler-activity' },
-          { value: 'item2', title: 'Item 2', icon: 'i-tabler-alert-triangle' },
-          {
-            title: 'Item 3',
-            icon: 'i-tabler-alert-circle',
-            children: [
-              {
-                value: 'item3.1',
-                title: 'Item 3.1',
-                icon: 'i-tabler-alert-triangle' },
-              {
-                value: 'item3.2',
-                title: 'Item 3.2',
-                icon: 'i-tabler-alert-circle',
-              },
-            ],
-          },
-        ]"
-        trigger="contextmenu"
-        @select="console.log"
-      >
-        <Paper class="w-80vw">
-          Context Menu
-        </Paper>
-      </Menu>
-      <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 5000, position: 'top-left' })">
-        Push Left
-      </Btn>
-      <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 5000, position: 'top' })">
-        Push Center
-      </Btn>
-      <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 5000, position: 'top-right' })">
-        Push Right
-      </Btn>
-      <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 5000, position: 'bottom-left' })">
-        Push BL
-      </Btn>
-      <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 5000, position: 'bottom' })">
-        Push BC
-      </Btn>
-      <Btn @click="Notifications.show({ title: `Triggered at: ${new Date().toLocaleTimeString()}`, durationMS: 5000, position: 'bottom-right' })">
-        Push BR
-      </Btn>
-      <div>
-        <div class="bg-surface-base">
-          bg-surface-base
-        </div>
-        <div class="bg-surface">
-          bg-surface
-        </div>
-        <div class="bg-surface-variant-1">
-          bg-surface-variant-1
-        </div>
-        <div class="border border-surface">
-          border-surface
-        </div>
-        <div class="text-surface">
-          text-surface
-        </div>
-        <div class="text-surface-dimmed">
-          text-surface-on
-        </div>
-      </div>
-      <div class="flex items-center gap-2">
-        <Avatar
-          name="x"
-          src="https://www.example.com"
-        />
-        <Avatar name="Jannchie" />
-        <Avatar name="Jannchie Pan" />
-        <Avatar
-          size="sm"
-          name="Jannchie Pan"
-        />
-        <Avatar
-          size="sm"
-          name="见齐"
-        />
-        <Avatar
-          variant="light"
-          name="Light"
-        />
-        <Avatar
-          variant="light"
-          name="Light"
-          color="primary"
-        />
-        <Avatar />
-        <Avatar skeleton />
-        <Avatar name="见齐" />
-        <Avatar name="あ" />
-        <Avatar
-          size="lg"
-          name="あ"
-        />
-        <Avatar
-          size="xl"
-          name="あ"
-        />
-      </div>
-      <SelectDemo />
-      <ColorInput v-model="primaryColor" />
-      <ColorInput v-model="surfaceColor" />
-      <div class="theme-filled">
-        test
-      </div>
-      <RatingDemo />
-      <SelectAreaDemo />
-      <PopoverDemo />
-      <TagsDemo />
-      <WaterfallDemo />
-      <PinInput with-border />
-      <Paper with-border>
-        <BtnGroup
-          v-model="btnGroupVal"
-          :selections="btnGroupOptions"
-          color="secondary"
-        />
-        <BtnGroup
-          v-model="btnGroupVal"
-          :selections="btnGroupOptionSingle"
-        />
-      </Paper>
-      <Paper class="flex items-center gap-2">
-        <Switch indicator-icon="i-tabler-123" />
-        <Switch on-indicator-icon="i-tabler-123" />
-        <Switch off-indicator-icon="i-tabler-123" />
-        <SchemeSwitch />
-      </Paper>
-      <Paper>
-        {{ apiSearch }}
-        {{ apiSelected }}
-        <Select
-          v-model="apiSelected"
-          searchable
-          aria-label="Select a fruit"
-          placeholder="Select a fruit"
-          :options="apiOptions"
-          @input="apiSearch = $event"
-        >
-          <template #item="{ data }">
-            <div class="flex items-center justify-center gap-2">
-              <i class="i-tabler-circle" />
-              <span>
-                {{ data.label }}
-              </span>
-            </div>
-          </template>
-        </Select>
-      </Paper>
-      <Paper>
-        {{ selectObj }}
-        <Select
-          v-model="selectObj"
-          aria-label="Select a fruit"
-          placeholder="Select a fruit"
-          :options="[{ id: 1, label: 'apple' }, { id: 2, label: 'banana' }, { id: 3, label: 'orange' }]"
-        />
-      </Paper>
-      <Paper>
-        {{ select }}
-        <Select
-          v-model="select"
-          searchable
-          aria-label="Select a fruit"
-          placeholder="Select a fruit"
-          :options="['apple', 'banana', 'orange']"
-        />
-      </Paper>
-      <Tooltip>
-        <Btn hover-variant="filled">
-          Hover me
-        </Btn>
-        <template #content>
-          This is a tooltip
-        </template>
-      </Tooltip>
-      <div class="flex flex-col gap-2">
-        <div class="flex gap-2">
-          <Paper
-            trace-animate
-            class="h-24 w-32 flex items-center justify-center"
-          >
-            Trace
-          </Paper>
-          <Paper
-            trace-animate
-            class="h-24 w-32 flex items-center justify-center"
-          >
-            Trace
-          </Paper>
-        </div>
-        <div class="flex gap-2">
-          <Paper
-            trace-animate
-            class="h-24 w-32 flex items-center justify-center"
-          >
-            Trace
-          </Paper>
-          <Paper
-            trace-animate
-            class="h-24 w-32 flex items-center justify-center"
-          >
-            Trace
-          </Paper>
-        </div>
-      </div>
-      <Paper
-        :loading="loading"
-        with-border
-      >
-        <Btn
-          @click="loading = !loading"
-        >
-          {{ loading ? 'Stop' : 'Start' }} Loading
-        </Btn>
-      </Paper>
-      <Paper>
-        <Tabs v-model="tabs">
-          <TabItem :value="0">
-            Tab 0
-          </TabItem>
-          <TabItem
-            v-for="i in 3"
-            :key="i"
-            :value="i"
-            @click="() => console.log(i)"
-          >
-            Tab {{ i }}
-          </TabItem>
-          <TabItem
-            :value="4"
-          >
-            Tab 4
-          </TabItem>
-        </Tabs>
-        {{ tabs }}
-      </Paper>
-      <Paper>
-        <Tabs
-          v-model="tab"
-          direction="vertical"
-        >
-          <TabItem :value="0">
-            Tab 0
-          </TabItem>
-          <TabItem :value="1">
-            Tab 1
-          </TabItem>
-        </Tabs>
-      </Paper>
-      <Paper class="flex items-center gap-2">
-        <Avatar
-          size="sm"
-          src="https://avatars.githubusercontent.com/u/29743310?v=4"
-        />
-        <Avatar
-          src="https://avatars.githubusercontent.com/u/29743310?v=4"
-        />
-        <Avatar
-          size="lg"
-          src="https://avatars.githubusercontent.com/u/29743310?v=4"
-        />
-        <Avatar
-          size="4"
-          src="https://avatars.githubusercontent.com/u/29743310?v=4"
-        />
-        <Avatar
-          size="86px"
-          src="https://avatars.githubusercontent.com/u/29743310?v=4"
-        />
-      </Paper>
-      <Paper>
-        <AspectRatio
-          class="w-60"
-          :ratio="16 / 9"
-        >
-          <Image
-            src="https://picsum.photos/seed/2/512/512"
-          />
-        </AspectRatio>
-      </Paper>
-      <Overlay
-        blur
-        rounded="md"
-      >
-        <Image
-          height="312px"
-          width="312px"
-          src="https://picsum.photos/seed/2/512/512"
-        />
-        <template #content>
-          <div class="h-full w-full flex items-center justify-center text-white">
-            This is a overlay
-          </div>
-        </template>
-      </Overlay>
-      <ChatContainer class="max-w-lg w-full py-8">
-        <ChatMessage
-          position="right"
-          avatar="https://avatars.githubusercontent.com/u/29743310?v=4"
-        >
-          Hello, world!
-        </ChatMessage>
-        <ChatMessage
-          position="right"
-          avatar="https://avatars.githubusercontent.com/u/29743310?v=4"
-        >
-          Hello, world!
-        </ChatMessage>
-        <ChatMessage
-          position="right"
-          variant="filled"
-          avatar="https://avatars.githubusercontent.com/u/29743310?v=4"
-        >
-          Hello, world!
-        </ChatMessage>
-        <ChatSystem>
-          You have said hello 3 times
-        </ChatSystem>
-        <ChatMessage
-          avatar="https://avatars.githubusercontent.com/u/1?v=4"
-        >
-          <div>
-            Hello, Jannchie!
-          </div>
-          <!-- hello image -->
-          <Image
-            height="312px"
-            width="312px"
-            src="https://picsum.photos/seed/2/512/512"
-            class="rounded-lg"
-          />
-        </ChatMessage>
-      </ChatContainer>
-      <Paper class="h-72 w-128">
-        <Dropzone @drop="onDrop">
-          <div v-if="file">
-            {{ file.name }}
-          </div>
-          <div v-else>
-            Files drop here
-          </div>
-        </Dropzone>
-      </Paper>
-      <Image
-        style="height: 4rem; width: 4rem"
-        src="https://avatars.githubusercontent.com/u/29743310?v=4"
-      />
-      <Paper class="flex items-center gap-2">
-        <ColorInput v-model="color" />
-      </Paper>
-      <Paper class="flex flex-wrap gap-2">
-        <ColorSwatch
-          v-for="c in colors"
-          :key="c"
-          :color="c"
-        />
-      </Paper>
-      <ThemeProvider
-        scheme="light"
-      >
-        <Paper class="m-4">
-          Other Theme
-        </Paper>
-      </ThemeProvider>
-      <ThemeProvider
-        scheme="dark"
-      >
-        <Paper class="m-4">
-          Other Theme
-        </Paper>
-      </ThemeProvider>
 
-      <Paper class="flex flex-wrap gap-2">
-        <Indicator size="lg">
-          <template #label>
-            1
-          </template>
-          <Image
-            style="height: 4rem; width: 4rem"
-            src="https://avatars.githubusercontent.com/u/29743310?v=4"
-          />
-        </Indicator>
-        <Indicator>
-          <template #label>
-            1
-          </template>
-          <Image
-            style="height: 4rem; width: 4rem"
-            src="https://avatars.githubusercontent.com/u/29743310?v=4"
-          />
-        </Indicator>
-        <Indicator size="sm">
-          <template #label>
-            1
-          </template>
-          <Image
-            style="height: 4rem; width: 4rem"
-            src="https://avatars.githubusercontent.com/u/29743310?v=4"
-          />
-        </indicator>
-      </Paper>
-      <Paper class="flex flex-wrap gap-2">
-        <Indicator>
-          <Image
-            style="height: 4rem; width: 4rem"
-            src="https://avatars.githubusercontent.com/u/29743310?v=4"
-          />
-        </Indicator>
-        <Indicator ping>
-          <Image
-            style="height: 4rem; width: 4rem"
-            src="https://avatars.githubusercontent.com/u/29743310?v=4"
-          />
-        </Indicator>
-        <Indicator
-          ping
-          position="bottom-left"
-        >
-          <Image
-            style="height: 4rem; width: 4rem"
-            src="https://avatars.githubusercontent.com/u/29743310?v=4"
-          />
-        </Indicator>
-        <Indicator
-          size="sm"
-        >
-          <Image
-            style="height: 4rem; width: 4rem"
-            src="https://avatars.githubusercontent.com/u/29743310?v=4"
-          />
-        </Indicator>
-        <Indicator
-          size="lg"
-        >
-          <Image
-            style="height: 4rem; width: 4rem"
-            src="https://avatars.githubusercontent.com/u/29743310?v=4"
-          />
-        </Indicator>
-      </Paper>
-      <Paper class="w-80 flex flex-wrap gap-2">
-        {{ slider.toFixed(2) }}
-        <Slider v-model="slider" />
-      </Paper>
-      <Paper class="flex flex-wrap gap-2">
-        {{ slider.toFixed(2) }}
-        <Slider
-          v-model="slider"
-          :step="10"
-        />
-      </Paper>
-      <Paper class="flex flex-wrap gap-2">
-        {{ slider.toFixed(2) }}
-        <Slider
-          v-model="slider"
-          :step="0.2"
-          color="tertiary"
-        />
-      </Paper>
-      <Paper class="flex flex-wrap gap-2">
-        <Slider
-          :min="2"
-          :max="5"
-        />
-      </Paper>
-      <Paper class="flex flex-wrap gap-2">
-        <Slider :tick-num="5" />
-      </Paper>
-      <Paper class="flex flex-wrap gap-2">
-        <Slider :options="['A', 'B', 'C']" />
-      </Paper>
-
-      <Paper class="flex flex-wrap gap-2">
-        <Select
-          aria-label="empty select"
-        />
-      </Paper>
-      <Paper class="flex flex-wrap gap-2">
-        <Btn @click="modal1 = !modal1">
-          Open Model
-        </Btn>
-
-        <Modal
-          v-model="modal1"
-          title="This is a modal."
-        >
-          <template #body>
-            Modal
-          </template>
-        </Modal>
-
-        <Btn @click="modal2 = !modal2">
-          Open Blur Model
-        </Btn>
-        <Modal
-          v-model="modal2"
-          blur="lg"
-        >
-          <Paper class="h-16 w-full w-md flex items-center justify-center">
-            <Paper>
-              Blur Modal
-            </Paper>
-          </Paper>
-        </Modal>
-
-        <Btn @click="modal3 = !modal3">
-          Open Persistent Model
-        </Btn>
-        <Modal
-          v-model="modal3"
-          blur="lg"
-          persistent
-        >
-          <Paper class="h-16 w-full w-md flex items-center justify-center">
-            <Btn @click="modal3 = !modal3">
-              Close
-            </Btn>
-          </Paper>
-        </Modal>
-        <Btn @click="modal4 = !modal4">
-          Open Nested Modal
-        </Btn>
-        <Modal
-          v-model="modal4"
-        >
-          <Paper class="h-16 w-full w-md flex items-center justify-center">
-            <Btn @click="modal5 = !modal5">
-              Open Nested Modal
-            </Btn>
-            <Modal
-              v-model="modal5"
+    <AppShell
+      header-height="64px"
+      navbar-width="280px"
+      :header-spans-nav="true"
+      :header-spans-aside="false"
+      padding="0"
+      gap="0"
+    >
+      <template #header>
+        <Paper class="w-full flex items-center justify-between px-6 py-4">
+          <div class="flex items-center gap-3">
+            <h1 class="text-2xl text-surface font-bold">
+              Roku UI Vue
+            </h1>
+            <Tag
+              color="primary"
+              size="sm"
             >
-              <Paper class="h-16 w-full flex items-center justify-center">
-                Inner Modal
-              </Paper>
-            </Modal>
-          </Paper>
-        </Modal>
-      </Paper>
-      <Paper>
-        <Btn @click="drawerLeft = !drawerLeft">
-          Open left drawer
-        </Btn>
-        <Drawer v-model="drawerLeft">
-          <div>
-            Test Drawer
+              Demo
+            </Tag>
           </div>
-        </Drawer>
-      </Paper>
-      <Paper>
-        <Btn @click="drawerRight = !drawerRight">
-          Open right drawer
-        </Btn>
-        <Drawer
-          v-model="drawerRight"
-          position="right"
-        >
-          <div>
-            Test Drawer
+          <div class="flex items-center gap-3">
+            <SchemeSwitch />
+            <ColorInput v-model="primaryColor" />
+            <ColorInput v-model="surfaceColor" />
           </div>
-        </Drawer>
-      </Paper>
-      <Progress
-        class="max-w-md"
-        loading
-      />
-      <Progress
-        class="max-w-md"
-        :value="30"
-      />
-      <Progress
-        color="error"
-        :value="99"
-        class="max-w-md"
-      />
-      <Progress
-        size="sm"
-        :value="47"
-        class="max-w-md"
-      />
-      <Progress
-        size="lg"
-        :value="47"
-        class="max-w-md"
-      />
-      <PinInput />
-      <PinInput password />
-      <Paper class="flex flex-wrap gap-2">
-        <Chip size="sm">
-          Chip
-        </Chip>
-        <Chip size="md">
-          Chip
-        </Chip>
-        <Chip size="lg">
-          Chip
-        </Chip>
-      </Paper>
-      <Paper class="flex flex-wrap gap-2">
-        <Chip variant="filled">
-          Chip
-        </Chip>
-        <Chip
-          variant="filled"
-          color="secondary"
-        >
-          Chip
-        </Chip>
-        <Chip
-          variant="filled"
-          color="tertiary"
-        >
-          Chip
-        </Chip>
-      </Paper>
-      <Paper class="flex flex-wrap gap-2">
-        <Chip variant="light">
-          Chip
-        </Chip>
-        <Chip
-          variant="light"
-          color="secondary"
-        >
-          Chip
-        </Chip>
-        <Chip
-          variant="light"
-          color="tertiary"
-        >
-          Chip
-        </Chip>
-      </Paper>
-      <Paper class="flex flex-wrap gap-2">
-        <Chip rounded="none">
-          Chip
-        </Chip>
-        <Chip rounded="md">
-          Chip
-        </Chip>
-        <Chip rounded="full">
-          Chip
-        </Chip>
-      </Paper>
-      <Paper class="flex flex-wrap gap-2">
-        <TextField
-          v-model="text"
-          password
-          placeholder="Password"
-        />
-      </Paper>
-      <Paper class="flex flex-wrap gap-2">
-        <TextField
-          v-model="text"
-          placeholder="Placeholder"
-        />
-      </Paper>
-      <Paper class="flex flex-wrap gap-2">
-        <TextField
-          v-model="text"
-          label="label"
-        />
-      </Paper>
-      <Paper class="flex flex-wrap gap-2">
-        <TextField
-          v-model="text"
-          rounded="none"
-        />
-        <TextField rounded="lg" />
-        <TextField rounded="full" />
-        <TextField rounded="0.5rem" />
-      </Paper>
-      <Paper class="flex flex-wrap gap-2">
-        <TextField disabled />
-        <TextField
+        </Paper>
+      </template>
 
-          disabled
-          error
-        />
-      </Paper>
-      <Paper class="flex flex-wrap gap-2">
-        <TextField error />
-        <TextField color="tertiary" />
-        <TextField color="secondary" />
-        <TextField color="error" />
-        <TextField />
-      </Paper>
-      <Paper class="flex flex-wrap gap-2">
-        <Switch disabled />
-      </Paper>
-      <Paper class="flex flex-wrap gap-2">
-        <Switch />
-        <Switch color="error" />
-        <Switch
-          size="sm"
-        />
-        <Switch
-          size="lg"
-        />
-      </Paper>
-      <Paper class="flex flex-wrap gap-2">
-        <Switch
-          rounded="none"
-        />
-        <Switch
-          rounded="sm"
-        />
-        <Switch
-          rounded="md"
-        />
-        <Switch
-          rounded="lg"
-        />
-      </Paper>
-      <div class="flex flex-col gap-2">
-        <Notification
-          title="Notification Title"
-          message="Notification Message"
-          :loading="isLoading"
-          size="sm"
-        />
-        <Notification
-          title="Notification Title"
-          message="Notification Message"
-          :loading="isLoading"
-          size="lg"
-        />
-        <Notification
-          title="Notification Title"
-          message="Notification Message"
-          :loading="isLoading"
-        />
-        <Notification
-          message="Notification Message"
-          :loading="isLoading"
-        />
-        <Notification
-          title="Notification Title"
-          :loading="isLoading"
-        />
-        <Notification
-          with-border
-          title="Notification Title"
-          :loading="isLoading"
-        />
-        <Notification
-          color="tertiary"
-          title="Notification Title"
-          :loading="isLoading"
-        />
-        <Notification
-          message="Notification Title"
-          icon="i-tabler-alert-circle"
-          :loading="isLoading"
-        />
+      <template #navbar>
+        <div class="h-full flex flex-col">
+          <div class="border-b border-surface p-4">
+            <h2 class="text-lg text-surface font-semibold">
+              Components
+            </h2>
+          </div>
+          <div class="flex-1 overflow-y-auto">
+            <TreeList
+              v-model="currentPage"
+              :items="treeListItems"
+            />
+          </div>
+        </div>
+      </template>
+      <div class="h-full overflow-y-auto bg-surface-base">
+        <div class="container m-auto">
+          <component :is="currentComponent" />
+        </div>
       </div>
-      <Paper class="flex flex-wrap gap-2">
-        <Btn>Button</Btn>
-      </Paper>
-      <Paper class="flex flex-wrap gap-2">
-        <Btn rounded="none">
-          Button
-        </Btn>
-        <Btn rounded="sm">
-          Button
-        </Btn>
-        <Btn rounded="md">
-          Button
-        </Btn>
-        <Btn rounded="lg">
-          Button
-        </Btn>
-        <Btn rounded="full">
-          Button
-        </Btn>
-      </Paper>
-      <Paper class="flex flex-wrap gap-2">
-        <Btn
-          variant="filled"
-          color="secondary"
-        >
-          Button
-        </Btn>
-        <Btn
-          variant="filled"
-          color="tertiary"
-        >
-          Button
-        </Btn>
-        <Btn
-          variant="filled"
-          color="error"
-        >
-          Button
-        </Btn>
-      </Paper>
-      <Paper class="flex flex-wrap gap-2">
-        <Btn
-          variant="filled"
-          color="error"
-          disabled
-        >
-          Button
-        </Btn>
-        <Btn
-          variant="filled"
-          color="primary"
-          disabled
-        >
-          Button
-        </Btn>
-      </Paper>
-      <Paper class="flex flex-wrap gap-2">
-        <Btn
-          variant="filled"
-          color="primary"
-          size="sm"
-        >
-          Button
-        </Btn>
-        <Btn
-          variant="filled"
-          color="primary"
-        >
-          Button
-        </Btn>
-        <Btn
-          variant="filled"
-          color="primary"
-          size="lg"
-        >
-          Button
-        </Btn>
-      </Paper>
-      <Paper class="flex flex-wrap gap-2">
-        <Btn
-          variant="light"
-          color="primary"
-        >
-          Button
-        </Btn>
-        <Btn
-          variant="light"
-          color="secondary"
-        >
-          Button
-        </Btn>
-      </Paper>
-      <Paper class="flex flex-wrap gap-2">
-        <Btn
-          variant="outline"
-          color="primary"
-        >
-          Button
-        </Btn>
-        <Btn
-          variant="outline"
-          color="secondary"
-        >
-          Button
-        </Btn>
-      </Paper>
-      <Paper class="flex flex-wrap gap-2">
-        <Btn
-          variant="subtle"
-          color="primary"
-        >
-          Button
-        </Btn>
-        <Btn
-          variant="subtle"
-          color="secondary"
-        >
-          Button
-        </Btn>
-        <Tag
-          color="secondary"
-          variant="subtle"
-        >
-          Tag
-        </Tag>
-      </Paper>
-      <Paper class="flex flex-wrap gap-2">
-        <Btn
-          variant="transparent"
-          color="primary"
-        >
-          Button
-        </Btn>
-        <Btn
-          variant="transparent"
-          color="secondary"
-        >
-          Button
-        </Btn>
-      </Paper>
-      <Paper class="flex flex-wrap gap-2">
-        <Btn
-          variant="contrast"
-          color="primary"
-        >
-          Button
-        </Btn>
-        <Btn
-          variant="contrast"
-          color="secondary"
-        >
-          Button
-        </Btn>
-        <Btn
-          variant="contrast"
-          color="secondary"
-          skeleton
-        >
-          Button
-        </Btn>
-      </Paper>
-    </div>
+    </AppShell>
   </RokuProvider>
 </template>
