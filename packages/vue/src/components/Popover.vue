@@ -137,13 +137,23 @@ onClickOutside(contentRef, (e) => {
 
 <template>
   <div
-    ref="wrapperRef"
-    class="relative"
+    class="relative inline-block"
   >
     <div
+      ref="wrapperRef"
+      class="relative inline-block"
       @pointerup="onPointerUp"
     >
       <slot />
+      <div
+        v-if="showContent"
+        ref="contentRef"
+        :class="positionClass"
+        :style="[positionStyle, { zIndex }]"
+        class="absolute children:w-max"
+      >
+        <slot name="content" />
+      </div>
     </div>
     <Overlay
       v-if="showContent && overlay"
@@ -154,14 +164,5 @@ onClickOutside(contentRef, (e) => {
       }"
       @pointerup="active = false"
     />
-    <div
-      v-if="showContent"
-      ref="contentRef"
-      :class="positionClass"
-      :style="[positionStyle, { zIndex }]"
-      class="absolute children:w-max"
-    >
-      <slot name="content" />
-    </div>
   </div>
 </template>

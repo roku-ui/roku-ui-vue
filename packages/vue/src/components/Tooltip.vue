@@ -30,7 +30,7 @@ watch(isHoverdDebounced, (val, old) => {
     <div
       v-if="currentX && currentY && (isHoverdDebounced || isHoveredTooltip)"
       ref="tooltipRef"
-      class="absolute z-10"
+      class="absolute z-10 w-max"
       :style="{
         left: `${currentX + 20}px`,
         top: `${currentY + 20}px`,
