@@ -18,7 +18,6 @@ const sizeValues = ref({
 const customOptions = ref(['Low', 'Medium', 'High', 'Very High'])
 const customValue = ref('Medium')
 const animatedValue = ref(45)
-const staticValue = ref(65)
 const widthValue = ref(75)
 </script>
 
@@ -224,10 +223,10 @@ const widthValue = ref(75)
         </div>
         <div>
           <label class="text-surface-on mb-2 block text-sm font-medium">
-            Without Animation: {{ staticValue }}
+            Without Animation (Linked): {{ animatedValue }}
           </label>
           <Slider
-            v-model="staticValue"
+            v-model="animatedValue"
             :animate="false"
             :min="0"
             :max="100"

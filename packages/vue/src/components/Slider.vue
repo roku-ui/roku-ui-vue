@@ -134,19 +134,35 @@ function pointEventCallback(event: PointerEvent) {
   const left = rect.left.value
   const right = rect.right.value
   const width = right - left
-  let index = Math.round(((clientX - left) / width) * (length.value - 1))
+
+  // Calculate the relative position (0 to 1)
+  let relativeX = (clientX - left) / width
   if (props.reverse) {
-    index = length.value - 1 - index
+    relativeX = 1 - relativeX
   }
-  if (index < 0) {
-    currentIndex.value = 0
-    return
+  relativeX = Math.max(0, Math.min(relativeX, 1))
+
+  let targetArray = options.value
+  let targetLength = length.value
+
+  if (tickNum.value > 0 && ticks.value.length > 1) {
+    targetArray = ticks.value
+    targetLength = ticks.value.length
   }
-  if (index > length.value - 1) {
-    currentIndex.value = length.value - 1
-    return
+
+  let closestValue = targetArray[0]
+  let minDiff = Infinity
+
+  for (let i = 0; i < targetLength; i++) {
+    const optionRelativePos = i / (targetLength - 1)
+    const diff = Math.abs(relativeX - optionRelativePos)
+    if (diff < minDiff) {
+      minDiff = diff
+      closestValue = targetArray[i]
+    }
   }
-  currentIndex.value = index
+
+  currentIndex.value = optionToIndex(closestValue)
 }
 
 watchEffect(() => {
@@ -204,10 +220,10 @@ const sizeCls = computed(() => {
     }
   }
 })
-const animateCls = computed(() => props.animate
+const animateCls = computed(() => props.animate && !isMoving.value
   ? {
       indicator: 'transition-left',
-      progress: '',
+      progress: 'transition-width',
     }
   : {
       indicator: '',
