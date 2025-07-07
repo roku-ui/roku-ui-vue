@@ -37,6 +37,7 @@ const rounded = useRounded(props)
 
 <template>
   <div
+    class="inline-block"
     :style="{
       height,
       width,

@@ -50,7 +50,7 @@ const colorStyle = computed(() => {
 </script>
 
 <template>
-  <div class="relative">
+  <div class="relative inline-block">
     <slot />
     <div
       v-bind="$attrs"
