@@ -51,7 +51,7 @@ export default defineConfig({
         },
       },
     },
-    target: 'modules',
+    target: 'esnext',
   },
   resolve: {
     alias: {

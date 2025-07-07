@@ -18,6 +18,7 @@ const props = withDefaults(
     size?: Size
     complete?: number
     total?: number
+    showLeftIndicator?: boolean
   }>(),
   {
     type: 'info',
@@ -27,6 +28,7 @@ const props = withDefaults(
     block: false,
     size: 'md',
     total: 100,
+    showLeftIndicator: false,
   },
 )
 
@@ -92,7 +94,7 @@ const shapeClass = computed(() => {
         />
       </div>
       <div
-        v-else
+        v-else-if="showLeftIndicator"
       >
         <div
           class="absolute left-[0.25rem] top-[0.25rem] h-[calc(100%-0.5rem)] w-1 rounded-full bg-[var(--d-bg)] dark:bg-[var(--d-bg)]"
