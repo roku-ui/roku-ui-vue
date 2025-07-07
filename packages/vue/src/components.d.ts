@@ -8,6 +8,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AppShell: typeof import('./components/AppShell.vue')['default']
     AspectRatio: typeof import('./components/AspectRatio.vue')['default']
     AutoHeightTransition: typeof import('./components/AutoHeightTransition.vue')['default']
     Avatar: typeof import('./components/Avatar.vue')['default']
@@ -37,6 +38,8 @@ declare module 'vue' {
     Progress: typeof import('./components/Progress.vue')['default']
     Rating: typeof import('./components/Rating.vue')['default']
     RokuProvider: typeof import('./components/RokuProvider.vue')['default']
+    RouterLink: typeof import('vue-router')['RouterLink']
+    RouterView: typeof import('vue-router')['RouterView']
     SchemeSwitch: typeof import('./components/SchemeSwitch.vue')['default']
     ScrollArea: typeof import('./components/ScrollArea.vue')['default']
     Select: typeof import('./components/Select.vue')['default']

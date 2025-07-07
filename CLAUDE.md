@@ -111,3 +111,7 @@ Components are auto-exported from `packages/vue/src/components/index.ts` using u
 - UnoCSS provides utility-first styling
 - ESLint with @jannchie/eslint-config for code quality
 - Pre-commit hooks run linting on staged files
+
+## Style Guidelines
+
+- 在这个项目里，永远不应该使用 style 标签。这个库主打使用 unocss 管理样式，而不需要引入任何 css。

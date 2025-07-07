@@ -5,6 +5,7 @@ import Avatar from '@/components/Avatar.vue'
 import SchemeSwitch from '@/components/SchemeSwitch.vue'
 import { Modals } from '@/utils/modals'
 import { generateColors, Notifications, primaryColor, surfaceColor } from '..'
+import AppShellDemo from './demo/AppShellDemo.vue'
 import PopoverDemo from './demo/PopoverDemo.vue'
 import RatingDemo from './demo/RatingDemo.vue'
 import SelectAreaDemo from './demo/SelectAreaDemo.vue'
@@ -85,6 +86,7 @@ function customRender() {
   <RokuProvider class="roku-scrollbar !scrollbar-thumb-hover-color-surface-4 !dark:scrollbar-thumb-hover-color-surface-5 max-h-100vh overflow-auto">
     <NotificationSystem />
     <ModalSystem />
+    <AppShellDemo />
     <div class="flex flex-col items-center gap-2">
       <SchemeSwitch />
       <Tag>
