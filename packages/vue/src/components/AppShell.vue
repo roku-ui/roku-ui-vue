@@ -10,8 +10,8 @@ export interface AppShellProps {
   headerSpansAside?: boolean
   footerSpansNav?: boolean
   footerSpansAside?: boolean
-  padding?: string
-  gap?: string
+  padding?: string | number
+  gap?: string | number
 }
 
 const props = withDefaults(defineProps<AppShellProps>(), {
@@ -34,9 +34,11 @@ const hasNavbar = computed(() => !!slots.navbar)
 const hasAside = computed(() => !!slots.aside)
 const hasFooter = computed(() => !!slots.footer)
 
+const normalizeSize = (value: string | number) => typeof value === 'number' ? `${value}px` : value
+
 const containerStyle = computed(() => ({
-  padding: props.padding,
-  gap: props.gap,
+  padding: normalizeSize(props.padding),
+  gap: normalizeSize(props.gap),
 }))
 
 const headerStyle = computed(() => ({
@@ -74,6 +76,7 @@ const asideStyle = computed(() => ({
     <div
       v-if="hasHeader && props.headerSpansNav && !props.headerSpansAside"
       class="flex flex-1 overflow-hidden"
+      :style="{ gap: normalizeSize(props.gap) }"
     >
       <!-- Left Part (Navbar + Main) with header -->
       <div class="flex flex-1 flex-col overflow-hidden">
@@ -86,7 +89,10 @@ const asideStyle = computed(() => ({
         </header>
 
         <!-- Navbar + Main Row -->
-        <div class="flex flex-1 overflow-hidden">
+        <div
+          class="flex flex-1 overflow-hidden"
+          :style="{ gap: normalizeSize(props.gap) }"
+        >
           <!-- Left Navbar -->
           <nav
             v-if="hasNavbar"
@@ -140,6 +146,7 @@ const asideStyle = computed(() => ({
     <div
       v-else
       class="flex flex-1 overflow-hidden"
+      :style="{ gap: normalizeSize(props.gap) }"
     >
       <!-- Left Navbar -->
       <nav
@@ -164,7 +171,10 @@ const asideStyle = computed(() => ({
         </header>
 
         <!-- Main + Aside Row -->
-        <div class="flex flex-1 overflow-hidden">
+        <div
+          class="flex flex-1 overflow-hidden"
+          :style="{ gap: normalizeSize(props.gap) }"
+        >
           <!-- Main Content -->
           <main class="flex flex-1 flex-col overflow-hidden">
             <!-- Header not spanning anything -->

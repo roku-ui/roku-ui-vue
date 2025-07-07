@@ -61,6 +61,7 @@ function onDrop(files) {
 
       <Image
         style="height: 4rem; width: 4rem"
+        rounded="lg"
         src="https://avatars.githubusercontent.com/u/29743310?v=4"
       />
     </section>
