@@ -65,7 +65,8 @@ function onerror() {
 onMounted(() => {
   if (img.value?.complete && img.value.naturalWidth !== 0) {
     onload()
-  } else if (img.value?.complete && img.value.naturalWidth === 0) {
+  }
+  else if (img.value?.complete && img.value.naturalWidth === 0) {
     onerror()
   }
 })

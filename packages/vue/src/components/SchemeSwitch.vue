@@ -1,13 +1,20 @@
 <script setup lang="ts">
+import type { Component } from 'vue'
 import { isClient, useEventListener } from '@vueuse/core'
 import { nextTick, onMounted, ref, watch } from 'vue'
 
 const props = withDefaults(defineProps<{
   disableViewTranslation?: boolean
   circleTranslation?: boolean
+  animation?: boolean
+  onIcon?: string | Component
+  offIcon?: string | Component
 }>(), {
   disableViewTranslation: false,
   circleTranslation: false,
+  animation: false,
+  onIcon: 'i-line-md-moon-twotone-alt-loop',
+  offIcon: 'i-line-md-sunny-outline-twotone-loop',
 })
 
 const isDark = ref(false)
@@ -16,6 +23,17 @@ let lastClick: MouseEvent | undefined
 useEventListener('click', event => (lastClick = event))
 
 watch([isDark], () => {
+  if (!props.animation) {
+    if (isDark.value) {
+      document.documentElement.dataset.scheme = 'dark'
+      localStorage.setItem('scheme', 'dark')
+    }
+    else {
+      document.documentElement.dataset.scheme = 'light'
+      localStorage.setItem('scheme', 'light')
+    }
+    return
+  }
   if (isClient) {
     // 获取点击位置，或者回退到屏幕中间
     const x = lastClick?.clientX ?? innerWidth / 2
@@ -92,16 +110,16 @@ nextTick(() => {
       <div class="dark:hidden">
         <Switch
           :value="false"
-          on-icon="i-line-md-moon-twotone-alt-loop"
-          off-icon="i-line-md-sunny-outline-twotone-loop"
+          :on-icon="onIcon"
+          :off-icon="offIcon"
         />
       </div>
       <div class="light:hidden">
         <Switch
           :value="true"
           color="secondary"
-          on-icon="i-line-md-moon-twotone-alt-loop"
-          off-icon="i-line-md-sunny-outline-twotone-loop"
+          :on-icon="onIcon"
+          :off-icon="offIcon"
         />
       </div>
     </div>
@@ -110,8 +128,8 @@ nextTick(() => {
         v-model="isDark"
         :animate="animate"
         color="secondary"
-        on-icon="i-line-md-moon-twotone-alt-loop"
-        off-icon="i-line-md-sunny-outline-twotone-loop"
+        :on-icon="onIcon"
+        :off-icon="offIcon"
       />
     </div>
   </div>

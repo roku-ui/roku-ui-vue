@@ -18,7 +18,7 @@ const inputs = ref<{
   focus: () => void
   blur: () => void
 }[]
->([])
+    >([])
 function onInput(e: InputEvent) {
   e.preventDefault()
   e.stopPropagation()

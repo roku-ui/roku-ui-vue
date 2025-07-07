@@ -236,7 +236,7 @@ function onMousemove(i: number) {
       <input
         ref="inputRef"
         :class="[sizeCls.wrapper, rounded.class, searchCls]"
-        class="border outline-none outline-none focus-visible:outline-2 custom-input-colors"
+        class="border custom-input-colors outline-none outline-none focus-visible:outline-2"
         :placeholder="placeholder"
         :style="[rounded.style, colorStyle]"
         :readonly="!searchable"

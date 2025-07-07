@@ -1,8 +1,8 @@
 <script setup lang="tsx">
 import type { VNode } from 'vue'
 import type { Rounded } from '@/types'
-import { useRounded } from '@roku-ui/vue'
 import { computed, h, ref, watchEffect } from 'vue'
+import { useRounded } from '@/index'
 import { AutoHeightTransition } from '.'
 
 export interface TreeListLeafData {

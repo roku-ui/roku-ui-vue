@@ -80,7 +80,7 @@ const menuPositionStyle = computed(() => {
       ref="menuItemRef"
       type="button"
       :tabindex="-1"
-      class="relative inline-block h-8 w-full flex cursor-pointer items-center gap-2 hover:bg-surface-variant-2 px-2 outline-2 focus-visible:outline"
+      class="relative inline-block h-8 w-full flex cursor-pointer items-center gap-2 px-2 outline-2 hover:bg-surface-variant-2 focus-visible:outline"
       :class="[
         rounded.class,
         {

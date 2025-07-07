@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Component } from 'vue'
 import type { Color } from '@/types'
 import { computed, ref, watch } from 'vue'
 import { useColorCS, useOutlineCS as useOutlineColorCS, useSurfaceCS } from '@/shared'
@@ -18,11 +19,11 @@ const props = withDefaults(
     rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full' | string | number
     color?: Color
     disabled?: boolean
-    offIcon?: string
-    onIcon?: string
-    indicatorIcon?: string
-    onIndicatorIcon?: string
-    offIndicatorIcon?: string
+    offIcon?: string | Component
+    onIcon?: string | Component
+    indicatorIcon?: string | Component
+    onIndicatorIcon?: string | Component
+    offIndicatorIcon?: string | Component
   }>(),
   {
     size: 'md',
@@ -165,22 +166,25 @@ watch(model, (value) => {
             leave-from-class="scale-100"
             leave-to-class="scale-0"
           >
-            <i
+            <component
+              :is="typeof props.indicatorIcon === 'string' ? 'i' : props.indicatorIcon"
               v-if="props.indicatorIcon"
               class="h-full w-full"
-              :class="[props.indicatorIcon, model ? activeTextCS.class : 'text-black']"
+              :class="[typeof props.indicatorIcon === 'string' ? props.indicatorIcon : '', model ? activeTextCS.class : 'text-black']"
               :style="activeTextCS.style"
             />
-            <i
+            <component
+              :is="typeof props.onIndicatorIcon === 'string' ? 'i' : props.onIndicatorIcon"
               v-else-if="model && props.onIndicatorIcon"
               class="h-full w-full"
-              :class="[props.onIndicatorIcon, model ? activeTextCS.class : 'text-black']"
+              :class="[typeof props.onIndicatorIcon === 'string' ? props.onIndicatorIcon : '', model ? activeTextCS.class : 'text-black']"
               :style="activeTextCS.style"
             />
-            <i
+            <component
+              :is="typeof props.offIndicatorIcon === 'string' ? 'i' : props.offIndicatorIcon"
               v-else-if="!model && props.offIndicatorIcon"
               class="h-full w-full"
-              :class="[props.offIndicatorIcon, model ? activeTextCS.class : 'text-black']"
+              :class="[typeof props.offIndicatorIcon === 'string' ? props.offIndicatorIcon : '', model ? activeTextCS.class : 'text-black']"
               :style="activeTextCS.style"
             />
           </Transition>
@@ -195,25 +199,19 @@ watch(model, (value) => {
           leave-from-class="scale-100 rotate-0"
           leave-to-class="scale-0 rotate-50 "
         >
-          <i
-            v-if="model"
+          <component
+            :is="typeof props.onIcon === 'string' ? 'i' : props.onIcon"
+            v-if="model && props.onIcon"
             key="on"
-            class="absolute top-1/2 -translate-y-50%"
-            :class="[sizeCls.icon, {
-              [`left-0 text-${color}-on-container-low`]: model,
-              [onIcon ?? '']: model && onIcon,
-              [offIcon ?? '']: !model && offIcon,
-            }]"
+            class="absolute left-0 top-1/2 -translate-y-50%"
+            :class="[sizeCls.icon, `text-${color}-on-container-low`, typeof props.onIcon === 'string' ? props.onIcon : '']"
           />
-          <i
-            v-else
+          <component
+            :is="typeof props.offIcon === 'string' ? 'i' : props.offIcon"
+            v-else-if="!model && props.offIcon"
             key="off"
-            class="absolute top-1/2 -translate-y-50%"
-            :class="[sizeCls.icon, {
-              'right-0': !model,
-              [onIcon ?? '']: model && onIcon,
-              [offIcon ?? '']: !model && offIcon,
-            }]"
+            class="absolute right-0 top-1/2 -translate-y-50%"
+            :class="[sizeCls.icon, typeof props.offIcon === 'string' ? props.offIcon : '']"
           />
         </Transition>
       </div>
