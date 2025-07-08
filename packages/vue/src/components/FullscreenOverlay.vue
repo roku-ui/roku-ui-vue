@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watchEffect } from 'vue'
+import { computed, onUnmounted, ref, watchEffect } from 'vue'
 import { useRokuProvider } from '@/composables/modal'
 
 const props = withDefaults(defineProps<{
@@ -38,6 +38,8 @@ const blurCls = computed(() => {
   }
 })
 const scrollbarWidth = ref(0)
+let resizeObserver: ResizeObserver | null = null
+
 watchEffect(() => {
   if (model.value) {
     document.body.style.overflow = 'hidden'
@@ -50,12 +52,13 @@ watchEffect(() => {
         document.body.style.overflow = ''
         document.body.style.marginRight = ''
       }
-    }, 300)
+    }, 200)
   }
 })
+
 watchEffect(() => {
-  if (globalThis.window !== undefined) {
-    const resizeObserver = new ResizeObserver(() => {
+  if (globalThis.window !== undefined && !resizeObserver) {
+    resizeObserver = new ResizeObserver(() => {
       const curWidth = window.innerWidth - document.body.clientWidth
       if (curWidth !== 0) {
         scrollbarWidth.value = curWidth
@@ -64,21 +67,35 @@ watchEffect(() => {
     resizeObserver.observe(document.body)
   }
 })
+
+onUnmounted(() => {
+  if (resizeObserver) {
+    resizeObserver.disconnect()
+    resizeObserver = null
+  }
+})
 const provider = useRokuProvider()
 </script>
 
 <template>
   <Teleport :to="provider ?? 'body'">
-    <div
-      ref="wrapperRef"
-      class="fixed left-0 top-0 z-100 h-full w-full bg-surface-10/50 p-2 transition-all duration-100"
-      :class="[blurCls, wrapperClass, {
-        ['op-0 pointer-events-none']: !model,
-        ['op-100']: model,
-      }]"
-      @click="onClick"
+    <Transition
+      enter-from-class="opacity-0"
+      enter-to-class="opacity-100"
+      leave-from-class="opacity-100"
+      leave-to-class="opacity-0"
+      enter-active-class="transition-opacity duration-150 ease-out"
+      leave-active-class="transition-opacity duration-100 ease-in"
     >
-      <slot />
-    </div>
+      <div
+        v-if="model"
+        ref="wrapperRef"
+        class="fixed left-0 top-0 z-100 h-full w-full bg-surface-10/60 p-2 will-change-auto"
+        :class="[blurCls, wrapperClass]"
+        @click="onClick"
+      >
+        <slot />
+      </div>
+    </Transition>
   </Teleport>
 </template>

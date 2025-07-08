@@ -15,11 +15,16 @@ useHead({
   title: titleList.value.join(' - ').trim(),
   meta: [
     {
-      hid: 'description',
       name: 'description',
       content: data.value?.description,
     },
   ],
+})
+const fetaures = computed(() => {
+  if (data.value && data.value.meta.features) {
+    return data.value.meta.features as string[]
+  }
+  return []
 })
 </script>
 
@@ -30,7 +35,7 @@ useHead({
         {{ data?.description }}
       </template>
     </ContentTitle>
-    <FeatureList :features="data?.features" />
+    <FeatureList :features="fetaures" />
     <ContentRenderer
       v-if="data"
       :value="data"

@@ -167,7 +167,7 @@ function customRender() {
           trigger="contextmenu"
           @select="console.log"
         >
-          <Paper class="w-80vw">
+          <Paper>
             Context Menu
           </Paper>
         </Menu>

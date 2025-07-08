@@ -8,3 +8,11 @@ features:
 ---
 
 ## 基础用法
+
+::demo-menu-base
+::
+
+## 右键菜单
+
+::demo-menu-context-menu
+::

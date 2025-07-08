@@ -1,4 +1,3 @@
-/* eslint-disable */
 export { default as AppShell } from './AppShell.vue'
 export { default as AspectRatio } from './AspectRatio.vue'
 export { default as AutoHeightTransition } from './AutoHeightTransition.vue'
@@ -8,6 +7,7 @@ export { default as BtnGroup } from './BtnGroup.vue'
 export { default as ChatContainer } from './ChatContainer.vue'
 export { default as ChatMessage } from './ChatMessage.vue'
 export { default as ChatSystem } from './ChatSystem.vue'
+export { default as Checkbox } from './Checkbox.vue'
 export { default as Chip } from './Chip.vue'
 export { default as ColorInput } from './ColorInput.vue'
 export { default as ColorSwatch } from './ColorSwatch.vue'

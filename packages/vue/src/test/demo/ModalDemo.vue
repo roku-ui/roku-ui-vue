@@ -62,9 +62,11 @@ const drawerRight = ref(false)
         </Btn>
         <Modal
           v-model="modal2"
-          blur="lg"
         >
-          <Paper class="h-16 w-full w-md flex items-center justify-center">
+          <Paper
+            with-border
+            class="h-16 w-full w-md flex items-center justify-center"
+          >
             <Paper>Blur Modal</Paper>
           </Paper>
         </Modal>
@@ -74,10 +76,12 @@ const drawerRight = ref(false)
         </Btn>
         <Modal
           v-model="modal3"
-          blur="lg"
           persistent
         >
-          <Paper class="h-16 w-full w-md flex items-center justify-center">
+          <Paper
+            with-border
+            class="h-16 w-full w-md flex items-center justify-center"
+          >
             <Btn @click="modal3 = !modal3">
               Close
             </Btn>
@@ -88,7 +92,10 @@ const drawerRight = ref(false)
           Open Nested Modal
         </Btn>
         <Modal v-model="modal4">
-          <Paper class="h-16 w-full w-md flex items-center justify-center">
+          <Paper
+            with-border
+            class="h-16 w-full w-md flex items-center justify-center"
+          >
             <Btn @click="modal5 = !modal5">
               Open Nested Modal
             </Btn>

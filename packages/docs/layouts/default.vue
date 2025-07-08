@@ -86,7 +86,10 @@ const mergedCS = useMergedCS(surfaceBorderCS, surfaceCS)
           >
         </NuxtLink>
       </div>
-      <SchemeSwitch circle-translation />
+      <SchemeSwitch
+        circle-translation
+        animation
+      />
     </div>
     <div class="min-h-100vh flex">
       <SideBar :is-open="sideBarOpen" />

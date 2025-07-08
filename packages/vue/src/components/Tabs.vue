@@ -151,7 +151,7 @@ const directionCls = computed(() => {
 <template>
   <div
     ref="tabRef"
-    class="flex"
+    class="inline-flex"
     :class="[directionCls]"
   >
     <slot />

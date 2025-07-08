@@ -1,52 +1,54 @@
 <script setup lang="ts">
-import { useElementBounding, useElementHover, useEventListener, useMouse, useParentElement, useScroll } from '@vueuse/core'
+import { useElementBounding, useEventListener, useMouse, useScroll } from '@vueuse/core'
 import { computed, ref } from 'vue'
-import { useSurfaceCS } from '@/shared'
-import { useClientHeight, useScrollHeight } from '../composables/dom'
+import { useClientHeight } from '@/composables/dom'
 
 const props = withDefaults(
   defineProps<{
-    height?: number | string
+    height?: number
     barWidth?: number
     threshold?: number
-    floating?: boolean
-    autoHide?: boolean
+    stopPropagation?: boolean
+    capture?: boolean
+    minBarHeight?: number
   }>(),
   {
-    barWidth: 8,
+    barWidth: 4,
     threshold: 100,
+    stopPropagation: false,
+    capture: false,
+    minBarHeight: 20,
   },
 )
-
-const parentElement = useParentElement()
-const parentBounds = useElementBounding(parentElement)
-const scrollBarIndicatorRef = ref<HTMLElement | null>()
+const scrollBarIndicatorRef = ref<HTMLElement>()
 const scrollBarIndicatorBounds = useElementBounding(() => scrollBarIndicatorRef.value)
 
-const height = computed(() => {
-  if (props.height) {
-    if (typeof props.height === 'number') {
-      return `${props.height}px`
-    }
-    return props.height
-  }
-  const parentPaddingY = parentElement.value ? Number.parseFloat(getComputedStyle(parentElement.value).paddingTop) + Number.parseFloat(getComputedStyle(parentElement.value).paddingBottom) : 0
-  const parentMarginY = parentElement.value ? Number.parseFloat(getComputedStyle(parentElement.value).marginTop) + Number.parseFloat(getComputedStyle(parentElement.value).marginBottom) : 0
-  return `${parentBounds.height.value - parentPaddingY - parentMarginY}px`
-})
-const scrollDomRef = ref<HTMLElement | null>()
+const scrollDomRef = ref<HTMLElement>()
+
 const clientHeight = useClientHeight(() => scrollDomRef.value)
-const { x, y } = useScroll(() => scrollDomRef.value)
-const scrollableLength = computed(() => {
-  return (scrollDomRef.value?.scrollHeight ?? 0) - (clientHeight.value ?? 0)
+const scrollHeight = ref(0)
+// 为了检查滚动区域长度的变化，姑且使用 Mutation Observer
+useMutationObserver(scrollDomRef, () => {
+  if (scrollDomRef.value) {
+    scrollHeight.value = scrollDomRef.value.scrollHeight
+  }
+}, {
+  subtree: true,
+  attributes: true,
+  childList: true,
 })
-const scrollHeight = useScrollHeight(() => scrollDomRef.value)
+const scrollableLength = computed(() => {
+  return (scrollHeight.value ?? 0) - (clientHeight.value ?? 0)
+})
+
+const { x, y } = useScroll(() => scrollDomRef.value)
 const barProgress = computed(() => y.value / scrollableLength.value || 0)
 const barHeight = computed(() => {
   if (!scrollDomRef.value) {
     return 0
   }
-  return clientHeight.value / scrollHeight.value * clientHeight.value
+  const calculatedBarHeight = clientHeight.value / scrollHeight.value * clientHeight.value
+  return Math.max(calculatedBarHeight, props.minBarHeight)
 })
 const scrollableHeight = computed(() => {
   return clientHeight.value - barHeight.value
@@ -66,18 +68,23 @@ const scrollBarData = computed(() => {
 })
 const dragging = ref(false)
 const dragStartY = ref(0)
-const prevUserSelect = ref('')
+const previousUserSelect = ref('')
 const startScrollTop = ref(0)
 const mouse = useMouse({ type: 'client' })
 useEventListener(() => scrollBarIndicatorRef.value, 'pointerdown', (e) => {
   dragging.value = true
   dragStartY.value = e.clientY
   startScrollTop.value = y.value
-  prevUserSelect.value = document.body.style.userSelect
+  previousUserSelect.value = document.body.style.userSelect
   document.body.style.userSelect = 'none'
+}, {
+  capture: props.capture,
 })
 
-useEventListener(() => document, 'pointermove', () => {
+useEventListener(() => document, 'pointermove', (e) => {
+  if (props.stopPropagation) {
+    e.stopPropagation()
+  }
   if (!dragging.value) {
     return
   }
@@ -88,83 +95,55 @@ useEventListener(() => document, 'pointermove', () => {
   const diff = mouse.y.value - dragStartY.value
   const progress = diff / scrollableHeight.value
   y.value = startScrollTop.value + progress * scrollableLength.value
+}, {
+  capture: props.capture,
 })
 
-useEventListener(() => document, 'pointerup', () => {
+useEventListener(() => document, 'pointerup', (e) => {
+  if (props.stopPropagation) {
+    e.stopPropagation()
+  }
   dragging.value = false
-  document.body.style.userSelect = prevUserSelect.value
+  document.body.style.userSelect = previousUserSelect.value
+}, {
+  capture: props.capture,
 })
 
 defineExpose({
   $el: scrollDomRef,
 })
-
-const wrapperRef = ref<HTMLElement | null>()
-const wrapperHover = useElementHover(wrapperRef)
-
-const hover = useElementHover(() => scrollBarIndicatorRef.value)
-const indicatorBgNormal = useSurfaceCS('bg', { dark: 2, light: 7 }, 0.5)
-const indicatorBgHover = useSurfaceCS('bg', { dark: 2, light: 7 }, 0.75)
-
-// 当按下滚动条背景时，滚动条会向下移动一屏幕的距离，按下一秒后，
-function onBarBackgroundPointerDown(e: PointerEvent) {
-  const { clientY } = e
-  const { top, height } = scrollBarIndicatorBounds
-  const barTop = top.value
-  const barHeight = height.value
-  const barCenter = barTop + barHeight / 2
-  const diff = clientY - barCenter
-  scrollDomRef.value?.scrollBy({
-    top: diff / barHeight * clientHeight.value,
-    behavior: 'smooth',
-  })
-}
 </script>
 
 <template>
   <div
-    ref="wrapperRef"
-    :style="{
-      height,
-    }"
-    class="relative max-h-fit overflow-hidden"
+    class="relative overflow-hidden"
   >
     <div
       v-if="scrollBarData"
       :style="{
         width: `${barWidth}px`,
       }"
-      class="absolute right-0 z-99999 h-full"
-      @pointerdown="onBarBackgroundPointerDown"
+      class="absolute right-0 z-999 h-full"
     >
       <div
         v-show="scrollBarData.barHeight < clientHeight"
         ref="scrollBarIndicatorRef"
-        :class="[
-          indicatorBgNormal.class, {
-            'op-0': !wrapperHover && autoHide,
-            'op-100': wrapperHover && autoHide,
-          }]"
-        class="absolute right-0 z-1 rounded-full transition-background-color,opacity"
-        :style="[
-          {
-            right: '0px',
-            width: `${barWidth}px`,
-            top: `${scrollBarData.barTop}px`,
-            height: `${scrollBarData.barHeight}px`,
-          },
-          (!hover && !dragging) && indicatorBgNormal.style,
-          (hover || dragging) && indicatorBgHover.style,
-        ]"
+
+        class="absolute right-0 rounded-full bg-[--r-surface-border-variant-color]"
+        :style="{
+          right: '0px',
+          width: `${barWidth}px`,
+          top: `${scrollBarData.barTop}px`,
+          height: `${scrollBarData.barHeight}px`,
+        }"
       />
     </div>
     <div
       ref="scrollDomRef"
+      class="scroll-area h-full w-full overflow-auto"
+      v-bind="$attrs"
       :style="{
-        paddingRight: `${floating ? 0 : barWidth}px`,
         scrollbarWidth: 'none',
-        height: '100%',
-        overflowY: 'scroll',
       }"
     >
       <slot />

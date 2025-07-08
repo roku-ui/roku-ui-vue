@@ -48,4 +48,10 @@ export const Modals = {
     }
     modals.value = [data as ModalData, ...modals.value]
   },
+  close(id: string) {
+    modals.value = modals.value.filter(modal => modal.id !== id)
+  },
+  clear() {
+    modals.value = []
+  },
 }

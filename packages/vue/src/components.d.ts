@@ -17,6 +17,7 @@ declare module 'vue' {
     ChatContainer: typeof import('./components/ChatContainer.vue')['default']
     ChatMessage: typeof import('./components/ChatMessage.vue')['default']
     ChatSystem: typeof import('./components/ChatSystem.vue')['default']
+    Checkbox: typeof import('./components/Checkbox.vue')['default']
     Chip: typeof import('./components/Chip.vue')['default']
     ColorInput: typeof import('./components/ColorInput.vue')['default']
     ColorSwatch: typeof import('./components/ColorSwatch.vue')['default']
