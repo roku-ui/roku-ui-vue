@@ -1,9 +1,9 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 
 const basicValue = ref(50)
 const rangeValue = ref(25)
-const stepValue = ref(20)
+const stepValue = ref(50)
 const colorValues = ref({
   primary: 40,
   secondary: 60,
@@ -19,6 +19,24 @@ const customOptions = ref(['Low', 'Medium', 'High', 'Very High'])
 const customValue = ref('Medium')
 const animatedValue = ref(45)
 const widthValue = ref(75)
+const ticksValues = ref({
+  irregular: 30,
+  nonLinear: 50,
+})
+const advancedValues = ref({
+  volume: 60,
+  fineGrained: 5.5,
+})
+const reverseValues = ref({
+  normal: 40,
+  reverse: 60,
+})
+const alignmentValues = ref({
+  sm: 25,
+  md: 45,
+  lg: 65,
+})
+const conflictTestValue = ref(50)
 </script>
 
 <template>
@@ -62,18 +80,6 @@ const widthValue = ref(75)
             :min="0"
             :max="100"
             :step="5"
-            :tick-num="5"
-          />
-        </div>
-        <div>
-          <label class="text-surface-on mb-2 block text-sm font-medium">
-            Step Value: {{ stepValue }}
-          </label>
-          <Slider
-            v-model="stepValue"
-            :min="0"
-            :max="100"
-            :step="10"
             :tick-num="11"
           />
         </div>
@@ -274,10 +280,10 @@ const widthValue = ref(75)
       <Paper class="space-y-4">
         <div>
           <label class="text-surface-on mb-2 block text-sm font-medium">
-            Normal Direction: {{ rangeValue }}
+            Normal Direction: {{ reverseValues.normal }}
           </label>
           <Slider
-            v-model="rangeValue"
+            v-model="reverseValues.normal"
             :reverse="false"
             :min="0"
             :max="100"
@@ -285,10 +291,10 @@ const widthValue = ref(75)
         </div>
         <div>
           <label class="text-surface-on mb-2 block text-sm font-medium">
-            Reverse Direction: {{ rangeValue }}
+            Reverse Direction: {{ reverseValues.reverse }}
           </label>
           <Slider
-            v-model="rangeValue"
+            v-model="reverseValues.reverse"
             :reverse="true"
             :min="0"
             :max="100"
@@ -314,7 +320,7 @@ const widthValue = ref(75)
           </Btn>
           <div class="flex-1">
             <Slider
-              v-model="sizeValues.sm"
+              v-model="alignmentValues.sm"
               size="sm"
               :min="0"
               :max="100"
@@ -332,7 +338,7 @@ const widthValue = ref(75)
           </Btn>
           <div class="flex-1">
             <Slider
-              v-model="sizeValues.md"
+              v-model="alignmentValues.md"
               size="md"
               :min="0"
               :max="100"
@@ -350,12 +356,74 @@ const widthValue = ref(75)
           </Btn>
           <div class="flex-1">
             <Slider
-              v-model="sizeValues.lg"
+              v-model="alignmentValues.lg"
               size="lg"
               :min="0"
               :max="100"
             />
           </div>
+        </div>
+      </Paper>
+    </section>
+
+    <!-- Custom Ticks -->
+    <section class="space-y-4">
+      <h2 class="text-2xl font-semibold">
+        Custom Ticks (New Feature)
+      </h2>
+      <Paper class="space-y-4">
+        <div>
+          <label class="text-surface-on mb-2 block text-sm font-medium">
+            Irregular Ticks: {{ ticksValues.irregular }}
+          </label>
+          <Slider
+            v-model="ticksValues.irregular"
+            :min="0"
+            :max="100"
+            :step="1"
+            :ticks="[0, 10, 30, 60, 100]"
+            color="primary"
+            size="lg"
+          />
+        </div>
+        <div>
+          <label class="text-surface-on mb-2 block text-sm font-medium">
+            Non-linear Scale: {{ ticksValues.nonLinear }}
+          </label>
+          <Slider
+            v-model="ticksValues.nonLinear"
+            :min="0"
+            :max="100"
+            :step="1"
+            :ticks="[0, 5, 25, 50, 75, 95, 100]"
+            color="secondary"
+          />
+        </div>
+      </Paper>
+    </section>
+
+    <!-- Conflict Test -->
+    <section class="space-y-4">
+      <h2 class="text-2xl font-semibold">
+        Conflict Test (Check Console)
+      </h2>
+      <Paper class="space-y-4">
+        <div>
+          <label class="text-surface-on mb-2 block text-sm font-medium">
+            Both ticks and tickNum provided (should warn): {{ conflictTestValue }}
+          </label>
+          <Slider
+            v-model="conflictTestValue"
+            :min="0"
+            :max="100"
+            :step="1"
+            :ticks="[0, 20, 40, 60, 80, 100]"
+            :tick-num="11"
+            color="error"
+          />
+          <p class="text-xs text-surface-dimmed mt-2">
+            Open browser console to see warning message. The ticks array should take precedence.
+          </p>
         </div>
       </Paper>
     </section>
@@ -368,10 +436,10 @@ const widthValue = ref(75)
       <Paper class="space-y-4">
         <div>
           <label class="text-surface-on mb-2 block text-sm font-medium">
-            Volume Control with Ticks
+            Volume Control with Ticks: {{ advancedValues.volume }}
           </label>
           <Slider
-            v-model="basicValue"
+            v-model="advancedValues.volume"
             :min="0"
             :max="100"
             :step="25"
@@ -382,10 +450,10 @@ const widthValue = ref(75)
         </div>
         <div>
           <label class="text-surface-on mb-2 block text-sm font-medium">
-            Fine-grained Control (0.1 steps)
+            Fine-grained Control (0.1 steps): {{ advancedValues.fineGrained }}
           </label>
           <Slider
-            v-model="rangeValue"
+            v-model="advancedValues.fineGrained"
             :min="0"
             :max="10"
             :step="0.1"

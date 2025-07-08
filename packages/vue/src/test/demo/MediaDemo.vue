@@ -1,12 +1,12 @@
-<script setup>
+<script setup lang="ts">
 import { computed, ref } from 'vue'
 import { generateColors, Notifications, primaryColor, surfaceColor } from '../..'
 
-const file = ref(null)
+const file = ref<File | null>(null)
 const color = ref('#5474B4')
 const colors = computed(() => generateColors(color.value))
 
-function onDrop(files) {
+function onDrop(files: File[] | null) {
   if (files && files.length > 0) {
     file.value = files[0]
     Notifications.show({

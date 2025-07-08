@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 
 const headerSpansNav = ref(false)
@@ -20,7 +20,7 @@ const navbarWidth = ref('200px')
       <h2 class="text-2xl font-semibold">
         Basic Layout
       </h2>
-      <div class="border-2 border-gray-300 rounded-lg">
+      <div class="border-2 rounded-lg">
         <AppShell
           header-height="60px"
           footer-height="40px"
@@ -124,7 +124,7 @@ const navbarWidth = ref('200px')
       <h2 class="text-2xl font-semibold">
         Header Spans All
       </h2>
-      <div class="border-2 border-gray-300 rounded-lg">
+      <div class="border-2 rounded-lg">
         <AppShell
           header-height="60px"
           footer-height="40px"
@@ -188,7 +188,7 @@ const navbarWidth = ref('200px')
           <h3 class="text-lg font-medium">
             Header + Main
           </h3>
-          <div class="h-48 border-2 border-gray-300 rounded-lg">
+          <div class="h-48 border-2 rounded-lg">
             <AppShell
               header-height="50px"
               padding="8px"
@@ -217,7 +217,7 @@ const navbarWidth = ref('200px')
           <h3 class="text-lg font-medium">
             Navbar + Main
           </h3>
-          <div class="h-48 border-2 border-gray-300 rounded-lg">
+          <div class="h-48 border-2 rounded-lg">
             <AppShell
               navbar-width="120px"
               padding="8px"
@@ -343,7 +343,7 @@ const navbarWidth = ref('200px')
           <h3 class="text-lg font-medium">
             Preview
           </h3>
-          <div class="h-80 border-2 border-gray-300 rounded-lg">
+          <div class="h-80 border-2 rounded-lg">
             <AppShell
               :header-height="headerHeight"
               footer-height="40px"

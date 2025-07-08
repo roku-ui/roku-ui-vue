@@ -13,9 +13,11 @@ const props = withDefaults(
     max?: number
     step?: number
     tickNum?: number
+    ticks?: number[]
     color?: string
     minWidth?: number
     reverse?: boolean
+    alignTicksToStep?: boolean
   }>(),
   {
     size: 'md',
@@ -26,6 +28,7 @@ const props = withDefaults(
     color: 'primary',
     minWidth: 12,
     reverse: false,
+    alignTicksToStep: false,
   },
 )
 
@@ -47,25 +50,82 @@ function minMaxStepToOptions(min: number, max: number, step: number) {
   return options
 }
 
-function getTicks(tickNum: number, options: any[]) {
+function getTicks(tickNum: number, options: any[], min: number, max: number, useOptions: boolean = false, alignToStep: boolean = false) {
   const ticks: any[] = []
   if (tickNum === 0) {
     return ticks
   }
-  ticks.push(options[0])
-  const step = (options.length - 1) / (tickNum - 1)
-  for (let i = 1; i < tickNum - 1; i++) {
-    ticks.push(options[Math.round(i * step)])
+  if (tickNum === 1) {
+    ticks.push(useOptions ? options[0] : min)
+    return ticks
   }
-  ticks.push(options.at(-1))
+
+  if (useOptions) {
+    // 当使用 custom options 时，从 options 中选择 tick
+    ticks.push(options[0])
+    if (tickNum > 2) {
+      const step = (options.length - 1) / (tickNum - 1)
+      for (let i = 1; i < tickNum - 1; i++) {
+        ticks.push(options[Math.round(i * step)])
+      }
+    }
+    if (options.length > 1) {
+      ticks.push(options.at(-1))
+    }
+  }
+  else if (alignToStep) {
+    // 当需要对齐到 step 时，从 options 中选择 tick
+    ticks.push(options[0])
+    if (tickNum > 2) {
+      const step = (options.length - 1) / (tickNum - 1)
+      for (let i = 1; i < tickNum - 1; i++) {
+        ticks.push(options[Math.round(i * step)])
+      }
+    }
+    if (options.length > 1) {
+      ticks.push(options.at(-1))
+    }
+  }
+  else {
+    // 默认情况下，均匀分布在 min 到 max 之间
+    for (let i = 0; i < tickNum; i++) {
+      const value = min + (max - min) * (i / (tickNum - 1))
+      ticks.push(Number(value.toFixed(2)))
+    }
+  }
   return ticks
 }
 
 const tickNum = computed(() => {
-  return props.options ? props.options.length : props.tickNum ?? 0
+  // 确保 ticks 和 tickNum 不能同时存在
+  if (props.ticks !== undefined && props.tickNum !== undefined) {
+    console.warn('Slider: ticks and tickNum cannot be used together. Using ticks.')
+  }
+
+  if (props.ticks !== undefined) {
+    return props.ticks.length
+  }
+
+  if (props.tickNum !== undefined) {
+    return props.tickNum
+  }
+
+  // 如果使用 custom options 且没有明确设置 tickNum，默认显示所有选项
+  if (props.options !== undefined) {
+    return props.options.length
+  }
+  return 0
 })
 const options = computed(() => props.options === undefined ? minMaxStepToOptions(props.min, props.max, props.step) : props.options)
-const ticks = computed(() => getTicks(tickNum.value, options.value))
+const ticks = computed(() => {
+  // 如果使用自定义 ticks 数组，直接返回
+  if (props.ticks !== undefined) {
+    return props.ticks
+  }
+
+  // 否则使用原来的逻辑
+  return getTicks(tickNum.value, options.value, props.min, props.max, props.options !== undefined, props.alignTicksToStep)
+})
 
 const model = defineModel<any>({
   default: undefined,
@@ -93,6 +153,26 @@ function optionToIndex(option: any) {
     }
   }
   return res
+}
+
+function valueToPosition(value: any, min: number, max: number, isCustomOptions: boolean = false) {
+  if (isCustomOptions) {
+    // 对于 custom options，使用 optionToIndex 计算位置
+    const index = optionToIndex(value)
+    const length = options.value.length
+    if (length === 1) {
+      return 0
+    }
+    return (index / (length - 1)) * 100
+  }
+
+  if (typeof value !== 'number') {
+    return 0
+  }
+  if (max === min) {
+    return 0
+  }
+  return ((value - min) / (max - min)) * 100
 }
 
 const color = computed(() => props.color)
@@ -142,19 +222,15 @@ function pointEventCallback(event: PointerEvent) {
   }
   relativeX = Math.max(0, Math.min(relativeX, 1))
 
-  let targetArray = options.value
-  let targetLength = length.value
-
-  if (tickNum.value > 0 && ticks.value.length > 1) {
-    targetArray = ticks.value
-    targetLength = ticks.value.length
-  }
+  // 始终使用所有可选择的 options，而不是被 tick 限制
+  const targetArray = options.value
+  const targetLength = length.value
 
   let closestValue = targetArray[0]
   let minDiff = Infinity
 
   for (let i = 0; i < targetLength; i++) {
-    const optionRelativePos = i / (targetLength - 1)
+    const optionRelativePos = targetLength === 1 ? 0 : i / (targetLength - 1)
     const diff = Math.abs(relativeX - optionRelativePos)
     if (diff < minDiff) {
       minDiff = diff
@@ -164,10 +240,6 @@ function pointEventCallback(event: PointerEvent) {
 
   currentIndex.value = optionToIndex(closestValue)
 }
-
-watchEffect(() => {
-  currentIndex.value = optionToIndex(model.value)
-})
 
 function pointDownEventCallback(event: PointerEvent) {
   event.preventDefault()
@@ -269,7 +341,7 @@ const animateCls = computed(() => props.animate && !isMoving.value
             v-for="option in ticks"
             :key="option"
             :style="{
-              left: `${props.reverse ? 100 - (optionToIndex(option) / (length - 1)) * 100 : (optionToIndex(option) / (length - 1)) * 100}%`,
+              left: `${props.reverse ? 100 - valueToPosition(option, props.min, props.max, props.options !== undefined) : valueToPosition(option, props.min, props.max, props.options !== undefined)}%`,
             }"
             class="absolute top-50% rounded-full bg-surface-0"
             :class="sizeCls.tick"
@@ -282,7 +354,7 @@ const animateCls = computed(() => props.animate && !isMoving.value
             :style="[
               `--i-bg: ${filledColor}`,
               {
-                left: `${props.reverse ? 100 - (currentIndex / (length - 1)) * 100 : (currentIndex / (length - 1)) * 100}%`,
+                left: `${props.reverse ? 100 - (length === 1 ? 0 : (currentIndex / (length - 1)) * 100) : (length === 1 ? 0 : (currentIndex / (length - 1)) * 100)}%`,
               },
             ]"
           >
@@ -301,7 +373,7 @@ const animateCls = computed(() => props.animate && !isMoving.value
             :style="[
               containerFilledCS.style,
               {
-                width: `${props.reverse ? 100 - (currentIndex / (length - 1)) * 100 : (currentIndex / (length - 1)) * 100}%`,
+                width: `${props.reverse ? 100 - (length === 1 ? 0 : (currentIndex / (length - 1)) * 100) : (length === 1 ? 0 : (currentIndex / (length - 1)) * 100)}%`,
               },
             ]"
           />
@@ -310,20 +382,22 @@ const animateCls = computed(() => props.animate && !isMoving.value
     </div>
     <div
       v-if="ticks.length > 0"
-      class="relative mx-1 h-1em text-xs text-surface-dimmed"
+      class="relative h-1em text-xs text-surface-dimmed"
+      :class="[
+        props.size === 'sm' ? 'mx-0.5' : props.size === 'lg' ? 'mx-1.5' : 'mx-1',
+      ]"
       :style="{
-        width: props.width ? `${props.width}rem` : '100%',
-        minWidth: `${props.minWidth}rem`,
+        width: props.width ? `calc(${props.width}rem - ${props.size === 'sm' ? '0.25rem' : props.size === 'lg' ? '0.75rem' : '0.5rem'})` : `calc(100% - ${props.size === 'sm' ? '0.25rem' : props.size === 'lg' ? '0.75rem' : '0.5rem'})`,
+        minWidth: `calc(${props.minWidth}rem - ${props.size === 'sm' ? '0.25rem' : props.size === 'lg' ? '0.75rem' : '0.5rem'})`,
       }"
     >
       <div
         v-for="option, i in ticks"
         :key="i"
         :style="{
-          left: `${(optionToIndex(option) / (length - 1)) * 100}%`,
+          left: `${props.reverse ? 100 - valueToPosition(option, props.min, props.max, props.options !== undefined) : valueToPosition(option, props.min, props.max, props.options !== undefined)}%`,
         }"
-        class="absolute w-auto flex rounded-full -translate-x-50%"
-        :class="sizeCls.tick"
+        class="absolute w-auto flex items-center justify-center whitespace-nowrap text-center -translate-x-50%"
       >
         {{ option }}
       </div>

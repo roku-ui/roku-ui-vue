@@ -4,7 +4,7 @@
       <h3 class="text-lg font-medium">
         Header + Main Only
       </h3>
-      <div class="h-64 overflow-hidden border border-gray-300 rounded-lg">
+      <div class="h-64 overflow-hidden border rounded-lg">
         <AppShell
           header-height="60px"
           padding="8px"
@@ -32,7 +32,7 @@
       <h3 class="text-lg font-medium">
         Sidebar Layout
       </h3>
-      <div class="h-64 overflow-hidden border border-gray-300 rounded-lg">
+      <div class="h-64 overflow-hidden border rounded-lg">
         <AppShell
           navbar-width="240px"
           padding="8px"
@@ -67,7 +67,7 @@
       <h3 class="text-lg font-medium">
         Main + Aside Only
       </h3>
-      <div class="h-64 overflow-hidden border border-gray-300 rounded-lg">
+      <div class="h-64 overflow-hidden border rounded-lg">
         <AppShell
           aside-width="200px"
           padding="8px"

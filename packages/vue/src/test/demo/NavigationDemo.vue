@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { h, ref } from 'vue'
 import Avatar from '@/components/Avatar.vue'
 

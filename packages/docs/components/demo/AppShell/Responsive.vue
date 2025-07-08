@@ -4,7 +4,7 @@
       <h3 class="text-lg font-medium">
         Different Sizes
       </h3>
-      <div class="h-96 overflow-hidden border border-gray-300 rounded-lg">
+      <div class="h-96 overflow-hidden border rounded-lg">
         <AppShell
           header-height="80px"
           footer-height="60px"
@@ -118,7 +118,7 @@
       <h3 class="text-lg font-medium">
         Compact Layout
       </h3>
-      <div class="h-64 overflow-hidden border border-gray-300 rounded-lg">
+      <div class="h-64 overflow-hidden border rounded-lg">
         <AppShell
           header-height="40px"
           footer-height="32px"

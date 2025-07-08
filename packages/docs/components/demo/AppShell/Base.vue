@@ -4,7 +4,7 @@
       <h3 class="text-lg font-medium">
         Basic Layout
       </h3>
-      <div class="h-96 overflow-hidden border border-gray-300 rounded-lg">
+      <div class="h-96 overflow-hidden border rounded-lg">
         <AppShell
           header-height="60px"
           footer-height="40px"
@@ -53,7 +53,7 @@
       <h3 class="text-lg font-medium">
         Header Spans All
       </h3>
-      <div class="h-96 overflow-hidden border border-gray-300 rounded-lg">
+      <div class="h-96 overflow-hidden border rounded-lg">
         <AppShell
           header-height="60px"
           footer-height="40px"
@@ -104,7 +104,7 @@
       <h3 class="text-lg font-medium">
         Footer Spans All
       </h3>
-      <div class="h-96 overflow-hidden border border-gray-300 rounded-lg">
+      <div class="h-96 overflow-hidden border rounded-lg">
         <AppShell
           header-height="60px"
           footer-height="40px"
@@ -155,7 +155,7 @@
       <h3 class="text-lg font-medium">
         Both Header and Footer Span All
       </h3>
-      <div class="h-96 overflow-hidden border border-gray-300 rounded-lg">
+      <div class="h-96 overflow-hidden border rounded-lg">
         <AppShell
           header-height="60px"
           footer-height="40px"
