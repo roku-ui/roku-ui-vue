@@ -1,3 +1,40 @@
+## v0.22.0
+
+[v0.21.0...v0.22.0](https://github.com/roku-ui/roku-ui-vue/compare/v0.21.0...v0.22.0)
+
+### :sparkles: Features
+
+- **app-shell**: support number values for padding and gap - By [Jannchie](mailto:jannchie@gmail.com) in [efbeb7c](https://github.com/roku-ui/roku-ui-vue/commit/efbeb7c)
+- **app-shell**: add AppShell component and demos with layout docs - By [Jannchie](mailto:jannchie@gmail.com) in [4a55bd3](https://github.com/roku-ui/roku-ui-vue/commit/4a55bd3)
+- **calendar**: add calendar component with docs and demos - By [Jannchie](mailto:jannchie@gmail.com) in [4da6386](https://github.com/roku-ui/roku-ui-vue/commit/4da6386)
+- **demo**: add slider and switch demos && improve button demo - By [Jannchie](mailto:jannchie@gmail.com) in [26eae29](https://github.com/roku-ui/roku-ui-vue/commit/26eae29)
+- **demo**: add demo components for all ui features - By [Jannchie](mailto:jannchie@gmail.com) in [b037930](https://github.com/roku-ui/roku-ui-vue/commit/b037930)
+- **docs**: add demo and docs for app-shell popover menu select-area tooltip and rating components - By [Jannchie](mailto:jannchie@gmail.com) in [096b266](https://github.com/roku-ui/roku-ui-vue/commit/096b266)
+- **docs**: migrate to collection-based content structure && add overlay animation prop - By [Jannchie](mailto:jannchie@gmail.com) in [cf872e5](https://github.com/roku-ui/roku-ui-vue/commit/cf872e5)
+- **notification**: add showLeftIndicator prop - By [Jannchie](mailto:jannchie@gmail.com) in [9ab845c](https://github.com/roku-ui/roku-ui-vue/commit/9ab845c)
+- **slider**: add custom ticks support and alignment options - By [Jannchie](mailto:jannchie@gmail.com) in [88a7303](https://github.com/roku-ui/roku-ui-vue/commit/88a7303)
+
+### :adhesive_bandage: Fixes
+
+- **slider**: improve pointer accuracy and animation logic - By [Jannchie](mailto:jannchie@gmail.com) in [06579e8](https://github.com/roku-ui/roku-ui-vue/commit/06579e8)
+
+### :art: Refactors
+
+- **vue**: replace reduce with loops for clarity - By [Jannchie](mailto:jannchie@gmail.com) in [fa5068d](https://github.com/roku-ui/roku-ui-vue/commit/fa5068d)
+
+### :lipstick: Styles
+
+- **components**: add inline-block to image and overlay - By [Jannchie](mailto:jannchie@gmail.com) in [87b6c1d](https://github.com/roku-ui/roku-ui-vue/commit/87b6c1d)
+- **popover-tooltip**: add w-max utility to popover and tooltip content - By [Jannchie](mailto:jannchie@gmail.com) in [7e040b5](https://github.com/roku-ui/roku-ui-vue/commit/7e040b5)
+
+### :memo: Documentation
+
+- **changelog**: add changelog for project history - By [Jianqi Pan](mailto:jannchie@gmail.com) in [feb7bc1](https://github.com/roku-ui/roku-ui-vue/commit/feb7bc1)
+
+### :wrench: Chores
+
+- update dependencies and refine vue components - By [Jannchie](mailto:jannchie@gmail.com) in [393951a](https://github.com/roku-ui/roku-ui-vue/commit/393951a)
+
 ## v0.21.0
 
 [v0.20.0...v0.21.0](https://github.com/roku-ui/roku-ui-vue/compare/v0.20.0...v0.21.0)
