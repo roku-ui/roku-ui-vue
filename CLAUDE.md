@@ -90,9 +90,14 @@ pnpm --filter @roku-ui/docs generate
 - Vitest for testing
 - PNPM workspace for monorepo management
 
-### Build Dependencies
+### Build Dependencies & Order
 
-The preset package must be built before the Vue library since the Vue library depends on `@roku-ui/preset` for styling.
+The preset package must be built before the Vue library since the Vue library depends on `@roku-ui/preset` for styling. Build order is:
+
+1. `@roku-ui/vue` (Vue component library)
+2. `@roku-ui/docs` (documentation site, optional)
+
+**Important**: Always run `pnpm --filter @roku-ui/preset build` before building the Vue library when making preset changes.
 
 ### Component Organization
 
@@ -112,6 +117,49 @@ Components are auto-exported from `packages/vue/src/components/index.ts` using u
 - ESLint with @jannchie/eslint-config for code quality
 - Pre-commit hooks run linting on staged files
 
+### Testing
+
+- Tests are located in `packages/vue/src/test/` directory
+- Run tests with `pnpm --filter @roku-ui/vue test` (uses Vitest)
+- Basic test setup exists but more comprehensive testing should be added for new components
+
+### Auto-generation
+
+- Component exports are auto-generated in `packages/vue/src/components/index.ts` via unplugin-auto-export
+- Vue composables and utilities are auto-imported in development
+- Type definitions are auto-generated during build
+
+### Build Process
+
+1. **Preset package** must be built first since Vue library depends on `@roku-ui/preset`
+2. **Vue library** builds as both ESM and CJS with TypeScript declarations
+3. **Documentation** is built as a static Nuxt.js site
+
+## Development Workflow
+
+### Adding New Components
+
+1. Create component in `packages/vue/src/components/`
+2. Component will be auto-exported via unplugin-auto-export
+3. Add demo in `packages/docs/components/demo/ComponentName/`
+4. Add documentation in `packages/docs/content/components/category/component-name.md`
+5. Test component functionality with `pnpm --filter @roku-ui/vue test`
+
+### Making Preset Changes
+
+1. Build preset: `pnpm --filter @roku-ui/preset build`
+2. Rebuild Vue library: `pnpm --filter @roku-ui/vue build`
+3. Test changes in documentation: `pnpm dev`
+
+### Code Quality
+
+- All code is linted with ESLint using @jannchie/eslint-config
+- Pre-commit hooks automatically lint staged files
+- Run `pnpm lint` to lint and fix all files
+- TypeScript strict mode is enabled
+
 ## Style Guidelines
 
-- 在这个项目里，永远不应该使用 style 标签。这个库主打使用 unocss 管理样式，而不需要引入任何 css。
+- 永远不应该使用 style 标签。这个库主打使用 UnoCSS 管理样式，而不需要引入任何 CSS
+- 所有样式通过 UnoCSS 类名实现，配合自定义 preset 提供组件样式
+- 组件库不包含任何 CSS 文件，所有样式都通过 utility classes 提供

@@ -14,6 +14,7 @@ declare module 'vue' {
     Avatar: typeof import('./components/Avatar.vue')['default']
     Btn: typeof import('./components/Btn.vue')['default']
     BtnGroup: typeof import('./components/BtnGroup.vue')['default']
+    Calendar: typeof import('./components/Calendar.vue')['default']
     ChatContainer: typeof import('./components/ChatContainer.vue')['default']
     ChatMessage: typeof import('./components/ChatMessage.vue')['default']
     ChatSystem: typeof import('./components/ChatSystem.vue')['default']

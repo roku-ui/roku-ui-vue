@@ -5,6 +5,7 @@ import { primaryColor, surfaceColor } from '..'
 import AppShellDemo from './demo/AppShellDemo.vue'
 import AvatarDemo from './demo/AvatarDemo.vue'
 import ButtonDemo from './demo/ButtonDemo.vue'
+import CalendarDemo from './demo/CalendarDemo.vue'
 import ChatDemo from './demo/ChatDemo.vue'
 import FormDemo from './demo/FormDemo.vue'
 import LayoutDemo from './demo/LayoutDemo.vue'
@@ -28,6 +29,7 @@ const demoPages = [
   { key: 'AppShell', title: 'App Shell', component: AppShellDemo },
   { key: 'Avatar', title: 'Avatar', component: AvatarDemo },
   { key: 'Button', title: 'Button', component: ButtonDemo },
+  { key: 'Calendar', title: 'Calendar', component: CalendarDemo },
   { key: 'Chat', title: 'Chat', component: ChatDemo },
   { key: 'Form', title: 'Form Controls', component: FormDemo },
   { key: 'Layout', title: 'Layout', component: LayoutDemo },
