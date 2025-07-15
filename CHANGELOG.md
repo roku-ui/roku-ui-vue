@@ -1,3 +1,15 @@
+## v0.23.0
+
+[v0.22.0...v0.23.0](https://github.com/roku-ui/roku-ui-vue/compare/v0.22.0...v0.23.0)
+
+### :sparkles: Features
+
+- **modal**: add animate and escClose props - By [Jannchie](mailto:jannchie@gmail.com) in [8873ab8](https://github.com/roku-ui/roku-ui-vue/commit/8873ab8)
+
+### :lipstick: Styles
+
+- **fullscreen-overlay**: reorder model definition for clarity - By [Jannchie](mailto:jannchie@gmail.com) in [ffe9e57](https://github.com/roku-ui/roku-ui-vue/commit/ffe9e57)
+
 ## v0.22.0
 
 [v0.21.0...v0.22.0](https://github.com/roku-ui/roku-ui-vue/compare/v0.21.0...v0.22.0)
