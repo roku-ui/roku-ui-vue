@@ -13,11 +13,11 @@ const props = withDefaults(defineProps<{
   animate: false,
 })
 
-const model = defineModel<boolean>()
-
 const emit = defineEmits<{
   maskClick: []
 }>()
+
+const model = defineModel<boolean>()
 
 const wrapperRef = ref(null)
 function onClick(event: any) {
