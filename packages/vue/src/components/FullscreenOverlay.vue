@@ -6,16 +6,23 @@ const props = withDefaults(defineProps<{
   persistent?: boolean
   blur?: 'sm' | 'md' | 'lg' | boolean
   wrapperClass?: string
+  animate?: boolean
 }>(), {
   persistent: false,
   blur: false,
+  animate: false,
 })
 
 const model = defineModel<boolean>()
 
+const emit = defineEmits<{
+  maskClick: []
+}>()
+
 const wrapperRef = ref(null)
 function onClick(event: any) {
   if (!props.persistent && event.target === wrapperRef.value) {
+    emit('maskClick')
     model.value = false
   }
 }
@@ -80,6 +87,7 @@ const provider = useRokuProvider()
 <template>
   <Teleport :to="provider ?? 'body'">
     <Transition
+      v-if="props.animate"
       enter-from-class="opacity-0"
       enter-to-class="opacity-100"
       leave-from-class="opacity-100"
@@ -97,5 +105,14 @@ const provider = useRokuProvider()
         <slot />
       </div>
     </Transition>
+    <div
+      v-else-if="model"
+      ref="wrapperRef"
+      class="fixed left-0 top-0 z-100 h-full w-full bg-surface-10/60 p-2 will-change-auto"
+      :class="[blurCls, wrapperClass]"
+      @click="onClick"
+    >
+      <slot />
+    </div>
   </Teleport>
 </template>
