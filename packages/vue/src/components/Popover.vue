@@ -124,14 +124,19 @@ const showContent = computed(() => {
   return props.trigger === 'hover' ? hover.value : active.value
 })
 
-function onPointerUp(e: PointerEvent) {
-  if (!wrapperRef.value?.contains(e.target as HTMLElement) || e.target === wrapperRef.value) {
-    return
+function onWrapperClick(e: PointerEvent) {
+  // Only toggle if clicked directly on the wrapper children (not on content)
+  if (!contentRef.value?.contains(e.target as HTMLElement)) {
+    active.value = !active.value
   }
-  active.value = !active.value
 }
+
 onClickOutside(contentRef, (e) => {
-  active.value = !!wrapperRef.value?.contains(e.target as HTMLElement)
+  // Only close if clicked outside both wrapper and content
+  const clickedOnWrapper = wrapperRef.value?.contains(e.target as HTMLElement)
+  if (!clickedOnWrapper) {
+    active.value = false
+  }
 })
 </script>
 
@@ -142,7 +147,7 @@ onClickOutside(contentRef, (e) => {
     <div
       ref="wrapperRef"
       class="relative inline-block"
-      @pointerup="onPointerUp"
+      @pointerup="onWrapperClick"
     >
       <slot />
       <div
@@ -160,7 +165,7 @@ onClickOutside(contentRef, (e) => {
       :opacity="0"
       class="fixed inset-0 z-10"
       :style="{
-        zIndex,
+        zIndex: zIndex - 1,
       }"
       @pointerup="active = false"
     />
