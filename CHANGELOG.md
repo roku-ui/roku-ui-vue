@@ -1,3 +1,18 @@
+## v0.24.0
+
+[v0.23.0...v0.24.0](https://github.com/roku-ui/roku-ui-vue/compare/v0.23.0...v0.24.0)
+
+### :sparkles: Features
+
+- **calendar-field**: add calendar field component with demo - By [Jannchie](mailto:jannchie@gmail.com) in [8dec507](https://github.com/roku-ui/roku-ui-vue/commit/8dec507)
+- **popover**: add disabled prop and handling - By [Jannchie](mailto:jannchie@gmail.com) in [5dedd25](https://github.com/roku-ui/roku-ui-vue/commit/5dedd25)
+- **select**: improve dropdown max height auto calculation && add demo for many options - By [Jannchie](mailto:jannchie@gmail.com) in [16273e3](https://github.com/roku-ui/roku-ui-vue/commit/16273e3)
+
+### :adhesive_bandage: Fixes
+
+- **calendar**: correct previous month day rendering && update header title style - By [Jannchie](mailto:jannchie@gmail.com) in [7d1602d](https://github.com/roku-ui/roku-ui-vue/commit/7d1602d)
+- **calendar**: update type annotations and grid layout - By [Jannchie](mailto:jannchie@gmail.com) in [be18f22](https://github.com/roku-ui/roku-ui-vue/commit/be18f22)
+
 ## v0.23.0
 
 [v0.22.0...v0.23.0](https://github.com/roku-ui/roku-ui-vue/compare/v0.22.0...v0.23.0)
