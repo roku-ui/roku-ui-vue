@@ -21,7 +21,7 @@
     "@jannchie/eslint-config": "^3.6.1",
     "@unocss/eslint-config": "66.3.3",
     "@unocss/eslint-plugin": "66.3.3",
-    "eslint": "^9.30.1",
+    "eslint": "^9.31.0",
     "eslint-plugin-format": "^1.0.1"
   },
   "simple-git-hooks": {
