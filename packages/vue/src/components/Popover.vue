@@ -10,12 +10,14 @@ const props = withDefaults(defineProps<{
   zIndex?: number
   offset?: number
   overlay?: boolean
+  disabled?: boolean
 }>(), {
   trigger: 'click',
   position: 'bottom',
   zIndex: 10_000,
   offset: 4,
   overlay: false,
+  disabled: false,
 })
 
 defineSlots<{
@@ -121,10 +123,16 @@ const active = defineModel({
   default: false,
 })
 const showContent = computed(() => {
+  if (props.disabled) {
+    return false
+  }
   return props.trigger === 'hover' ? hover.value : active.value
 })
 
 function onWrapperClick(e: PointerEvent) {
+  if (props.disabled) {
+    return
+  }
   // Only toggle if clicked directly on the wrapper children (not on content)
   if (!contentRef.value?.contains(e.target as HTMLElement)) {
     active.value = !active.value

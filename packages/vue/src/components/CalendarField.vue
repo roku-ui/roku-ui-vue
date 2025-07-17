@@ -176,6 +176,7 @@ function handleInputKeydown(e: KeyboardEvent) {
       position="bottom-start"
       :offset="4"
       :overlay="false"
+      :disabled="disabled"
     >
       <input
         :id="id"
