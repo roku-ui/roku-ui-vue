@@ -3,14 +3,14 @@ import { ref } from 'vue'
 
 const singleDate = ref<Date>()
 const multipleDate = ref<Date[]>([])
-const dateRange = ref<{ start: Date; end: Date }>()
+const dateRange = ref<{ start: Date, end: Date }>()
 
 const currentDate = new Date()
 const minDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1)
 const maxDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 2, 0)
 
 const singleDateWithValidation = ref<Date>()
-const rangeWithValidation = ref<{ start: Date; end: Date }>()
+const rangeWithValidation = ref<{ start: Date, end: Date }>()
 
 const disabledDates = [
   new Date(currentDate.getFullYear(), currentDate.getMonth(), 15),
@@ -39,7 +39,7 @@ function isWeekend(date: Date) {
       <h3 class="text-lg font-semibold">
         Single Date Selection
       </h3>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
         <CalendarField
           v-model="singleDate"
           mode="single"
@@ -106,7 +106,7 @@ function isWeekend(date: Date) {
       <h3 class="text-lg font-semibold">
         Different Colors
       </h3>
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-4">
         <CalendarField
           v-model="singleDate"
           mode="single"
@@ -143,7 +143,7 @@ function isWeekend(date: Date) {
       <h3 class="text-lg font-semibold">
         With Date Validation
       </h3>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
         <CalendarField
           v-model="singleDateWithValidation"
           mode="single"
@@ -202,7 +202,7 @@ function isWeekend(date: Date) {
       <h3 class="text-lg font-semibold">
         Different Locales
       </h3>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
         <CalendarField
           v-model="singleDate"
           mode="single"

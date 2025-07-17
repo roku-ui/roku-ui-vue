@@ -35,7 +35,7 @@ const props = withDefaults(
   },
 )
 
-const model = defineModel<Date | Date[] | { start: Date; end: Date }>()
+const model = defineModel<Date | Date[] | { start: Date, end: Date }>()
 
 const sizeCls = computed(() => {
   switch (props.size) {
@@ -114,7 +114,7 @@ const displayValue = computed(() => {
   }
 
   if (props.mode === 'range') {
-    const range = model.value as { start: Date; end: Date }
+    const range = model.value as { start: Date, end: Date }
     if (range.start && range.end) {
       return `${formatDate(range.start)}${props.rangeSeparator}${formatDate(range.end)}`
     }
@@ -127,21 +127,19 @@ const displayValue = computed(() => {
   return ''
 })
 
-function handleCalendarChange(value: Date | Date[] | { start: Date; end: Date } | undefined) {
-  console.log('Calendar value changed:', value)
+function handleCalendarChange(value: Date | Date[] | { start: Date, end: Date } | undefined) {
   model.value = value
-  
+
   // Close popover for single date selection
   if (props.mode === 'single' && value) {
     popoverActive.value = false
   }
-  
+
   // Close popover for range selection when both dates are selected
   if (props.mode === 'range' && value && typeof value === 'object' && 'start' in value && 'end' in value && value.start && value.end) {
     popoverActive.value = false
   }
 }
-
 
 function handleInputKeydown(e: KeyboardEvent) {
   if (e.key === 'Enter' || e.key === ' ') {
@@ -172,7 +170,7 @@ function handleInputKeydown(e: KeyboardEvent) {
         {{ label }}
       </span>
     </label>
-    
+
     <Popover
       v-model="popoverActive"
       position="bottom-start"
@@ -186,12 +184,12 @@ function handleInputKeydown(e: KeyboardEvent) {
         :disabled="disabled"
         :placeholder="placeholder"
         readonly
-        class="w-full border custom-input-colors outline-none cursor-pointer"
+        class="w-full cursor-pointer border custom-input-colors outline-none"
         :class="[disabledCls, rounded.class, sizeCls.base]"
         :style="[rounded.style]"
         @keydown="handleInputKeydown"
       >
-      
+
       <template #content>
         <Calendar
           :model-value="model"

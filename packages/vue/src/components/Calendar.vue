@@ -118,8 +118,9 @@ const calendarDays = computed(() => {
 
   // Previous month days
   const prevMonth = new Date(year, month - 1, 0)
+  const prevMonthDays = prevMonth.getDate()
   for (let i = firstDayOfWeek - 1; i >= 0; i--) {
-    const date = new Date(year, month - 1, prevMonth.getDate() - i)
+    const date = new Date(year, month - 1, prevMonthDays - i)
     days.push({
       date,
       isCurrentMonth: false,
