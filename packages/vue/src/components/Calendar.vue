@@ -117,10 +117,11 @@ const calendarDays = computed(() => {
   }> = []
 
   // Previous month days
-  const prevMonth = new Date(year, month - 1, 0)
+  const prevMonth = new Date(year, month, 0)
   const prevMonthDays = prevMonth.getDate()
-  for (let i = firstDayOfWeek - 1; i >= 0; i--) {
-    const date = new Date(year, month - 1, prevMonthDays - i)
+  // 填充上个月最后几天
+  for (let i = 1; i <= firstDayOfWeek; i++) {
+    const date = new Date(year, month - 1, prevMonthDays - firstDayOfWeek + i)
     days.push({
       date,
       isCurrentMonth: false,
@@ -371,7 +372,7 @@ function getCellCS(day: any) {
       </div>
 
       <div
-        class="text-center font-semibold"
+        class="min-w-128px text-center font-semibold"
         :class="sizeCls.headerTitle"
       >
         {{ monthNames[currentMonth] }} {{ currentYear }}
