@@ -176,26 +176,37 @@ const sizeCls = computed(() => {
   }
 })
 const dropdownRef = ref(null)
-const { height } = useElementBounding(dropdownRef)
-const { bottom } = useElementBounding(inputRef)
+const { bottom, top } = useElementBounding(inputRef)
 watch([focused], () => {
   // 细节 3：当下拉框收起时，重置键盘索引和鼠标索引
   keyboardIndex.value = -1
   hoverIndex.value = -1
 })
 
-// 细节 5：判断下拉框是否有足够的空间
-const hasArea = computed(() => {
-  if (!focused.value) {
-    return false
+// 自动计算下拉最大高度，优先向下，空间不足时向上
+const dropdownMaxHeight = computed(() => {
+  if (!focused.value || !isClient) {
+    return null
   }
-  if (isClient) {
-    if (height.value === 0) {
-      return false
-    }
-    return (document.documentElement.clientHeight - bottom.value) > height.value
+  const windowHeight = document.documentElement.clientHeight
+  const spaceBelow = windowHeight - bottom.value - 16 // 预留边距
+  const spaceAbove = top.value - 16
+  // 期望最大高度（假设单项高度 32px，最多 8 项）
+  const defaultMax = 32 * 8
+  if (spaceBelow >= defaultMax) {
+    return { maxHeight: `${defaultMax}px` }
   }
-  return false
+  if (spaceBelow >= 100) {
+    return { maxHeight: `${spaceBelow}px` }
+  }
+  if (spaceAbove >= defaultMax) {
+    return { maxHeight: `${defaultMax}px`, bottom: '100%' }
+  }
+  if (spaceAbove >= 100) {
+    return { maxHeight: `${spaceAbove}px`, bottom: '100%' }
+  }
+  // 上下都不够，兜底 100px
+  return { maxHeight: '100px' }
 })
 
 function optionIsEq(a: Reactive<T> | T, b: Reactive<T> | T | undefined) {
@@ -252,11 +263,11 @@ function onMousemove(i: number) {
     <div
       v-if="focused"
       ref="dropdownRef"
-      class="absolute z-10 mt-2 w-full flex-col overflow-hidden border rounded p-1"
-      :class="[containerCS.class, sizeCls.dropdown, {
-        'bottom-10': !hasArea,
-      }]"
-      :style="[containerCS.style]"
+      class="absolute z-10 w-full flex-col overflow-auto border rounded p-1"
+      :class="[containerCS.class, sizeCls.dropdown]"
+      :style="[containerCS.style, dropdownMaxHeight]
+      "
+      :bottom="dropdownMaxHeight && dropdownMaxHeight.bottom ? dropdownMaxHeight.bottom : undefined"
     >
       <div
         v-if="options.length === 0"
