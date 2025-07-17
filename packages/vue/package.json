@@ -43,7 +43,7 @@
     "vue-wf": "^0.5.0"
   },
   "devDependencies": {
-    "@iconify/json": "^2.2.356",
+    "@iconify/json": "^2.2.359",
     "@jannchie/eslint-config": "^3.6.1",
     "@roku-ui/preset": "workspace:^",
     "@types/tinycolor2": "^1.4.6",
@@ -52,14 +52,14 @@
     "@unocss/preset-icons": "66.3.3",
     "@vitejs/plugin-vue": "^6.0.0",
     "@vitejs/plugin-vue-jsx": "^5.0.1",
-    "eslint": "^9.30.1",
+    "eslint": "^9.31.0",
     "eslint-plugin-format": "^1.0.1",
     "typescript": "5.8.3",
     "unocss": "66.3.3",
     "unplugin-auto-export": "^1.0.4",
     "unplugin-auto-import": "^19.3.0",
     "unplugin-vue-components": "^28.8.0",
-    "vite": "^7.0.2",
+    "vite": "^7.0.5",
     "vite-plugin-dts": "4.5.4",
     "vitest": "^3.2.4",
     "vue-tsc": "^3.0.1"
