@@ -281,10 +281,10 @@ const loading = ref(false)
 
       <div class="flex flex-col items-center gap-2">
         <Tag>
-          <template #leftIcon>
+          <template #leftSection>
             Left
           </template>
-          <template #rightIcon>
+          <template #rightSection>
             Right
           </template>
           Abc

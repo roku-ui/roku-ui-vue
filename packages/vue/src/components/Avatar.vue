@@ -8,7 +8,7 @@ import { useRounded } from '@/utils'
 const props = withDefaults(
   defineProps<{
     is?: string | Component
-    src?: string
+    src?: string | null
     size?: 'sm' | 'md' | 'lg' | string | number
     name?: string
     variant?: ContainerVariant
@@ -84,32 +84,38 @@ const containerCS = useContainerCS(props.variant, color)
     class="inline-block min-h-[--size] min-w-[--size] animate-pulse rounded-full bg-surface-variant-1"
     :style="[rounded.style, sizeStyle]"
   />
-  <component
-    :is="is"
-    v-else-if="src && !hasError"
-    ref="img"
-    :alt="name"
-    :class="[rounded.class, containerCS.class, { hidden: !loaded }]"
-    :style="[rounded.style, containerCS.style, sizeStyle]"
-    :src="src"
-    class="inline-block h-[var(--size)] w-[var(--size)] rounded-full object-cover"
-    v-bind="$attrs"
-    @load="onload"
-    @error="onerror"
-  />
   <div
     v-else
-    class="inline-block h-[--size] w-[--size] flex items-center justify-center border-4 rounded-full object-cover font-size-[--font-size]"
-    :class="[rounded.class, containerCS.class]"
-    :style="[rounded.style, containerCS.style, sizeStyle]"
-    v-bind="$attrs"
+    class="relative inline-block h-[--size] w-[--size]"
+    :style="sizeStyle"
   >
-    <slot v-if="$slots.default" />
-    <template v-else-if="name">
-      {{ getAvatarDisplayString(name) }}
-    </template>
-    <template v-else>
-      <i class="i-fluent-person-24-filled" />
-    </template>
+    <component
+      :is="is"
+      v-if="src && !hasError"
+      ref="img"
+      :alt="name"
+      :class="[rounded.class, containerCS.class, { 'opacity-0': !loaded }]"
+      :style="[rounded.style, containerCS.style]"
+      :src="src"
+      class="absolute inset-0 h-full w-full rounded-full object-cover"
+      v-bind="$attrs"
+      @load="onload"
+      @error="onerror"
+    />
+    <div
+      v-if="!src || hasError || !loaded"
+      class="absolute inset-0 h-full w-full flex items-center justify-center border-4 rounded-full object-cover font-size-[--font-size]"
+      :class="[rounded.class, containerCS.class]"
+      :style="[rounded.style, containerCS.style]"
+      v-bind="$attrs"
+    >
+      <slot v-if="$slots.default" />
+      <template v-else-if="name">
+        {{ getAvatarDisplayString(name) }}
+      </template>
+      <template v-else>
+        <i class="i-fluent-person-24-filled" />
+      </template>
+    </div>
   </div>
 </template>

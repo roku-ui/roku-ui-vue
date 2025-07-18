@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { BtnVariant } from '@/types'
-import { computed } from 'vue'
-import { useButtonCS } from '@/shared'
+import { computed, useAttrs } from 'vue'
+import { useTagCS } from '@/shared'
 import { useRounded } from '..'
 
 const props = withDefaults(defineProps<{
@@ -9,8 +9,6 @@ const props = withDefaults(defineProps<{
   variant?: BtnVariant
   rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full' | string | number
   size?: 'sm' | 'md' | 'lg'
-  leftIcon?: string
-  rightIcon?: string
 }>(), {
   variant: 'default',
   rounded: 'md',
@@ -18,8 +16,8 @@ const props = withDefaults(defineProps<{
 
 const _slots = defineSlots<{
   default?: (props: any) => any
-  rightIcon?: (props: any) => any
-  leftIcon?: (props: any) => any
+  rightSection?: (props: any) => any
+  leftSection?: (props: any) => any
 }>()
 
 const sizeCls = computed(() => {
@@ -40,34 +38,29 @@ const sizeCls = computed(() => {
 const rounded = useRounded(props)
 const color = computed(() => props.color ?? 'primary')
 const variant = computed(() => props.variant)
-const cs = useButtonCS(variant, color)
+const hasInteraction = computed(() => {
+  // 检测是否有点击相关的事件监听器
+  const attrs = useAttrs()
+  return !!(attrs.onClick || attrs.onDblclick || attrs.onMousedown || attrs.onMouseup)
+})
+const cs = useTagCS(variant, color, hasInteraction)
 </script>
 
 <template>
   <span
     :tabindex="-1"
     :style="[cs.style, rounded.style]"
-    :class="[cs.class, rounded.class, sizeCls]"
-    class="inline-block h-fit flex cursor-pointer gap-1 border"
+    :class="[cs.class, rounded.class, sizeCls, { 'cursor-pointer': hasInteraction }]"
+    class="h-fit inline-flex items-center gap-1 border"
   >
-    <i
-      v-if="props.leftIcon"
-      :class="props.leftIcon"
-      class="shrink-0"
-    />
     <slot
-      v-else-if="$slots.leftIcon"
-      name="leftIcon"
+      v-if="$slots.leftSection"
+      name="leftSection"
     />
     <slot />
-    <i
-      v-if="props.rightIcon"
-      :class="props.rightIcon"
-      class="h-container w-container shrink-0"
-    />
     <slot
-      v-else-if="$slots.rightIcon"
-      name="rightIcon"
+      v-if="$slots.rightSection"
+      name="rightSection"
     />
   </span>
 </template>

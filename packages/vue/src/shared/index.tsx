@@ -545,6 +545,365 @@ function getWhiteVariantStyle(color: tinycolor.Instance[]): Record<string, strin
   }
 }
 
+export function useTagCS(variant: MaybeRef<BtnVariant> = 'default', color: MaybeRef<Color> = 'primary', hasInteraction: MaybeRef<boolean> = false): ComputedRef<CS> {
+  return computed(() => {
+    const colors = useColors(color).value
+    const surface = generateColorsObjMap(unref(surfaceColor), SURFACE_LIGHTNESS_MAP).colors
+    const interactive = unref(hasInteraction)
+
+    const variantStyles: Record<BtnVariant, () => CS> = {
+      default: () => getDefaultTagVariantStyle(surface, interactive),
+      filled: () => getFilledTagVariantStyle(colors, interactive),
+      light: () => getLightTagVariantStyle(colors, interactive),
+      outline: () => getOutlineTagVariantStyle(colors, interactive),
+      transparent: () => getTransparentTagVariantStyle(colors, interactive),
+      subtle: () => getSubtleTagVariantStyle(colors, interactive),
+      contrast: () => getContrastTagVariantStyle(colors, interactive),
+      white: () => getWhiteTagVariantStyle(colors, interactive),
+    }
+    return variantStyles[unref(variant)]()
+  })
+}
+
+function getDefaultTagVariantStyle(surface: tinycolor.Instance[], hasInteraction: boolean): CS {
+  const baseStyle = {
+    '--d-bg': surface[darkSurfaceBgVariant1Index].toHexString(),
+    '--d-border': surface[darkBorderVariantIndex].toHexString(),
+    '--l-bg': surface[lightSurfaceBgIndex].toHexString(),
+    '--l-border': surface[lightBorderVariantIndex].toHexString(),
+  }
+
+  const baseClass = [
+    'dark:bg-[--d-bg]',
+    'bg-[--l-bg]',
+    'dark:border-[--d-border]',
+    'border-[--l-border]',
+  ]
+
+  if (hasInteraction) {
+    return {
+      style: {
+        ...baseStyle,
+        '--d-bg-h': surface[darkSurfaceBgVariant2Index].toHexString(),
+        '--l-bg-h': surface[lightSurfaceBgVariantIndex].toHexString(),
+      },
+      class: [
+        ...baseClass,
+        'dark:hover:bg-[--d-bg-h]',
+        'hover:bg-[--l-bg-h]',
+      ],
+    }
+  }
+
+  return {
+    style: baseStyle,
+    class: baseClass,
+  }
+}
+
+function getFilledTagVariantStyle(color: tinycolor.Instance[], hasInteraction: boolean): CS {
+  const baseStyle = {
+    '--d-border': 'transparent',
+    '--d-bg': color[darkBgIndex].toHexString(),
+    '--d-text': 'white',
+    '--l-bg': color[lightBgIndex].toHexString(),
+    '--l-text': 'white',
+    '--l-border': 'transparent',
+  }
+
+  const baseClass = [
+    'dark:border-[--d-border]',
+    'border-[--l-border]',
+    'dark:bg-[--d-bg]',
+    'bg-[--l-bg]',
+    'dark:text-[--d-text]',
+    'text-[--l-text]',
+  ]
+
+  if (hasInteraction) {
+    return {
+      style: {
+        ...baseStyle,
+        '--d-bg-h': color[darkBgVariantIndex].toHexString(),
+        '--l-bg-h': color[lightBgVariantIndex].toHexString(),
+        '--l-text-h': 'white',
+      },
+      class: [
+        ...baseClass,
+        'dark:hover:bg-[--d-bg-h]',
+        'hover:bg-[--l-bg-h]',
+        'dark:hover:text-[--d-text-h]',
+        'hover:text-[--l-text-h]',
+      ],
+    }
+  }
+
+  return {
+    style: baseStyle,
+    class: baseClass,
+  }
+}
+
+function getLightTagVariantStyle(color: tinycolor.Instance[], hasInteraction: boolean): CS {
+  const baseStyle = {
+    '--d-border': 'transparent',
+    '--d-bg': color[darkBgIndex].clone().setAlpha(darkOpacity).toHex8String(),
+    '--d-text': color[darkTextIndex].toHexString(),
+    '--l-bg': color[lightBgIndex].clone().setAlpha(lightOpacity).toHex8String(),
+    '--l-text': color[lightTextIndex].toHexString(),
+    '--l-border': 'transparent',
+  }
+
+  const baseClass = [
+    'dark:border-[--d-border]',
+    'border-[--l-border]',
+    'dark:bg-[--d-bg]',
+    'bg-[--l-bg]',
+    'dark:text-[--d-text]',
+    'text-[--l-text]',
+  ]
+
+  if (hasInteraction) {
+    return {
+      style: {
+        ...baseStyle,
+        '--d-bg-h': color[darkBgIndex].clone().setAlpha(darkOpacityVariant).toHex8String(),
+        '--d-text-h': color[darkTextIndex].toHexString(),
+        '--l-bg-h': color[lightBgIndex].clone().setAlpha(lightOpacityVariant).toHex8String(),
+        '--l-text-h': color[lightTextIndex].toHexString(),
+      },
+      class: [
+        ...baseClass,
+        'dark:hover:bg-[--d-bg-h]',
+        'hover:bg-[--l-bg-h]',
+        'dark:hover:text-[--d-text-h]',
+        'hover:text-[--l-text-h]',
+      ],
+    }
+  }
+
+  return {
+    style: baseStyle,
+    class: baseClass,
+  }
+}
+
+function getOutlineTagVariantStyle(color: tinycolor.Instance[], hasInteraction: boolean): CS {
+  const baseStyle = {
+    '--d-bg': 'transparent',
+    '--d-text': color[darkTextIndex].toHexString(),
+    '--d-border': color[darkBorderIndex].toHexString(),
+    '--l-bg': 'transparent',
+    '--l-text': color[lightTextIndex].toHexString(),
+    '--l-border': color[lightBorderIndex].toHexString(),
+  }
+
+  const baseClass = [
+    'dark:bg-[--d-bg]',
+    'bg-[--l-bg]',
+    'dark:text-[--d-text]',
+    'text-[--l-text]',
+    'dark:border-[--d-border]',
+    'border-[--l-border]',
+  ]
+
+  if (hasInteraction) {
+    return {
+      style: {
+        ...baseStyle,
+        '--d-bg-h': color[darkBgVariantIndex].clone().setAlpha(darkOpacity).toHex8String(),
+        '--d-text-h': color[darkTextIndex].toHexString(),
+        '--l-bg-h': color[lightBgVariantIndex].clone().setAlpha(lightOpacity).toHex8String(),
+        '--l-text-h': color[lightTextIndex].toHexString(),
+      },
+      class: [
+        ...baseClass,
+        'dark:hover:bg-[--d-bg-h]',
+        'hover:bg-[--l-bg-h]',
+        'dark:hover:text-[--d-text-h]',
+        'hover:text-[--l-text-h]',
+      ],
+    }
+  }
+
+  return {
+    style: baseStyle,
+    class: baseClass,
+  }
+}
+
+function getTransparentTagVariantStyle(color: tinycolor.Instance[], hasInteraction: boolean): CS {
+  const baseStyle = {
+    '--d-text': color[3].toHexString(),
+    '--l-text': color[5].toHexString(),
+    '--d-bg': 'transparent',
+    '--l-bg': 'transparent',
+    '--d-border': 'transparent',
+    '--l-border': 'transparent',
+  }
+
+  const baseClass = [
+    'dark:text-[--d-text]',
+    'text-[--l-text]',
+    'dark:bg-[--d-bg]',
+    'bg-[--l-bg]',
+    'dark:border-[--d-border]',
+    'border-[--l-border]',
+  ]
+
+  if (hasInteraction) {
+    return {
+      style: {
+        ...baseStyle,
+        '--d-text-h': color[3].toHexString(),
+        '--l-text-h': color[5].toHexString(),
+      },
+      class: [
+        ...baseClass,
+        'dark:hover:text-[--d-text-h]',
+        'hover:text-[--l-text-h]',
+      ],
+    }
+  }
+
+  return {
+    style: baseStyle,
+    class: baseClass,
+  }
+}
+
+function getSubtleTagVariantStyle(color: tinycolor.Instance[], hasInteraction: boolean): CS {
+  const baseStyle = {
+    '--d-bg': 'transparent',
+    '--d-text': color[2].toHexString(),
+    '--d-border': 'transparent',
+    '--l-bg': 'transparent',
+    '--l-text': color[5].toHexString(),
+    '--l-border': 'transparent',
+  }
+
+  const baseClass = [
+    'dark:bg-[--d-bg]',
+    'bg-[--l-bg]',
+    'dark:text-[--d-text]',
+    'text-[--l-text]',
+    'dark:border-[--d-border]',
+    'border-[--l-border]',
+  ]
+
+  if (hasInteraction) {
+    return {
+      style: {
+        ...baseStyle,
+        '--d-bg-h': color[3].clone().setAlpha(darkOpacity).toHex8String(),
+        '--d-text-h': color[2].toHexString(),
+        '--l-bg-h': color[3].clone().setAlpha(lightOpacity).toHex8String(),
+        '--l-text-h': color[5].toHexString(),
+      },
+      class: [
+        ...baseClass,
+        'dark:hover:bg-[--d-bg-h]',
+        'hover:bg-[--l-bg-h]',
+        'dark:hover:text-[--d-text-h]',
+        'hover:text-[--l-text-h]',
+      ],
+    }
+  }
+
+  return {
+    style: baseStyle,
+    class: baseClass,
+  }
+}
+
+function getContrastTagVariantStyle(color: tinycolor.Instance[], hasInteraction: boolean): CS {
+  const baseStyle = {
+    '--d-text': color[2].toHexString(),
+    '--d-bg': 'transparent',
+    '--d-border': 'transparent',
+    '--l-text': color[5].toHexString(),
+    '--l-bg': 'transparent',
+    '--l-border': 'transparent',
+  }
+
+  const baseClass = [
+    'dark:text-[--d-text]',
+    'text-[--l-text]',
+    'dark:bg-[--d-bg]',
+    'bg-[--l-bg]',
+    'dark:border-[--d-border]',
+    'border-[--l-border]',
+  ]
+
+  if (hasInteraction) {
+    return {
+      style: {
+        ...baseStyle,
+        '--d-text-h': 'white',
+        '--d-bg-h': color[5].toHexString(),
+        '--l-text-h': 'white',
+        '--l-bg-h': color[5].toHexString(),
+      },
+      class: [
+        ...baseClass,
+        'dark:hover:text-[--d-text-h]',
+        'hover:text-[--l-text-h]',
+        'dark:hover:bg-[--d-bg-h]',
+        'hover:bg-[--l-bg-h]',
+      ],
+    }
+  }
+
+  return {
+    style: baseStyle,
+    class: baseClass,
+  }
+}
+
+function getWhiteTagVariantStyle(color: tinycolor.Instance[], hasInteraction: boolean): CS {
+  const baseStyle = {
+    '--d-bg': 'white',
+    '--d-text': color[4].toHexString(),
+    '--d-border': 'transparent',
+    '--l-bg': 'white',
+    '--l-text': color[5].toHexString(),
+    '--l-border': 'transparent',
+  }
+
+  const baseClass = [
+    'dark:bg-[--d-bg]',
+    'bg-[--l-bg]',
+    'dark:text-[--d-text]',
+    'text-[--l-text]',
+    'dark:border-[--d-border]',
+    'border-[--l-border]',
+  ]
+
+  if (hasInteraction) {
+    return {
+      style: {
+        ...baseStyle,
+        '--d-bg-h': 'white',
+        '--d-text-h': color[4].toHexString(),
+        '--l-bg-h': 'white',
+        '--l-text-h': color[5].toHexString(),
+      },
+      class: [
+        ...baseClass,
+        'dark:hover:bg-[--d-bg-h]',
+        'hover:bg-[--l-bg-h]',
+        'dark:hover:text-[--d-text-h]',
+        'hover:text-[--l-text-h]',
+      ],
+    }
+  }
+
+  return {
+    style: baseStyle,
+    class: baseClass,
+  }
+}
+
 export function useInputColorStyle(color: MaybeRef<string>, variant: MaybeRef<InputVariant> = 'default') {
   return computed(() => {
     const colors = useColors(color).value
