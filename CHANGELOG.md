@@ -1,3 +1,17 @@
+## v0.25.0
+
+[v0.24.0...v0.25.0](https://github.com/roku-ui/roku-ui-vue/compare/v0.24.0...v0.25.0)
+
+### :rocket: Breaking Changes
+
+- **tag**: add useTagCS composable and update tag component for improved styling and slots - By [Jannchie](mailto:jannchie@gmail.com) in [7a18584](https://github.com/roku-ui/roku-ui-vue/commit/7a18584)
+
+### :wrench: Chores
+
+- **deps**: bump dependencies in docs, preset, vue - By [Jannchie](mailto:jannchie@gmail.com) in [1da8025](https://github.com/roku-ui/roku-ui-vue/commit/1da8025)
+- **deps**: bump eslint to 9.31.0 - By [Jannchie](mailto:jannchie@gmail.com) in [435979d](https://github.com/roku-ui/roku-ui-vue/commit/435979d)
+- **types**: remove DemoManyOptions from component types - By [Jannchie](mailto:jannchie@gmail.com) in [85a3344](https://github.com/roku-ui/roku-ui-vue/commit/85a3344)
+
 ## v0.24.0
 
 [v0.23.0...v0.24.0](https://github.com/roku-ui/roku-ui-vue/compare/v0.23.0...v0.24.0)
