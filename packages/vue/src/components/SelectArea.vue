@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Area } from '@/types';
 import { useElementBounding, useEventListener, useMouse } from '@vueuse/core'
 import { computed, ref } from 'vue'
 
@@ -11,13 +12,6 @@ const emit = defineEmits<{
   selectEnd: [Area, { target: EventTarget | null, shift: boolean, ctrl: boolean }]
 }>()
 const { shift, control: ctrl } = useMagicKeys()
-export interface Area {
-  left: number
-  top: number
-  right: number
-  bottom: number
-}
-
 const target = computed(() => props.target ?? document.documentElement)
 const mouse = useMouse()
 const startPoint = ref({ x: 0, y: 0 })

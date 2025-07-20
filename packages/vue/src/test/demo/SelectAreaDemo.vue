@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Area } from '@/components/SelectArea.vue'
+import type { Area } from '@/types'
 import { ref } from 'vue'
 
 const items = [1, 2, 3, 4]

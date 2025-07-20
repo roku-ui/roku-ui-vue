@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import type { Area } from '@roku-ui/vue'
-import { SelectArea } from '@roku-ui/vue'
+import type { SelectArea } from '@roku-ui/vue'
 
 const items = [1, 2, 3, 4]
 const selectingItems = ref<number[]>([])
@@ -9,7 +8,7 @@ function onSelectStart() {
   selectingItems.value = []
 }
 
-function onSelectChange(area: Area) {
+function onSelectChange(area: { left: any; top: any; right: any; bottom: any }) {
   selectingItems.value = items.filter((_, index) => {
     const { left, top, right, bottom } = area
     const itemLeft = index % 2 * 100

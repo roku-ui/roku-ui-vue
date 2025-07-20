@@ -76,6 +76,10 @@ const treeListItems = computed(() => {
       }
       res.splice(res.indexOf(r), 0, {
         title: dir2Title(currentDir),
+        value: undefined,
+        is: undefined,
+        attrs: {to: undefined},
+        dir: undefined
       })
     }
   }

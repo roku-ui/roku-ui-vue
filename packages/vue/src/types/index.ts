@@ -5,3 +5,9 @@ export type CalendarMode = 'single' | 'multiple' | 'range'
 export type Color = 'primary' | 'secondary' | 'tertiary' | 'error' | 'surface' | string
 export type Size = 'sm' | 'md' | 'lg'
 export type Rounded = 'none' | 'sm' | 'md' | 'lg' | 'full' | string | number
+export interface Area {
+  left: number
+  top: number
+  right: number
+  bottom: number
+}
