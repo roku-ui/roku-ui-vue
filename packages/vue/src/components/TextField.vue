@@ -26,18 +26,21 @@ const sizeCls = computed(() => {
   switch (props.size) {
     case 'sm': {
       return {
-        base: 'h-6 px-2 py-1 text-xs',
+        wrapper: 'h-6 text-xs gap-1 px-2',
+        input: 'py-1',
       }
     }
     case 'lg': {
       return {
-        base: 'h-10 px-4 py-2 text-base',
+        wrapper: 'h-10 text-base gap-2 px-3',
+        input: 'py-2',
       }
     }
     // case 'md':
     default: {
       return {
-        base: 'h-8 px-3 py-1 text-sm',
+        wrapper: 'h-8 text-sm gap-2 px-3',
+        input: 'py-1',
       }
     }
   }
@@ -94,17 +97,34 @@ const id = useId(attrs)
         {{ label }}
       </span>
     </label>
-    <input
-      :id="id"
-      v-bind="$attrs"
-      ref="input"
-      v-model="model"
-      :disabled="disabled"
-      class="w-full border custom-input-colors px-2 py-1 outline-none"
-      :class="[disabledCls, rounded.class, sizeCls.base]"
+    <div
+      class="inline-flex items-center border custom-input-colors outline-none"
+      :class="[disabledCls, rounded.class, sizeCls.wrapper]"
       :style="[rounded.style]"
-      :placeholder="placeholder"
-      :type="props.password ? 'password' : 'text'"
     >
+      <div
+        v-if="$slots.leftSection"
+        class="flex items-center justify-center"
+      >
+        <slot name="leftSection" />
+      </div>
+      <input
+        :id="id"
+        v-bind="$attrs"
+        ref="input"
+        v-model="model"
+        :disabled="disabled"
+        class="flex-1 bg-transparent outline-none"
+        :class="[sizeCls.input]"
+        :placeholder="placeholder"
+        :type="props.password ? 'password' : 'text'"
+      >
+      <div
+        v-if="$slots.rightSection"
+        class="flex items-center justify-center"
+      >
+        <slot name="rightSection" />
+      </div>
+    </div>
   </div>
 </template>

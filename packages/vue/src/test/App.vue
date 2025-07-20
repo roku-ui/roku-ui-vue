@@ -21,6 +21,7 @@ import SelectDemo from './demo/SelectDemo.vue'
 import SliderDemo from './demo/SliderDemo.vue'
 import SwitchDemo from './demo/SwitchDemo.vue'
 import TagsDemo from './demo/TagsDemo.vue'
+import TextFieldDemo from './demo/TextFieldDemo.vue'
 import TooltipDemo from './demo/TooltipDemo.vue'
 import WaterfallDemo from './demo/WaterfallDemo.vue'
 
@@ -44,6 +45,7 @@ const demoPages = [
   { key: 'Select', title: 'Select', component: SelectDemo },
   { key: 'SelectArea', title: 'Select Area', component: SelectAreaDemo },
   { key: 'Tags', title: 'Tags', component: TagsDemo },
+  { key: 'TextField', title: 'TextField', component: TextFieldDemo },
   { key: 'Tooltip', title: 'Tooltip', component: TooltipDemo },
   { key: 'Waterfall', title: 'Waterfall', component: WaterfallDemo },
   { key: 'Slider', title: 'Slider', component: SliderDemo },
