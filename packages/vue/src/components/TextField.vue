@@ -14,6 +14,7 @@ const props = withDefaults(
     password?: boolean
     placeholder?: string
     label?: string
+    format?: (value: string) => string
   }>(),
   {
     color: 'primary',
@@ -77,6 +78,20 @@ defineExpose({
 })
 const attrs = useAttrs()
 const id = useId(attrs)
+
+// 处理输入格式化
+const handleInput = (event: Event) => {
+  const target = event.target as HTMLInputElement
+  const value = target.value
+  
+  if (props.format && typeof props.format === 'function') {
+    const formattedValue = props.format(value)
+    // 更新输入框的值
+    target.value = formattedValue
+    // 更新 v-model
+    model.value = formattedValue
+  }
+}
 </script>
 
 <template>
@@ -118,6 +133,7 @@ const id = useId(attrs)
         :class="[sizeCls.input]"
         :placeholder="placeholder"
         :type="props.password ? 'password' : 'text'"
+        @input="handleInput"
       >
       <div
         v-if="$slots.rightSection"
