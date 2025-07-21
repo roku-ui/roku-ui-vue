@@ -5,6 +5,7 @@ const basicInput = ref('')
 const disabledInput = ref('Disabled text')
 const errorInput = ref('Error text')
 const passwordInput = ref('')
+const partialPasswordInput = ref('')
 const labeledInput = ref('')
 const customInput = ref('')
 
@@ -223,6 +224,48 @@ const dateInput = ref('')
         />
         <div class="text-sm text-gray-600">
           Value: {{ passwordInput }}
+        </div>
+      </Paper>
+    </section>
+
+    <!-- Partial Visible Password Field -->
+    <section class="space-y-4">
+      <h2 class="text-2xl font-semibold">
+        Partial Visible Password Field
+      </h2>
+      <Paper class="space-y-4">
+        <TextField
+          v-model="partialPasswordInput"
+          password
+          partial-visible
+          :visible-start="2"
+          :visible-end="2"
+          label="Partial Visible Password (2-2)"
+          placeholder="Enter your password"
+        />
+        <TextField
+          v-model="partialPasswordInput"
+          password
+          partial-visible
+          :visible-start="3"
+          :visible-end="1"
+          label="Partial Visible Password (3-1)"
+          placeholder="Enter your password"
+        />
+        <TextField
+          v-model="partialPasswordInput"
+          password
+          partial-visible
+          :visible-start="1"
+          :visible-end="3"
+          label="Partial Visible Password (1-3)"
+          placeholder="Enter your password"
+        />
+        <div class="text-sm text-gray-600">
+          Value: {{ partialPasswordInput }}
+        </div>
+        <div class="text-xs text-gray-500">
+          This feature shows the first n characters and last n characters of the password, while hiding the middle part with asterisks.
         </div>
       </Paper>
     </section>

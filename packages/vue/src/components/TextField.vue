@@ -15,11 +15,16 @@ const props = withDefaults(
     placeholder?: string
     label?: string
     format?: (value: string) => string
+    partialVisible?: boolean
+    visibleStart?: number
+    visibleEnd?: number
   }>(),
   {
     color: 'primary',
     rounded: 'md',
     size: 'md',
+    visibleStart: 2,
+    visibleEnd: 2,
   },
 )
 const model = defineModel<string | number>()
@@ -79,17 +84,47 @@ defineExpose({
 const attrs = useAttrs()
 const id = useId(attrs)
 
-// 处理输入格式化
+// 获取部分可见的遮罩值
+const getMaskedValue = (value: string) => {
+  if (!value || value.length <= props.visibleStart + props.visibleEnd) {
+    return value
+  }
+  
+  const start = value.slice(0, props.visibleStart)
+  const end = value.slice(-props.visibleEnd)
+  const hiddenLength = value.length - props.visibleStart - props.visibleEnd
+  const masked = '*'.repeat(hiddenLength)
+  
+  return start + masked + end
+}
+
+// 处理输入事件
 const handleInput = (event: Event) => {
   const target = event.target as HTMLInputElement
-  const value = target.value
+  const currentValue = target.value
   
-  if (props.format && typeof props.format === 'function') {
-    const formattedValue = props.format(value)
-    // 更新输入框的值
-    target.value = formattedValue
-    // 更新 v-model
-    model.value = formattedValue
+  if (props.password && props.partialVisible) {
+    // 部分可见密码模式：立即更新真实值，然后替换显示值
+    model.value = currentValue
+    
+    // 保存光标位置
+    const cursorPos = target.selectionStart || 0
+    
+    // 立即替换为遮罩值
+    const maskedValue = getMaskedValue(currentValue)
+    target.value = maskedValue
+    
+    // 恢复光标位置
+    target.setSelectionRange(cursorPos, cursorPos)
+  } else {
+    // 普通模式
+    if (props.format && typeof props.format === 'function') {
+      const formattedValue = props.format(currentValue)
+      target.value = formattedValue
+      model.value = formattedValue
+    } else {
+      model.value = currentValue
+    }
   }
 }
 </script>
@@ -132,7 +167,7 @@ const handleInput = (event: Event) => {
         class="flex-1 bg-transparent outline-none"
         :class="[sizeCls.input]"
         :placeholder="placeholder"
-        :type="props.password ? 'password' : 'text'"
+        :type="props.password && !props.partialVisible ? 'password' : 'text'"
         @input="handleInput"
       >
       <div
