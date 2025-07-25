@@ -264,7 +264,7 @@ const navbarWidth = ref('200px')
           <h3 class="text-lg font-medium">
             Controls
           </h3>
-          <div class="space-y-3">
+          <div class="space-y-2">
             <div class="grid grid-cols-2 gap-2">
               <label class="flex items-center space-x-2">
                 <input

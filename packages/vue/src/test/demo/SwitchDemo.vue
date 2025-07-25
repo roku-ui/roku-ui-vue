@@ -33,7 +33,7 @@ const iconSwitches = ref({
       <h2 class="text-2xl font-semibold">
         Basic Switch
       </h2>
-      <Paper class="flex items-center gap-4">
+      <Paper class="flex gap-4 items-center">
         <Switch v-model="basicSwitch" />
         <span class="text-surface-on">
           Status: {{ basicSwitch ? 'On' : 'Off' }}
@@ -46,7 +46,7 @@ const iconSwitches = ref({
       <h2 class="text-2xl font-semibold">
         Switch with Label
       </h2>
-      <Paper class="space-y-3">
+      <Paper class="space-y-2">
         <Switch
           v-model="labeledSwitch"
           label="Enable notifications"
@@ -64,21 +64,21 @@ const iconSwitches = ref({
         Different Sizes
       </h2>
       <Paper class="space-y-4">
-        <div class="flex items-center gap-4">
+        <div class="flex gap-4 items-center">
           <Switch
             v-model="sizeSwitches.sm"
             size="sm"
             label="Small Switch"
           />
         </div>
-        <div class="flex items-center gap-4">
+        <div class="flex gap-4 items-center">
           <Switch
             v-model="sizeSwitches.md"
             size="md"
             label="Medium Switch"
           />
         </div>
-        <div class="flex items-center gap-4">
+        <div class="flex gap-4 items-center">
           <Switch
             v-model="sizeSwitches.lg"
             size="lg"
@@ -93,7 +93,7 @@ const iconSwitches = ref({
       <h2 class="text-2xl font-semibold">
         Different Colors
       </h2>
-      <Paper class="space-y-3">
+      <Paper class="space-y-2">
         <Switch
           v-model="colorSwitches.primary"
           color="primary"
@@ -122,7 +122,7 @@ const iconSwitches = ref({
       <h2 class="text-2xl font-semibold">
         Switch with Icons
       </h2>
-      <Paper class="space-y-3">
+      <Paper class="space-y-2">
         <Switch
           v-model="iconSwitches.basic"
           label="With indicator icon"
@@ -148,7 +148,7 @@ const iconSwitches = ref({
       <h2 class="text-2xl font-semibold">
         Disabled States
       </h2>
-      <Paper class="space-y-3">
+      <Paper class="space-y-2">
         <Switch
           v-model="disabledSwitch"
           label="Disabled (Off)"
@@ -168,7 +168,7 @@ const iconSwitches = ref({
         Alignment with Other Components
       </h2>
       <Paper class="space-y-4">
-        <div class="flex items-center gap-4">
+        <div class="flex gap-4 items-center">
           <TextField
             size="sm"
             placeholder="Small input"
@@ -182,7 +182,7 @@ const iconSwitches = ref({
             size="sm"
           />
         </div>
-        <div class="flex items-center gap-4">
+        <div class="flex gap-4 items-center">
           <TextField
             size="md"
             placeholder="Medium input"
@@ -196,7 +196,7 @@ const iconSwitches = ref({
             size="md"
           />
         </div>
-        <div class="flex items-center gap-4">
+        <div class="flex gap-4 items-center">
           <TextField
             size="lg"
             placeholder="Large input"
@@ -218,7 +218,7 @@ const iconSwitches = ref({
       <h2 class="text-2xl font-semibold">
         Animation Control
       </h2>
-      <Paper class="space-y-3">
+      <Paper class="space-y-2">
         <Switch
           v-model="basicSwitch"
           label="With animation (default)"

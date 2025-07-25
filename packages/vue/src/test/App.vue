@@ -6,7 +6,7 @@ import AppShellDemo from './demo/AppShellDemo.vue'
 import AvatarDemo from './demo/AvatarDemo.vue'
 import ButtonDemo from './demo/ButtonDemo.vue'
 import CalendarDemo from './demo/CalendarDemo.vue'
-import CalendarFieldDemo from './demo/CalendarFieldDemo.vue'
+import CalendarInputDemo from './demo/CalendarInputDemo.vue'
 import ChatDemo from './demo/ChatDemo.vue'
 import FormDemo from './demo/FormDemo.vue'
 import LayoutDemo from './demo/LayoutDemo.vue'
@@ -32,7 +32,7 @@ const demoPages = [
   { key: 'Avatar', title: 'Avatar', component: AvatarDemo },
   { key: 'Button', title: 'Button', component: ButtonDemo },
   { key: 'Calendar', title: 'Calendar', component: CalendarDemo },
-  { key: 'CalendarField', title: 'Calendar Field', component: CalendarFieldDemo },
+  { key: 'CalendarInput', title: 'Calendar Input', component: CalendarInputDemo },
   { key: 'Chat', title: 'Chat', component: ChatDemo },
   { key: 'Form', title: 'Form Controls', component: FormDemo },
   { key: 'Layout', title: 'Layout', component: LayoutDemo },
@@ -70,7 +70,10 @@ const currentComponent = computed(() => {
 </script>
 
 <template>
-  <RokuProvider class="roku-scrollbar !scrollbar-thumb-hover-color-surface-4 !dark:scrollbar-thumb-hover-color-surface-5">
+  <RokuProvider
+    :theme-obj="{ withBorder: true }"
+    class="roku-scrollbar !scrollbar-thumb-hover-color-surface-4 !dark:scrollbar-thumb-hover-color-surface-5"
+  >
     <NotificationSystem />
     <ModalSystem />
 
@@ -83,8 +86,8 @@ const currentComponent = computed(() => {
       gap="0"
     >
       <template #header>
-        <Paper class="w-full flex items-center justify-between px-6 py-4">
-          <div class="flex items-center gap-3">
+        <Paper class="px-6 py-4 flex w-full items-center justify-between">
+          <div class="flex gap-3 items-center">
             <h1 class="text-2xl text-surface font-bold">
               Roku UI Vue
             </h1>
@@ -95,7 +98,7 @@ const currentComponent = computed(() => {
               Demo
             </Tag>
           </div>
-          <div class="flex items-center gap-3">
+          <div class="flex gap-3 items-center">
             <SchemeSwitch />
             <ColorInput v-model="primaryColor" />
             <ColorInput v-model="surfaceColor" />
@@ -104,8 +107,8 @@ const currentComponent = computed(() => {
       </template>
 
       <template #navbar>
-        <div class="h-full flex flex-col">
-          <div class="border-b border-surface p-4">
+        <div class="flex flex-col h-full">
+          <div class="p-4 border-b border-surface">
             <h2 class="text-lg text-surface font-semibold">
               Components
             </h2>
@@ -118,8 +121,8 @@ const currentComponent = computed(() => {
           </div>
         </div>
       </template>
-      <div class="h-full overflow-y-auto bg-surface-base">
-        <div class="container m-auto">
+      <div class="bg-surface-base h-full overflow-y-auto">
+        <div class="m-auto container">
           <component :is="currentComponent" />
         </div>
       </div>

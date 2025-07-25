@@ -50,7 +50,7 @@ const conflictTestValue = ref(50)
       <h2 class="text-2xl font-semibold">
         Basic Slider
       </h2>
-      <Paper class="space-y-3">
+      <Paper class="space-y-2">
         <div>
           <label class="text-surface-on mb-2 block text-sm font-medium">
             Volume: {{ basicValue }}%
