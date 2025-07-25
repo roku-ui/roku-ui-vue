@@ -347,14 +347,14 @@ const dropdownPositionStyle = computed(() => {
     >
       <menu
         v-if="finalValue && data"
-        class="relative z-1 flex justify-center"
+        class="flex justify-center relative z-1"
         :style="dropdownPositionStyle"
       >
         <div
           ref="menuDropdownRef"
           :class="[rounded.class, dropdownPositionClass]"
           :style="[rounded.style]"
-          class="w-64 border bg-surface p-2"
+          class="p-2 border bg-surface w-64"
         >
           <template
             v-for="item, i in props.data"
@@ -362,7 +362,7 @@ const dropdownPositionStyle = computed(() => {
           >
             <div
               v-if="isLabel(item)"
-              class="text-surface-variant-3 px-2 py-1 text-xs text-surface-dimmed"
+              class="text-surface-variant-3 text-xs text-surface-dimmed px-2 py-1"
             >
               {{ item.title }}
             </div>

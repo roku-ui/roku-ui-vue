@@ -305,7 +305,7 @@ const animateCls = computed(() => props.animate && !isMoving.value
 
 <template>
   <div
-    class="relative w-full"
+    class="w-full relative"
     :style="{ minHeight: size === 'sm' ? '24px' : size === 'lg' ? '40px' : '32px' }"
   >
     <div
@@ -323,14 +323,14 @@ const animateCls = computed(() => props.animate && !isMoving.value
       @touchmove.prevent
     >
       <div
-        class="rounded-full bg-surface-3 dark:bg-surface-7"
+        class="rounded-full bg-surface-variant-1"
         :class="sizeCls.innerWrapper"
         :style="{
           width: '100%',
         }"
       >
         <div
-          class="relative flex"
+          class="flex relative"
           :class="sizeCls.content"
           :style="{
             width: `${props.width}rem`,
@@ -343,13 +343,13 @@ const animateCls = computed(() => props.animate && !isMoving.value
             :style="{
               left: `${props.reverse ? 100 - valueToPosition(option, props.min, props.max, props.options !== undefined) : valueToPosition(option, props.min, props.max, props.options !== undefined)}%`,
             }"
-            class="absolute top-50% rounded-full bg-surface-0"
+            class="rounded-full bg-surface-variant-2 top-50% absolute"
             :class="sizeCls.tick"
           />
           <div
             v-if="currentIndex !== -1"
             ref="indicator"
-            class="absolute top-50% cursor-pointer rounded-full"
+            class="rounded-full cursor-pointer top-50% absolute"
             :class="[sizeCls.indicator, animateCls.indicator, indicatorOuterCls]"
             :style="[
               `--i-bg: ${filledColor}`,
@@ -359,12 +359,12 @@ const animateCls = computed(() => props.animate && !isMoving.value
             ]"
           >
             <div
-              class="pointer-events-none absolute left-50% top-50% rounded-full"
+              class="rounded-full pointer-events-none left-50% top-50% absolute"
               :class="[sizeCls.indicatorInner, indicatorInnerCls]"
             />
           </div>
           <div
-            class="pointer-events-none h-full rounded-full"
+            class="rounded-full h-full pointer-events-none"
             :class="[
               containerFilledCS.class,
               sizeCls.progress,
@@ -382,7 +382,7 @@ const animateCls = computed(() => props.animate && !isMoving.value
     </div>
     <div
       v-if="ticks.length > 0"
-      class="relative h-1em text-xs text-surface-dimmed"
+      class="text-xs text-surface-dimmed h-1em relative"
       :class="[
         props.size === 'sm' ? 'mx-0.5' : props.size === 'lg' ? 'mx-1.5' : 'mx-1',
       ]"
@@ -397,7 +397,7 @@ const animateCls = computed(() => props.animate && !isMoving.value
         :style="{
           left: `${props.reverse ? 100 - valueToPosition(option, props.min, props.max, props.options !== undefined) : valueToPosition(option, props.min, props.max, props.options !== undefined)}%`,
         }"
-        class="absolute w-auto flex items-center justify-center whitespace-nowrap text-center -translate-x-50%"
+        class="text-center flex w-auto whitespace-nowrap items-center justify-center absolute -translate-x-50%"
       >
         {{ option }}
       </div>

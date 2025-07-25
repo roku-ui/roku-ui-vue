@@ -2,7 +2,7 @@
 import type { Component } from 'vue'
 import type { Color, Rounded } from '@/types'
 import { computed, ref } from 'vue'
-import { useColors } from '@/shared'
+import { useColors, useTheme } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
 
 const props = withDefaults(
@@ -17,14 +17,16 @@ const props = withDefaults(
   }>(),
   {
     rounded: 'md',
-    withBorder: false,
     is: 'div',
     loading: false,
     color: 'primary',
     traceAnimate: false,
     noPadding: false,
+    withBorder: undefined,
   },
 )
+const theme = useTheme()
+const withBorder = props.withBorder ?? theme.withBorder
 
 const color = computed(() => props.color)
 const loading = computed(() => props.loading)
@@ -170,7 +172,7 @@ const traceAnimateStyle = computed(() => {
   <component
     :is="is"
     ref="paperRef"
-    class="relative border"
+    class="border relative"
     :class="[
       {
         'p-4': !noPadding,

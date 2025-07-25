@@ -25,7 +25,7 @@ const bubbleCS = useContainerCS(variant, color)
 
 <template>
   <div
-    class="flex items-start gap-2"
+    class="flex gap-2 items-start"
     :class="[
       {
         'flex-row-reverse': position === 'right',
@@ -43,7 +43,7 @@ const bubbleCS = useContainerCS(variant, color)
       :src="avatar"
     />
     <div
-      class="flex flex-col gap-1 rounded-xl p-2"
+      class="px-3 py-2 rounded-xl flex flex-col gap-1"
       :class="[
         {
           'rounded-tr': position === 'right',

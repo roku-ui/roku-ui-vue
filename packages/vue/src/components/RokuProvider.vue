@@ -1,15 +1,17 @@
 <script setup lang="ts">
 import type { Component } from 'vue'
+import type { Theme } from '@/shared'
 import type { ThemeData } from '@/utils'
 import { computed, provide, ref, watchEffect } from 'vue'
 import { provideRokuProvider } from '@/composables/modal'
-import { defaultTheme, errorColor, primaryColor, secondaryColor, surfaceColor, tertiaryColor } from '@/shared'
+import { defaultTheme, errorColor, primaryColor, provideTheme, secondaryColor, surfaceColor, tertiaryColor } from '@/shared'
 
 const props = withDefaults(
   defineProps<{
     is?: string | Component
     theme?: string
     themes?: Record<string, ThemeData>
+    themeObj?: Partial<Theme>
   }>(),
   {
     is: 'div',
@@ -44,6 +46,9 @@ const styles = computed(() => useThemeStyles({
 provide(schemeSymbol, scheme)
 provide('currentThemeData', computed(() => themeData.value))
 provideRokuProvider(wrapperRef)
+if (props.themeObj) {
+  provideTheme(props.themeObj)
+}
 </script>
 
 <template>

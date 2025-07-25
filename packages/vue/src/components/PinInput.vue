@@ -82,7 +82,7 @@ function onArrowRight(e: KeyboardEvent) {
       v-for="i in props.length"
       ref="inputs"
       :key="i"
-      class="w-8 text-center"
+      class="text-center w-[30px] children:px-0!"
       style="padding: 0;"
       :password="props.password"
       @pointerup="$event.target.select()"

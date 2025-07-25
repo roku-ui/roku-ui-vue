@@ -196,7 +196,7 @@ const codeSnippet = computed(() => {
           <h3 class="text-lg font-medium">
             Dimensions
           </h3>
-          <div class="space-y-3">
+          <div class="space-y-2">
             <div
               v-if="showHeader"
               class="space-y-1"
