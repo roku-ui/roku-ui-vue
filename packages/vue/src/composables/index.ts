@@ -24,10 +24,10 @@ export const COLOR_LIGHTNESS_MAP = [
 ]
 export const SURFACE_LIGHTNESS_MAP = [
   1,
-  0.99,
+  0.995,
   0.95,
   0.9,
-  0.7,
+  0.8,
   0.5,
   0.4,
   0.16,

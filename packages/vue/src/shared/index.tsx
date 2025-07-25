@@ -1,7 +1,7 @@
 import type { ComputedRef, MaybeRef } from 'vue'
-import type { BtnVariant, Color, ContainerVariant, InputVariant } from '@/types'
+import type { BtnVariant, Color, ContainerVariant, InputVariant, Rounded } from '@/types'
 import tinycolor from 'tinycolor2'
-import { computed, ref, unref } from 'vue'
+import { computed, inject, provide, ref, unref } from 'vue'
 import { generateColorsObjMap } from '@/utils'
 
 import { COLOR_LIGHTNESS_MAP, SURFACE_LIGHTNESS_MAP } from '..'
@@ -937,4 +937,22 @@ export function useInputColorStyle(color: MaybeRef<string>, variant: MaybeRef<In
       }
     }
   })
+}
+
+export interface Theme {
+  withBorder: boolean
+  rounded: Rounded
+}
+const symbolStyle = Symbol('defaultStyles')
+
+export const defaultThemeData: Theme = {
+  withBorder: true,
+  rounded: 'md' as Rounded,
+}
+export function useTheme() {
+  return inject<Theme>(symbolStyle, defaultThemeData)
+}
+
+export function provideTheme(theme: Partial<Theme>) {
+  return provide<Theme>(symbolStyle, Object.assign({}, defaultThemeData, theme))
 }

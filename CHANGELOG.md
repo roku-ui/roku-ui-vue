@@ -18,7 +18,7 @@
 
 ### :sparkles: Features
 
-- **calendar-field**: add calendar field component with demo - By [Jannchie](mailto:jannchie@gmail.com) in [8dec507](https://github.com/roku-ui/roku-ui-vue/commit/8dec507)
+- **calendar-field**: add Calendar Input component with demo - By [Jannchie](mailto:jannchie@gmail.com) in [8dec507](https://github.com/roku-ui/roku-ui-vue/commit/8dec507)
 - **popover**: add disabled prop and handling - By [Jannchie](mailto:jannchie@gmail.com) in [5dedd25](https://github.com/roku-ui/roku-ui-vue/commit/5dedd25)
 - **select**: improve dropdown max height auto calculation && add demo for many options - By [Jannchie](mailto:jannchie@gmail.com) in [16273e3](https://github.com/roku-ui/roku-ui-vue/commit/16273e3)
 
