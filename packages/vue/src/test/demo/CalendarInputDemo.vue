@@ -27,7 +27,7 @@ function isWeekend(date: Date) {
   <div class="p-6 space-y-8">
     <div class="space-y-4">
       <h2 class="text-2xl font-bold">
-        CalendarField Demo
+        CalendarInput Demo
       </h2>
       <p class="text-gray-600">
         A text field that opens a calendar popup for date selection.
@@ -39,22 +39,22 @@ function isWeekend(date: Date) {
       <h3 class="text-lg font-semibold">
         Single Date Selection
       </h3>
-      <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <CalendarField
+      <div class="gap-4 grid grid-cols-1 md:grid-cols-3">
+        <CalendarInput
           v-model="singleDate"
           mode="single"
           label="Select Date"
           placeholder="Pick a date"
           size="sm"
         />
-        <CalendarField
+        <CalendarInput
           v-model="singleDate"
           mode="single"
           label="Select Date (Medium)"
           placeholder="Pick a date"
           size="md"
         />
-        <CalendarField
+        <CalendarInput
           v-model="singleDate"
           mode="single"
           label="Select Date (Large)"
@@ -72,7 +72,7 @@ function isWeekend(date: Date) {
       <h3 class="text-lg font-semibold">
         Multiple Date Selection
       </h3>
-      <CalendarField
+      <CalendarInput
         v-model="multipleDate"
         mode="multiple"
         label="Select Multiple Dates"
@@ -89,7 +89,7 @@ function isWeekend(date: Date) {
       <h3 class="text-lg font-semibold">
         Date Range Selection
       </h3>
-      <CalendarField
+      <CalendarInput
         v-model="dateRange"
         mode="range"
         label="Select Date Range"
@@ -106,29 +106,29 @@ function isWeekend(date: Date) {
       <h3 class="text-lg font-semibold">
         Different Colors
       </h3>
-      <div class="grid grid-cols-1 gap-4 md:grid-cols-4">
-        <CalendarField
+      <div class="gap-4 grid grid-cols-1 md:grid-cols-4">
+        <CalendarInput
           v-model="singleDate"
           mode="single"
           label="Primary"
           color="primary"
           placeholder="Primary color"
         />
-        <CalendarField
+        <CalendarInput
           v-model="singleDate"
           mode="single"
           label="Secondary"
           color="secondary"
           placeholder="Secondary color"
         />
-        <CalendarField
+        <CalendarInput
           v-model="singleDate"
           mode="single"
           label="Tertiary"
           color="tertiary"
           placeholder="Tertiary color"
         />
-        <CalendarField
+        <CalendarInput
           v-model="singleDate"
           mode="single"
           label="Error"
@@ -143,8 +143,8 @@ function isWeekend(date: Date) {
       <h3 class="text-lg font-semibold">
         With Date Validation
       </h3>
-      <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <CalendarField
+      <div class="gap-4 grid grid-cols-1 md:grid-cols-2">
+        <CalendarInput
           v-model="singleDateWithValidation"
           mode="single"
           label="With Min/Max Date"
@@ -152,7 +152,7 @@ function isWeekend(date: Date) {
           :min-date="minDate"
           :max-date="maxDate"
         />
-        <CalendarField
+        <CalendarInput
           v-model="rangeWithValidation"
           mode="range"
           label="Range with Disabled Dates"
@@ -172,7 +172,7 @@ function isWeekend(date: Date) {
       <h3 class="text-lg font-semibold">
         Disabled Weekends
       </h3>
-      <CalendarField
+      <CalendarInput
         v-model="singleDate"
         mode="single"
         label="No Weekends"
@@ -187,7 +187,7 @@ function isWeekend(date: Date) {
       <h3 class="text-lg font-semibold">
         Disabled State
       </h3>
-      <CalendarField
+      <CalendarInput
         v-model="singleDate"
         mode="single"
         label="Disabled Field"
@@ -202,15 +202,15 @@ function isWeekend(date: Date) {
       <h3 class="text-lg font-semibold">
         Different Locales
       </h3>
-      <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <CalendarField
+      <div class="gap-4 grid grid-cols-1 md:grid-cols-2">
+        <CalendarInput
           v-model="singleDate"
           mode="single"
           label="English (US)"
           locale="en-US"
           placeholder="US format"
         />
-        <CalendarField
+        <CalendarInput
           v-model="singleDate"
           mode="single"
           label="Chinese (Simplified)"
@@ -225,7 +225,7 @@ function isWeekend(date: Date) {
       <h3 class="text-lg font-semibold">
         Custom Range Separator
       </h3>
-      <CalendarField
+      <CalendarInput
         v-model="dateRange"
         mode="range"
         label="Custom Separator"
