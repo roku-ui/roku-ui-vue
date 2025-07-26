@@ -1,3 +1,33 @@
+## v0.26.0
+
+[v0.25.0...v0.26.0](https://github.com/roku-ui/roku-ui-vue/compare/v0.25.0...v0.26.0)
+
+### :rocket: Breaking Changes
+
+- **calendar-input**: rename calendarfield to calendarinput - By [Jannchie](mailto:jannchie@gmail.com) in [8bd10aa](https://github.com/roku-ui/roku-ui-vue/commit/8bd10aa)
+- **docs**: move files to app directory - By [Jannchie](mailto:jannchie@gmail.com) in [c3fcfc1](https://github.com/roku-ui/roku-ui-vue/commit/c3fcfc1)
+
+### :sparkles: Features
+
+- **components**: enhance color input and theme support && update class orders for style consistency && rename calendar export - By [Jannchie](mailto:jannchie@gmail.com) in [82e4079](https://github.com/roku-ui/roku-ui-vue/commit/82e4079)
+- **select**: support label-key and label-getter for custom label rendering - By [Jannchie](mailto:jannchie@gmail.com) in [76b361a](https://github.com/roku-ui/roku-ui-vue/commit/76b361a)
+- **text-field**: add partial visible password feature - By [Jannchie](mailto:jannchie@gmail.com) in [cf5d5fe](https://github.com/roku-ui/roku-ui-vue/commit/cf5d5fe)
+- **text-field**: support slot sections and demo - By [Jannchie](mailto:jannchie@gmail.com) in [f60b829](https://github.com/roku-ui/roku-ui-vue/commit/f60b829)
+- **textfield**: add input format prop and demo - By [Jannchie](mailto:jannchie@gmail.com) in [120416b](https://github.com/roku-ui/roku-ui-vue/commit/120416b)
+- **theme**: add theme provide/inject support - By [Jannchie](mailto:jannchie@gmail.com) in [7a78fa5](https://github.com/roku-ui/roku-ui-vue/commit/7a78fa5)
+
+### :art: Refactors
+
+- **select-area**: move area type to types directory && update imports - By [Jannchie](mailto:jannchie@gmail.com) in [864607d](https://github.com/roku-ui/roku-ui-vue/commit/864607d)
+
+### :lipstick: Styles
+
+- **demo**: standardize spacing and class order - By [Jannchie](mailto:jannchie@gmail.com) in [71ee418](https://github.com/roku-ui/roku-ui-vue/commit/71ee418)
+
+### :wrench: Chores
+
+- **deps**: bump dependencies in package.json files - By [Jannchie](mailto:jannchie@gmail.com) in [ad1b2de](https://github.com/roku-ui/roku-ui-vue/commit/ad1b2de)
+
 ## v0.25.0
 
 [v0.24.0...v0.25.0](https://github.com/roku-ui/roku-ui-vue/compare/v0.24.0...v0.25.0)
