@@ -51,7 +51,7 @@ const items = computed(() => tmps.value.map(() => {
 <template>
   <Demo :code="code">
     <template #preview>
-      <div class="relative h-full w-full p-2">
+      <div class="p-2 h-full w-full relative">
         <Waterfall
           :gap="20"
           style="height: 300px; overflow-x: hidden;"

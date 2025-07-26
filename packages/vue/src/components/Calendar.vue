@@ -338,7 +338,7 @@ function getCellCS(day: any) {
 
 <template>
   <div
-    class="border-surface-variant-1 inline-block border bg-surface"
+    class="border-surface-variant-1 border bg-surface inline-block"
     :class="[
       sizeCls.container,
       rounded.class,
@@ -349,10 +349,10 @@ function getCellCS(day: any) {
   >
     <!-- Header -->
     <div
-      class="border-surface-variant-1 flex items-center justify-between border-b bg-surface-variant-1"
+      class="border-surface-variant-1 border-b bg-surface-variant-1 flex items-center justify-between"
       :class="[sizeCls.header]"
     >
-      <div class="flex items-center gap-1">
+      <div class="flex gap-1 items-center">
         <Btn
           size="sm"
           variant="transparent"
@@ -372,13 +372,13 @@ function getCellCS(day: any) {
       </div>
 
       <div
-        class="min-w-128px text-center font-semibold"
+        class="font-semibold text-center min-w-128px"
         :class="sizeCls.headerTitle"
       >
         {{ monthNames[currentMonth] }} {{ currentYear }}
       </div>
 
-      <div class="flex items-center gap-1">
+      <div class="flex gap-1 items-center">
         <Btn
           size="sm"
           variant="transparent"
@@ -399,11 +399,11 @@ function getCellCS(day: any) {
     </div>
 
     <!-- Week headers -->
-    <div class="border-surface-variant-1 grid grid-cols-7 border-b border-l bg-surface-variant-1">
+    <div class="border-surface-variant-1 border-b border-l bg-surface-variant-1 grid grid-cols-7">
       <div
         v-for="weekDay in weekDayNames"
         :key="weekDay"
-        class="border-surface-variant-1 text-surface-variant flex items-center justify-center border-r text-center"
+        class="border-surface-variant-1 text-surface-variant text-center border-r flex items-center justify-center"
         :class="sizeCls.weekHeader"
       >
         {{ weekDay }}
@@ -411,11 +411,11 @@ function getCellCS(day: any) {
     </div>
 
     <!-- Calendar grid -->
-    <div class="border-surface-variant-1 grid grid-cols-7 border-l">
+    <div class="border-surface-variant-1 border-l grid grid-cols-7">
       <div
         v-for="day in calendarDays"
         :key="day.date.getTime()"
-        class="border-surface-variant-1 relative border-b border-r transition-colors"
+        class="border-surface-variant-1 border-b border-r transition-colors relative"
         :class="[
           sizeCls.cell,
           {
@@ -432,14 +432,14 @@ function getCellCS(day: any) {
       >
         <!-- Date number -->
         <div
-          class="absolute inset-0 flex items-center justify-center"
+          class="flex items-center inset-0 justify-center absolute"
           :class="{
             'text-surface-variant': !day.isCurrentMonth,
             'font-medium': day.isCurrentMonth,
           }"
         >
           <span
-            class="h-6 w-6 flex items-center justify-center rounded-full transition-all duration-200"
+            class="rounded-full flex h-6 w-6 transition-all duration-200 items-center justify-center"
             :class="[
               {
                 'bg-primary text-white font-semibold': day.isSelected || day.isRangeStart || day.isRangeEnd,
@@ -463,13 +463,13 @@ function getCellCS(day: any) {
         <!-- Range background -->
         <div
           v-if="day.isInRange"
-          class="bg-primary-light absolute inset-0 opacity-20"
+          class="bg-primary-light opacity-20 inset-0 absolute"
         />
 
         <!-- Preview range background -->
         <div
           v-if="day.isPreviewRange"
-          class="bg-primary-light absolute inset-0 opacity-10"
+          class="bg-primary-light opacity-10 inset-0 absolute"
           :class="props.animate ? 'animate-pulse' : ''"
         />
       </div>

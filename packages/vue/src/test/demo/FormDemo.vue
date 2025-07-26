@@ -103,7 +103,7 @@ const btnGroupOptionSingle = [
           @input="apiSearch = $event"
         >
           <template #item="{ data }">
-            <div class="flex items-center justify-center gap-2">
+            <div class="flex gap-2 items-center justify-center">
               <i class="i-tabler-circle" />
               <span>{{ data.label }}</span>
             </div>
@@ -142,7 +142,7 @@ const btnGroupOptionSingle = [
         Sliders
       </h2>
 
-      <Paper class="w-80 flex flex-wrap gap-2">
+      <Paper class="flex flex-wrap gap-2 w-80">
         {{ slider.toFixed(2) }}
         <Slider v-model="slider" />
       </Paper>
@@ -185,7 +185,7 @@ const btnGroupOptionSingle = [
         Switches
       </h2>
 
-      <Paper class="flex flex-col items-center gap-2">
+      <Paper class="flex flex-col gap-2 items-center">
         <Switch
           indicator-icon="i-tabler-123"
           :model-value="true"
@@ -211,7 +211,7 @@ const btnGroupOptionSingle = [
         <Switch rounded="lg" />
       </Paper>
 
-      <Paper class="flex items-center gap-2">
+      <Paper class="flex gap-2 items-center">
         <Switch indicator-icon="i-tabler-123" />
         <Switch on-indicator-icon="i-tabler-123" />
         <Switch off-indicator-icon="i-tabler-123" />

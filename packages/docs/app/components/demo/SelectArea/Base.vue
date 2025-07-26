@@ -8,7 +8,7 @@ function onSelectStart() {
   selectingItems.value = []
 }
 
-function onSelectChange(area: { left: any; top: any; right: any; bottom: any }) {
+function onSelectChange(area: { left: any, top: any, right: any, bottom: any }) {
   selectingItems.value = items.filter((_, index) => {
     const { left, top, right, bottom } = area
     const itemLeft = index % 2 * 100
@@ -53,7 +53,7 @@ const code = computed(() => {
         <div class="text-sm text-surface-dimmed">
           拖拽选择区域来选择项目
         </div>
-        <div class="relative h-200px w-200px flex flex-wrap select-none bg-surface-base">
+        <div class="bg-surface-base flex flex-wrap h-200px w-200px select-none relative">
           <SelectArea
             @select-start="onSelectStart"
             @select-change="onSelectChange"
@@ -61,7 +61,7 @@ const code = computed(() => {
           <div
             v-for="item in items"
             :key="item"
-            class="h-100px w-100px flex items-center justify-center border"
+            class="border flex h-100px w-100px items-center justify-center"
             :class="{
               'bg-primary-container text-white': selectingItems.includes(item),
             }"

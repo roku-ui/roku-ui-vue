@@ -12,7 +12,7 @@ const containerCSList = colors.map(d => useContainerCS('filled', d))
         <div
           v-for="(d, i) in colors"
           :key="i"
-          class="flex flex-col rounded px-2 py-1"
+          class="px-2 py-1 rounded flex flex-col"
           v-bind="containerCSList[i].value"
         >
           <div>

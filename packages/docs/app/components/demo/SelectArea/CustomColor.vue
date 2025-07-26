@@ -55,7 +55,7 @@ const code = computed(() => {
         <div class="text-sm text-surface-dimmed">
           自定义选择区域颜色
         </div>
-        <div class="relative h-160px w-240px flex flex-wrap select-none bg-surface-base">
+        <div class="bg-surface-base flex flex-wrap h-160px w-240px select-none relative">
           <SelectArea
             color="#10b981"
             @select-start="onSelectStart"
@@ -64,7 +64,7 @@ const code = computed(() => {
           <div
             v-for="item in items"
             :key="item"
-            class="h-80px w-80px flex items-center justify-center border"
+            class="border flex h-80px w-80px items-center justify-center"
             :class="{
               'bg-green-500 text-white': selectingItems.includes(item),
             }"

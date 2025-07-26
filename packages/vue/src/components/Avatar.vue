@@ -81,12 +81,12 @@ const containerCS = useContainerCS(props.variant, color)
 <template>
   <div
     v-if="skeleton"
-    class="inline-block min-h-[--size] min-w-[--size] animate-pulse rounded-full bg-surface-variant-1"
+    class="rounded-full bg-surface-variant-1 min-h-[--size] min-w-[--size] inline-block animate-pulse"
     :style="[rounded.style, sizeStyle]"
   />
   <div
     v-else
-    class="relative inline-block h-[--size] w-[--size]"
+    class="h-[--size] w-[--size] inline-block relative"
     :style="sizeStyle"
   >
     <component
@@ -97,14 +97,14 @@ const containerCS = useContainerCS(props.variant, color)
       :class="[rounded.class, containerCS.class, { 'opacity-0': !loaded }]"
       :style="[rounded.style, containerCS.style]"
       :src="src"
-      class="absolute inset-0 h-full w-full rounded-full object-cover"
+      class="rounded-full h-full w-full inset-0 absolute object-cover"
       v-bind="$attrs"
       @load="onload"
       @error="onerror"
     />
     <div
       v-if="!src || hasError || !loaded"
-      class="absolute inset-0 h-full w-full flex items-center justify-center border-4 rounded-full object-cover font-size-[--font-size]"
+      class="font-size-[--font-size] border-4 rounded-full flex h-full w-full items-center inset-0 justify-center absolute object-cover"
       :class="[rounded.class, containerCS.class]"
       :style="[rounded.style, containerCS.style]"
       v-bind="$attrs"

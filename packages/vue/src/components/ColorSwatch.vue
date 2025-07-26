@@ -18,7 +18,7 @@ withDefaults(
 <template>
   <component
     :is="is"
-    class="h-6 w-6 border rounded-full"
+    class="border rounded-full h-6 w-6"
     :class="[{
       ['border']: withBorder,
     }]"

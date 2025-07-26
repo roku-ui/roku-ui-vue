@@ -123,13 +123,13 @@ defineExpose({
       :style="{
         width: `${barWidth}px`,
       }"
-      class="absolute right-0 z-999 h-full"
+      class="h-full right-0 absolute z-999"
     >
       <div
         v-show="scrollBarData.barHeight < clientHeight"
         ref="scrollBarIndicatorRef"
 
-        class="absolute right-0 rounded-full bg-[--r-surface-border-variant-color]"
+        class="rounded-full bg-[--r-surface-border-variant-color] right-0 absolute"
         :style="{
           right: '0px',
           width: `${barWidth}px`,

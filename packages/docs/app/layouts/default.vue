@@ -66,7 +66,7 @@ const mergedCS = useMergedCS(surfaceBorderCS, surfaceCS)
     />
     <div
       v-bind="mergedCS"
-      class="fixed z-10 h-12 w-100vw flex items-center gap-2 border-b pl-2 pr-2 md:pl-[calc(33vw-288px+32px)]!"
+      class="pl-2 pr-2 border-b flex gap-2 h-12 w-100vw items-center fixed z-10 md:pl-[calc(33vw-288px+32px)]!"
     >
       <div>
         <Btn
@@ -91,9 +91,9 @@ const mergedCS = useMergedCS(surfaceBorderCS, surfaceCS)
         animation
       />
     </div>
-    <div class="min-h-100vh flex">
+    <div class="flex min-h-100vh">
       <SideBar :is-open="sideBarOpen" />
-      <div class="max-w-42rem w-full flex-grow px-4 prose md:ml-[calc(33vw+2rem)] md:mr-8">
+      <div class="px-4 flex-grow max-w-42rem w-full prose md:ml-[calc(33vw+2rem)] md:mr-8">
         <div class="pb-24">
           <slot />
         </div>

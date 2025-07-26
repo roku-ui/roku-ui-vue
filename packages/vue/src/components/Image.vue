@@ -67,7 +67,7 @@ const rounded = useRounded(props)
     />
     <div
       v-if="!loaded"
-      class="h-full w-full animate-pulse border-transparent object-cover"
+      class="border-transparent h-full w-full animate-pulse object-cover"
       :class="[
         props.class,
         rounded.class,

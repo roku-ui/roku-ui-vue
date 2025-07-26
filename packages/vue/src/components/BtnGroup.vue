@@ -40,7 +40,7 @@ const childClass = computed(() => isSingle.value ? null : 'first-children:rounde
 
 <template>
   <div
-    class="container w-auto inline-flex"
+    class="container inline-flex w-auto"
     :class="[childClass]"
   >
     <Btn

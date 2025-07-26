@@ -120,7 +120,7 @@ watch(model, (value) => {
     ref="wrapperRef"
     role="switch"
     tabindex="0"
-    class="relative flex items-center gap-2 outline-none"
+    class="outline-none flex gap-2 items-center relative"
     :style="[
       outlineColorCS.style,
       rounded.style,
@@ -149,14 +149,14 @@ watch(model, (value) => {
         ref="wrapper"
         :class="[sizeCls.wrapper, ...colorCls.wrapper, rounded.class]"
         :style="[rounded.style, colorStyle.wrapper]"
-        class="relative inline-block"
+        class="inline-block relative"
         @pointerdown="isActivated = true"
         @pointerup="isActivated = false"
         @pointerleave="isActivated = false"
         @pointerenter="$event.buttons === 1 && (isActivated = true)"
       >
         <div
-          class="absolute top-50% -translate-y-50%"
+          class="top-50% absolute -translate-y-50%"
           :style="[rounded.style, colorStyle.indicator]"
           :class="[sizeCls.indicator, colorCls.indicator, animateCls.indicator, model ? sizeCls.active : sizeCls.inactive, rounded.class]"
         >
@@ -207,14 +207,14 @@ watch(model, (value) => {
             :is="typeof props.onIcon === 'string' ? 'i' : props.onIcon"
             v-if="model && props.onIcon"
             key="on"
-            class="absolute left-0 top-1/2 -translate-y-50%"
+            class="left-0 top-1/2 absolute -translate-y-50%"
             :class="[sizeCls.icon, `text-${color}-on-container-low`, typeof props.onIcon === 'string' ? props.onIcon : '']"
           />
           <component
             :is="typeof props.offIcon === 'string' ? 'i' : props.offIcon"
             v-else-if="!model && props.offIcon"
             key="off"
-            class="absolute right-0 top-1/2 -translate-y-50%"
+            class="right-0 top-1/2 absolute -translate-y-50%"
             :class="[sizeCls.icon, typeof props.offIcon === 'string' ? props.offIcon : '']"
           />
         </Transition>

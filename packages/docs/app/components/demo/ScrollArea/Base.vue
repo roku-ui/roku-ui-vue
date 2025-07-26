@@ -16,7 +16,7 @@ const code = computed(() => `<template>
 <template>
   <Demo :code="code">
     <template #preview>
-      <div class="relative h-full w-full p-2">
+      <div class="p-2 h-full w-full relative">
         <ScrollArea>
           <div
             v-for="i in 100"

@@ -13,7 +13,7 @@
         Chat Messages
       </h2>
 
-      <ChatContainer class="max-w-lg w-full py-8">
+      <ChatContainer class="py-8 max-w-lg w-full">
         <ChatMessage
           position="right"
           avatar="https://avatars.githubusercontent.com/u/29743310?v=4"

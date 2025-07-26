@@ -122,7 +122,7 @@ const displayIcon = computed(() => {
     ref="wrapperRef"
     role="checkbox"
     tabindex="0"
-    class="relative flex items-center gap-2 outline-none"
+    class="outline-none flex gap-2 items-center relative"
     :aria-checked="indeterminate ? 'mixed' : model"
     :style="[
       outlineColorCS.style,
@@ -150,7 +150,7 @@ const displayIcon = computed(() => {
       :for="id"
     >
       <div
-        class="relative inline-flex items-center justify-center border-2"
+        class="border-2 inline-flex items-center justify-center relative"
         :class="[
           sizeCls.wrapper,
           ...colorCls.wrapper,

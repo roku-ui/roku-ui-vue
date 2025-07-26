@@ -46,7 +46,7 @@ const rounded = useRounded(props)
 
 <template>
   <div
-    class="relative w-full self-center overflow-hidden"
+    class="w-full self-center relative overflow-hidden"
     :class="[sizeCls, rounded.class]"
     :style="[rounded.style]"
     v-bind="surfaceVariantCS"

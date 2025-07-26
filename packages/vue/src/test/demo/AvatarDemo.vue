@@ -8,7 +8,7 @@
       Avatar Demo
     </h1>
 
-    <div class="flex items-center gap-2">
+    <div class="flex gap-2 items-center">
       <Avatar
         name="x"
         src="https://www.example.com"
@@ -46,7 +46,7 @@
       />
     </div>
 
-    <Paper class="flex items-center gap-2">
+    <Paper class="flex gap-2 items-center">
       <Avatar
         size="sm"
         src="https://avatars.githubusercontent.com/u/29743310?v=4"

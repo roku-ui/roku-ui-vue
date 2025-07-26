@@ -85,44 +85,46 @@ const attrs = useAttrs()
 const id = useId(attrs)
 
 // 获取部分可见的遮罩值
-const getMaskedValue = (value: string) => {
+function getMaskedValue(value: string) {
   if (!value || value.length <= props.visibleStart + props.visibleEnd) {
     return value
   }
-  
+
   const start = value.slice(0, props.visibleStart)
   const end = value.slice(-props.visibleEnd)
   const hiddenLength = value.length - props.visibleStart - props.visibleEnd
   const masked = '*'.repeat(hiddenLength)
-  
+
   return start + masked + end
 }
 
 // 处理输入事件
-const handleInput = (event: Event) => {
+function handleInput(event: Event) {
   const target = event.target as HTMLInputElement
   const currentValue = target.value
-  
+
   if (props.password && props.partialVisible) {
     // 部分可见密码模式：立即更新真实值，然后替换显示值
     model.value = currentValue
-    
+
     // 保存光标位置
     const cursorPos = target.selectionStart || 0
-    
+
     // 立即替换为遮罩值
     const maskedValue = getMaskedValue(currentValue)
     target.value = maskedValue
-    
+
     // 恢复光标位置
     target.setSelectionRange(cursorPos, cursorPos)
-  } else {
+  }
+  else {
     // 普通模式
     if (props.format && typeof props.format === 'function') {
       const formattedValue = props.format(currentValue)
       target.value = formattedValue
       model.value = formattedValue
-    } else {
+    }
+    else {
       model.value = currentValue
     }
   }
@@ -148,7 +150,7 @@ const handleInput = (event: Event) => {
       </span>
     </label>
     <div
-      class="inline-flex items-center border custom-input-colors outline-none"
+      class="custom-input-colors outline-none border inline-flex items-center"
       :class="[disabledCls, rounded.class, sizeCls.wrapper]"
       :style="[rounded.style]"
     >
@@ -164,7 +166,7 @@ const handleInput = (event: Event) => {
         ref="input"
         v-model="model"
         :disabled="disabled"
-        class="flex-1 bg-transparent outline-none"
+        class="outline-none bg-transparent flex-1"
         :class="[sizeCls.input]"
         :placeholder="placeholder"
         :type="props.password && !props.partialVisible ? 'password' : 'text'"

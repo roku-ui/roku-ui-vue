@@ -53,7 +53,7 @@ const items = computed(() => tmps.value.map(() => {
   <Demo :code="code">
     <template #preview>
       <ClientOnly>
-        <div class="relative h-full w-full p-2">
+        <div class="p-2 h-full w-full relative">
           <VirtualWaterfall
             is="div"
             style="height: 300px; overflow-y: scroll"

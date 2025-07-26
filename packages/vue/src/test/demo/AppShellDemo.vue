@@ -11,7 +11,7 @@ const navbarWidth = ref('200px')
 
 <template>
   <div class="p-6 space-y-8">
-    <h1 class="mb-6 text-3xl font-bold">
+    <h1 class="text-3xl font-bold mb-6">
       AppShell Demo
     </h1>
 
@@ -30,7 +30,7 @@ const navbarWidth = ref('200px')
           gap="8px"
         >
           <template #header>
-            <Paper class="w-full flex items-center">
+            <Paper class="flex w-full items-center">
               <h3 class="text-surface-on font-medium">
                 Application Header
               </h3>
@@ -39,33 +39,33 @@ const navbarWidth = ref('200px')
 
           <template #navbar>
             <Paper class="h-full">
-              <h4 class="text-surface-on mb-3 font-medium">
+              <h4 class="text-surface-on font-medium mb-3">
                 Navigation
               </h4>
               <nav class="space-y-1">
-                <div class="text-surface-on cursor-pointer rounded px-3 py-2 text-sm hover:bg-surface-variant-1">
+                <div class="text-surface-on text-sm px-3 py-2 rounded cursor-pointer hover:bg-surface-variant-1">
                   Dashboard
                 </div>
-                <div class="text-surface-on cursor-pointer rounded px-3 py-2 text-sm hover:bg-surface-variant-1">
+                <div class="text-surface-on text-sm px-3 py-2 rounded cursor-pointer hover:bg-surface-variant-1">
                   Users
                 </div>
-                <div class="text-surface-on cursor-pointer rounded px-3 py-2 text-sm hover:bg-surface-variant-1">
+                <div class="text-surface-on text-sm px-3 py-2 rounded cursor-pointer hover:bg-surface-variant-1">
                   Settings
                 </div>
               </nav>
             </Paper>
           </template>
 
-          <div class="h-full overflow-y-auto bg-surface-base p-4">
-            <h4 class="text-surface-on mb-3 text-lg font-medium">
+          <div class="p-4 bg-surface-base h-full overflow-y-auto">
+            <h4 class="text-surface-on text-lg font-medium mb-3">
               Main Content
             </h4>
-            <p class="mb-4 text-surface-dimmed">
+            <p class="text-surface-dimmed mb-4">
               This is the main content area. It's scrollable and takes up the remaining space.
             </p>
-            <div class="grid grid-cols-2 gap-4">
+            <div class="gap-4 grid grid-cols-2">
               <Paper class="p-4">
-                <h5 class="text-surface-on mb-2 font-medium">
+                <h5 class="text-surface-on font-medium mb-2">
                   Card 1
                 </h5>
                 <p class="text-sm text-surface-dimmed">
@@ -73,7 +73,7 @@ const navbarWidth = ref('200px')
                 </p>
               </Paper>
               <Paper class="p-4">
-                <h5 class="text-surface-on mb-2 font-medium">
+                <h5 class="text-surface-on font-medium mb-2">
                   Card 2
                 </h5>
                 <p class="text-sm text-surface-dimmed">
@@ -85,11 +85,11 @@ const navbarWidth = ref('200px')
 
           <template #aside>
             <Paper class="h-full">
-              <h4 class="text-surface-on mb-3 font-medium">
+              <h4 class="text-surface-on font-medium mb-3">
                 Sidebar
               </h4>
               <div class="space-y-2">
-                <Paper class="bg-surface-variant-1 p-3">
+                <Paper class="p-3 bg-surface-variant-1">
                   <div class="text-surface-on text-sm font-medium">
                     Widget 1
                   </div>
@@ -97,7 +97,7 @@ const navbarWidth = ref('200px')
                     Some widget content
                   </div>
                 </Paper>
-                <Paper class="bg-surface-variant-1 p-3">
+                <Paper class="p-3 bg-surface-variant-1">
                   <div class="text-surface-on text-sm font-medium">
                     Widget 2
                   </div>
@@ -110,7 +110,7 @@ const navbarWidth = ref('200px')
           </template>
 
           <template #footer>
-            <Paper class="w-full flex items-center justify-between">
+            <Paper class="flex w-full items-center justify-between">
               <span class="text-sm text-surface-dimmed">© 2024 Application</span>
               <span class="text-xs text-surface-dimmed">v1.0.0</span>
             </Paper>
@@ -136,7 +136,7 @@ const navbarWidth = ref('200px')
           :header-spans-aside="true"
         >
           <template #header>
-            <Paper class="text-primary-on w-full flex items-center bg-primary">
+            <Paper class="text-primary-on bg-primary flex w-full items-center">
               <h3 class="font-medium">
                 Header (Spans All)
               </h3>
@@ -145,14 +145,14 @@ const navbarWidth = ref('200px')
 
           <template #navbar>
             <Paper class="h-full">
-              <h4 class="text-surface-on mb-2 font-medium">
+              <h4 class="text-surface-on font-medium mb-2">
                 Navigation
               </h4>
             </Paper>
           </template>
 
-          <div class="h-full bg-surface-base p-4">
-            <h4 class="text-surface-on mb-2 font-medium">
+          <div class="p-4 bg-surface-base h-full">
+            <h4 class="text-surface-on font-medium mb-2">
               Main Content
             </h4>
             <p class="text-surface-dimmed">
@@ -162,14 +162,14 @@ const navbarWidth = ref('200px')
 
           <template #aside>
             <Paper class="h-full">
-              <h4 class="text-surface-on mb-2 font-medium">
+              <h4 class="text-surface-on font-medium mb-2">
                 Sidebar
               </h4>
             </Paper>
           </template>
 
           <template #footer>
-            <Paper class="w-full flex items-center bg-surface-variant-1">
+            <Paper class="bg-surface-variant-1 flex w-full items-center">
               <span class="text-surface-on font-medium">Footer</span>
             </Paper>
           </template>
@@ -182,26 +182,26 @@ const navbarWidth = ref('200px')
       <h2 class="text-2xl font-semibold">
         Minimal Layouts
       </h2>
-      <div class="grid grid-cols-2 gap-4">
+      <div class="gap-4 grid grid-cols-2">
         <!-- Header + Main -->
         <div class="space-y-2">
           <h3 class="text-lg font-medium">
             Header + Main
           </h3>
-          <div class="h-48 border-2 rounded-lg">
+          <div class="border-2 rounded-lg h-48">
             <AppShell
               header-height="50px"
               padding="8px"
               gap="8px"
             >
               <template #header>
-                <Paper class="w-full flex items-center">
+                <Paper class="flex w-full items-center">
                   <span class="text-surface-on font-medium">Header Only</span>
                 </Paper>
               </template>
 
-              <div class="h-full bg-surface-base p-4">
-                <h4 class="text-surface-on mb-2 font-medium">
+              <div class="p-4 bg-surface-base h-full">
+                <h4 class="text-surface-on font-medium mb-2">
                   Main Content
                 </h4>
                 <p class="text-sm text-surface-dimmed">
@@ -217,7 +217,7 @@ const navbarWidth = ref('200px')
           <h3 class="text-lg font-medium">
             Navbar + Main
           </h3>
-          <div class="h-48 border-2 rounded-lg">
+          <div class="border-2 rounded-lg h-48">
             <AppShell
               navbar-width="120px"
               padding="8px"
@@ -225,7 +225,7 @@ const navbarWidth = ref('200px')
             >
               <template #navbar>
                 <Paper class="h-full">
-                  <h4 class="text-surface-on mb-2 text-sm font-medium">
+                  <h4 class="text-surface-on text-sm font-medium mb-2">
                     Navigation
                   </h4>
                   <div class="text-xs space-y-1">
@@ -239,8 +239,8 @@ const navbarWidth = ref('200px')
                 </Paper>
               </template>
 
-              <div class="h-full bg-surface-base p-4">
-                <h4 class="text-surface-on mb-2 font-medium">
+              <div class="p-4 bg-surface-base h-full">
+                <h4 class="text-surface-on font-medium mb-2">
                   Main Content
                 </h4>
                 <p class="text-sm text-surface-dimmed">
@@ -258,14 +258,14 @@ const navbarWidth = ref('200px')
       <h2 class="text-2xl font-semibold">
         Interactive Demo
       </h2>
-      <div class="grid grid-cols-2 gap-6">
+      <div class="gap-6 grid grid-cols-2">
         <!-- Controls -->
         <div class="space-y-4">
           <h3 class="text-lg font-medium">
             Controls
           </h3>
           <div class="space-y-2">
-            <div class="grid grid-cols-2 gap-2">
+            <div class="gap-2 grid grid-cols-2">
               <label class="flex items-center space-x-2">
                 <input
                   v-model="headerSpansNav"
@@ -283,7 +283,7 @@ const navbarWidth = ref('200px')
                 <span class="text-sm">Header spans aside</span>
               </label>
             </div>
-            <div class="grid grid-cols-2 gap-2">
+            <div class="gap-2 grid grid-cols-2">
               <label class="flex items-center space-x-2">
                 <input
                   v-model="footerSpansNav"
@@ -302,10 +302,10 @@ const navbarWidth = ref('200px')
               </label>
             </div>
             <div class="space-y-2">
-              <label class="block text-sm font-medium">Header Height</label>
+              <label class="text-sm font-medium block">Header Height</label>
               <select
                 v-model="headerHeight"
-                class="w-full border rounded p-2"
+                class="p-2 border rounded w-full"
               >
                 <option value="40px">
                   40px
@@ -319,10 +319,10 @@ const navbarWidth = ref('200px')
               </select>
             </div>
             <div class="space-y-2">
-              <label class="block text-sm font-medium">Navbar Width</label>
+              <label class="text-sm font-medium block">Navbar Width</label>
               <select
                 v-model="navbarWidth"
-                class="w-full border rounded p-2"
+                class="p-2 border rounded w-full"
               >
                 <option value="150px">
                   150px
@@ -343,7 +343,7 @@ const navbarWidth = ref('200px')
           <h3 class="text-lg font-medium">
             Preview
           </h3>
-          <div class="h-80 border-2 rounded-lg">
+          <div class="border-2 rounded-lg h-80">
             <AppShell
               :header-height="headerHeight"
               footer-height="40px"
@@ -357,21 +357,21 @@ const navbarWidth = ref('200px')
               :footer-spans-aside="footerSpansAside"
             >
               <template #header>
-                <Paper class="w-full flex items-center">
+                <Paper class="flex w-full items-center">
                   <span class="text-surface-on font-medium">Dynamic Header</span>
                 </Paper>
               </template>
 
               <template #navbar>
                 <Paper class="h-full">
-                  <h4 class="text-surface-on mb-2 text-sm font-medium">
+                  <h4 class="text-surface-on text-sm font-medium mb-2">
                     Navigation
                   </h4>
                 </Paper>
               </template>
 
-              <div class="h-full bg-surface-base p-4">
-                <h4 class="text-surface-on mb-2 font-medium">
+              <div class="p-4 bg-surface-base h-full">
+                <h4 class="text-surface-on font-medium mb-2">
                   Main Content
                 </h4>
                 <p class="text-sm text-surface-dimmed">
@@ -381,14 +381,14 @@ const navbarWidth = ref('200px')
 
               <template #aside>
                 <Paper class="h-full">
-                  <h4 class="text-surface-on mb-2 text-sm font-medium">
+                  <h4 class="text-surface-on text-sm font-medium mb-2">
                     Sidebar
                   </h4>
                 </Paper>
               </template>
 
               <template #footer>
-                <Paper class="w-full flex items-center">
+                <Paper class="flex w-full items-center">
                   <span class="text-surface-on font-medium">Footer</span>
                 </Paper>
               </template>

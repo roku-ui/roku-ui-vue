@@ -165,7 +165,7 @@ const posList: NotificationPosition[] = ['top-left', 'top-right', 'top', 'bottom
 
 <template>
   <div
-    class="pointer-events-none fixed z-20 h-full w-full children:pointer-events-auto"
+    class="h-full w-full pointer-events-none fixed z-20 children:pointer-events-auto"
   >
     <div
       v-for="pos in posList"
@@ -183,7 +183,7 @@ const posList: NotificationPosition[] = ['top-left', 'top-right', 'top', 'bottom
         >
           <div
             v-if="notification.position === pos"
-            class="absolute transition-top,bottom,transform duration-0.3s"
+            class="transition-top,bottom,transform duration-0.3s absolute"
             :style="[notificationYStyle(notificationIndexList[i], notification.position)]"
           >
             <div

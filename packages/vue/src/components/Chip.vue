@@ -46,7 +46,7 @@ const chipCS = useContainerCS(variant, color)
 
 <template>
   <span
-    class="inline-block h-fit inline-flex items-center gap-1"
+    class="inline-flex gap-1 h-fit inline-block items-center"
     :class="[rounded.class, chipCS.class, sizeCls]"
     :style="[rounded.style, chipCS.style]"
   >

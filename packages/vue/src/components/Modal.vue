@@ -71,7 +71,7 @@ onUnmounted(() => {
         <template v-else>
           <Paper
             with-border
-            class="w-full flex flex flex-col gap-2 md:w-md"
+            class="flex flex flex-col gap-2 w-full md:w-md"
           >
             <div
               v-if="title || $slots.title"
@@ -99,7 +99,7 @@ onUnmounted(() => {
         <template v-else>
           <Paper
             with-border
-            class="w-full flex flex flex-col gap-2 md:w-md"
+            class="flex flex flex-col gap-2 w-full md:w-md"
           >
             <div
               v-if="title || $slots.title"

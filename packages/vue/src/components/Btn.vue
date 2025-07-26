@@ -79,7 +79,7 @@ const outlineCS = useOutlineCS(outlineColor)
       rounded.style,
     ]"
     :class="sizeCls.normalContent"
-    class="inline-block animate-pulse rounded-md bg-surface-variant-1"
+    class="rounded-md bg-surface-variant-1 inline-block animate-pulse"
   />
   <component
     :is="is"
@@ -87,7 +87,7 @@ const outlineCS = useOutlineCS(outlineColor)
     ref="btn"
     :data-size="size"
     :type="type"
-    class="flex items-center justify-center decoration-none outline-none children:flex-shrink-0"
+    class="outline-none decoration-none flex items-center justify-center children:flex-shrink-0"
     :style="[
       cs.style,
       rounded.style,

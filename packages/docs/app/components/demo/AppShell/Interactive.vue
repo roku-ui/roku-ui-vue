@@ -105,9 +105,9 @@ const codeSnippet = computed(() => {
 
 <template>
   <div class="space-y-8">
-    <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
+    <div class="gap-8 grid grid-cols-1 lg:grid-cols-3">
       <!-- Controls Panel -->
-      <div class="lg:col-span-1 space-y-6">
+      <div class="space-y-6 lg:col-span-1">
         <div class="space-y-4">
           <h3 class="text-lg font-medium">
             Layout Sections
@@ -201,10 +201,10 @@ const codeSnippet = computed(() => {
               v-if="showHeader"
               class="space-y-1"
             >
-              <label class="block text-sm font-medium">Header Height</label>
+              <label class="text-sm font-medium block">Header Height</label>
               <select
                 v-model="headerHeight"
-                class="w-full border rounded-md px-3 py-2 text-sm"
+                class="text-sm px-3 py-2 border rounded-md w-full"
               >
                 <option
                   v-for="size in headerHeightOptions"
@@ -220,10 +220,10 @@ const codeSnippet = computed(() => {
               v-if="showFooter"
               class="space-y-1"
             >
-              <label class="block text-sm font-medium">Footer Height</label>
+              <label class="text-sm font-medium block">Footer Height</label>
               <select
                 v-model="footerHeight"
-                class="w-full border rounded-md px-3 py-2 text-sm"
+                class="text-sm px-3 py-2 border rounded-md w-full"
               >
                 <option
                   v-for="size in footerHeightOptions"
@@ -239,10 +239,10 @@ const codeSnippet = computed(() => {
               v-if="showNavbar"
               class="space-y-1"
             >
-              <label class="block text-sm font-medium">Navbar Width</label>
+              <label class="text-sm font-medium block">Navbar Width</label>
               <select
                 v-model="navbarWidth"
-                class="w-full border rounded-md px-3 py-2 text-sm"
+                class="text-sm px-3 py-2 border rounded-md w-full"
               >
                 <option
                   v-for="size in navbarWidthOptions"
@@ -258,10 +258,10 @@ const codeSnippet = computed(() => {
               v-if="showAside"
               class="space-y-1"
             >
-              <label class="block text-sm font-medium">Aside Width</label>
+              <label class="text-sm font-medium block">Aside Width</label>
               <select
                 v-model="asideWidth"
-                class="w-full border rounded-md px-3 py-2 text-sm"
+                class="text-sm px-3 py-2 border rounded-md w-full"
               >
                 <option
                   v-for="size in asideWidthOptions"
@@ -274,10 +274,10 @@ const codeSnippet = computed(() => {
             </div>
 
             <div class="space-y-1">
-              <label class="block text-sm font-medium">Padding</label>
+              <label class="text-sm font-medium block">Padding</label>
               <select
                 v-model="padding"
-                class="w-full border rounded-md px-3 py-2 text-sm"
+                class="text-sm px-3 py-2 border rounded-md w-full"
               >
                 <option
                   v-for="size in paddingOptions"
@@ -290,10 +290,10 @@ const codeSnippet = computed(() => {
             </div>
 
             <div class="space-y-1">
-              <label class="block text-sm font-medium">Gap</label>
+              <label class="text-sm font-medium block">Gap</label>
               <select
                 v-model="gap"
-                class="w-full border rounded-md px-3 py-2 text-sm"
+                class="text-sm px-3 py-2 border rounded-md w-full"
               >
                 <option
                   v-for="size in gapOptions"
@@ -309,12 +309,12 @@ const codeSnippet = computed(() => {
       </div>
 
       <!-- Preview Panel -->
-      <div class="lg:col-span-2 space-y-6">
+      <div class="space-y-6 lg:col-span-2">
         <div class="space-y-4">
           <h3 class="text-lg font-medium">
             Preview
           </h3>
-          <div class="h-96 overflow-hidden border rounded-lg">
+          <div class="border rounded-lg h-96 overflow-hidden">
             <AppShell v-bind="appShellProps">
               <template
                 v-if="showHeader"
@@ -322,7 +322,7 @@ const codeSnippet = computed(() => {
               >
                 <Paper
                   with-border
-                  class="h-full flex items-center"
+                  class="flex h-full items-center"
                 >
                   <span class="font-medium">Header</span>
                 </Paper>
@@ -336,17 +336,17 @@ const codeSnippet = computed(() => {
                   with-border
                   class="h-full"
                 >
-                  <div class="mb-2 font-medium">
+                  <div class="font-medium mb-2">
                     Navbar
                   </div>
                   <nav class="space-y-1">
-                    <div class="rounded bg-gray-100 px-2 py-1 text-sm">
+                    <div class="text-sm px-2 py-1 rounded bg-gray-100">
                       Dashboard
                     </div>
-                    <div class="cursor-pointer rounded px-2 py-1 text-sm hover:bg-gray-100">
+                    <div class="text-sm px-2 py-1 rounded cursor-pointer hover:bg-gray-100">
                       Users
                     </div>
-                    <div class="cursor-pointer rounded px-2 py-1 text-sm hover:bg-gray-100">
+                    <div class="text-sm px-2 py-1 rounded cursor-pointer hover:bg-gray-100">
                       Settings
                     </div>
                   </nav>
@@ -357,19 +357,19 @@ const codeSnippet = computed(() => {
                 with-border
                 class="h-full"
               >
-                <h4 class="mb-2 font-medium">
+                <h4 class="font-medium mb-2">
                   Main Content
                 </h4>
-                <p class="mb-4 text-gray-600">
+                <p class="text-gray-600 mb-4">
                   This is the main content area. Adjust the controls to see the layout change.
                 </p>
-                <div class="grid grid-cols-1 gap-3 md:grid-cols-2">
+                <div class="gap-3 grid grid-cols-1 md:grid-cols-2">
                   <Paper
                     with-border
                     no-padding
                     class="p-3"
                   >
-                    <h5 class="mb-1 font-medium">
+                    <h5 class="font-medium mb-1">
                       Content Block 1
                     </h5>
                     <p class="text-sm text-gray-600">
@@ -381,7 +381,7 @@ const codeSnippet = computed(() => {
                     no-padding
                     class="p-3"
                   >
-                    <h5 class="mb-1 font-medium">
+                    <h5 class="font-medium mb-1">
                       Content Block 2
                     </h5>
                     <p class="text-sm text-gray-600">
@@ -399,7 +399,7 @@ const codeSnippet = computed(() => {
                   with-border
                   class="h-full"
                 >
-                  <div class="mb-2 font-medium">
+                  <div class="font-medium mb-2">
                     Aside
                   </div>
                   <div class="space-y-2">
@@ -437,7 +437,7 @@ const codeSnippet = computed(() => {
               >
                 <Paper
                   with-border
-                  class="h-full flex items-center"
+                  class="flex h-full items-center"
                 >
                   <span class="text-sm text-gray-600">Footer Content</span>
                 </Paper>
@@ -450,8 +450,8 @@ const codeSnippet = computed(() => {
           <h3 class="text-lg font-medium">
             Generated Code
           </h3>
-          <div class="rounded-lg bg-gray-50 p-4">
-            <pre class="overflow-x-auto text-sm text-gray-800"><code>{{ codeSnippet }}</code></pre>
+          <div class="p-4 rounded-lg bg-gray-50">
+            <pre class="text-sm text-gray-800 overflow-x-auto"><code>{{ codeSnippet }}</code></pre>
           </div>
         </div>
       </div>

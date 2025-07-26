@@ -1,7 +1,6 @@
-<script setup lang="ts" generic="T extends { id: number | string | symbol;  [key: string]: any;} | string | symbol | number">
-import type { Reactive } from 'vue'
+<script setup lang="ts" generic="T = any">
 import type { Color } from '@/types'
-import { isClient } from '@vueuse/core'
+import { isClient, onClickOutside, onKeyStroke, useElementBounding } from '@vueuse/core'
 import { computed, ref, watch, watchEffect } from 'vue'
 import { useContainerDefaultCS, useContainerDefaultVariantCS, useContainerFilledCS, useInputColorStyle } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
@@ -17,6 +16,8 @@ const props = withDefaults(defineProps<{
   placeholder?: string
   searchable?: boolean
   filter?: (label: string, text: string) => boolean
+  labelKey?: keyof T
+  labelGetter?: (option: T) => string
 }>(), {
   options() {
     return []
@@ -29,16 +30,18 @@ const props = withDefaults(defineProps<{
   rounded: 'md',
   searchable: false,
   filter: (label: string, text: string) => label.includes(text),
+  labelKey: undefined,
+  labelGetter: undefined,
 })
 
 const emit = defineEmits<{
-  change: [option: T | Reactive<T> | undefined]
+  change: [option: T | undefined]
   input: [searchWord: string]
 }>()
 
 const rounded = useRounded(props)
 
-const model = defineModel<T | Reactive<T> | undefined>()
+const model = defineModel<T | undefined>()
 const inputRef = ref<null | HTMLInputElement>(null)
 const wrapperRef = ref(null)
 const focused = ref(false)
@@ -68,28 +71,49 @@ watch(currentLabel, () => {
   searchText.value = currentLabel.value
 })
 
-function getLabel(option?: Reactive<T> | T) {
-  if (!option) {
+function getLabel(option?: T): string {
+  if (option == null) {
     return ''
   }
+
+  // 优先使用 labelGetter
+  if (props.labelGetter) {
+    return props.labelGetter(option)
+  }
+
+  // 其次使用 labelKey
+  if (props.labelKey && typeof option === 'object' && option !== null) {
+    const value = (option as any)[props.labelKey]
+    return value == null ? '' : String(value)
+  }
+
+  // 兜底逻辑：对于基本类型直接返回字符串
   if (typeof option === 'string' || typeof option === 'symbol' || typeof option === 'number') {
     return String(option)
   }
-  if (option.label) {
-    return option.label
+
+  // 对于对象类型，尝试常见的属性名
+  if (typeof option === 'object' && option !== null) {
+    const obj = option as any
+    if (obj.label != null) {
+      return String(obj.label)
+    }
+    if (obj.name != null) {
+      return String(obj.name)
+    }
+    if (obj.title != null) {
+      return String(obj.title)
+    }
+    if (obj.text != null) {
+      return String(obj.text)
+    }
   }
-  return option.id
+
+  // 最后兜底返回字符串化的选项
+  return String(option)
 }
 
-function getId(option?: Reactive<T> | T) {
-  if (!option) {
-    return
-  }
-  if (typeof option === 'string' || typeof option === 'symbol' || typeof option === 'number') {
-    return option
-  }
-  return option.id
-}
+// 移除 getId 函数，直接使用选项本身作为唯一标识
 
 function onInput(event: Event) {
   focused.value = true
@@ -117,7 +141,7 @@ onKeyStroke('ArrowDown', (e) => {
       // 细节 2：如果键盘索引为 -1 且鼠标索引为 -1 且当前索引不为 -1，则将键盘索引设置为当前索引
       keyboardIndex.value = currentIndex.value
     }
-    keyboardIndex.value = (keyboardIndex.value + 1) % props.options.length
+    keyboardIndex.value = (keyboardIndex.value + 1) % filtedOptions.value.length
   }
 })
 
@@ -130,7 +154,7 @@ onKeyStroke('ArrowUp', (e) => {
     else if (keyboardIndex.value === -1 && hoverIndex.value === -1 && currentIndex.value !== -1) {
       keyboardIndex.value = currentIndex.value
     }
-    keyboardIndex.value = (keyboardIndex.value - 1 + props.options.length) % props.options.length
+    keyboardIndex.value = (keyboardIndex.value - 1 + filtedOptions.value.length) % filtedOptions.value.length
   }
 })
 
@@ -141,7 +165,7 @@ onKeyStroke('Enter', () => {
     focused.value = false
   }
 })
-function onItemPointerDown(option: T | Reactive<T>) {
+function onItemPointerDown(option: T) {
   inputRef.value!.focus()
   if (!focused.value) {
     focused.value = true
@@ -209,17 +233,12 @@ const dropdownMaxHeight = computed(() => {
   return { maxHeight: '100px' }
 })
 
-function optionIsEq(a: Reactive<T> | T, b: Reactive<T> | T | undefined) {
-  if (!b) {
+function optionIsEq(a: T, b: T | undefined): boolean {
+  if (b == null) {
     return false
   }
-  if (typeof a === 'string' || typeof a === 'symbol' || typeof a === 'number') {
-    return a === b
-  }
-  if (typeof b === 'string' || typeof b === 'symbol' || typeof b === 'number') {
-    return false
-  }
-  return a.id === b.id
+
+  return a === b
 }
 const searchCls = computed(() => {
   if (props.searchable) {
@@ -243,35 +262,36 @@ function onMousemove(i: number) {
     class="relative"
     :style="colorStyle"
   >
-    <div class="w-full flex items-center">
+    <div class="flex w-full items-center">
       <input
         ref="inputRef"
         :class="[sizeCls.wrapper, rounded.class, searchCls]"
-        class="border custom-input-colors outline-none outline-none focus-visible:outline-2"
+        class="custom-input-colors outline-none border focus-visible:outline-2"
         :placeholder="placeholder"
         :style="[rounded.style, colorStyle]"
         :readonly="!searchable"
         :value="searchText"
         :aria-label="ariaLabel"
         aria-haspopup="listbox"
+        :aria-expanded="focused"
+        :aria-activedescendant="keyboardIndex !== -1 ? `option-${keyboardIndex}` : undefined"
         autocomplete="off"
         @input="onInput"
         @click="focused = true"
       >
-      <i class="i-fluent-chevron-down-12-filled pointer-events-none absolute right-2" />
+      <i class="i-fluent-chevron-down-12-filled pointer-events-none right-2 absolute" />
     </div>
     <div
       v-if="focused"
       ref="dropdownRef"
-      class="absolute z-10 w-full flex-col overflow-auto border rounded p-1"
+      class="p-1 border rounded flex-col w-full absolute z-10 overflow-auto"
       :class="[containerCS.class, sizeCls.dropdown]"
-      :style="[containerCS.style, dropdownMaxHeight]
-      "
-      :bottom="dropdownMaxHeight && dropdownMaxHeight.bottom ? dropdownMaxHeight.bottom : undefined"
+      :style="[containerCS.style, dropdownMaxHeight]"
+      role="listbox"
     >
       <div
         v-if="options.length === 0"
-        class="flex cursor-default items-center justify-between gap-2 rounded p-1 px-2"
+        class="p-1 px-2 rounded flex gap-2 cursor-default items-center justify-between"
       >
         <slot name="none">
           {{ noneText }}
@@ -280,7 +300,8 @@ function onMousemove(i: number) {
       <template v-else>
         <div
           v-for="option, i in filtedOptions"
-          :key="getId(option)"
+          :id="`option-${i}`"
+          :key="i"
           :class="[
             keyboardIndex === i && fillCS.class,
             hoverIndex === i && keyboardIndex === -1 && containerVariantCS.class,
@@ -289,7 +310,9 @@ function onMousemove(i: number) {
             keyboardIndex === i && fillCS.style,
             hoverIndex === i && keyboardIndex === -1 && containerVariantCS.style,
           ]"
-          class="flex cursor-pointer items-center justify-between gap-2 rounded p-1 px-2"
+          class="p-1 px-2 rounded flex gap-2 cursor-pointer items-center justify-between"
+          role="option"
+          :aria-selected="optionIsEq(option, currentOption)"
           @pointerdown="onItemPointerDown(option)"
           @mousemove="onMousemove(i)"
           @mouseleave="hoverIndex = -1"
@@ -307,7 +330,7 @@ function onMousemove(i: number) {
         </div>
         <div
           v-if="searchable && filtedOptions.length === 0"
-          class="flex cursor-default items-center justify-between gap-2 rounded p-1 px-2"
+          class="p-1 px-2 rounded flex gap-2 cursor-default items-center justify-between"
         >
           <slot name="not-found">
             {{ notFoundText }}

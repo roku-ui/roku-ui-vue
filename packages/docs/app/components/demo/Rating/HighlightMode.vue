@@ -26,7 +26,7 @@ const code = computed(() => {
     <template #preview>
       <div class="flex flex-col gap-4">
         <div>
-          <div class="mb-2 text-sm text-surface-dimmed">
+          <div class="text-sm text-surface-dimmed mb-2">
             默认高亮模式
           </div>
           <Rating
@@ -36,7 +36,7 @@ const code = computed(() => {
         </div>
 
         <div>
-          <div class="mb-2 text-sm text-surface-dimmed">
+          <div class="text-sm text-surface-dimmed mb-2">
             仅高亮选中项
           </div>
           <Rating

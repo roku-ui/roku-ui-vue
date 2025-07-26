@@ -140,8 +140,8 @@ function TreeListHeader({ data, level }: { data: TreeListHeaderData, level: numb
         ]
       }
     >
-      <div class="absolute left-4 h-1/2 translate-y-[calc(50%+3px)] border-r" />
-      <div class="absolute left-[calc(1rem+0.6px)] h-2 w-2 border rounded-sm bg-surface-variant-1 -translate-x-1/2" />
+      <div class="border-r h-1/2 translate-y-[calc(50%+3px)] left-4 absolute" />
+      <div class="border rounded-sm bg-surface-variant-1 h-2 w-2 left-[calc(1rem+0.6px)] absolute -translate-x-1/2" />
       {
         slots.header
           ? slots.header({ data, level })
@@ -233,7 +233,7 @@ function TreeListCollapse({ data, level }: { data: TreeListCollapseData, level: 
         {
           status.value.get(data)
           && (
-            <ul class="overflow-hidden transition-height">
+            <ul class="transition-height overflow-hidden">
               {
                 data.children?.map((child) => {
                   if (isLink(child)) {
@@ -271,7 +271,7 @@ function TreeListItem({ data, level }: { data: TreeListItemData, level: number }
 <template>
   <ul
     ref="treeListRef"
-    class="flex flex-col text-sm"
+    class="text-sm flex flex-col"
   >
     <TreeListItem
       v-for="item, i in items"

@@ -51,7 +51,7 @@ const cs = useTagCS(variant, color, hasInteraction)
     :tabindex="-1"
     :style="[cs.style, rounded.style]"
     :class="[cs.class, rounded.class, sizeCls, { 'cursor-pointer': hasInteraction }]"
-    class="h-fit inline-flex items-center gap-1 border"
+    class="border inline-flex gap-1 h-fit items-center"
   >
     <slot
       v-if="$slots.leftSection"

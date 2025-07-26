@@ -28,10 +28,10 @@ const model = defineModel<boolean>()
     >
       <div
         v-if="model"
-        class="bg-surface-low fixed h-full w-full md:w-md"
+        class="bg-surface-low h-full w-full fixed md:w-md"
         :class="position === 'left' ? 'left-0' : 'right-0'"
       >
-        <div class="flex justify-end p-4 md:px-6 md:py-4 md:pb-0">
+        <div class="p-4 flex justify-end md:px-6 md:py-4 md:pb-0">
           <Btn
             icon
             variant="transparent"
@@ -41,7 +41,7 @@ const model = defineModel<boolean>()
             <i class="i-fluent-dismiss-12-filled" />
           </Btn>
         </div>
-        <div class="h-full flex flex-col items-center justify-center px-4 md:px-6">
+        <div class="px-4 flex flex-col h-full items-center justify-center md:px-6">
           <slot />
         </div>
       </div>

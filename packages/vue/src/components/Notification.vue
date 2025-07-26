@@ -74,7 +74,7 @@ const shapeClass = computed(() => {
     v-bind="containerSurfaceCS"
   >
     <div
-      class="relative min-w-80 w-full flex items-center gap-2 pl-4"
+      class="pl-4 flex gap-2 min-w-80 w-full items-center relative"
       :class="[shapeClass, textCS.class]"
     >
       <div
@@ -97,7 +97,7 @@ const shapeClass = computed(() => {
         v-else-if="showLeftIndicator"
       >
         <div
-          class="absolute left-[0.25rem] top-[0.25rem] h-[calc(100%-0.5rem)] w-1 rounded-full bg-[var(--d-bg)] dark:bg-[var(--d-bg)]"
+          class="rounded-full bg-[var(--d-bg)] h-[calc(100%-0.5rem)] w-1 left-[0.25rem] top-[0.25rem] absolute dark:bg-[var(--d-bg)]"
           :class="[{
             'animate-pulse': loading,
           }]"

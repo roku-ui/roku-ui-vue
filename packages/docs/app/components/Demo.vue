@@ -28,31 +28,31 @@ const containerCS = useContainerDefaultCS()
 
 <template>
   <div
-    class="overflow-hidden border rounded-xl"
+    class="border rounded-xl overflow-hidden"
     v-bind="containerCS"
   >
     <div
-      class="flex border-b"
+      class="border-b flex"
       v-bind="surfaceBorderCS"
     >
       <div
         :class="{
           'border-r': $slots.form,
         }"
-        class="gird-paper-background min-h-56 w-full flex flex-grow items-center justify-center"
+        class="gird-paper-background flex flex-grow min-h-56 w-full items-center justify-center"
         v-bind="surfaceBorderCS"
       >
         <slot name="preview" />
       </div>
       <div
         v-if="$slots.form"
-        class="flex items-center px-6 py-4"
+        class="px-6 py-4 flex items-center"
       >
         <slot name="form" />
       </div>
     </div>
     <div
-      class="not-prose overflow-hidden rounded-b-xl text-sm children:overflow-auto children:p-2 children:outline-none!"
+      class="not-prose text-sm rounded-b-xl overflow-hidden children:p-2 children:overflow-auto children:outline-none!"
       v-html="codeHtml"
     />
   </div>

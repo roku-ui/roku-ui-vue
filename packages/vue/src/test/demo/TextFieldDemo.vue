@@ -527,8 +527,8 @@ const dateInput = ref('')
           color="primary"
           rounded="md"
         />
-        <div class="mt-4 rounded p-4">
-          <h3 class="mb-2 font-semibold">
+        <div class="mt-4 p-4 rounded">
+          <h3 class="font-semibold mb-2">
             Form Values:
           </h3>
           <div class="text-sm space-y-1">
@@ -614,11 +614,11 @@ const dateInput = ref('')
         Custom Format Functions
       </h2>
       <Paper class="space-y-4">
-        <div class="mb-4 text-sm">
-          <p class="mb-2 font-semibold">
+        <div class="text-sm mb-4">
+          <p class="font-semibold mb-2">
             Examples of how to use custom format functions:
           </p>
-          <div class="rounded p-3 text-xs font-mono space-y-2">
+          <div class="text-xs font-mono p-3 rounded space-y-2">
             <div>// Number formatting</div>
             <div>:format="(value) => value.replace(/[^\d.]/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ',')"</div>
             <div />

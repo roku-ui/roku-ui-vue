@@ -78,8 +78,8 @@ const treeListItems = computed(() => {
         title: dir2Title(currentDir),
         value: undefined,
         is: undefined,
-        attrs: {to: undefined},
-        dir: undefined
+        attrs: { to: undefined },
+        dir: undefined,
       })
     }
   }
@@ -99,9 +99,9 @@ const treeListItems = computed(() => {
       '-translate-x-100%': !isOpen,
       'translate-x-0': isOpen,
     }"
-    class="fixed top-12 z-10 h-100vh min-w-64 w-33vw flex flex-col items-end gap-2 bg-surface md:translate-x-0"
+    class="bg-surface flex flex-col gap-2 h-100vh min-w-64 w-33vw items-end top-12 fixed z-10 md:translate-x-0"
   >
-    <div class="h-100vh w-86 flex flex-col gap-8 overflow-y-auto px-8 py-6">
+    <div class="px-8 py-6 flex flex-col gap-8 h-100vh w-86 overflow-y-auto">
       <div>
         <div>
           <NuxtLink

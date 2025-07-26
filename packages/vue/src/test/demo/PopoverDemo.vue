@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-4 p-20">
+  <div class="p-20 flex flex-col gap-4">
     <Popover position="top-start">
       <Btn>Click me</Btn>
       <template #content>

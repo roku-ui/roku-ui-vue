@@ -16,11 +16,11 @@ const textCS = useTextCS('primary')
     <div
       v-for="f in features"
       :key="f"
-      class="flex items-center gap-2 md:text-lg"
+      class="flex gap-2 items-center md:text-lg"
     >
       <i
         v-bind="textCS"
-        class="i-tabler-circle-check mr-1 w-24px flex-shrink-0"
+        class="i-tabler-circle-check mr-1 flex-shrink-0 w-24px"
       />
       <span class="text-surface-dimmed">{{ f }}</span>
     </div>

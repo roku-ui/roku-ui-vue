@@ -10,10 +10,10 @@ const selectedRange = ref<{ start: Date, end: Date }>()
 <template>
   <div class="space-y-6">
     <div>
-      <h3 class="mb-3 text-lg font-semibold">
+      <h3 class="text-lg font-semibold mb-3">
         Single Date Selection
       </h3>
-      <div class="flex items-start gap-4">
+      <div class="flex gap-4 items-start">
         <Calendar
           v-model="selectedDate"
           mode="single"
@@ -30,16 +30,16 @@ const selectedRange = ref<{ start: Date, end: Date }>()
     </div>
 
     <div>
-      <h3 class="mb-3 text-lg font-semibold">
+      <h3 class="text-lg font-semibold mb-3">
         Multiple Date Selection
       </h3>
-      <div class="flex items-start gap-4">
+      <div class="flex gap-4 items-start">
         <Calendar
           v-model="selectedDates"
           mode="multiple"
           color="secondary"
         />
-        <div class="max-w-48 text-sm">
+        <div class="text-sm max-w-48">
           <p class="font-medium">
             Selected Dates:
           </p>
@@ -59,10 +59,10 @@ const selectedRange = ref<{ start: Date, end: Date }>()
     </div>
 
     <div>
-      <h3 class="mb-3 text-lg font-semibold">
+      <h3 class="text-lg font-semibold mb-3">
         Date Range Selection
       </h3>
-      <div class="flex items-start gap-4">
+      <div class="flex gap-4 items-start">
         <Calendar
           v-model="selectedRange"
           mode="range"

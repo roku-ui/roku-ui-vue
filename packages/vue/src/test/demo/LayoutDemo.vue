@@ -28,13 +28,13 @@ const loading = ref(false)
         <div class="flex gap-2">
           <Paper
             trace-animate
-            class="h-24 w-32 flex items-center justify-center"
+            class="flex h-24 w-32 items-center justify-center"
           >
             Trace
           </Paper>
           <Paper
             trace-animate
-            class="h-24 w-32 flex items-center justify-center"
+            class="flex h-24 w-32 items-center justify-center"
           >
             Trace
           </Paper>
@@ -42,13 +42,13 @@ const loading = ref(false)
         <div class="flex gap-2">
           <Paper
             trace-animate
-            class="h-24 w-32 flex items-center justify-center"
+            class="flex h-24 w-32 items-center justify-center"
           >
             Trace
           </Paper>
           <Paper
             trace-animate
-            class="h-24 w-32 flex items-center justify-center"
+            class="flex h-24 w-32 items-center justify-center"
           >
             Trace
           </Paper>
@@ -279,7 +279,7 @@ const loading = ref(false)
         Tags
       </h2>
 
-      <div class="flex flex-col items-center gap-2">
+      <div class="flex flex-col gap-2 items-center">
         <Tag>
           <template #leftSection>
             Left

@@ -29,7 +29,7 @@ function onSelectChange(area: Area) {
 <template>
   <div
     ref="areaRef"
-    class="relative h-200px w-200px flex flex flex-wrap select-none bg-surface-base"
+    class="bg-surface-base flex flex flex-wrap h-200px w-200px select-none relative"
   >
     <SelectArea
       color="#f10"
@@ -39,7 +39,7 @@ function onSelectChange(area: Area) {
     <div
       v-for="item in items"
       :key="item"
-      class="h-100px w-100px flex items-center justify-center"
+      class="flex h-100px w-100px items-center justify-center"
       :class="{
         'bg-primary-container text-white': selectingItems.includes(item),
       }"

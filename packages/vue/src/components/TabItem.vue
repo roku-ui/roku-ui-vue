@@ -73,7 +73,7 @@ const btnOutlineCS = useCS({
   <button
     ref="tabRef"
     type="button"
-    class="rutline-none relative min-w-20 flex items-center justify-center outline-none focus-visible:outline-2 outline-offset-0!"
+    class="rutline-none outline-none flex min-w-20 items-center justify-center relative focus-visible:outline-2 outline-offset-0!"
     :class="[directionCls]"
     v-bind="btnOutlineCS"
     @click="onClick"
@@ -87,7 +87,7 @@ const btnOutlineCS = useCS({
       v-else
       :class="[indicatorCls]"
     />
-    <div class="h-full py-2">
+    <div class="py-2 h-full">
       <slot />
     </div>
   </button>

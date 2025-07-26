@@ -53,7 +53,7 @@ function onDrop(files: File[] | null) {
           src="https://picsum.photos/seed/2/512/512"
         />
         <template #content>
-          <div class="h-full w-full flex items-center justify-center text-white">
+          <div class="text-white flex h-full w-full items-center justify-center">
             This is an overlay
           </div>
         </template>
@@ -71,7 +71,7 @@ function onDrop(files: File[] | null) {
         Color Picker
       </h2>
 
-      <Paper class="flex items-center gap-2">
+      <Paper class="flex gap-2 items-center">
         <ColorInput v-model="color" />
         <ColorInput v-model="primaryColor" />
         <ColorInput v-model="surfaceColor" />

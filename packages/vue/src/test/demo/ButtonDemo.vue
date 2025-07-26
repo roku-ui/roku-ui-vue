@@ -382,7 +382,7 @@ const loading = ref(false)
         Different Sizes with Sections
       </h2>
 
-      <Paper class="flex flex-wrap items-center gap-2">
+      <Paper class="flex flex-wrap gap-2 items-center">
         <Btn
           variant="filled"
           color="primary"

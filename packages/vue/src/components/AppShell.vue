@@ -60,7 +60,7 @@ const asideStyle = computed(() => ({
 
 <template>
   <div
-    class="box-border h-100dvh max-h-full w-full flex flex-col"
+    class="flex flex-col h-100dvh max-h-full w-full box-border"
     :style="containerStyle"
   >
     <!-- Top Header (spans all when headerSpansNav && headerSpansAside) -->

@@ -185,7 +185,7 @@ function handleInputKeydown(e: KeyboardEvent) {
         :disabled="disabled"
         :placeholder="placeholder"
         readonly
-        class="w-full cursor-pointer border custom-input-colors outline-none"
+        class="custom-input-colors outline-none border w-full cursor-pointer"
         :class="[disabledCls, rounded.class, sizeCls.base]"
         :style="[rounded.style]"
         @keydown="handleInputKeydown"

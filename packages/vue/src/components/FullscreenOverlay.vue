@@ -98,7 +98,7 @@ const provider = useRokuProvider()
       <div
         v-if="model"
         ref="wrapperRef"
-        class="fixed left-0 top-0 z-100 h-full w-full bg-surface-10/60 p-2 will-change-auto"
+        class="p-2 will-change-auto bg-surface-10/60 h-full w-full left-0 top-0 fixed z-100"
         :class="[blurCls, wrapperClass]"
         @click="onClick"
       >
@@ -108,7 +108,7 @@ const provider = useRokuProvider()
     <div
       v-else-if="model"
       ref="wrapperRef"
-      class="fixed left-0 top-0 z-100 h-full w-full bg-surface-10/60 p-2 will-change-auto"
+      class="p-2 will-change-auto bg-surface-10/60 h-full w-full left-0 top-0 fixed z-100"
       :class="[blurCls, wrapperClass]"
       @click="onClick"
     >

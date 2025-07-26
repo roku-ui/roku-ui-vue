@@ -10,7 +10,7 @@ const date3 = ref<Date>(new Date())
 <template>
   <div class="space-y-6">
     <div>
-      <h3 class="mb-3 text-lg font-semibold">
+      <h3 class="text-lg font-semibold mb-3">
         Small Size
       </h3>
       <Calendar
@@ -21,7 +21,7 @@ const date3 = ref<Date>(new Date())
     </div>
 
     <div>
-      <h3 class="mb-3 text-lg font-semibold">
+      <h3 class="text-lg font-semibold mb-3">
         Medium Size (Default)
       </h3>
       <Calendar
@@ -32,7 +32,7 @@ const date3 = ref<Date>(new Date())
     </div>
 
     <div>
-      <h3 class="mb-3 text-lg font-semibold">
+      <h3 class="text-lg font-semibold mb-3">
         Large Size
       </h3>
       <Calendar

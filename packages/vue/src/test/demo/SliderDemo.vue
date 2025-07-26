@@ -52,7 +52,7 @@ const conflictTestValue = ref(50)
       </h2>
       <Paper class="space-y-2">
         <div>
-          <label class="text-surface-on mb-2 block text-sm font-medium">
+          <label class="text-surface-on text-sm font-medium mb-2 block">
             Volume: {{ basicValue }}%
           </label>
           <Slider
@@ -72,7 +72,7 @@ const conflictTestValue = ref(50)
       </h2>
       <Paper class="space-y-4">
         <div>
-          <label class="text-surface-on mb-2 block text-sm font-medium">
+          <label class="text-surface-on text-sm font-medium mb-2 block">
             Price Range: {{ rangeValue }}
           </label>
           <Slider
@@ -93,7 +93,7 @@ const conflictTestValue = ref(50)
       </h2>
       <Paper class="space-y-4">
         <div>
-          <label class="text-surface-on mb-2 block text-sm font-medium">
+          <label class="text-surface-on text-sm font-medium mb-2 block">
             Small Slider: {{ sizeValues.sm }}
           </label>
           <Slider
@@ -104,7 +104,7 @@ const conflictTestValue = ref(50)
           />
         </div>
         <div>
-          <label class="text-surface-on mb-2 block text-sm font-medium">
+          <label class="text-surface-on text-sm font-medium mb-2 block">
             Medium Slider: {{ sizeValues.md }}
           </label>
           <Slider
@@ -115,7 +115,7 @@ const conflictTestValue = ref(50)
           />
         </div>
         <div>
-          <label class="text-surface-on mb-2 block text-sm font-medium">
+          <label class="text-surface-on text-sm font-medium mb-2 block">
             Large Slider: {{ sizeValues.lg }}
           </label>
           <Slider
@@ -135,7 +135,7 @@ const conflictTestValue = ref(50)
       </h2>
       <Paper class="space-y-4">
         <div>
-          <label class="text-surface-on mb-2 block text-sm font-medium">
+          <label class="text-surface-on text-sm font-medium mb-2 block">
             Primary: {{ colorValues.primary }}
           </label>
           <Slider
@@ -146,7 +146,7 @@ const conflictTestValue = ref(50)
           />
         </div>
         <div>
-          <label class="text-surface-on mb-2 block text-sm font-medium">
+          <label class="text-surface-on text-sm font-medium mb-2 block">
             Secondary: {{ colorValues.secondary }}
           </label>
           <Slider
@@ -157,7 +157,7 @@ const conflictTestValue = ref(50)
           />
         </div>
         <div>
-          <label class="text-surface-on mb-2 block text-sm font-medium">
+          <label class="text-surface-on text-sm font-medium mb-2 block">
             Tertiary: {{ colorValues.tertiary }}
           </label>
           <Slider
@@ -168,7 +168,7 @@ const conflictTestValue = ref(50)
           />
         </div>
         <div>
-          <label class="text-surface-on mb-2 block text-sm font-medium">
+          <label class="text-surface-on text-sm font-medium mb-2 block">
             Error: {{ colorValues.error }}
           </label>
           <Slider
@@ -188,7 +188,7 @@ const conflictTestValue = ref(50)
       </h2>
       <Paper class="space-y-4">
         <div>
-          <label class="text-surface-on mb-2 block text-sm font-medium">
+          <label class="text-surface-on text-sm font-medium mb-2 block">
             Quality Level: {{ customValue }}
           </label>
           <Slider
@@ -198,7 +198,7 @@ const conflictTestValue = ref(50)
           />
         </div>
         <div>
-          <label class="text-surface-on mb-2 block text-sm font-medium">
+          <label class="text-surface-on text-sm font-medium mb-2 block">
             Rating Scale (1-5)
           </label>
           <Slider
@@ -217,7 +217,7 @@ const conflictTestValue = ref(50)
       </h2>
       <Paper class="space-y-4">
         <div>
-          <label class="text-surface-on mb-2 block text-sm font-medium">
+          <label class="text-surface-on text-sm font-medium mb-2 block">
             With Animation: {{ animatedValue }}
           </label>
           <Slider
@@ -228,7 +228,7 @@ const conflictTestValue = ref(50)
           />
         </div>
         <div>
-          <label class="text-surface-on mb-2 block text-sm font-medium">
+          <label class="text-surface-on text-sm font-medium mb-2 block">
             Without Animation (Linked): {{ animatedValue }}
           </label>
           <Slider
@@ -248,7 +248,7 @@ const conflictTestValue = ref(50)
       </h2>
       <Paper class="space-y-4">
         <div>
-          <label class="text-surface-on mb-2 block text-sm font-medium">
+          <label class="text-surface-on text-sm font-medium mb-2 block">
             Custom Width (15rem): {{ widthValue }}
           </label>
           <Slider
@@ -259,7 +259,7 @@ const conflictTestValue = ref(50)
           />
         </div>
         <div>
-          <label class="text-surface-on mb-2 block text-sm font-medium">
+          <label class="text-surface-on text-sm font-medium mb-2 block">
             Minimum Width (8rem): {{ basicValue }}
           </label>
           <Slider
@@ -279,7 +279,7 @@ const conflictTestValue = ref(50)
       </h2>
       <Paper class="space-y-4">
         <div>
-          <label class="text-surface-on mb-2 block text-sm font-medium">
+          <label class="text-surface-on text-sm font-medium mb-2 block">
             Normal Direction: {{ reverseValues.normal }}
           </label>
           <Slider
@@ -290,7 +290,7 @@ const conflictTestValue = ref(50)
           />
         </div>
         <div>
-          <label class="text-surface-on mb-2 block text-sm font-medium">
+          <label class="text-surface-on text-sm font-medium mb-2 block">
             Reverse Direction: {{ reverseValues.reverse }}
           </label>
           <Slider
@@ -309,7 +309,7 @@ const conflictTestValue = ref(50)
         Alignment with Other Components
       </h2>
       <Paper class="space-y-4">
-        <div class="flex items-center gap-4">
+        <div class="flex gap-4 items-center">
           <TextField
             size="sm"
             placeholder="Small input"
@@ -327,7 +327,7 @@ const conflictTestValue = ref(50)
             />
           </div>
         </div>
-        <div class="flex items-center gap-4">
+        <div class="flex gap-4 items-center">
           <TextField
             size="md"
             placeholder="Medium input"
@@ -345,7 +345,7 @@ const conflictTestValue = ref(50)
             />
           </div>
         </div>
-        <div class="flex items-center gap-4">
+        <div class="flex gap-4 items-center">
           <TextField
             size="lg"
             placeholder="Large input"
@@ -373,7 +373,7 @@ const conflictTestValue = ref(50)
       </h2>
       <Paper class="space-y-4">
         <div>
-          <label class="text-surface-on mb-2 block text-sm font-medium">
+          <label class="text-surface-on text-sm font-medium mb-2 block">
             Irregular Ticks: {{ ticksValues.irregular }}
           </label>
           <Slider
@@ -387,7 +387,7 @@ const conflictTestValue = ref(50)
           />
         </div>
         <div>
-          <label class="text-surface-on mb-2 block text-sm font-medium">
+          <label class="text-surface-on text-sm font-medium mb-2 block">
             Non-linear Scale: {{ ticksValues.nonLinear }}
           </label>
           <Slider
@@ -409,7 +409,7 @@ const conflictTestValue = ref(50)
       </h2>
       <Paper class="space-y-4">
         <div>
-          <label class="text-surface-on mb-2 block text-sm font-medium">
+          <label class="text-surface-on text-sm font-medium mb-2 block">
             Both ticks and tickNum provided (should warn): {{ conflictTestValue }}
           </label>
           <Slider
@@ -421,7 +421,7 @@ const conflictTestValue = ref(50)
             :tick-num="11"
             color="error"
           />
-          <p class="mt-2 text-xs text-surface-dimmed">
+          <p class="text-xs text-surface-dimmed mt-2">
             Open browser console to see warning message. The ticks array should take precedence.
           </p>
         </div>
@@ -435,7 +435,7 @@ const conflictTestValue = ref(50)
       </h2>
       <Paper class="space-y-4">
         <div>
-          <label class="text-surface-on mb-2 block text-sm font-medium">
+          <label class="text-surface-on text-sm font-medium mb-2 block">
             Volume Control with Ticks: {{ advancedValues.volume }}
           </label>
           <Slider
@@ -449,7 +449,7 @@ const conflictTestValue = ref(50)
           />
         </div>
         <div>
-          <label class="text-surface-on mb-2 block text-sm font-medium">
+          <label class="text-surface-on text-sm font-medium mb-2 block">
             Fine-grained Control (0.1 steps): {{ advancedValues.fineGrained }}
           </label>
           <Slider

@@ -34,10 +34,10 @@ const specificDisabledDates = [
 <template>
   <div class="p-6 space-y-8">
     <div>
-      <h1 class="mb-6 text-3xl text-surface font-bold">
+      <h1 class="text-3xl text-surface font-bold mb-6">
         Calendar Component
       </h1>
-      <p class="text-surface-variant mb-8 text-lg">
+      <p class="text-surface-variant text-lg mb-8">
         A flexible calendar component supporting single date, multiple dates, and date range selection.
       </p>
     </div>
@@ -109,7 +109,7 @@ const specificDisabledDates = [
             mode="multiple"
             color="secondary"
           />
-          <div class="text-surface-variant max-w-72 text-sm">
+          <div class="text-surface-variant text-sm max-w-72">
             <p class="font-medium">
               Selected ({{ multipleDates.length }}):
             </p>
@@ -137,7 +137,7 @@ const specificDisabledDates = [
           <h3 class="text-lg text-surface font-medium">
             Interactive Range Selection (With Animation)
           </h3>
-          <p class="text-surface-variant max-w-80 text-sm">
+          <p class="text-surface-variant text-sm max-w-80">
             选择开始日期后，鼠标悬停在其他日期上会显示虚线预览效果，帮助您直观地看到即将选择的日期范围。
           </p>
           <Calendar
@@ -167,7 +167,7 @@ const specificDisabledDates = [
           <h3 class="text-lg text-surface font-medium">
             Range Selection (No Animation)
           </h3>
-          <p class="text-surface-variant max-w-80 text-sm">
+          <p class="text-surface-variant text-sm max-w-80">
             禁用动画效果的范围选择模式，预览效果更加静态。
           </p>
           <Calendar

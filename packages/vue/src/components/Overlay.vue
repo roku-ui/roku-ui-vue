@@ -50,14 +50,14 @@ const colorStyle = computed(() => {
 </script>
 
 <template>
-  <div class="relative inline-block">
+  <div class="inline-block relative">
     <slot />
     <div
       v-bind="$attrs"
       ref="wrapperRef"
       :class="[blurCls, rounded.class, animationCls]"
       :style="[rounded.style, colorStyle]"
-      class="absolute left-0 top-0 h-full w-full overflow-hidden md:items-center"
+      class="h-full w-full left-0 top-0 absolute overflow-hidden md:items-center"
     >
       <slot name="content" />
     </div>

@@ -24,10 +24,10 @@ const specificDisabledDates = [
 <template>
   <div class="space-y-6">
     <div>
-      <h3 class="mb-3 text-lg font-semibold">
+      <h3 class="text-lg font-semibold mb-3">
         Min/Max Date Restriction
       </h3>
-      <div class="flex items-start gap-4">
+      <div class="flex gap-4 items-start">
         <Calendar
           v-model="selectedDate"
           :min-date="minDate"
@@ -47,7 +47,7 @@ const specificDisabledDates = [
     </div>
 
     <div>
-      <h3 class="mb-3 text-lg font-semibold">
+      <h3 class="text-lg font-semibold mb-3">
         Disabled Weekends
       </h3>
       <Calendar
@@ -59,7 +59,7 @@ const specificDisabledDates = [
     </div>
 
     <div>
-      <h3 class="mb-3 text-lg font-semibold">
+      <h3 class="text-lg font-semibold mb-3">
         Specific Disabled Dates
       </h3>
       <Calendar

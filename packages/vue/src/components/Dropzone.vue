@@ -51,7 +51,7 @@ const dropCS = useContainerDefaultVariantCS()
         'border-dashed': dashed,
       }]"
     :style="[cs.style, isOverDropZone && dropCS.style]"
-    class="h-full w-full flex cursor-pointer items-center justify-center border rounded"
+    class="border rounded flex h-full w-full cursor-pointer items-center justify-center"
     @pointerup="() => open()"
   >
     <slot />

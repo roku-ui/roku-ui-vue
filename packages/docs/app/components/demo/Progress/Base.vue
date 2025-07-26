@@ -9,7 +9,7 @@ const code = computed(() => `<template>
 <template>
   <Demo :code="code">
     <template #preview>
-      <div class="w-full p-2">
+      <div class="p-2 w-full">
         <Progress
           :value="47"
         />
