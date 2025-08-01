@@ -34,57 +34,20 @@ export const SURFACE_LIGHTNESS_MAP = [
   0.075,
   0.05,
 ]
-export function useRootTheme() {
-  if (!isClient) {
-    return ref('dark')
-  }
-  const theme = ref(document.documentElement.dataset.scheme)
-  const observer = new MutationObserver((mutations) => {
-    for (const mutation of mutations) {
-      if (mutation.type === 'attributes' && mutation.attributeName === 'data-scheme') {
-        theme.value = document.documentElement.dataset.scheme
-      }
-    }
-  })
-  observer.observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ['data-scheme'],
-  })
-  return theme
-}
 
-export function useCurrentThemeScheme() {
-  return inject<Ref<string> | null>('currentThemeScheme', null)
-}
-
-// 创建 defaultTheme，避免循环依赖
-export const defaultTheme = useThemeData('default', {
-  primary: '#0067cc',
-  secondary: '#5999A6',
-  tertiary: '#F76C22',
-  error: '#F95858',
-  surface: '#121212',
-})
 
 export function useCurrentThemeData() {
-  // 使用计算属性延迟引用 defaultTheme 避免初始化顺序问题
   const fallback = computed(() => {
-    // 如果 defaultTheme 还未初始化，返回一个空的 ThemeData
-    try {
-      return defaultTheme.value
-    }
-    catch {
-      return {
-        name: 'default',
-        colors: {
-          primary: ['#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000'] as ColorsTuple,
-          secondary: ['#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000'] as ColorsTuple,
-          tertiary: ['#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000'] as ColorsTuple,
-          error: ['#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000'] as ColorsTuple,
-          surface: ['#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000'] as ColorsTuple,
-        },
-      } as ThemeData
-    }
+    return {
+      name: 'default',
+      colors: {
+        primary: ['#0067cc', '#0067cc', '#0067cc', '#0067cc', '#0067cc', '#0067cc', '#0067cc', '#0067cc', '#0067cc', '#0067cc', '#0067cc'] as ColorsTuple,
+        secondary: ['#5999A6', '#5999A6', '#5999A6', '#5999A6', '#5999A6', '#5999A6', '#5999A6', '#5999A6', '#5999A6', '#5999A6', '#5999A6'] as ColorsTuple,
+        tertiary: ['#F76C22', '#F76C22', '#F76C22', '#F76C22', '#F76C22', '#F76C22', '#F76C22', '#F76C22', '#F76C22', '#F76C22', '#F76C22'] as ColorsTuple,
+        error: ['#F95858', '#F95858', '#F95858', '#F95858', '#F95858', '#F95858', '#F95858', '#F95858', '#F95858', '#F95858', '#F95858'] as ColorsTuple,
+        surface: ['#121212', '#121212', '#121212', '#121212', '#121212', '#121212', '#121212', '#121212', '#121212', '#121212', '#121212'] as ColorsTuple,
+      },
+    } as ThemeData
   })
   return inject<Ref<ThemeData>>('currentThemeData', fallback)
 }

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Avatar, Btn, Menu } from '@roku-ui/vue'
-import { h } from 'vue'
+import { computed, h } from 'vue'
 
 const code = computed(() => {
   return `<template>

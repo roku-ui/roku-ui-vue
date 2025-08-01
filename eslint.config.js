@@ -11,4 +11,9 @@ export default jannchie(
       markdown: true,
     },
   },
+  {
+    rules: {
+      'style/indent-binary-ops': 'off',
+    },
+  },
 )

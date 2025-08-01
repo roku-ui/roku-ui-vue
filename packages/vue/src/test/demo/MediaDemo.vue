@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { generateColors, Notifications, primaryColor, surfaceColor } from '../..'
+import { generateColors, Notifications } from '../..'
 import { Paper, AspectRatio, Image, Overlay, ColorInput, ColorSwatch, Dropzone } from '../../components'
 
 const file = ref<File | null>(null)
 const color = ref('#5474B4')
 const colors = computed(() => generateColors(color.value))
+
+// Demo theme colors
+const primaryColor = ref('#0067cc')
+const surfaceColor = ref('#121212')
 
 function onDrop(files: File[] | null) {
   if (files && files.length > 0) {

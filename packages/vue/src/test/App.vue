@@ -1,6 +1,5 @@
 <script setup lang="tsx">
 import { computed, ref } from 'vue'
-import { primaryColor, surfaceColor } from '..'
 import {
   AppShell,
   ColorInput,
@@ -78,6 +77,10 @@ const currentComponent = computed(() => {
   const page = demoPages.find(p => p.key === currentPage.value)
   return page?.component || AppShellDemo
 })
+
+// Create reactive theme colors for the demo
+const primaryColor = ref('#0067cc')
+const surfaceColor = ref('#121212')
 </script>
 
 <template>

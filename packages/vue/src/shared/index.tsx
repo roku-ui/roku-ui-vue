@@ -1,7 +1,7 @@
 import type { ComputedRef, MaybeRef } from 'vue'
 import type { BtnVariant, Color, ContainerVariant, InputVariant, Rounded } from '@/types'
 import tinycolor from 'tinycolor2'
-import { computed, inject, provide, ref, unref } from 'vue'
+import { computed, inject, provide, unref } from 'vue'
 import { generateColorsObjMap } from '@/utils'
 
 import { COLOR_LIGHTNESS_MAP, SURFACE_LIGHTNESS_MAP } from '..'
@@ -33,11 +33,10 @@ const lightBgVariantIndex = 5
 const lightOpacity = 0.08
 const lightOpacityVariant = 0.15
 
-export const primaryColor = ref('#0067cc')
-export const secondaryColor = ref('#5999A6')
-export const tertiaryColor = ref('#F76C22')
-export const errorColor = ref('#F95858')
-export const surfaceColor = ref('#121212')
+function getThemeColorString(colorKey: keyof ThemeColors): string {
+  const theme = useTheme()
+  return theme.colors[colorKey]
+}
 
 export const borderCS = computed(() => {
   return useCS({
@@ -52,23 +51,23 @@ export function useTextCS(color: MaybeRef<Color>) {
 }
 
 export const primaryColors = computed(() => {
-  return generateColorsObjMap(unref(primaryColor), COLOR_LIGHTNESS_MAP).colors
+  return generateColorsObjMap(getThemeColorString('primary'), COLOR_LIGHTNESS_MAP).colors
 })
 
 export const secondaryColors = computed(() => {
-  return generateColorsObjMap(unref(secondaryColor), COLOR_LIGHTNESS_MAP).colors
+  return generateColorsObjMap(getThemeColorString('secondary'), COLOR_LIGHTNESS_MAP).colors
 })
 
 export const tertiaryColors = computed(() => {
-  return generateColorsObjMap(unref(tertiaryColor), COLOR_LIGHTNESS_MAP).colors
+  return generateColorsObjMap(getThemeColorString('tertiary'), COLOR_LIGHTNESS_MAP).colors
 })
 
 export const errorColors = computed(() => {
-  return generateColorsObjMap(unref(errorColor), COLOR_LIGHTNESS_MAP).colors
+  return generateColorsObjMap(getThemeColorString('error'), COLOR_LIGHTNESS_MAP).colors
 })
 
 export const surfaceColors = computed(() => {
-  return generateColorsObjMap(unref(surfaceColor), SURFACE_LIGHTNESS_MAP).colors
+  return generateColorsObjMap(getThemeColorString('surface'), SURFACE_LIGHTNESS_MAP).colors
 })
 
 export function useContainerCS(variant: MaybeRef<ContainerVariant>, color: MaybeRef<Color>) {
@@ -92,19 +91,19 @@ function useTinycolor(color: MaybeRef<Color>) {
     const colorValue = unref(color)
     switch (colorValue) {
       case 'surface': {
-        return tinycolor(unref(surfaceColor))
+        return tinycolor(getThemeColorString('surface'))
       }
       case 'primary': {
-        return tinycolor(unref(primaryColor))
+        return tinycolor(getThemeColorString('primary'))
       }
       case 'secondary': {
-        return tinycolor(unref(secondaryColor))
+        return tinycolor(getThemeColorString('secondary'))
       }
       case 'tertiary': {
-        return tinycolor(unref(tertiaryColor))
+        return tinycolor(getThemeColorString('tertiary'))
       }
       case 'error': {
-        return tinycolor(unref(errorColor))
+        return tinycolor(getThemeColorString('error'))
       }
       default: {
         return tinycolor(colorValue)
@@ -131,7 +130,7 @@ export function useColors(color: MaybeRef<Color>, lightnessMap = COLOR_LIGHTNESS
 }
 
 export function useSurfaceColors() {
-  return computed(() => generateColorsObjMap(unref(surfaceColor), SURFACE_LIGHTNESS_MAP).colors)
+  return computed(() => generateColorsObjMap(getThemeColorString('surface'), SURFACE_LIGHTNESS_MAP).colors)
 }
 
 type CSType = 'bg' | 'border' | 'text' | 'placeholder' | 'hover:bg' | 'hover:border' | 'hover:text' | 'outline'
@@ -387,7 +386,7 @@ export function useColorCS(color: MaybeRef<Color>, type: CSType, index: CSIndex,
 
 export function useSurfaceCS(type: CSType, index: CSIndex, alpha = 1) {
   return computed(() => {
-    const { colors } = generateColorsObjMap(unref(surfaceColor), SURFACE_LIGHTNESS_MAP)
+    const { colors } = generateColorsObjMap(getThemeColorString('surface'), SURFACE_LIGHTNESS_MAP)
     if (typeof index === 'number') {
       return getCSInner(colors, type, index, index, alpha)
     }
@@ -406,7 +405,7 @@ export function useOutlineCS(color: MaybeRef<Color>) {
 export function useButtonCS(variant: MaybeRef<BtnVariant> = 'default', color: MaybeRef<Color> = 'primary'): ComputedRef<CS> {
   return computed(() => {
     const colors = useColors(color).value
-    const surface = generateColorsObjMap(unref(surfaceColor), SURFACE_LIGHTNESS_MAP).colors
+    const surface = generateColorsObjMap(getThemeColorString('surface'), SURFACE_LIGHTNESS_MAP).colors
     const variantStyles: Record<BtnVariant, () => Record<string, string>> = {
       default: () => getDefaultVariantStyle(surface),
       filled: () => getFilledVariantStyle(colors),
@@ -540,7 +539,7 @@ function getWhiteVariantStyle(color: tinycolor.Instance[]): Record<string, strin
 export function useTagCS(variant: MaybeRef<BtnVariant> = 'default', color: MaybeRef<Color> = 'primary', hasInteraction: MaybeRef<boolean> = false): ComputedRef<CS> {
   return computed(() => {
     const colors = useColors(color).value
-    const surface = generateColorsObjMap(unref(surfaceColor), SURFACE_LIGHTNESS_MAP).colors
+    const surface = generateColorsObjMap(getThemeColorString('surface'), SURFACE_LIGHTNESS_MAP).colors
     const interactive = unref(hasInteraction)
 
     const variantStyles: Record<BtnVariant, () => CS> = {
@@ -931,15 +930,31 @@ export function useInputColorStyle(color: MaybeRef<string>, variant: MaybeRef<In
   })
 }
 
+export interface ThemeColors {
+  primary: string
+  secondary: string
+  tertiary: string
+  error: string
+  surface: string
+}
+
 export interface Theme {
   withBorder: boolean
   rounded: Rounded
+  colors: ThemeColors
 }
 const symbolStyle = Symbol('defaultStyles')
 
 export const defaultThemeData: Theme = {
   withBorder: true,
   rounded: 'md' as Rounded,
+  colors: {
+    primary: '#0067cc',
+    secondary: '#5999A6',
+    tertiary: '#F76C22',
+    error: '#F95858',
+    surface: '#121212',
+  },
 }
 export function useTheme() {
   return inject<Theme>(symbolStyle, defaultThemeData)
@@ -947,4 +962,17 @@ export function useTheme() {
 
 export function provideTheme(theme: Partial<Theme>) {
   return provide<Theme>(symbolStyle, Object.assign({}, defaultThemeData, theme))
+}
+
+export function themeToThemeData(theme: Theme): import('../utils/theme').ThemeData {
+  return {
+    name: 'default',
+    colors: {
+      primary: theme.colors.primary,
+      secondary: theme.colors.secondary,
+      tertiary: theme.colors.tertiary,
+      error: theme.colors.error,
+      surface: theme.colors.surface,
+    },
+  }
 }
