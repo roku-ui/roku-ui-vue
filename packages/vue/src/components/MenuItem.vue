@@ -114,7 +114,7 @@ const menuPositionStyle = computed(() => {
         class="i-tabler-chevron-right flex-shrink-0"
       />
       <menu
-        v-if="data.children && (hover || isOpen)"
+        v-if="data.children && (hover || isOpen || isFocusing)"
         ref="menuDropdownRef"
         class="ml-1 p-2 border border bg-surface bg-surface w-64 left-100% top-0 absolute"
         :class="rounded.class"

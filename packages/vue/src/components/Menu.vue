@@ -168,14 +168,18 @@ onKeyStroke('ArrowDown', (e) => {
   const idx = menuCurrentIdx.value
 
   const lastIdx = idx.at(-1)
-  if (!lastIdx) {
+  if (lastIdx === undefined || lastIdx === -1) {
     menuCurrentIdx.value = [0]
     return
   }
   let nextIdx = (lastIdx + 1) % maxIdx.value
+  let attempts = 0
   while (
-    !isMenuItem(getMenuItemData(items.value, [...idx.slice(0, -1), nextIdx])) || getMenuItemData(items.value, [...idx.slice(0, -1), nextIdx])?.render) {
+    attempts < maxIdx.value &&
+    (!isMenuItem(getMenuItemData(items.value, [...idx.slice(0, -1), nextIdx])) || getMenuItemData(items.value, [...idx.slice(0, -1), nextIdx])?.render)
+  ) {
     nextIdx = (nextIdx + 1) % maxIdx.value
+    attempts++
   }
   menuCurrentIdx.value = [...idx.slice(0, -1), nextIdx]
 })
@@ -196,12 +200,15 @@ onKeyStroke('ArrowUp', (e) => {
     return
   }
   let nextIdx = (lastIdx - 1 + maxIdx.value) % maxIdx.value
+  let attempts = 0
   // jump to the next item that is not render
   while (
-    !isMenuItem(getMenuItemData(items.value, [...idx.slice(0, -1), nextIdx]))
-    || getMenuItemData(items.value, [...idx.slice(0, -1), nextIdx])?.render
+    attempts < maxIdx.value &&
+    (!isMenuItem(getMenuItemData(items.value, [...idx.slice(0, -1), nextIdx]))
+    || getMenuItemData(items.value, [...idx.slice(0, -1), nextIdx])?.render)
   ) {
     nextIdx = (nextIdx - 1 + maxIdx.value) % maxIdx.value
+    attempts++
   }
   menuCurrentIdx.value = [...idx.slice(0, -1), nextIdx]
 })
@@ -212,30 +219,33 @@ onKeyStroke('ArrowRight', (e) => {
   }
   e.preventDefault()
 
-  // 如果当前的 Data 不是 ItemData 则什么都不做
-  if (!isMenuItem(getMenuItemData(items.value, menuCurrentIdx.value))) {
+  // 如果当前没有选中任何项（末尾是 -1），先选择第一项
+  if (menuCurrentIdx.value.at(-1) === -1) {
+    menuCurrentIdx.value = [0]
     return
   }
 
-  // 如果末尾不是 - 1
-  if (menuCurrentIdx.value.at(-1) !== -1) {
-    // 找到目前 menuCurrentIdx 所指示的 item
-    let cur = items.value
-    for (let i = 0; i < menuCurrentIdx.value.length; i++) {
-      if (cur === undefined) {
-        return
-      }
-      const ci = cur[menuCurrentIdx.value[i]]
-      if (!isMenuItem(ci) || ci.children === undefined) {
-        return
-      }
-      cur = ci.children
+  // 获取当前选中的菜单项
+  const currentItem = getMenuItemData(items.value, menuCurrentIdx.value)
+  if (!isMenuItem(currentItem) || !currentItem.children) {
+    return
+  }
+
+  // 如果当前项有子菜单，进入子菜单的第一项
+  let nextChildIdx = 0
+  const children = currentItem.children
+  
+  // 找到第一个可选择的子菜单项
+  while (nextChildIdx < children.length) {
+    const childItem = children[nextChildIdx]
+    if (isMenuItem(childItem) && !childItem.render) {
+      break
     }
-    // 如果目前 menuCurrentIdx 所指示的 item 有 children
-    if (cur !== undefined) {
-      // 添加一个 0
-      menuCurrentIdx.value = [...menuCurrentIdx.value, 0]
-    }
+    nextChildIdx++
+  }
+  
+  if (nextChildIdx < children.length) {
+    menuCurrentIdx.value = [...menuCurrentIdx.value, nextChildIdx]
   }
 })
 
