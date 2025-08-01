@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Size } from '@/types'
 import { computed } from 'vue'
+import { Btn, Progress } from '@/components'
 import { useContainerDefaultCS, useContainerFilledCS, useTextCS } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
 

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { Paper, Btn, ThemeProvider, Indicator, Image, Progress, Chip, Tag } from '../../components'
 
 const loading = ref(false)
 </script>

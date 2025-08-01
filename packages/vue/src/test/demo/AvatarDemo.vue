@@ -1,5 +1,5 @@
 <script setup lang="ts">
-
+import { Avatar, Paper } from '@/components'
 </script>
 
 <template>

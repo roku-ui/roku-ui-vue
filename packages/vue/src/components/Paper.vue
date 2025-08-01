@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Component } from 'vue'
 import type { Color, Rounded } from '@/types'
+import { useElementBounding, useMouse } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useColors, useTheme } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'

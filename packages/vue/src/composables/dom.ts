@@ -1,5 +1,5 @@
 import type { MaybeComputedElementRef } from '@vueuse/core'
-import { tryOnMounted, unrefElement, useMutationObserver, useResizeObserver } from '@vueuse/core'
+import { tryOnMounted, unrefElement, useEventListener, useMediaQuery, useMutationObserver, useResizeObserver } from '@vueuse/core'
 import { computed, ref, watch } from 'vue'
 
 export function useScrollHeight(target: MaybeComputedElementRef) {

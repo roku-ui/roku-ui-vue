@@ -1,5 +1,5 @@
 <script setup lang="ts">
-
+import { ChatContainer, ChatMessage, ChatSystem, Image } from '../../components'
 </script>
 
 <template>

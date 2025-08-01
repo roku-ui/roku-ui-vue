@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { Modals } from '@/utils/modals'
+import { Paper, Btn, Modal, Drawer } from '../../components'
 
 const modal1 = ref(false)
 const modal2 = ref(false)

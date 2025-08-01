@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { Btn, Paper, Slider, TextField } from '../../components'
 
 const basicValue = ref(50)
 const rangeValue = ref(25)

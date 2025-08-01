@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { Switch } from '@/components'
+import { Btn, Paper, TextField } from '../../components'
 
 const basicSwitch = ref(false)
 const labeledSwitch = ref(true)

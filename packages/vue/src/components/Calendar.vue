@@ -3,6 +3,7 @@ import type { CalendarMode, Color } from '@/types'
 import { computed, ref } from 'vue'
 import { useButtonCS } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
+import { Btn } from '.'
 
 const props = withDefaults(
   defineProps<{

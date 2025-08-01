@@ -71,14 +71,6 @@ export const surfaceColors = computed(() => {
   return generateColorsObjMap(unref(surfaceColor), SURFACE_LIGHTNESS_MAP).colors
 })
 
-export const defaultTheme = useThemeData('default', {
-  primary: primaryColor,
-  secondary: secondaryColor,
-  tertiary: tertiaryColor,
-  error: errorColor,
-  surface: surfaceColor,
-})
-
 export function useContainerCS(variant: MaybeRef<ContainerVariant>, color: MaybeRef<Color>) {
   return computed(() => {
     switch (unref(variant)) {

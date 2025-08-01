@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-
+import Select from '@/components/Select.vue'
 // 基础用法 - 标准对象格式
 const selections = [
   {

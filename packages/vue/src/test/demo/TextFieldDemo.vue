@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { Paper, TextField } from '@/components'
 
 const basicInput = ref('')
 const disabledInput = ref('Disabled text')

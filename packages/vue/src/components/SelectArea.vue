@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import type { Area } from '@/types'
-import { useElementBounding, useEventListener, useMouse } from '@vueuse/core'
+import { useElementBounding, useEventListener, useMagicKeys, useMouse, useScroll } from '@vueuse/core'
 import { computed, ref } from 'vue'
 
 const props = defineProps<{
@@ -12,6 +11,13 @@ const emit = defineEmits<{
   selectEnd: [Area, { target: EventTarget | null, shift: boolean, ctrl: boolean }]
 }>()
 const { shift, control: ctrl } = useMagicKeys()
+export interface Area {
+  left: number
+  top: number
+  right: number
+  bottom: number
+}
+
 const target = computed(() => props.target ?? document.documentElement)
 const mouse = useMouse()
 const startPoint = ref({ x: 0, y: 0 })
@@ -98,7 +104,7 @@ useEventListener(globalThis, 'dragend', () => {
   <div class="relative">
     <div
       v-if="dragging"
-      class="border-primary-8/75 bg-primary-8/25 h-1 absolute z-10000"
+      class="border-primary-800/75 bg-primary-800/25 h-1 absolute z-10000"
       :style="{
         left: `${Math.min(startPoint.x, endPoint.x)}px`,
         top: `${Math.min(startPoint.y, endPoint.y)}px`,

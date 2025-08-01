@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { h, ref } from 'vue'
 import Avatar from '@/components/Avatar.vue'
+import { Btn, Menu, Paper, TabItem, Tabs, TreeList } from '../../components'
 
 const tab = ref(0)
 const tabs = ref(0)

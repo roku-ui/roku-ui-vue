@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { AppShell, Paper } from '../../components'
 
 const headerSpansNav = ref(false)
 const headerSpansAside = ref(false)

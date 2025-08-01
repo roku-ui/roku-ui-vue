@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { refAutoReset } from '@vueuse/core'
 import { onMounted } from 'vue'
 import { Notifications } from '../..'
+import { Btn, Notification } from '../../components'
 
 const isLoading = refAutoReset(false, 3000)
 onMounted(() => {

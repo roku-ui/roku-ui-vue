@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import type { BtnVariant } from '@/types'
+import { Tag } from '@/components'
+import { Paper } from '../../components'
 
 const colors = ['default', 'primary', 'secondary', 'tertiary', 'error', 'crimson', 'darkorchid', 'dodgerblue']
 const variants: BtnVariant[] = ['default', 'filled', 'light', 'outline', 'transparent', 'subtle', 'contrast', 'white']

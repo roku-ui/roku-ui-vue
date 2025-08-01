@@ -4,8 +4,6 @@ import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import UnoCSS from 'unocss/vite'
 import AutoExport from 'unplugin-auto-export/vite'
-import AutoImport from 'unplugin-auto-import/vite'
-import Components from 'unplugin-vue-components/vite'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 
@@ -18,20 +16,6 @@ export default defineConfig({
     vueJsx(),
     UnoCSS(),
     dts(),
-    Components({
-      dirs: ['./src/components'],
-      dts: './src/components.d.ts',
-    }),
-    AutoImport({
-      imports: [
-        '@vueuse/core',
-      ],
-      dirs: [
-        './src/composables',
-        './src/locale',
-      ],
-      dts: './src/auto-import.d.ts',
-    }),
     AutoExport({
       path: ['./src/components/**/*'],
       extname: 'ts',

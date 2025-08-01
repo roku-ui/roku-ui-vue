@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
 import type { NotificationData } from '@/utils/notifications'
-import { useElementHover } from '@vueuse/core'
+import { useElementHover, useRafFn } from '@vueuse/core'
 import { computed, ref, shallowRef, watch } from 'vue'
+import { Notification } from '@/components'
 import { useNotifications } from '@/utils/notifications'
 
 type NotificationPosition = 'top-left' | 'top-right' | 'top' | 'bottom-left' | 'bottom-right' | 'bottom'

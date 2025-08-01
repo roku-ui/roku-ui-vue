@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { generateColors, Notifications, primaryColor, surfaceColor } from '../..'
+import { Paper, AspectRatio, Image, Overlay, ColorInput, ColorSwatch, Dropzone } from '../../components'
 
 const file = ref<File | null>(null)
 const color = ref('#5474B4')

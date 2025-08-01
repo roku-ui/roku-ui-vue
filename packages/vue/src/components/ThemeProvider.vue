@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { ThemeData } from '..'
+import { useLocalStorage } from '@vueuse/core'
 import { computed } from 'vue'
+import { useCurrentThemeData, useThemeStyles } from '..'
 
 const props = defineProps<{
   theme?: ThemeData

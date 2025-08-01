@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { Btn } from '.'
 
 type T = string | { value: string, label?: string, icon?: string }
 const props = withDefaults(defineProps<{

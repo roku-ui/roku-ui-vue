@@ -1,3 +1,7 @@
+<script setup lang="ts">
+import { Btn, Paper, Popover, Tooltip } from '../../components'
+</script>
+
 <template>
   <div class="p-20 flex flex-col gap-4">
     <Popover position="top-start">

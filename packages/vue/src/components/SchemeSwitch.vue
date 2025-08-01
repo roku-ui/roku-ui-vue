@@ -2,6 +2,7 @@
 import type { Component } from 'vue'
 import { isClient, useEventListener } from '@vueuse/core'
 import { nextTick, onMounted, ref, watch } from 'vue'
+import { Switch } from '@/components'
 
 const props = withDefaults(defineProps<{
   disableViewTranslation?: boolean

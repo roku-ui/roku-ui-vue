@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Avatar, Btn, Tooltip } from '../../components'
 </script>
 
 <template>

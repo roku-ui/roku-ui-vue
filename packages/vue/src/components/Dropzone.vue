@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useDropZone } from '@vueuse/core'
+import { useDropZone, useFileDialog } from '@vueuse/core'
 import { ref } from 'vue'
 import { useButtonCS, useContainerDefaultVariantCS } from '@/shared'
 

@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import type { MenuData, MenuItemData, MenuProps } from './Menu.vue'
+import { useElementHover } from '@vueuse/core'
 import { computed, inject, ref, watchEffect } from 'vue'
 import { useRounded } from '@/utils'
 import { isDivider, isLabel, someHasIcon } from '@/utils/menu'
-import { useOutlineCS } from '..'
+import { MenuItem, useOutlineCS } from '..'
 
 const props = withDefaults(defineProps<{
   data: MenuData
@@ -80,7 +81,7 @@ const menuPositionStyle = computed(() => {
       ref="menuItemRef"
       type="button"
       :tabindex="-1"
-      class="px-2 outline-2 flex gap-2 h-8 w-full inline-block cursor-pointer items-center relative focus-visible:outline hover:bg-surface-variant-2"
+      class="px-2 flex gap-2 h-8 w-full cursor-pointer items-center relative focus-visible:outline hover:bg-surface-variant-2"
       :class="[
         rounded.class,
         {

@@ -1,6 +1,17 @@
 <script setup lang="tsx">
 import { computed, ref } from 'vue'
 import { primaryColor, surfaceColor } from '..'
+import {
+  AppShell,
+  ColorInput,
+  ModalSystem,
+  NotificationSystem,
+  Paper,
+  RokuProvider,
+  SchemeSwitch,
+  Tag,
+  TreeList
+} from '../components'
 
 import AppShellDemo from './demo/AppShellDemo.vue'
 import AvatarDemo from './demo/AvatarDemo.vue'

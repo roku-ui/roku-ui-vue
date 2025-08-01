@@ -1,11 +1,10 @@
 import type { RemovableRef } from '@vueuse/core'
 import type { MaybeRef, Ref } from 'vue'
-import type { ThemeData } from '..'
-import { isClient } from '@vueuse/core'
+import type { ColorsTuple, ThemeData } from '..'
+import { isClient, useLocalStorage } from '@vueuse/core'
 import tinycolor from 'tinycolor2'
 import { computed, inject, onMounted, ref, unref } from 'vue'
-import { defaultTheme, useColors } from '@/shared'
-import { generateColors } from '..'
+import { generateColors, generateColorsObjMap } from '..'
 
 export * from './dom'
 
@@ -58,8 +57,36 @@ export function useCurrentThemeScheme() {
   return inject<Ref<string> | null>('currentThemeScheme', null)
 }
 
+// 创建 defaultTheme，避免循环依赖
+export const defaultTheme = useThemeData('default', {
+  primary: '#0067cc',
+  secondary: '#5999A6',
+  tertiary: '#F76C22',
+  error: '#F95858',
+  surface: '#121212',
+})
+
 export function useCurrentThemeData() {
-  return inject<Ref<ThemeData>>('currentThemeData', ref(defaultTheme))
+  // 使用计算属性延迟引用 defaultTheme 避免初始化顺序问题
+  const fallback = computed(() => {
+    // 如果 defaultTheme 还未初始化，返回一个空的 ThemeData
+    try {
+      return defaultTheme.value
+    }
+    catch {
+      return {
+        name: 'default',
+        colors: {
+          primary: ['#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000'] as ColorsTuple,
+          secondary: ['#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000'] as ColorsTuple,
+          tertiary: ['#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000'] as ColorsTuple,
+          error: ['#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000'] as ColorsTuple,
+          surface: ['#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000'] as ColorsTuple,
+        },
+      } as ThemeData
+    }
+  })
+  return inject<Ref<ThemeData>>('currentThemeData', fallback)
 }
 
 export function useCurrentThemeName() {
@@ -114,10 +141,17 @@ export function useThemeData(
   })
 }
 
+// 添加 useColors 函数
+function useColors(color: string, lightnessMap = COLOR_LIGHTNESS_MAP) {
+  return computed(() => {
+    return generateColorsObjMap(color, lightnessMap).colors
+  })
+}
+
 function useColorTuple(color: MaybeRef<string | readonly [string, string, string, string, string, string, string, string, string, string, string, ...string[]]>, lightnessMap = COLOR_LIGHTNESS_MAP) {
   return computed(() => {
     const colorVal = unref(color)
-    return typeof colorVal === 'string' ? useColors(colorVal, lightnessMap).value.map(d => d.toHexString()) : colorVal
+    return typeof colorVal === 'string' ? useColors(colorVal, lightnessMap).value.map((d: any) => d.toHexString()) : colorVal
   })
 }
 

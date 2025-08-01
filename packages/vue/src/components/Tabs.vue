@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
+import { onKeyStroke } from '@vueuse/core'
 import { computed, Fragment, onMounted, provide, ref, useSlots } from 'vue'
 import { childrenElementMapSymbol, directionSymbol, tabCurrentSymbol } from '@/utils'
 

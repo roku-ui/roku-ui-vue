@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import type { Component } from 'vue'
 import type { Color } from '@/types'
+import { useEventListener } from '@vueuse/core'
 import { computed, ref, watch } from 'vue'
+import { useId } from '@/composables'
 import { useColorCS, useOutlineCS as useOutlineColorCS, useSurfaceCS } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
 

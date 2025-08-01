@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, useAttrs } from 'vue'
+import { useId } from '@/composables'
 import { useInputColorStyle } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
 

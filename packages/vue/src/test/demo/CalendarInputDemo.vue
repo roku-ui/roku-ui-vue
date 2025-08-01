@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { CalendarInput } from '../../components'
 
 const singleDate = ref<Date>()
 const multipleDate = ref<Date[]>([])

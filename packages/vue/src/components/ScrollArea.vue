@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useElementBounding, useEventListener, useMouse, useScroll } from '@vueuse/core'
+import { useElementBounding, useEventListener, useMouse, useMutationObserver, useScroll } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useClientHeight } from '@/composables/dom'
 

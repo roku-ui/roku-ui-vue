@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { Btn, FullscreenOverlay } from '.'
+
 const props = withDefaults(defineProps<{
   persistent?: boolean
   blur?: 'sm' | 'md' | 'lg' | boolean

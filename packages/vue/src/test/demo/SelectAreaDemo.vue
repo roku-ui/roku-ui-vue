@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Area } from '@/types'
 import { ref } from 'vue'
+import { SelectArea } from '../../components'
 
 const items = [1, 2, 3, 4]
 const areaRef = ref(null)
@@ -29,10 +30,10 @@ function onSelectChange(area: Area) {
 <template>
   <div
     ref="areaRef"
-    class="bg-surface-base flex flex flex-wrap h-200px w-200px select-none relative"
+    class="bg-surface-base flex flex flex-wrap h-200px w-200px select-none relative relative"
   >
     <SelectArea
-      color="#f10"
+      :target="areaRef"
       @select-start="onSelectStart"
       @select-change="onSelectChange"
     />
@@ -41,7 +42,7 @@ function onSelectChange(area: Area) {
       :key="item"
       class="flex h-100px w-100px items-center justify-center"
       :class="{
-        'bg-primary-container text-white': selectingItems.includes(item),
+        'bg-red-500 text-white': selectingItems.includes(item),
       }"
     >
       {{ item }}

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onClickOutside, useElementBounding, useElementHover } from '@vueuse/core'
 import { computed, ref } from 'vue'
+import { Overlay } from '@/components'
 
 type Position = 'top-start' | 'top-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end' | 'right-start' | 'right-end' | 'top' | 'bottom' | 'left' | 'right'
 

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { ContainerVariant } from '@/types'
 import { computed } from 'vue'
+import { Avatar } from '@/components'
 import { useContainerCS } from '@/shared'
 
 const props = withDefaults(
