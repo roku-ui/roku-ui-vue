@@ -20,11 +20,20 @@ const emit = defineEmits<{
 const model = defineModel<boolean>()
 
 const wrapperRef = ref(null)
-function onClick(event: any) {
-  if (!props.persistent && event.target === wrapperRef.value) {
+let mousedownTarget: EventTarget | null = null
+
+function onMouseDown(event: MouseEvent) {
+  mousedownTarget = event.target
+}
+
+function onMouseUp(event: MouseEvent) {
+  if (!props.persistent 
+      && mousedownTarget === wrapperRef.value 
+      && event.target === wrapperRef.value) {
     emit('maskClick')
     model.value = false
   }
+  mousedownTarget = null
 }
 
 const blurCls = computed(() => {
@@ -100,7 +109,8 @@ const provider = useRokuProvider()
         ref="wrapperRef"
         class="p-2 will-change-auto bg-surface-10/60 h-full w-full left-0 top-0 fixed z-100"
         :class="[blurCls, wrapperClass]"
-        @click="onClick"
+        @mousedown="onMouseDown"
+        @mouseup="onMouseUp"
       >
         <slot />
       </div>
@@ -110,7 +120,8 @@ const provider = useRokuProvider()
       ref="wrapperRef"
       class="p-2 will-change-auto bg-surface-10/60 h-full w-full left-0 top-0 fixed z-100"
       :class="[blurCls, wrapperClass]"
-      @click="onClick"
+      @mousedown="onMouseDown"
+      @mouseup="onMouseUp"
     >
       <slot />
     </div>
