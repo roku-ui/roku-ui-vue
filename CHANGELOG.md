@@ -1,3 +1,21 @@
+## v0.27.0
+
+[v0.26.0...v0.27.0](https://github.com/roku-ui/roku-ui-vue/compare/v0.26.0...v0.27.0)
+
+### :rocket: Breaking Changes
+
+- **components**: remove auto-import and component dts generation && update imports to explicit - By [Jannchie](mailto:jannchie@gmail.com) in [73042b7](https://github.com/roku-ui/roku-ui-vue/commit/73042b7)
+- **theme**: remove mutable theme color refs and centralize theme in context - By [Jannchie](mailto:jannchie@gmail.com) in [b60ee56](https://github.com/roku-ui/roku-ui-vue/commit/b60ee56)
+
+### :adhesive_bandage: Fixes
+
+- **fullscreen-overlay**: improve mask click detection logic - By [Jannchie](mailto:jannchie@gmail.com) in [fb7f7cb](https://github.com/roku-ui/roku-ui-vue/commit/fb7f7cb)
+- **menu**: improve keyboard navigation and submenu focus handling - By [Jannchie](mailto:jannchie@gmail.com) in [2e0dcba](https://github.com/roku-ui/roku-ui-vue/commit/2e0dcba)
+
+### :wrench: Chores
+
+- **deps**: update dependencies in package files - By [Jannchie](mailto:jannchie@gmail.com) in [8af195e](https://github.com/roku-ui/roku-ui-vue/commit/8af195e)
+
 ## v0.26.0
 
 [v0.25.0...v0.26.0](https://github.com/roku-ui/roku-ui-vue/compare/v0.25.0...v0.26.0)
