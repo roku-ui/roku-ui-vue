@@ -19,9 +19,9 @@
     "dev:spa": "pnpm --filter @roku-ui/vue dev"
   },
   "devDependencies": {
-    "@jannchie/eslint-config": "^3.6.2",
-    "@unocss/eslint-config": "66.3.3",
-    "@unocss/eslint-plugin": "66.3.3",
+    "@jannchie/eslint-config": "^3.7.0",
+    "@unocss/eslint-config": "66.4.0",
+    "@unocss/eslint-plugin": "66.4.0",
     "eslint": "^9.32.0",
     "eslint-plugin-format": "^1.0.1"
   },

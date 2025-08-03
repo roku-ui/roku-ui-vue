@@ -10,24 +10,24 @@
     "preview": "nuxt preview"
   },
   "dependencies": {
-    "@iconify/json": "^2.2.364",
+    "@iconify/json": "^2.2.365",
     "@nuxt/image": "^1.11.0",
     "@roku-ui/preset": "workspace:^",
     "@roku-ui/vue": "workspace:^",
-    "unocss": "66.3.3"
+    "unocss": "66.4.0"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^5.0.0",
+    "@antfu/eslint-config": "^5.1.0",
     "@iconify-json/tabler": "^1.2.20",
     "@nuxt/content": "^3.6.3",
     "@nuxt/devtools": "2.6.2",
     "@nuxtjs/robots": "^5.4.0",
     "@shikijs/transformers": "^3.9.1",
-    "@unocss/eslint-config": "66.3.3",
-    "@unocss/eslint-plugin": "66.3.3",
-    "@unocss/nuxt": "66.3.3",
-    "@unocss/preset-icons": "66.3.3",
-    "@unocss/preset-typography": "66.3.3",
+    "@unocss/eslint-config": "66.4.0",
+    "@unocss/eslint-plugin": "66.4.0",
+    "@unocss/nuxt": "66.4.0",
+    "@unocss/preset-icons": "66.4.0",
+    "@unocss/preset-typography": "66.4.0",
     "@vueuse/nuxt": "^13.6.0",
     "eslint": "^9.32.0",
     "eslint-plugin-format": "^1.0.1",
