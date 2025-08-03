@@ -38,7 +38,7 @@
     "@formkit/auto-animate": "^0.8.2",
     "@unocss/reset": "66.4.0",
     "@vueuse/core": "^13.6.0",
-    "tinycolor2": "^1.6.0",
+    "culori": "^4.0.2",
     "vue": "^3.5.18",
     "vue-wf": "^0.5.0"
   },
@@ -46,7 +46,6 @@
     "@iconify/json": "^2.2.365",
     "@jannchie/eslint-config": "^3.7.0",
     "@roku-ui/preset": "workspace:^",
-    "@types/tinycolor2": "^1.4.6",
     "@unocss/eslint-config": "66.4.0",
     "@unocss/eslint-plugin": "66.4.0",
     "@unocss/preset-icons": "66.4.0",

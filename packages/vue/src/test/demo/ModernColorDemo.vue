@@ -6,6 +6,12 @@ import {
   generateOKLCHString,
   useThemeManager,
 } from '@/composables'
+import {
+  generateAdvancedColorPalette,
+  isColorInGamut,
+  ColorPalettePerformance,
+  type AdvancedColorOptions,
+} from '@/utils'
 
 // Theme management
 const { theme, scheme, setTheme, toggleScheme, availableThemes } = useThemeManager()
@@ -15,6 +21,7 @@ const primaryColor = ref('#0067cc')
 const secondaryColor = ref('#5999A6')
 const tertiaryColor = ref('#F76C22')
 const errorColor = ref('#F95858')
+const surfaceColor = ref('#121212')
 
 // Create custom theme with OKLCH (for future use)
 // const customThemeData = useThemeDataOKLCH('custom', {
@@ -32,6 +39,7 @@ const colorInfo = computed(() => {
     secondary: generateEditorFriendlyColors(secondaryColor.value),
     tertiary: generateEditorFriendlyColors(tertiaryColor.value),
     error: generateEditorFriendlyColors(errorColor.value),
+    surface: generateEditorFriendlyColors(surfaceColor.value),
   }
 })
 
@@ -39,6 +47,55 @@ const colorInfo = computed(() => {
 const showOKLCH = ref(false)
 const showColorMix = ref(false)
 const selectedOpacity = ref(30)
+
+// Advanced color generation settings
+const colorStrategy = ref<'conservative' | 'balanced' | 'vibrant'>('balanced')
+const colorPurpose = ref<'primary' | 'secondary' | 'surface' | 'accent'>('primary')
+const contrastTarget = ref<'AA' | 'AAA' | 'none'>('AA')
+const selectedGamut = ref<'srgb' | 'p3' | 'rec2020'>('srgb')
+const backgroundLightness = ref(95)
+
+// Advanced color analysis
+const advancedColorInfo = computed(() => {
+  const options: AdvancedColorOptions = {
+    strategy: colorStrategy.value,
+    purpose: colorPurpose.value,
+    contrastTarget: contrastTarget.value,
+    gamut: selectedGamut.value,
+    backgroundLightness: backgroundLightness.value / 100,
+    enableAnalysis: true,
+  }
+  
+  return {
+    primary: generateAdvancedColorPalette(primaryColor.value, options),
+    secondary: generateAdvancedColorPalette(secondaryColor.value, { ...options, purpose: 'secondary' }),
+    tertiary: generateAdvancedColorPalette(tertiaryColor.value, { ...options, purpose: 'accent' }),
+    error: generateAdvancedColorPalette(errorColor.value, options),
+    surface: generateAdvancedColorPalette(surfaceColor.value, { ...options, purpose: 'surface' }),
+  }
+})
+
+// Performance stats
+const performanceStats = computed(() => ColorPalettePerformance.getCacheStats())
+
+// Gamut validation
+const gamutValidation = computed(() => {
+  const colors = [
+    primaryColor.value,
+    secondaryColor.value,
+    tertiaryColor.value,
+    errorColor.value,
+    surfaceColor.value,
+  ]
+  
+  return colors.map((color, index) => ({
+    color,
+    name: ['Primary', 'Secondary', 'Tertiary', 'Error', 'Surface'][index],
+    srgb: isColorInGamut(color, 'srgb'),
+    p3: isColorInGamut(color, 'p3'),
+    rec2020: isColorInGamut(color, 'rec2020'),
+  }))
+})
 </script>
 
 <template>
@@ -46,10 +103,10 @@ const selectedOpacity = ref(30)
     <!-- Header -->
     <div class="space-y-4">
       <h1 class="text-3xl text-surface font-bold">
-        Modern Color System Demo
+        Enhanced Color System Demo
       </h1>
       <p class="text-surface-dimmed">
-        Showcase of OKLCH color space, color-mix() functions, and modern theme switching capabilities.
+        Showcasing advanced OKLCH color generation with scientific algorithms, contrast awareness, gamut validation, and adaptive strategies.
       </p>
     </div>
 
@@ -94,7 +151,7 @@ const selectedOpacity = ref(30)
         Custom Colors (OKLCH)
       </h2>
 
-      <div class="gap-4 grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2">
+      <div class="gap-4 grid grid-cols-1 lg:grid-cols-5 md:grid-cols-2">
         <div class="space-y-2">
           <label class="text-sm text-surface font-medium">Primary</label>
           <TextField
@@ -142,10 +199,263 @@ const selectedOpacity = ref(30)
             OKLCH: {{ generateOKLCHString(errorColor) }}
           </div>
         </div>
+
+        <div class="space-y-2">
+          <label class="text-sm text-surface font-medium">Surface</label>
+          <TextField
+            v-model="surfaceColor"
+            type="color"
+            class="h-12"
+          />
+          <div class="text-xs text-surface-dimmed">
+            OKLCH: {{ generateOKLCHString(surfaceColor) }}
+          </div>
+        </div>
       </div>
     </Paper>
 
-    <!-- Color Palettes -->
+    <!-- Advanced Color Generation Settings -->
+    <Paper class="p-6 space-y-4">
+      <h2 class="text-xl text-surface font-semibold">
+        Advanced Generation Settings
+      </h2>
+
+      <div class="gap-4 grid grid-cols-1 lg:grid-cols-5 md:grid-cols-3">
+        <div class="space-y-2">
+          <label class="text-sm text-surface font-medium">Strategy</label>
+          <select 
+            v-model="colorStrategy"
+            class="text-surface px-3 py-2 border border-surface rounded-lg bg-surface w-full"
+          >
+            <option value="conservative">Conservative</option>
+            <option value="balanced">Balanced</option>
+            <option value="vibrant">Vibrant</option>
+          </select>
+        </div>
+        
+        <div class="space-y-2">
+          <label class="text-sm text-surface font-medium">Purpose</label>
+          <select 
+            v-model="colorPurpose"
+            class="text-surface px-3 py-2 border border-surface rounded-lg bg-surface w-full"
+          >
+            <option value="primary">Primary</option>
+            <option value="secondary">Secondary</option>
+            <option value="accent">Accent</option>
+            <option value="surface">Surface</option>
+          </select>
+        </div>
+        
+        <div class="space-y-2">
+          <label class="text-sm text-surface font-medium">Contrast</label>
+          <select 
+            v-model="contrastTarget"
+            class="text-surface px-3 py-2 border border-surface rounded-lg bg-surface w-full"
+          >
+            <option value="none">None</option>
+            <option value="AA">AA (4.5:1)</option>
+            <option value="AAA">AAA (7:1)</option>
+          </select>
+        </div>
+        
+        <div class="space-y-2">
+          <label class="text-sm text-surface font-medium">Gamut</label>
+          <select 
+            v-model="selectedGamut"
+            class="text-surface px-3 py-2 border border-surface rounded-lg bg-surface w-full"
+          >
+            <option value="srgb">sRGB</option>
+            <option value="p3">Display P3</option>
+            <option value="rec2020">Rec 2020</option>
+          </select>
+        </div>
+        
+        <div class="space-y-2">
+          <label class="text-sm text-surface font-medium">Background Lightness</label>
+          <input
+            v-model="backgroundLightness"
+            type="range"
+            min="0"
+            max="100"
+            class="w-full"
+          >
+          <div class="text-xs text-surface-dimmed text-center">{{ backgroundLightness }}%</div>
+        </div>
+      </div>
+    </Paper>
+
+    <!-- Gamut Validation -->
+    <Paper class="p-6 space-y-4">
+      <h2 class="text-xl text-surface font-semibold">
+        Color Gamut Validation
+      </h2>
+
+      <div class="gap-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5">
+        <div
+          v-for="validation in gamutValidation"
+          :key="validation.name"
+          class="space-y-2"
+        >
+          <div class="flex gap-2 items-center">
+            <div 
+              class="border border-surface-variant rounded w-6 h-6"
+              :style="{ backgroundColor: validation.color }"
+            />
+            <span class="text-sm text-surface font-medium">{{ validation.name }}</span>
+          </div>
+          
+          <div class="text-xs space-y-1">
+            <div class="flex items-center justify-between">
+              <span>sRGB:</span>
+              <span :class="validation.srgb ? 'text-green-600' : 'text-red-600'">
+                {{ validation.srgb ? '✓' : '✗' }}
+              </span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span>P3:</span>
+              <span :class="validation.p3 ? 'text-green-600' : 'text-red-600'">
+                {{ validation.p3 ? '✓' : '✗' }}
+              </span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span>Rec2020:</span>
+              <span :class="validation.rec2020 ? 'text-green-600' : 'text-red-600'">
+                {{ validation.rec2020 ? '✓' : '✗' }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Paper>
+
+    <!-- Performance Stats -->
+    <Paper class="p-6 space-y-4">
+      <h2 class="text-xl text-surface font-semibold">
+        Performance & Caching
+      </h2>
+
+      <div class="gap-4 grid grid-cols-1 md:grid-cols-3">
+        <div class="space-y-2">
+          <div class="text-sm text-surface font-medium">Cache Usage</div>
+          <div class="text-2xl text-primary font-bold">
+            {{ performanceStats.size }} / {{ performanceStats.maxSize }}
+          </div>
+          <div class="text-xs text-surface-dimmed">Cached results</div>
+        </div>
+        
+        <div class="space-y-2">
+          <div class="text-sm text-surface font-medium">Hit Rate</div>
+          <div class="text-2xl text-secondary font-bold">
+            {{ performanceStats.hitRate }}%
+          </div>
+          <div class="text-xs text-surface-dimmed">Cache efficiency</div>
+        </div>
+        
+        <div class="space-y-2">
+          <div class="text-sm text-surface font-medium">Actions</div>
+          <div class="space-y-2">
+            <Btn 
+              size="sm" 
+              @click="ColorPalettePerformance.clearCache()"
+            >
+              Clear Cache
+            </Btn>
+            <Btn 
+              size="sm" 
+              @click="ColorPalettePerformance.precomputePalettes([primaryColor, secondaryColor, tertiaryColor, errorColor, surfaceColor])"
+            >
+              Precompute
+            </Btn>
+          </div>
+        </div>
+      </div>
+    </Paper>
+
+    <!-- Enhanced Color Palettes -->
+    <Paper class="p-6 space-y-4">
+      <div class="flex items-center justify-between">
+        <h2 class="text-xl text-surface font-semibold">
+          Enhanced Color Palettes
+        </h2>
+        <Switch
+          v-model="showOKLCH"
+          label="Show OKLCH Values"
+        />
+      </div>
+
+      <div class="space-y-6">
+        <div
+          v-for="(paletteResult, colorName) in advancedColorInfo"
+          :key="colorName"
+          class="space-y-4"
+        >
+          <div class="flex items-center justify-between">
+            <h3 class="text-lg text-surface font-medium capitalize">
+              {{ colorName }}
+            </h3>
+            <div class="text-xs text-surface-dimmed">
+              Strategy: {{ paletteResult.metadata.strategy }} | 
+              Gamut: {{ paletteResult.metadata.gamut }} | 
+              Contrast: {{ paletteResult.metadata.contrastTarget }}
+            </div>
+          </div>
+          
+          <!-- Main palette -->
+          <div class="gap-1 grid grid-cols-11">
+            <div
+              v-for="(color, index) in paletteResult.colors"
+              :key="index"
+              class="group border border-surface-variant rounded-lg aspect-square cursor-pointer relative"
+              :style="{ backgroundColor: color }"
+              :title="color"
+            >
+              <div class="opacity-0 flex transition-opacity items-center inset-0 justify-center absolute group-hover:opacity-100">
+                <span class="text-xs text-white font-mono px-1 rounded bg-black bg-opacity-75">
+                  {{ index }}
+                </span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Alternative strategies -->
+          <div v-if="paletteResult.alternatives" class="space-y-2">
+            <div class="text-sm text-surface font-medium">Alternative Strategies:</div>
+            <div class="space-y-2">
+              <div
+                v-for="(altColors, strategyName) in paletteResult.alternatives"
+                :key="strategyName"
+                class="space-y-1"
+              >
+                <div class="text-xs text-surface-dimmed capitalize">{{ strategyName }}:</div>
+                <div class="gap-1 grid grid-cols-11">
+                  <div
+                    v-for="(color, index) in altColors"
+                    :key="index"
+                    class="border border-surface-variant rounded h-6"
+                    :style="{ backgroundColor: color }"
+                    :title="color"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Gamut analysis -->
+          <div v-if="paletteResult.metadata.gamutAnalysis" class="text-xs text-surface-dimmed space-y-1">
+            <div>Gamut Coverage: 
+              sRGB {{ Math.round(paletteResult.metadata.gamutAnalysis.srgbCoverage) }}% | 
+              P3 {{ Math.round(paletteResult.metadata.gamutAnalysis.p3Coverage) }}% | 
+              Rec2020 {{ Math.round(paletteResult.metadata.gamutAnalysis.rec2020Coverage) }}%
+            </div>
+            <div v-if="paletteResult.metadata.gamutAnalysis.outOfGamutColors.length > 0">
+              Out-of-gamut colors: {{ paletteResult.metadata.gamutAnalysis.outOfGamutColors.length }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </Paper>
+
+    <!-- Legacy Color Palettes -->
     <Paper class="p-6 space-y-4">
       <div class="flex items-center justify-between">
         <h2 class="text-xl text-surface font-semibold">
@@ -349,16 +659,19 @@ const selectedOpacity = ref(30)
       <div class="gap-6 grid grid-cols-1 md:grid-cols-2">
         <div class="space-y-2">
           <h3 class="text-lg text-surface font-medium">
-            Features Implemented
+            Enhanced Features Implemented
           </h3>
           <ul class="text-sm text-surface-dimmed space-y-1">
-            <li>✅ OKLCH color space for perceptual uniformity</li>
-            <li>✅ color-mix() function for modern transparency</li>
-            <li>✅ @layer theme for better CSS organization</li>
-            <li>✅ Multi-theme support with data-theme</li>
-            <li>✅ Editor-friendly color variables</li>
-            <li>✅ Automatic color palette generation</li>
-            <li>✅ Backward compatibility with existing API</li>
+            <li>✅ Scientific perceptual chroma curves</li>
+            <li>✅ WCAG contrast-aware color generation</li>
+            <li>✅ Adaptive lightness mapping strategies</li>
+            <li>✅ Multi-gamut support (sRGB/P3/Rec2020)</li>
+            <li>✅ Hue-specific color adjustments</li>
+            <li>✅ Performance caching with LRU strategy</li>
+            <li>✅ Real-time gamut validation</li>
+            <li>✅ Alternative generation strategies</li>
+            <li>✅ Purpose-driven color optimization</li>
+            <li>✅ Advanced API with full type safety</li>
           </ul>
         </div>
 

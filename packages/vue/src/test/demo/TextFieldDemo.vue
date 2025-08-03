@@ -93,6 +93,11 @@ const dateInput = ref('')
           v-model="basicInput"
           placeholder="Enter some text..."
         />
+        <TextField
+          v-model="basicInput"
+          class="w-80"
+          placeholder="Enter some text..."
+        />
         <div class="text-sm text-surface-dimmed">
           Value: {{ basicInput }}
         </div>

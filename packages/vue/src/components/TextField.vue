@@ -133,7 +133,10 @@ function handleInput(event: Event) {
 </script>
 
 <template>
-  <div :style="[colorStyle]">
+  <div
+    :style="[colorStyle]"
+    v-bind="$attrs"
+  >
     <label
       v-if="$slots.label || label"
       :for="id"

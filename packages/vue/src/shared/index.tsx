@@ -1,10 +1,11 @@
+import type { Color as CuloriColor } from 'culori'
 import type { ComputedRef, MaybeRef } from 'vue'
 import type { BtnVariant, Color, ContainerVariant, InputVariant, Rounded } from '@/types'
-import tinycolor from 'tinycolor2'
+import { formatHex, formatHex8, rgb } from 'culori'
 import { computed, inject, provide, unref } from 'vue'
-import { generateColorsObjMap } from '@/utils'
+import { generateColorsObjMap, generateColorsObjMapOKLCH, generateAdaptiveLightnessMap } from '@/utils'
 
-import { COLOR_LIGHTNESS_MAP, SURFACE_LIGHTNESS_MAP } from '..'
+import { COLOR_LIGHTNESS_MAP } from '..'
 
 // const darkSurfaceBgBaseIndex = 10
 const darkSurfaceBgIndex = 9
@@ -67,7 +68,12 @@ export const errorColors = computed(() => {
 })
 
 export const surfaceColors = computed(() => {
-  return generateColorsObjMap(getThemeColorString('surface'), SURFACE_LIGHTNESS_MAP).colors
+  const surfaceColorString = getThemeColorString('surface')
+  const adaptiveLightnessMap = generateAdaptiveLightnessMap(surfaceColorString, 'surface')
+  return generateColorsObjMapOKLCH(surfaceColorString, adaptiveLightnessMap, {
+    strategy: 'conservative', // Surface colors should be more muted
+    gamut: 'srgb', // Ensure compatibility
+  }).colors
 })
 
 export function useContainerCS(variant: MaybeRef<ContainerVariant>, color: MaybeRef<Color>) {
@@ -86,37 +92,37 @@ export function useContainerCS(variant: MaybeRef<ContainerVariant>, color: Maybe
   })
 }
 
-function useTinycolor(color: MaybeRef<Color>) {
+function useCuloriColor(color: MaybeRef<Color>) {
   return computed(() => {
     const colorValue = unref(color)
     switch (colorValue) {
       case 'surface': {
-        return tinycolor(getThemeColorString('surface'))
+        return rgb(getThemeColorString('surface'))
       }
       case 'primary': {
-        return tinycolor(getThemeColorString('primary'))
+        return rgb(getThemeColorString('primary'))
       }
       case 'secondary': {
-        return tinycolor(getThemeColorString('secondary'))
+        return rgb(getThemeColorString('secondary'))
       }
       case 'tertiary': {
-        return tinycolor(getThemeColorString('tertiary'))
+        return rgb(getThemeColorString('tertiary'))
       }
       case 'error': {
-        return tinycolor(getThemeColorString('error'))
+        return rgb(getThemeColorString('error'))
       }
       default: {
-        return tinycolor(colorValue)
+        return rgb(colorValue)
       }
     }
   })
 }
 
-const colorStyleCache = new Map<string, tinycolor.Instance[]>()
+const colorStyleCache = new Map<string, CuloriColor[]>()
 export function useColors(color: MaybeRef<Color>, lightnessMap = COLOR_LIGHTNESS_MAP) {
   return computed(() => {
-    const colorObj = useTinycolor(color).value
-    const colorHex = colorObj.toHexString()
+    const colorObj = useCuloriColor(color).value
+    const colorHex = formatHex(colorObj) || '#000000'
     if (colorStyleCache.has(colorHex)) {
       return colorStyleCache.get(colorHex)!
     }
@@ -130,7 +136,14 @@ export function useColors(color: MaybeRef<Color>, lightnessMap = COLOR_LIGHTNESS
 }
 
 export function useSurfaceColors() {
-  return computed(() => generateColorsObjMap(getThemeColorString('surface'), SURFACE_LIGHTNESS_MAP).colors)
+  return computed(() => {
+    const surfaceColorString = getThemeColorString('surface')
+    const adaptiveLightnessMap = generateAdaptiveLightnessMap(surfaceColorString, 'surface')
+    return generateColorsObjMapOKLCH(surfaceColorString, adaptiveLightnessMap, {
+      strategy: 'conservative',
+      gamut: 'srgb',
+    }).colors
+  })
 }
 
 type CSType = 'bg' | 'border' | 'text' | 'placeholder' | 'hover:bg' | 'hover:border' | 'hover:text' | 'outline'
@@ -266,13 +279,13 @@ export function useContainerLightCS(color: MaybeRef<Color>) {
   })
 }
 
-export function getCSInner(colors: tinycolor.Instance[], type: CSType, darkIndex: number, lightIndex: number, alpha = 1): CS {
+export function getCSInner(colors: CuloriColor[], type: CSType, darkIndex: number, lightIndex: number, alpha = 1): CS {
   switch (type) {
     case 'outline': {
       return {
         style: {
-          [`--d-outline`]: colors[darkIndex].clone().setAlpha(alpha).toHex8String(),
-          [`--l-outline`]: colors[lightIndex].clone().setAlpha(alpha).toHex8String(),
+          [`--d-outline`]: formatHex8({ ...colors[darkIndex], alpha }) || '#00000000',
+          [`--l-outline`]: formatHex8({ ...colors[lightIndex], alpha }) || '#00000000',
         },
         class: [
           `dark:focus-visible:outline-[--d-outline]`,
@@ -283,8 +296,8 @@ export function getCSInner(colors: tinycolor.Instance[], type: CSType, darkIndex
     case 'bg': {
       return {
         style: {
-          [`--d-bg`]: colors[darkIndex].clone().setAlpha(alpha).toHex8String(),
-          [`--l-bg`]: colors[lightIndex].clone().setAlpha(alpha).toHex8String(),
+          [`--d-bg`]: formatHex8({ ...colors[darkIndex], alpha }) || '#00000000',
+          [`--l-bg`]: formatHex8({ ...colors[lightIndex], alpha }) || '#00000000',
         },
         class: [
           `dark:bg-[--d-bg]`,
@@ -295,8 +308,8 @@ export function getCSInner(colors: tinycolor.Instance[], type: CSType, darkIndex
     case 'border': {
       return {
         style: {
-          [`--d-border`]: colors[darkIndex].clone().setAlpha(alpha).toHex8String(),
-          [`--l-border`]: colors[lightIndex].clone().setAlpha(alpha).toHex8String(),
+          [`--d-border`]: formatHex8({ ...colors[darkIndex], alpha }) || '#00000000',
+          [`--l-border`]: formatHex8({ ...colors[lightIndex], alpha }) || '#00000000',
         },
         class: [
           `dark:border-[--d-border]`,
@@ -307,8 +320,8 @@ export function getCSInner(colors: tinycolor.Instance[], type: CSType, darkIndex
     case 'text': {
       return {
         style: {
-          [`--d-text`]: colors[darkIndex].clone().setAlpha(alpha).toHex8String(),
-          [`--l-text`]: colors[lightIndex].clone().setAlpha(alpha).toHex8String(),
+          [`--d-text`]: formatHex8({ ...colors[darkIndex], alpha }) || '#00000000',
+          [`--l-text`]: formatHex8({ ...colors[lightIndex], alpha }) || '#00000000',
         },
         class: [
           `dark:text-[--d-text]`,
@@ -319,8 +332,8 @@ export function getCSInner(colors: tinycolor.Instance[], type: CSType, darkIndex
     case 'placeholder': {
       return {
         style: {
-          [`--d-placeholder`]: colors[darkIndex].clone().setAlpha(alpha).toHex8String(),
-          [`--l-placeholder`]: colors[lightIndex].clone().setAlpha(alpha).toHex8String(),
+          [`--d-placeholder`]: formatHex8({ ...colors[darkIndex], alpha }) || '#00000000',
+          [`--l-placeholder`]: formatHex8({ ...colors[lightIndex], alpha }) || '#00000000',
         },
         class: [
           'dark:placeholder-[--d-placeholder]',
@@ -331,8 +344,8 @@ export function getCSInner(colors: tinycolor.Instance[], type: CSType, darkIndex
     case 'hover:bg': {
       return {
         style: {
-          [`--d-bg-h`]: colors[darkIndex].clone().setAlpha(alpha).toHexString(),
-          [`--l-bg-h`]: colors[lightIndex].clone().setAlpha(alpha).toHexString(),
+          [`--d-bg-h`]: formatHex({ ...colors[darkIndex], alpha }) || '#000000',
+          [`--l-bg-h`]: formatHex({ ...colors[lightIndex], alpha }) || '#000000',
         },
         class: [
           `dark:hover:bg-[--d-bg-h]`,
@@ -343,8 +356,8 @@ export function getCSInner(colors: tinycolor.Instance[], type: CSType, darkIndex
     case 'hover:border': {
       return {
         style: {
-          [`--d-border-h`]: colors[darkIndex].clone().setAlpha(alpha).toHexString(),
-          [`--l-border-h`]: colors[lightIndex].clone().setAlpha(alpha).toHexString(),
+          [`--d-border-h`]: formatHex({ ...colors[darkIndex], alpha }) || '#000000',
+          [`--l-border-h`]: formatHex({ ...colors[lightIndex], alpha }) || '#000000',
         },
         class: [
           'dark:hover:border-[--d-border-h]',
@@ -355,8 +368,8 @@ export function getCSInner(colors: tinycolor.Instance[], type: CSType, darkIndex
     case 'hover:text': {
       return {
         style: {
-          [`--d-text-h`]: colors[darkIndex].clone().setAlpha(alpha).toHexString(),
-          [`--l-text-h`]: colors[lightIndex].clone().setAlpha(alpha).toHexString(),
+          [`--d-text-h`]: formatHex({ ...colors[darkIndex], alpha }) || '#000000',
+          [`--l-text-h`]: formatHex({ ...colors[lightIndex], alpha }) || '#000000',
         },
         class: [
           'dark:hover:text-[--d-text-h]',
@@ -386,7 +399,12 @@ export function useColorCS(color: MaybeRef<Color>, type: CSType, index: CSIndex,
 
 export function useSurfaceCS(type: CSType, index: CSIndex, alpha = 1) {
   return computed(() => {
-    const { colors } = generateColorsObjMap(getThemeColorString('surface'), SURFACE_LIGHTNESS_MAP)
+    const surfaceColorString = getThemeColorString('surface')
+    const adaptiveLightnessMap = generateAdaptiveLightnessMap(surfaceColorString, 'surface')
+    const { colors } = generateColorsObjMapOKLCH(surfaceColorString, adaptiveLightnessMap, {
+      strategy: 'conservative',
+      gamut: 'srgb',
+    })
     if (typeof index === 'number') {
       return getCSInner(colors, type, index, index, alpha)
     }
@@ -405,7 +423,12 @@ export function useOutlineCS(color: MaybeRef<Color>) {
 export function useButtonCS(variant: MaybeRef<BtnVariant> = 'default', color: MaybeRef<Color> = 'primary'): ComputedRef<CS> {
   return computed(() => {
     const colors = useColors(color).value
-    const surface = generateColorsObjMap(getThemeColorString('surface'), SURFACE_LIGHTNESS_MAP).colors
+    const surfaceColorString = getThemeColorString('surface')
+    const adaptiveLightnessMap = generateAdaptiveLightnessMap(surfaceColorString, 'surface')
+    const surface = generateColorsObjMapOKLCH(surfaceColorString, adaptiveLightnessMap, {
+      strategy: 'conservative',
+      gamut: 'srgb',
+    }).colors
     const variantStyles: Record<BtnVariant, () => Record<string, string>> = {
       default: () => getDefaultVariantStyle(surface),
       filled: () => getFilledVariantStyle(colors),
@@ -423,67 +446,67 @@ export function useButtonCS(variant: MaybeRef<BtnVariant> = 'default', color: Ma
   })
 }
 
-function getDefaultVariantStyle(surface: tinycolor.Instance[]): Record<string, string> {
+function getDefaultVariantStyle(surface: CuloriColor[]): Record<string, string> {
   return {
-    '--d-bg': surface[darkSurfaceBgVariant1Index].toHexString(),
-    '--d-bg-h': surface[darkSurfaceBgVariant2Index].toHexString(),
-    '--d-border': surface[darkBorderVariantIndex].toHexString(),
-    '--l-bg': surface[lightSurfaceBgIndex].toHexString(),
-    '--l-bg-h': surface[lightSurfaceBgVariantIndex].toHexString(),
-    '--l-border': surface[lightBorderVariantIndex].toHexString(),
+    '--d-bg': formatHex(surface[darkSurfaceBgVariant1Index]) || '#000000',
+    '--d-bg-h': formatHex(surface[darkSurfaceBgVariant2Index]) || '#000000',
+    '--d-border': formatHex(surface[darkBorderVariantIndex]) || '#000000',
+    '--l-bg': formatHex(surface[lightSurfaceBgIndex]) || '#000000',
+    '--l-bg-h': formatHex(surface[lightSurfaceBgVariantIndex]) || '#000000',
+    '--l-border': formatHex(surface[lightBorderVariantIndex]) || '#000000',
   }
 }
 
-function getFilledVariantStyle(color: tinycolor.Instance[]): Record<string, string> {
+function getFilledVariantStyle(color: CuloriColor[]): Record<string, string> {
   return {
     '--d-border': 'transparent',
-    '--d-bg': color[darkBgIndex].toHexString(),
-    '--d-bg-h': color[darkBgVariantIndex].toHexString(),
+    '--d-bg': formatHex(color[darkBgIndex]) || '#000000',
+    '--d-bg-h': formatHex(color[darkBgVariantIndex]) || '#000000',
     '--d-text': 'white',
-    '--l-bg': color[lightBgIndex].toHexString(),
-    '--l-bg-h': color[lightBgVariantIndex].toHexString(),
+    '--l-bg': formatHex(color[lightBgIndex]) || '#000000',
+    '--l-bg-h': formatHex(color[lightBgVariantIndex]) || '#000000',
     '--l-text': 'white',
     '--l-text-h': 'white',
     '--l-border': 'transparent',
   }
 }
 
-function getLightVariantStyle(color: tinycolor.Instance[]): Record<string, string> {
+function getLightVariantStyle(color: CuloriColor[]): Record<string, string> {
   return {
     '--d-border': 'transparent',
-    '--d-bg': color[darkBgIndex].clone().setAlpha(darkOpacity).toHex8String(),
-    '--d-bg-h': color[darkBgIndex].clone().setAlpha(darkOpacityVariant).toHex8String(),
-    '--d-text': color[darkTextIndex].toHexString(),
-    '--d-text-h': color[darkTextIndex].toHexString(),
-    '--l-bg': color[lightBgIndex].clone().setAlpha(lightOpacity).toHex8String(),
-    '--l-bg-h': color[lightBgIndex].clone().setAlpha(lightOpacityVariant).toHex8String(),
-    '--l-text': color[lightTextIndex].toHexString(),
-    '--l-text-h': color[lightTextIndex].toHexString(),
+    '--d-bg': formatHex8({ ...color[darkBgIndex], alpha: darkOpacity }) || '#00000000',
+    '--d-bg-h': formatHex8({ ...color[darkBgIndex], alpha: darkOpacityVariant }) || '#00000000',
+    '--d-text': formatHex(color[darkTextIndex]) || '#000000',
+    '--d-text-h': formatHex(color[darkTextIndex]) || '#000000',
+    '--l-bg': formatHex8({ ...color[lightBgIndex], alpha: lightOpacity }) || '#00000000',
+    '--l-bg-h': formatHex8({ ...color[lightBgIndex], alpha: lightOpacityVariant }) || '#00000000',
+    '--l-text': formatHex(color[lightTextIndex]) || '#000000',
+    '--l-text-h': formatHex(color[lightTextIndex]) || '#000000',
     '--l-border': 'transparent',
   }
 }
 
-function getOutlineVariantStyle(color: tinycolor.Instance[]): Record<string, string> {
+function getOutlineVariantStyle(color: CuloriColor[]): Record<string, string> {
   return {
     '--d-bg': 'transparent',
-    '--d-bg-h': color[darkBgVariantIndex].clone().setAlpha(darkOpacity).toHex8String(),
-    '--d-text': color[darkTextIndex].toHexString(),
-    '--d-text-h': color[darkTextIndex].toHexString(),
-    '--d-border': color[darkBorderIndex].toHexString(),
+    '--d-bg-h': formatHex8({ ...color[darkBgVariantIndex], alpha: darkOpacity }) || '#00000000',
+    '--d-text': formatHex(color[darkTextIndex]) || '#000000',
+    '--d-text-h': formatHex(color[darkTextIndex]) || '#000000',
+    '--d-border': formatHex(color[darkBorderIndex]) || '#000000',
     '--l-bg': 'transparent',
-    '--l-bg-h': color[lightBgVariantIndex].clone().setAlpha(lightOpacity).toHex8String(),
-    '--l-text': color[lightTextIndex].toHexString(),
-    '--l-text-h': color[lightTextIndex].toHexString(),
-    '--l-border': color[lightBorderIndex].toHexString(),
+    '--l-bg-h': formatHex8({ ...color[lightBgVariantIndex], alpha: lightOpacity }) || '#00000000',
+    '--l-text': formatHex(color[lightTextIndex]) || '#000000',
+    '--l-text-h': formatHex(color[lightTextIndex]) || '#000000',
+    '--l-border': formatHex(color[lightBorderIndex]) || '#000000',
   }
 }
 
-function getTransparentVariantStyle(color: tinycolor.Instance[]): Record<string, string> {
+function getTransparentVariantStyle(color: CuloriColor[]): Record<string, string> {
   return {
-    '--d-text': color[3].toHexString(),
-    '--d-text-h': color[3].toHexString(),
-    '--l-text': color[5].toHexString(),
-    '--l-text-h': color[5].toHexString(),
+    '--d-text': formatHex(color[3]) || '#000000',
+    '--d-text-h': formatHex(color[3]) || '#000000',
+    '--l-text': formatHex(color[5]) || '#000000',
+    '--l-text-h': formatHex(color[5]) || '#000000',
     '--d-bg': 'transparent',
     '--l-bg': 'transparent',
     '--d-border': 'transparent',
@@ -491,47 +514,47 @@ function getTransparentVariantStyle(color: tinycolor.Instance[]): Record<string,
   }
 }
 
-function getSubtleVariantStyle(color: tinycolor.Instance[]): Record<string, string> {
+function getSubtleVariantStyle(color: CuloriColor[]): Record<string, string> {
   return {
     '--d-bg': 'transparent',
-    '--d-bg-h': color[3].clone().setAlpha(darkOpacity).toHex8String(),
-    '--d-text': color[2].toHexString(),
-    '--d-text-h': color[2].toHexString(),
+    '--d-bg-h': formatHex8({ ...color[3], alpha: darkOpacity }) || '#00000000',
+    '--d-text': formatHex(color[2]) || '#000000',
+    '--d-text-h': formatHex(color[2]) || '#000000',
     '--d-border': 'transparent',
     '--l-bg': 'transparent',
-    '--l-bg-h': color[3].clone().setAlpha(lightOpacity).toHex8String(),
-    '--l-text': color[5].toHexString(),
-    '--l-text-h': color[5].toHexString(),
+    '--l-bg-h': formatHex8({ ...color[3], alpha: lightOpacity }) || '#00000000',
+    '--l-text': formatHex(color[5]) || '#000000',
+    '--l-text-h': formatHex(color[5]) || '#000000',
     '--l-border': 'transparent',
   }
 }
 
-function getContrastVariantStyle(color: tinycolor.Instance[]): Record<string, string> {
+function getContrastVariantStyle(color: CuloriColor[]): Record<string, string> {
   return {
-    '--d-text': color[2].toHexString(),
+    '--d-text': formatHex(color[2]) || '#000000',
     '--d-text-h': 'white',
     '--d-bg': 'transparent',
-    '--d-bg-h': color[5].toHexString(),
+    '--d-bg-h': formatHex(color[5]) || '#000000',
     '--d-border': 'transparent',
-    '--l-text': color[5].toHexString(),
+    '--l-text': formatHex(color[5]) || '#000000',
     '--l-text-h': 'white',
     '--l-bg': 'transparent',
-    '--l-bg-h': color[5].toHexString(),
+    '--l-bg-h': formatHex(color[5]) || '#000000',
     '--l-border': 'transparent',
   }
 }
 
-function getWhiteVariantStyle(color: tinycolor.Instance[]): Record<string, string> {
+function getWhiteVariantStyle(color: CuloriColor[]): Record<string, string> {
   return {
     '--d-bg': 'white',
     '--d-bg-h': 'white',
-    '--d-text': color[4].toHexString(),
-    '--d-text-h': color[4].toHexString(),
+    '--d-text': formatHex(color[4]) || '#000000',
+    '--d-text-h': formatHex(color[4]) || '#000000',
     '--d-border': 'transparent',
     '--l-bg': 'white',
     '--l-bg-h': 'white',
-    '--l-text': color[5].toHexString(),
-    '--l-text-h': color[5].toHexString(),
+    '--l-text': formatHex(color[5]) || '#000000',
+    '--l-text-h': formatHex(color[5]) || '#000000',
     '--l-border': 'transparent',
   }
 }
@@ -539,7 +562,12 @@ function getWhiteVariantStyle(color: tinycolor.Instance[]): Record<string, strin
 export function useTagCS(variant: MaybeRef<BtnVariant> = 'default', color: MaybeRef<Color> = 'primary', hasInteraction: MaybeRef<boolean> = false): ComputedRef<CS> {
   return computed(() => {
     const colors = useColors(color).value
-    const surface = generateColorsObjMap(getThemeColorString('surface'), SURFACE_LIGHTNESS_MAP).colors
+    const surfaceColorString = getThemeColorString('surface')
+    const adaptiveLightnessMap = generateAdaptiveLightnessMap(surfaceColorString, 'surface')
+    const surface = generateColorsObjMapOKLCH(surfaceColorString, adaptiveLightnessMap, {
+      strategy: 'conservative',
+      gamut: 'srgb',
+    }).colors
     const interactive = unref(hasInteraction)
 
     const variantStyles: Record<BtnVariant, () => CS> = {
@@ -556,12 +584,12 @@ export function useTagCS(variant: MaybeRef<BtnVariant> = 'default', color: Maybe
   })
 }
 
-function getDefaultTagVariantStyle(surface: tinycolor.Instance[], hasInteraction: boolean): CS {
+function getDefaultTagVariantStyle(surface: CuloriColor[], hasInteraction: boolean): CS {
   const baseStyle = {
-    '--d-bg': surface[darkSurfaceBgVariant1Index].toHexString(),
-    '--d-border': surface[darkBorderVariantIndex].toHexString(),
-    '--l-bg': surface[lightSurfaceBgIndex].toHexString(),
-    '--l-border': surface[lightBorderVariantIndex].toHexString(),
+    '--d-bg': formatHex(surface[darkSurfaceBgVariant1Index]) || '#000000',
+    '--d-border': formatHex(surface[darkBorderVariantIndex]) || '#000000',
+    '--l-bg': formatHex(surface[lightSurfaceBgIndex]) || '#000000',
+    '--l-border': formatHex(surface[lightBorderVariantIndex]) || '#000000',
   }
 
   const baseClass = [
@@ -575,8 +603,8 @@ function getDefaultTagVariantStyle(surface: tinycolor.Instance[], hasInteraction
     return {
       style: {
         ...baseStyle,
-        '--d-bg-h': surface[darkSurfaceBgVariant2Index].toHexString(),
-        '--l-bg-h': surface[lightSurfaceBgVariantIndex].toHexString(),
+        '--d-bg-h': formatHex(surface[darkSurfaceBgVariant2Index]) || '#000000',
+        '--l-bg-h': formatHex(surface[lightSurfaceBgVariantIndex]) || '#000000',
       },
       class: [
         ...baseClass,
@@ -592,12 +620,12 @@ function getDefaultTagVariantStyle(surface: tinycolor.Instance[], hasInteraction
   }
 }
 
-function getFilledTagVariantStyle(color: tinycolor.Instance[], hasInteraction: boolean): CS {
+function getFilledTagVariantStyle(color: CuloriColor[], hasInteraction: boolean): CS {
   const baseStyle = {
     '--d-border': 'transparent',
-    '--d-bg': color[darkBgIndex].toHexString(),
+    '--d-bg': formatHex(color[darkBgIndex]) || '#000000',
     '--d-text': 'white',
-    '--l-bg': color[lightBgIndex].toHexString(),
+    '--l-bg': formatHex(color[lightBgIndex]) || '#000000',
     '--l-text': 'white',
     '--l-border': 'transparent',
   }
@@ -615,8 +643,8 @@ function getFilledTagVariantStyle(color: tinycolor.Instance[], hasInteraction: b
     return {
       style: {
         ...baseStyle,
-        '--d-bg-h': color[darkBgVariantIndex].toHexString(),
-        '--l-bg-h': color[lightBgVariantIndex].toHexString(),
+        '--d-bg-h': formatHex(color[darkBgVariantIndex]) || '#000000',
+        '--l-bg-h': formatHex(color[lightBgVariantIndex]) || '#000000',
         '--l-text-h': 'white',
       },
       class: [
@@ -635,13 +663,13 @@ function getFilledTagVariantStyle(color: tinycolor.Instance[], hasInteraction: b
   }
 }
 
-function getLightTagVariantStyle(color: tinycolor.Instance[], hasInteraction: boolean): CS {
+function getLightTagVariantStyle(color: CuloriColor[], hasInteraction: boolean): CS {
   const baseStyle = {
     '--d-border': 'transparent',
-    '--d-bg': color[darkBgIndex].clone().setAlpha(darkOpacity).toHex8String(),
-    '--d-text': color[darkTextIndex].toHexString(),
-    '--l-bg': color[lightBgIndex].clone().setAlpha(lightOpacity).toHex8String(),
-    '--l-text': color[lightTextIndex].toHexString(),
+    '--d-bg': formatHex8({ ...color[darkBgIndex], alpha: darkOpacity }) || '#00000000',
+    '--d-text': formatHex(color[darkTextIndex]) || '#000000',
+    '--l-bg': formatHex8({ ...color[lightBgIndex], alpha: lightOpacity }) || '#00000000',
+    '--l-text': formatHex(color[lightTextIndex]) || '#000000',
     '--l-border': 'transparent',
   }
 
@@ -658,10 +686,10 @@ function getLightTagVariantStyle(color: tinycolor.Instance[], hasInteraction: bo
     return {
       style: {
         ...baseStyle,
-        '--d-bg-h': color[darkBgIndex].clone().setAlpha(darkOpacityVariant).toHex8String(),
-        '--d-text-h': color[darkTextIndex].toHexString(),
-        '--l-bg-h': color[lightBgIndex].clone().setAlpha(lightOpacityVariant).toHex8String(),
-        '--l-text-h': color[lightTextIndex].toHexString(),
+        '--d-bg-h': formatHex8({ ...color[darkBgIndex], alpha: darkOpacityVariant }) || '#00000000',
+        '--d-text-h': formatHex(color[darkTextIndex]) || '#000000',
+        '--l-bg-h': formatHex8({ ...color[lightBgIndex], alpha: lightOpacityVariant }) || '#00000000',
+        '--l-text-h': formatHex(color[lightTextIndex]) || '#000000',
       },
       class: [
         ...baseClass,
@@ -679,14 +707,14 @@ function getLightTagVariantStyle(color: tinycolor.Instance[], hasInteraction: bo
   }
 }
 
-function getOutlineTagVariantStyle(color: tinycolor.Instance[], hasInteraction: boolean): CS {
+function getOutlineTagVariantStyle(color: CuloriColor[], hasInteraction: boolean): CS {
   const baseStyle = {
     '--d-bg': 'transparent',
-    '--d-text': color[darkTextIndex].toHexString(),
-    '--d-border': color[darkBorderIndex].toHexString(),
+    '--d-text': formatHex(color[darkTextIndex]) || '#000000',
+    '--d-border': formatHex(color[darkBorderIndex]) || '#000000',
     '--l-bg': 'transparent',
-    '--l-text': color[lightTextIndex].toHexString(),
-    '--l-border': color[lightBorderIndex].toHexString(),
+    '--l-text': formatHex(color[lightTextIndex]) || '#000000',
+    '--l-border': formatHex(color[lightBorderIndex]) || '#000000',
   }
 
   const baseClass = [
@@ -702,10 +730,10 @@ function getOutlineTagVariantStyle(color: tinycolor.Instance[], hasInteraction: 
     return {
       style: {
         ...baseStyle,
-        '--d-bg-h': color[darkBgVariantIndex].clone().setAlpha(darkOpacity).toHex8String(),
-        '--d-text-h': color[darkTextIndex].toHexString(),
-        '--l-bg-h': color[lightBgVariantIndex].clone().setAlpha(lightOpacity).toHex8String(),
-        '--l-text-h': color[lightTextIndex].toHexString(),
+        '--d-bg-h': formatHex8({ ...color[darkBgVariantIndex], alpha: darkOpacity }) || '#00000000',
+        '--d-text-h': formatHex(color[darkTextIndex]) || '#000000',
+        '--l-bg-h': formatHex8({ ...color[lightBgVariantIndex], alpha: lightOpacity }) || '#00000000',
+        '--l-text-h': formatHex(color[lightTextIndex]) || '#000000',
       },
       class: [
         ...baseClass,
@@ -723,10 +751,10 @@ function getOutlineTagVariantStyle(color: tinycolor.Instance[], hasInteraction: 
   }
 }
 
-function getTransparentTagVariantStyle(color: tinycolor.Instance[], hasInteraction: boolean): CS {
+function getTransparentTagVariantStyle(color: CuloriColor[], hasInteraction: boolean): CS {
   const baseStyle = {
-    '--d-text': color[3].toHexString(),
-    '--l-text': color[5].toHexString(),
+    '--d-text': formatHex(color[3]) || '#000000',
+    '--l-text': formatHex(color[5]) || '#000000',
     '--d-bg': 'transparent',
     '--l-bg': 'transparent',
     '--d-border': 'transparent',
@@ -746,8 +774,8 @@ function getTransparentTagVariantStyle(color: tinycolor.Instance[], hasInteracti
     return {
       style: {
         ...baseStyle,
-        '--d-text-h': color[3].toHexString(),
-        '--l-text-h': color[5].toHexString(),
+        '--d-text-h': formatHex(color[3]) || '#000000',
+        '--l-text-h': formatHex(color[5]) || '#000000',
       },
       class: [
         ...baseClass,
@@ -763,13 +791,13 @@ function getTransparentTagVariantStyle(color: tinycolor.Instance[], hasInteracti
   }
 }
 
-function getSubtleTagVariantStyle(color: tinycolor.Instance[], hasInteraction: boolean): CS {
+function getSubtleTagVariantStyle(color: CuloriColor[], hasInteraction: boolean): CS {
   const baseStyle = {
     '--d-bg': 'transparent',
-    '--d-text': color[2].toHexString(),
+    '--d-text': formatHex(color[2]) || '#000000',
     '--d-border': 'transparent',
     '--l-bg': 'transparent',
-    '--l-text': color[5].toHexString(),
+    '--l-text': formatHex(color[5]) || '#000000',
     '--l-border': 'transparent',
   }
 
@@ -786,10 +814,10 @@ function getSubtleTagVariantStyle(color: tinycolor.Instance[], hasInteraction: b
     return {
       style: {
         ...baseStyle,
-        '--d-bg-h': color[3].clone().setAlpha(darkOpacity).toHex8String(),
-        '--d-text-h': color[2].toHexString(),
-        '--l-bg-h': color[3].clone().setAlpha(lightOpacity).toHex8String(),
-        '--l-text-h': color[5].toHexString(),
+        '--d-bg-h': formatHex8({ ...color[3], alpha: darkOpacity }) || '#00000000',
+        '--d-text-h': formatHex(color[2]) || '#000000',
+        '--l-bg-h': formatHex8({ ...color[3], alpha: lightOpacity }) || '#00000000',
+        '--l-text-h': formatHex(color[5]) || '#000000',
       },
       class: [
         ...baseClass,
@@ -807,12 +835,12 @@ function getSubtleTagVariantStyle(color: tinycolor.Instance[], hasInteraction: b
   }
 }
 
-function getContrastTagVariantStyle(color: tinycolor.Instance[], hasInteraction: boolean): CS {
+function getContrastTagVariantStyle(color: CuloriColor[], hasInteraction: boolean): CS {
   const baseStyle = {
-    '--d-text': color[2].toHexString(),
+    '--d-text': formatHex(color[2]) || '#000000',
     '--d-bg': 'transparent',
     '--d-border': 'transparent',
-    '--l-text': color[5].toHexString(),
+    '--l-text': formatHex(color[5]) || '#000000',
     '--l-bg': 'transparent',
     '--l-border': 'transparent',
   }
@@ -831,9 +859,9 @@ function getContrastTagVariantStyle(color: tinycolor.Instance[], hasInteraction:
       style: {
         ...baseStyle,
         '--d-text-h': 'white',
-        '--d-bg-h': color[5].toHexString(),
+        '--d-bg-h': formatHex(color[5]) || '#000000',
         '--l-text-h': 'white',
-        '--l-bg-h': color[5].toHexString(),
+        '--l-bg-h': formatHex(color[5]) || '#000000',
       },
       class: [
         ...baseClass,
@@ -851,13 +879,13 @@ function getContrastTagVariantStyle(color: tinycolor.Instance[], hasInteraction:
   }
 }
 
-function getWhiteTagVariantStyle(color: tinycolor.Instance[], hasInteraction: boolean): CS {
+function getWhiteTagVariantStyle(color: CuloriColor[], hasInteraction: boolean): CS {
   const baseStyle = {
     '--d-bg': 'white',
-    '--d-text': color[4].toHexString(),
+    '--d-text': formatHex(color[4]) || '#000000',
     '--d-border': 'transparent',
     '--l-bg': 'white',
-    '--l-text': color[5].toHexString(),
+    '--l-text': formatHex(color[5]) || '#000000',
     '--l-border': 'transparent',
   }
 
@@ -875,9 +903,9 @@ function getWhiteTagVariantStyle(color: tinycolor.Instance[], hasInteraction: bo
       style: {
         ...baseStyle,
         '--d-bg-h': 'white',
-        '--d-text-h': color[4].toHexString(),
+        '--d-text-h': formatHex(color[4]) || '#000000',
         '--l-bg-h': 'white',
-        '--l-text-h': color[5].toHexString(),
+        '--l-text-h': formatHex(color[5]) || '#000000',
       },
       class: [
         ...baseClass,
@@ -902,26 +930,26 @@ export function useInputColorStyle(color: MaybeRef<string>, variant: MaybeRef<In
     switch (unref(variant)) {
       case 'default': {
         return {
-          '--d-bg': surfaceColors[darkSurfaceBgIndex].toHexString(),
-          '--d-border-f': colors[darkBgIndex].toHexString(),
-          '--d-border': surfaceColors[darkBorderIndex].toHexString(),
-          '--d-placeholder': surfaceColors[darkTextVariantIndex].toHexString(),
+          '--d-bg': formatHex(surfaceColors[darkSurfaceBgIndex]) || '#000000',
+          '--d-border-f': formatHex(colors[darkBgIndex]) || '#000000',
+          '--d-border': formatHex(surfaceColors[darkBorderIndex]) || '#000000',
+          '--d-placeholder': formatHex(surfaceColors[darkTextVariantIndex]) || '#000000',
           '--d-text': 'white',
 
-          '--l-bg': surfaceColors[lightSurfaceBgIndex].toHexString(),
-          '--l-border-f': colors[3].toHexString(),
-          '--l-border': surfaceColors[lightBorderIndex].toHexString(),
-          '--l-placeholder': surfaceColors[lightTextVariantIndex].toHexString(),
+          '--l-bg': formatHex(surfaceColors[lightSurfaceBgIndex]) || '#000000',
+          '--l-border-f': formatHex(colors[3]) || '#000000',
+          '--l-border': formatHex(surfaceColors[lightBorderIndex]) || '#000000',
+          '--l-placeholder': formatHex(surfaceColors[lightTextVariantIndex]) || '#000000',
           '--l-text': 'black',
         }
       }
       case 'filled': {
         return {
-          '--d-bg': colors[5].toHexString(),
-          '--d-bg-h': colors[6].toHexString(),
+          '--d-bg': formatHex(colors[5]) || '#000000',
+          '--d-bg-h': formatHex(colors[6]) || '#000000',
           '--d-border': 'transparent',
-          '--l-bg': colors[5].toHexString(),
-          '--l-bg-h': colors[6].toHexString(),
+          '--l-bg': formatHex(colors[5]) || '#000000',
+          '--l-bg-h': formatHex(colors[6]) || '#000000',
           '--l-border': 'transparent',
 
         }

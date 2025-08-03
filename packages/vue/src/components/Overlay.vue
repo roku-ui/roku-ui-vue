@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import tinycolor from 'tinycolor2'
+import { rgb } from 'culori'
 import { computed, ref } from 'vue'
 import { useRounded } from '@/utils/classGenerator'
 
@@ -41,10 +41,13 @@ const animationCls = computed(() => {
 
 const rounded = useRounded(props)
 const wrapperRef = ref(null)
-const colorRGB = tinycolor(props.color).toRgb()
 const colorStyle = computed(() => {
+  const colorRGB = rgb(props.color)
+  if (!colorRGB) {
+    return { backgroundColor: `rgba(0, 0, 0, ${props.opacity / 100})` }
+  }
   return {
-    backgroundColor: `rgba(${colorRGB.r}, ${colorRGB.g}, ${colorRGB.b}, ${props.opacity / 100})`,
+    backgroundColor: `rgba(${Math.round(colorRGB.r * 255)}, ${Math.round(colorRGB.g * 255)}, ${Math.round(colorRGB.b * 255)}, ${props.opacity / 100})`,
   }
 })
 </script>
