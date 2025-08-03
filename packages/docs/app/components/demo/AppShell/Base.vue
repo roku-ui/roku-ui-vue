@@ -27,7 +27,7 @@ import { AppShell, Paper } from '@roku-ui/vue'
         <div class="font-medium mb-2">
           Navbar
         </div>
-        <div class="text-sm text-gray-600">
+        <div class="text-sm text-surface-dimmed">
           Navigation content
         </div>
       </Paper>
@@ -40,7 +40,7 @@ import { AppShell, Paper } from '@roku-ui/vue'
       <h4 class="font-medium mb-2">
         Main Content
       </h4>
-      <p class="text-gray-600">
+      <p class="text-surface-dimmed">
         This is the main content area.
       </p>
     </Paper>
@@ -53,7 +53,7 @@ import { AppShell, Paper } from '@roku-ui/vue'
         <div class="font-medium mb-2">
           Aside
         </div>
-        <div class="text-sm text-gray-600">
+        <div class="text-sm text-surface-dimmed">
           Sidebar content
         </div>
       </Paper>
@@ -64,7 +64,7 @@ import { AppShell, Paper } from '@roku-ui/vue'
         with-border
         class="flex h-full items-center"
       >
-        <span class="text-sm text-gray-600">Footer</span>
+        <span class="text-sm text-surface-dimmed">Footer</span>
       </Paper>
     </template>
   </AppShell>

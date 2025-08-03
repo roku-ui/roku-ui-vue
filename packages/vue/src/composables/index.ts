@@ -3,10 +3,11 @@ import type { MaybeRef, Ref } from 'vue'
 import type { ColorsTuple, ThemeData } from '..'
 import { isClient, useLocalStorage } from '@vueuse/core'
 import tinycolor from 'tinycolor2'
-import { computed, inject, onMounted, ref, unref } from 'vue'
-import { generateColors, generateColorsObjMap } from '..'
+import { computed, inject, onMounted, readonly, ref, unref } from 'vue'
+import { generateColors, generateColorsObjMap, generateColorsOKLCH } from '..'
 
 export * from './dom'
+export { generateOKLCHString, generateEditorFriendlyColors } from '../utils'
 
 export const COLOR_LIGHTNESS_MAP = [
   0.98,
@@ -72,6 +73,7 @@ export function useThemeData(
     error?: number[]
     surface?: number[]
   } = {},
+  useOKLCH = false, // Option to use OKLCH color space
 ) {
   const defaultColorLightness = COLOR_LIGHTNESS_MAP
   const defaultSurfaceLightness = SURFACE_LIGHTNESS_MAP
@@ -90,18 +92,42 @@ export function useThemeData(
   if (lightnessMap.surface === undefined) {
     lightnessMap.surface = defaultSurfaceLightness
   }
+  
+  const colorGenerator = useOKLCH ? generateColorsOKLCH : generateColors
+  
   return computed(() => {
     return {
       name,
       colors: {
-        primary: generateColors(unref(color.primary), lightnessMap.primary),
-        secondary: generateColors(unref(color.secondary), lightnessMap.secondary),
-        tertiary: generateColors(unref(color.tertiary), lightnessMap.tertiary),
-        error: generateColors(unref(color.error), lightnessMap.error),
-        surface: generateColors(unref(color.surface), lightnessMap.surface),
+        primary: colorGenerator(unref(color.primary), lightnessMap.primary),
+        secondary: colorGenerator(unref(color.secondary), lightnessMap.secondary),
+        tertiary: colorGenerator(unref(color.tertiary), lightnessMap.tertiary),
+        error: colorGenerator(unref(color.error), lightnessMap.error),
+        surface: colorGenerator(unref(color.surface), lightnessMap.surface),
       },
     }
   })
+}
+
+// New OKLCH-optimized theme data function
+export function useThemeDataOKLCH(
+  name: string,
+  color: {
+    primary: MaybeRef<string>
+    secondary: MaybeRef<string>
+    tertiary: MaybeRef<string>
+    error: MaybeRef<string>
+    surface: MaybeRef<string>
+  },
+  lightnessMap: {
+    primary?: number[]
+    secondary?: number[]
+    tertiary?: number[]
+    error?: number[]
+    surface?: number[]
+  } = {},
+) {
+  return useThemeData(name, color, lightnessMap, true)
 }
 
 // 添加 useColors 函数
@@ -148,6 +174,38 @@ export function useThemeStyles(theme: ThemeData) {
   }
 }
 
+// Enhanced theme styles with editor-friendly variables (simplified)
+export function useEditorFriendlyThemeStyles(theme: ThemeData) {
+  const currentTheme = ref(theme)
+  type KeyOfThemeColors = keyof typeof currentTheme.value.colors
+  const colorVars: Record<string, string> = {}
+  
+  for (const key of Object.keys(currentTheme.value.colors)) {
+    const color = key as KeyOfThemeColors
+    const colorValue = currentTheme.value.colors[color]
+    const colorTuple = useColorTuple(colorValue, color === 'surface' ? SURFACE_LIGHTNESS_MAP : COLOR_LIGHTNESS_MAP)
+    const colorTupleValue = colorTuple.value as string[]
+    for (const [idx, cur] of colorTupleValue.entries()) {
+      const c = tinycolor(cur).toRgb()
+      colorVars[`--r-color-${color}-${idx}`] = `${c.r} ${c.g} ${c.b} /* ${cur} */`
+    }
+  }
+
+  const colorStyles = {
+    ...colorVars,
+  }
+  const themeStyles = {
+    'backgroundColor': 'var(--r-surface-background-base-color)',
+    'color': 'var(--r-surface-text-color)',
+    '--un-default-border-color': 'var(--r-surface-border-color)',
+  }
+
+  return {
+    ...colorStyles,
+    ...themeStyles,
+  }
+}
+
 export function useId(props: { id?: string }) {
   const id = ref('')
   onMounted(() => {
@@ -172,4 +230,58 @@ export function useSchemeString(): RemovableRef<string> {
     })
   }
   return scheme
+}
+
+// Theme management composables
+export function useThemeString(): RemovableRef<string> {
+  const theme = useLocalStorage('theme', 'default')
+  if (isClient) {
+    const observer = new MutationObserver(() => {
+      if (theme.value !== document.documentElement.dataset.theme) {
+        theme.value = document.documentElement.dataset.theme
+      }
+    })
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    })
+  }
+  return theme
+}
+
+export function useThemeManager() {
+  const theme = useThemeString()
+  const scheme = useSchemeString()
+  
+  const setTheme = (newTheme: string) => {
+    theme.value = newTheme
+    if (isClient) {
+      document.documentElement.dataset.theme = newTheme
+    }
+  }
+  
+  const setScheme = (newScheme: string) => {
+    scheme.value = newScheme
+    if (isClient) {
+      document.documentElement.dataset.scheme = newScheme
+    }
+  }
+  
+  const toggleScheme = () => {
+    setScheme(scheme.value === 'light' ? 'dark' : 'light')
+  }
+  
+  // Available themes
+  const availableThemes = ['default', 'professional', 'vibrant', 'minimal']
+  const availableSchemes = ['light', 'dark']
+  
+  return {
+    theme: readonly(theme),
+    scheme: readonly(scheme),
+    setTheme,
+    setScheme,
+    toggleScheme,
+    availableThemes,
+    availableSchemes,
+  }
 }

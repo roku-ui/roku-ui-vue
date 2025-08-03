@@ -22,6 +22,7 @@ import FormDemo from './demo/FormDemo.vue'
 import LayoutDemo from './demo/LayoutDemo.vue'
 import MediaDemo from './demo/MediaDemo.vue'
 import ModalDemo from './demo/ModalDemo.vue'
+import ModernColorDemo from './demo/ModernColorDemo.vue'
 import NavigationDemo from './demo/NavigationDemo.vue'
 import NotificationDemo from './demo/NotificationDemo.vue'
 import PopoverDemo from './demo/PopoverDemo.vue'
@@ -48,6 +49,7 @@ const demoPages = [
   { key: 'Layout', title: 'Layout', component: LayoutDemo },
   { key: 'Media', title: 'Media & Colors', component: MediaDemo },
   { key: 'Modal', title: 'Modal & Drawer', component: ModalDemo },
+  { key: 'ModernColor', title: 'Modern Color System', component: ModernColorDemo },
   { key: 'Navigation', title: 'Navigation', component: NavigationDemo },
   { key: 'Notification', title: 'Notification', component: NotificationDemo },
   { key: 'Popover', title: 'Popover', component: PopoverDemo },

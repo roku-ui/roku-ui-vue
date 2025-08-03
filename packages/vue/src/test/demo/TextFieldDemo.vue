@@ -93,7 +93,7 @@ const dateInput = ref('')
           v-model="basicInput"
           placeholder="Enter some text..."
         />
-        <div class="text-sm text-gray-600">
+        <div class="text-sm text-surface-dimmed">
           Value: {{ basicInput }}
         </div>
       </Paper>
@@ -205,7 +205,7 @@ const dateInput = ref('')
             <span class="text-blue-600">Email Address *</span>
           </template>
         </TextField>
-        <div class="text-sm text-gray-600">
+        <div class="text-sm text-surface-dimmed">
           Value: {{ labeledInput }}
         </div>
       </Paper>
@@ -223,7 +223,7 @@ const dateInput = ref('')
           label="Password"
           placeholder="Enter your password"
         />
-        <div class="text-sm text-gray-600">
+        <div class="text-sm text-surface-dimmed">
           Value: {{ passwordInput }}
         </div>
       </Paper>
@@ -262,7 +262,7 @@ const dateInput = ref('')
           label="Partial Visible Password (1-3)"
           placeholder="Enter your password"
         />
-        <div class="text-sm text-gray-600">
+        <div class="text-sm text-surface-dimmed">
           Value: {{ partialPasswordInput }}
         </div>
         <div class="text-xs text-gray-500">
@@ -323,7 +323,7 @@ const dateInput = ref('')
           type="tel"
           pattern="[+][0-9\s\-\(\)]+"
         />
-        <div class="text-sm text-gray-600">
+        <div class="text-sm text-surface-dimmed">
           Value: {{ customInput }}
         </div>
       </Paper>
@@ -553,7 +553,7 @@ const dateInput = ref('')
           placeholder="Enter a number..."
           :format="formatters.number"
         />
-        <div class="text-sm text-gray-600">
+        <div class="text-sm text-surface-dimmed">
           Value: {{ numberInput }}
         </div>
 
@@ -563,7 +563,7 @@ const dateInput = ref('')
           placeholder="Enter amount..."
           :format="formatters.currency"
         />
-        <div class="text-sm text-gray-600">
+        <div class="text-sm text-surface-dimmed">
           Value: {{ currencyInput }}
         </div>
 
@@ -573,7 +573,7 @@ const dateInput = ref('')
           placeholder="Enter phone number..."
           :format="formatters.phoneUS"
         />
-        <div class="text-sm text-gray-600">
+        <div class="text-sm text-surface-dimmed">
           Value: {{ phoneInput }}
         </div>
 
@@ -583,7 +583,7 @@ const dateInput = ref('')
           placeholder="Enter card number..."
           :format="formatters.creditCard"
         />
-        <div class="text-sm text-gray-600">
+        <div class="text-sm text-surface-dimmed">
           Value: {{ creditCardInput }}
         </div>
 
@@ -593,7 +593,7 @@ const dateInput = ref('')
           placeholder="Type anything..."
           :format="formatters.uppercase"
         />
-        <div class="text-sm text-gray-600">
+        <div class="text-sm text-surface-dimmed">
           Value: {{ uppercaseInput }}
         </div>
 
@@ -603,7 +603,7 @@ const dateInput = ref('')
           placeholder="Enter date..."
           :format="formatters.date"
         />
-        <div class="text-sm text-gray-600">
+        <div class="text-sm text-surface-dimmed">
           Value: {{ dateInput }}
         </div>
       </Paper>
@@ -637,7 +637,7 @@ const dateInput = ref('')
           placeholder="Try typing numbers..."
           :format="(value) => value.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim()"
         />
-        <div class="text-sm text-gray-600">
+        <div class="text-sm text-surface-dimmed">
           Value: {{ customInput }}
         </div>
       </Paper>

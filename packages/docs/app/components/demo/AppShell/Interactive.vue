@@ -360,7 +360,7 @@ const codeSnippet = computed(() => {
                 <h4 class="font-medium mb-2">
                   Main Content
                 </h4>
-                <p class="text-gray-600 mb-4">
+                <p class="text-surface-dimmed mb-4">
                   This is the main content area. Adjust the controls to see the layout change.
                 </p>
                 <div class="gap-3 grid grid-cols-1 md:grid-cols-2">
@@ -372,7 +372,7 @@ const codeSnippet = computed(() => {
                     <h5 class="font-medium mb-1">
                       Content Block 1
                     </h5>
-                    <p class="text-sm text-gray-600">
+                    <p class="text-sm text-surface-dimmed">
                       Some content here
                     </p>
                   </Paper>
@@ -384,7 +384,7 @@ const codeSnippet = computed(() => {
                     <h5 class="font-medium mb-1">
                       Content Block 2
                     </h5>
-                    <p class="text-sm text-gray-600">
+                    <p class="text-sm text-surface-dimmed">
                       More content here
                     </p>
                   </Paper>
@@ -411,7 +411,7 @@ const codeSnippet = computed(() => {
                       <div class="text-sm font-medium">
                         Widget 1
                       </div>
-                      <div class="text-xs text-gray-600">
+                      <div class="text-xs text-surface-dimmed">
                         Widget content
                       </div>
                     </Paper>
@@ -423,7 +423,7 @@ const codeSnippet = computed(() => {
                       <div class="text-sm font-medium">
                         Widget 2
                       </div>
-                      <div class="text-xs text-gray-600">
+                      <div class="text-xs text-surface-dimmed">
                         More content
                       </div>
                     </Paper>
@@ -439,7 +439,7 @@ const codeSnippet = computed(() => {
                   with-border
                   class="flex h-full items-center"
                 >
-                  <span class="text-sm text-gray-600">Footer Content</span>
+                  <span class="text-sm text-surface-dimmed">Footer Content</span>
                 </Paper>
               </template>
             </AppShell>

@@ -30,7 +30,7 @@ function isWeekend(date: Date) {
       <h2 class="text-2xl font-bold">
         CalendarInput Demo
       </h2>
-      <p class="text-gray-600">
+      <p class="text-surface-dimmed">
         A text field that opens a calendar popup for date selection.
       </p>
     </div>
