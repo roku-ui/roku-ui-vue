@@ -1,5 +1,7 @@
 <script setup lang="tsx">
-import { computed, ref } from 'vue'
+import { computed, provide, ref, watch } from 'vue'
+import { defaultThemeData } from '@/shared'
+
 import {
   AppShell,
   ColorInput,
@@ -9,9 +11,8 @@ import {
   RokuProvider,
   SchemeSwitch,
   Tag,
-  TreeList
+  TreeList,
 } from '../components'
-
 import AppShellDemo from './demo/AppShellDemo.vue'
 import AvatarDemo from './demo/AvatarDemo.vue'
 import ButtonDemo from './demo/ButtonDemo.vue'
@@ -33,6 +34,7 @@ import SliderDemo from './demo/SliderDemo.vue'
 import SwitchDemo from './demo/SwitchDemo.vue'
 import TagsDemo from './demo/TagsDemo.vue'
 import TextFieldDemo from './demo/TextFieldDemo.vue'
+import ThemeManagerDemo from './demo/ThemeManagerDemo.vue'
 import TooltipDemo from './demo/TooltipDemo.vue'
 import WaterfallDemo from './demo/WaterfallDemo.vue'
 
@@ -58,6 +60,7 @@ const demoPages = [
   { key: 'SelectArea', title: 'Select Area', component: SelectAreaDemo },
   { key: 'Tags', title: 'Tags', component: TagsDemo },
   { key: 'TextField', title: 'TextField', component: TextFieldDemo },
+  { key: 'ThemeManager', title: 'Theme Manager', component: ThemeManagerDemo },
   { key: 'Tooltip', title: 'Tooltip', component: TooltipDemo },
   { key: 'Waterfall', title: 'Waterfall', component: WaterfallDemo },
   { key: 'Slider', title: 'Slider', component: SliderDemo },
@@ -83,11 +86,28 @@ const currentComponent = computed(() => {
 // Create reactive theme colors for the demo
 const primaryColor = ref('#0067cc')
 const surfaceColor = ref('#121212')
+
+const globalTheme = ref({
+  ...defaultThemeData,
+})
+
+watch([primaryColor, surfaceColor], () => {
+  globalTheme.value.colors.primary = primaryColor.value
+  globalTheme.value.colors.surface = surfaceColor.value
+}, { deep: true })
+
+// 提供主题更新函数给子组件
+function updateGlobalTheme(newTheme: any) {
+  globalTheme.value = { ...newTheme }
+}
+
+provide('globalTheme', globalTheme)
+provide('updateGlobalTheme', updateGlobalTheme)
 </script>
 
 <template>
   <RokuProvider
-    :theme-obj="{ withBorder: true }"
+    :theme-obj="globalTheme"
     class="roku-scrollbar !scrollbar-thumb-hover-color-surface-4 !dark:scrollbar-thumb-hover-color-surface-5"
   >
     <NotificationSystem />

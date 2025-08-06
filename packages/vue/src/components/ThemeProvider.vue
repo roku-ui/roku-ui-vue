@@ -1,15 +1,16 @@
 <script setup lang="ts">
-import type { ThemeData } from '..'
+import type { ThemeData } from '@/shared'
 import { useLocalStorage } from '@vueuse/core'
 import { computed } from 'vue'
-import { useCurrentThemeData, useThemeStyles } from '..'
+import { useThemeStyles } from '@/composables'
+import { useTheme } from '@/shared'
 
 const props = defineProps<{
   theme?: ThemeData
   scheme?: string
 }>()
-const currentThemeData = useCurrentThemeData()
-const styles = computed(() => useThemeStyles(props.theme || currentThemeData.value))
+const currentTheme = useTheme()
+const styles = computed(() => useThemeStyles(props.theme || currentTheme.value))
 const localStorageScheme = useLocalStorage('scheme', 'light')
 const scheme = computed(() => props.scheme || localStorageScheme.value)
 </script>
@@ -18,7 +19,7 @@ const scheme = computed(() => props.scheme || localStorageScheme.value)
   <div
     :style="[styles]"
     :data-scheme="scheme"
-    :data-theme="currentThemeData.name"
+    data-theme="default"
   >
     <slot />
   </div>

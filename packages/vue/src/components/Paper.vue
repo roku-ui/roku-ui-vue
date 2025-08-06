@@ -17,7 +17,7 @@ const props = withDefaults(
     noPadding?: boolean
   }>(),
   {
-    rounded: 'md',
+    rounded: undefined,
     is: 'div',
     loading: false,
     color: 'primary',
@@ -27,11 +27,16 @@ const props = withDefaults(
   },
 )
 const theme = useTheme()
-const withBorder = props.withBorder ?? theme.withBorder
-
+const withBorder = computed(() => props.withBorder ?? theme.value.withBorder)
 const color = computed(() => props.color)
 const loading = computed(() => props.loading)
-const roundedCls = useRounded(props)
+
+// 创建带有 theme 默认值的 props 对象用于 useRounded
+const effectiveProps = computed(() => ({
+  ...props,
+  rounded: props.rounded ?? theme.value.rounded,
+}))
+const roundedCls = useRounded(effectiveProps.value)
 const { x, y } = useMouse({ type: 'client' })
 const paperRef = ref<HTMLElement | null>(null)
 const { width, height, top, left } = useElementBounding(paperRef)
@@ -177,6 +182,8 @@ const traceAnimateStyle = computed(() => {
     :class="[
       {
         'p-4': !noPadding,
+        'border-[var(--r-surface-border-color)]': withBorder && !traceAnimate && !loading,
+        'border-transparent': !withBorder || traceAnimate || loading,
       },
       roundedCls.class,
     ]"
@@ -185,11 +192,6 @@ const traceAnimateStyle = computed(() => {
       loadingStyle,
       traceAnimateStyle,
     ]"
-    v-bind=" (withBorder && !traceAnimate && !loading) ? {
-      class: 'border-[var(--r-surface-border-color)]',
-    } : {
-      class: 'border-transparent',
-    }"
   >
     <slot />
   </component>

@@ -1,43 +1,38 @@
 <script setup lang="ts">
 import type { Component } from 'vue'
-import type { Theme } from '@/shared'
-import type { ThemeData } from '@/utils'
+import type { ThemeData } from '@/shared'
 import { computed, provide, ref } from 'vue'
-import { schemeSymbol, useSchemeString, useThemeData, useThemeStyles } from '@/composables'
+import { schemeSymbol, useSchemeString, useThemeStyles } from '@/composables'
 import { provideRokuProvider } from '@/composables/modal'
-import { provideTheme } from '@/shared'
+import { defaultThemeData, provideTheme } from '@/shared'
 
 const props = withDefaults(
   defineProps<{
     is?: string | Component
-    theme?: string
-    themes?: Record<string, ThemeData>
-    themeObj?: Partial<Theme>
+    themeObj?: Partial<ThemeData>
   }>(),
   {
     is: 'div',
-    theme: 'default',
-    themes: () => ({
-      default: useThemeData('default', {
-        primary: '#0067cc',
-        secondary: '#5999A6',
-        tertiary: '#F76C22',
-        error: '#F95858',
-        surface: '#121212',
-      }).value,
-    }),
   },
 )
+
 const scheme = useSchemeString()
-const themeData = computed(() => props.themes[props.theme])
 const wrapperRef = ref<any>(null)
-const styles = computed(() => useThemeStyles(themeData.value))
+
+// Use themeObj if provided, otherwise use defaultThemeData
+const currentTheme = computed(() => {
+  if (props.themeObj) {
+    return Object.assign({}, defaultThemeData, props.themeObj)
+  }
+  return defaultThemeData
+})
+
+const styles = computed(() => useThemeStyles(currentTheme.value))
+
 provide(schemeSymbol, scheme)
-provide('currentThemeData', computed(() => themeData.value))
+provide('currentThemeData', currentTheme)
 provideRokuProvider(wrapperRef)
-if (props.themeObj) {
-  provideTheme(props.themeObj)
-}
+provideTheme(currentTheme)
 </script>
 
 <template>

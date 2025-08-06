@@ -4,7 +4,7 @@ import { Btn, Paper, Switch, TextField } from '@/components'
 import {
   generateEditorFriendlyColors,
   generateOKLCHString,
-  useThemeManager,
+  useSchemeString,
 } from '@/composables'
 import {
   generateAdvancedColorPalette,
@@ -13,8 +13,14 @@ import {
   type AdvancedColorOptions,
 } from '@/utils'
 
-// Theme management
-const { theme, scheme, setTheme, toggleScheme, availableThemes } = useThemeManager()
+// Theme management  
+const scheme = useSchemeString()
+function toggleScheme() {
+  scheme.value = scheme.value === 'light' ? 'dark' : 'light'
+  if (typeof document !== 'undefined') {
+    document.documentElement.dataset.scheme = scheme.value
+  }
+}
 
 // Custom color inputs
 const primaryColor = ref('#0067cc')
@@ -126,22 +132,6 @@ const gamutValidation = computed(() => {
           <span class="text-sm text-surface-dimmed">{{ scheme }}</span>
         </div>
 
-        <div class="flex gap-2 items-center">
-          <label class="text-sm text-surface font-medium">Theme:</label>
-          <select
-            :value="theme"
-            class="text-surface px-3 py-1 border border-surface rounded-lg bg-surface"
-            @change="(e) => setTheme((e.target as HTMLSelectElement).value)"
-          >
-            <option
-              v-for="themeOption in availableThemes"
-              :key="themeOption"
-              :value="themeOption"
-            >
-              {{ themeOption }}
-            </option>
-          </select>
-        </div>
       </div>
     </Paper>
 

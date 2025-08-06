@@ -753,4 +753,3 @@ export function generateEditorFriendlyColors(color: ColorInput, lightnessMap: nu
   })
 }
 
-export * from './theme'

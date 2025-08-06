@@ -61,51 +61,6 @@
     }
 
     /* Custom theme support - can be overridden by users */
-    [data-theme="professional"] * {
-        /* Professional theme with cooler tones */
-        --r-primary-background-color: rgb(var(--r-color-primary-4));
-        --r-secondary-background-color: rgb(var(--r-color-secondary-4));
-        --r-tertiary-background-color: rgb(var(--r-color-tertiary-4));
-    }
 
-    [data-theme="professional"][data-scheme="dark"] * {
-        --r-primary-background-color: rgb(var(--r-color-primary-6));
-        --r-secondary-background-color: rgb(var(--r-color-secondary-6));
-        --r-tertiary-background-color: rgb(var(--r-color-tertiary-6));
-    }
 
-    [data-theme="vibrant"] * {
-        /* Vibrant theme with higher contrast */
-        --r-primary-background-color: rgb(var(--r-color-primary-3));
-        --r-secondary-background-color: rgb(var(--r-color-secondary-3));
-        --r-tertiary-background-color: rgb(var(--r-color-tertiary-3));
-    }
-
-    [data-theme="vibrant"][data-scheme="dark"] * {
-        --r-primary-background-color: rgb(var(--r-color-primary-4));
-        --r-secondary-background-color: rgb(var(--r-color-secondary-4));
-        --r-tertiary-background-color: rgb(var(--r-color-tertiary-4));
-    }
-
-    [data-theme="minimal"] * {
-        /* Minimal theme with subtle colors */
-        --r-primary-background-color: rgb(var(--r-color-primary-6));
-        --r-secondary-background-color: rgb(var(--r-color-secondary-6));
-        --r-tertiary-background-color: rgb(var(--r-color-tertiary-6));
-        
-        /* More subtle borders and backgrounds */
-        --r-surface-background-variant-1-color: rgb(var(--r-color-surface-1));
-        --r-surface-background-variant-2-color: rgb(var(--r-color-surface-1));
-        --r-surface-border-color: rgb(var(--r-color-surface-2));
-    }
-
-    [data-theme="minimal"][data-scheme="dark"] * {
-        --r-primary-background-color: rgb(var(--r-color-primary-7));
-        --r-secondary-background-color: rgb(var(--r-color-secondary-7));
-        --r-tertiary-background-color: rgb(var(--r-color-tertiary-7));
-        
-        --r-surface-background-variant-1-color: rgb(var(--r-color-surface-9));
-        --r-surface-background-variant-2-color: rgb(var(--r-color-surface-9));
-        --r-surface-border-color: rgb(var(--r-color-surface-8));
-    }
 }
