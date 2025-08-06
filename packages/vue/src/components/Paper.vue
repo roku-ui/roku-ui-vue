@@ -2,6 +2,7 @@
 import type { Component } from 'vue'
 import type { Color, Rounded } from '@/types'
 import { useElementBounding, useMouse } from '@vueuse/core'
+import { formatHex } from 'culori'
 import { computed, ref } from 'vue'
 import { useColors, useTheme } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
@@ -75,7 +76,7 @@ const keyFrames = computed(() => {
 
 let ani: Animation | undefined
 
-const mainColor = computed(() => useColors(color.value).value[5])
+const mainColor = computed(() => formatHex(useColors(color.value).value[5]) || '#000000')
 
 const loadingStyle = computed(() => {
   if (props.loading) {

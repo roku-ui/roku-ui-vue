@@ -5,6 +5,7 @@ import { useCS, useMergedCS } from './color-system'
 import {
   darkBorderIndex,
   darkSurfaceBgIndex,
+  darkSurfaceBgVariant1Index,
   lightBorderIndex,
   lightSurfaceBgIndex,
 } from './constants'
@@ -30,7 +31,7 @@ export function useContainerDefaultCS() {
     const bgCS = useCS({
       color: 'surface',
       type: 'bg',
-      index: { dark: darkSurfaceBgIndex, light: lightSurfaceBgIndex },
+      index: { dark: darkSurfaceBgVariant1Index, light: lightSurfaceBgIndex },
     })
     const borderCS = useCS({
       color: 'surface',
