@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { CalendarMode, Color } from '@/types'
 import { computed, ref } from 'vue'
-import { useButtonCS } from '@/shared'
+import { useButtonCS, useTheme } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
 import { Btn } from '.'
 
@@ -25,13 +25,23 @@ const props = withDefaults(
     mode: 'single',
     firstDayOfWeek: 0,
     locale: 'en-US',
-    size: 'md',
-    color: 'primary',
+    size: undefined,
+    color: undefined,
     variant: 'default',
-    rounded: 'md',
+    rounded: undefined,
     animate: true,
   },
 )
+
+const theme = useTheme()
+
+// 创建带有 theme 默认值的有效 props
+const effectiveProps = computed(() => ({
+  ...props,
+  size: props.size ?? theme.value.defaultSize,
+  color: props.color ?? theme.value.defaultColor,
+  rounded: props.rounded ?? theme.value.rounded,
+}))
 
 const emit = defineEmits<{
   'update:modelValue': [value: Date | Date[] | { start: Date, end: Date } | undefined]
@@ -40,10 +50,10 @@ const emit = defineEmits<{
 const currentDate = ref(new Date())
 const hoveredDate = ref<Date | null>(null)
 
-const rounded = useRounded(props)
+const rounded = useRounded(effectiveProps.value)
 
 const sizeCls = computed(() => {
-  switch (props.size) {
+  switch (effectiveProps.value.size) {
     case 'sm': {
       return {
         container: 'p-3 text-xs w-64',
@@ -333,7 +343,7 @@ function getCellCS(day: any) {
       return 'light'
     }
     return 'transparent'
-  }), computed(() => props.color))
+  }), computed(() => effectiveProps.value.color))
 }
 </script>
 

@@ -8,13 +8,10 @@ import { COLOR_LIGHTNESS_MAP } from '..'
 import {
   darkBgIndex,
   darkBorderIndex,
-  darkSurfaceBgIndex,
   darkSurfaceBgVariant1Index,
   darkTextIndex,
   darkTextVariantIndex,
   lightBorderIndex,
-  lightSurfaceBgIndex,
-  lightSurfaceBgVariantIndex,
   lightTextIndex,
   lightTextVariantIndex,
 } from './constants'

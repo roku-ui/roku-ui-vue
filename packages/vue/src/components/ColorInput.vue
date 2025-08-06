@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, useAttrs, watch } from 'vue'
 import { useId } from '@/composables'
-import { useInputColorStyle } from '@/shared'
+import { useInputColorStyle, useTheme } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
 
 const props = withDefaults(
@@ -18,18 +18,28 @@ const props = withDefaults(
     showSwatch?: boolean
   }>(),
   {
-    color: 'primary',
-    rounded: 'md',
-    size: 'md',
+    color: undefined,
+    rounded: undefined,
+    size: undefined,
     format: 'hex',
     showSwatch: true,
   },
 )
 
+const theme = useTheme()
+
+// 创建带有 theme 默认值的有效 props
+const effectiveProps = computed(() => ({
+  ...props,
+  size: props.size ?? theme.value.defaultSize,
+  color: props.color ?? theme.value.defaultColor,
+  rounded: props.rounded ?? theme.value.rounded,
+}))
+
 const model = defineModel<string>({ default: '#000000' })
 
 const sizeCls = computed(() => {
-  switch (props.size) {
+  switch (effectiveProps.value.size) {
     case 'sm': {
       return {
         wrapper: 'h-6 text-xs gap-1 px-2',
@@ -70,7 +80,7 @@ const labelSizeCls = computed(() => {
   }
 })
 
-const colorProp = computed(() => props.color)
+const colorProp = computed(() => effectiveProps.value.color)
 const colorStyle = useInputColorStyle(colorProp)
 const disabledCls = computed(() => {
   if (props.disabled) {
@@ -79,7 +89,7 @@ const disabledCls = computed(() => {
   return ''
 })
 
-const rounded = useRounded(props)
+const rounded = useRounded(effectiveProps.value)
 
 const input = ref<HTMLInputElement | null>(null)
 const colorPicker = ref<HTMLInputElement | null>(null)

@@ -14,11 +14,15 @@ export interface ThemeData {
   withBorder: boolean
   rounded: Rounded
   colors: ThemeColors
+  defaultSize: 'sm' | 'md' | 'lg'
+  defaultColor: 'primary' | 'secondary' | 'tertiary' | 'error'
 }
 
 export const defaultThemeData: ThemeData = {
   withBorder: true,
   rounded: 'md' as Rounded,
+  defaultSize: 'md',
+  defaultColor: 'primary',
   colors: {
     primary: '#0067cc',
     secondary: '#5999A6',

@@ -4,7 +4,7 @@ import type { Color } from '@/types'
 import { useEventListener } from '@vueuse/core'
 import { computed, ref, watch } from 'vue'
 import { useId } from '@/composables'
-import { useColorCS, useOutlineCS as useOutlineColorCS, useSurfaceCS } from '@/shared'
+import { useColorCS, useOutlineCS as useOutlineColorCS, useSurfaceCS, useTheme } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
 
 defineOptions({
@@ -25,13 +25,23 @@ const props = withDefaults(
     indeterminateIcon?: string | Component
   }>(),
   {
-    size: 'md',
-    rounded: 'md',
+    size: undefined,
+    rounded: undefined,
     animate: true,
-    color: 'primary',
+    color: undefined,
     indeterminate: false,
   },
 )
+
+const theme = useTheme()
+
+// 创建带有 theme 默认值的有效 props
+const effectiveProps = computed(() => ({
+  ...props,
+  size: props.size ?? theme.value.defaultSize,
+  color: props.color ?? theme.value.defaultColor,
+  rounded: props.rounded ?? theme.value.rounded,
+}))
 
 const emit = defineEmits<{
   change: [boolean]
@@ -44,7 +54,7 @@ const model = defineModel<boolean>({
 const isActivated = ref(false)
 
 const sizeCls = computed(() => {
-  switch (props.size) {
+  switch (effectiveProps.value.size) {
     case 'sm': {
       return {
         wrapper: 'h-4 w-4',
@@ -74,9 +84,9 @@ const animateCls = computed(() => props.animate
 const id = useId(props)
 
 const wrapperBGCS = useSurfaceCS('bg', { dark: 7, light: 3 })
-const wrapperActiveBGCS = useColorCS(props.color, 'bg', 5)
+const wrapperActiveBGCS = useColorCS(effectiveProps.value.color, 'bg', 5)
 const borderCS = useSurfaceCS('border', { dark: 7, light: 3 })
-const activeBorderCS = useColorCS(props.color, 'border', 5)
+const activeBorderCS = useColorCS(effectiveProps.value.color, 'border', 5)
 
 const colorCls = computed(() => {
   const isChecked = model.value || props.indeterminate
@@ -95,8 +105,8 @@ const colorStyle = computed(() => {
   }
 })
 
-const rounded = useRounded(props)
-const outlineColor = computed(() => props.color)
+const rounded = useRounded(effectiveProps.value)
+const outlineColor = computed(() => effectiveProps.value.color)
 const outlineColorCS = useOutlineColorCS(outlineColor)
 
 const wrapperRef = ref<HTMLElement | null>(null)
@@ -129,7 +139,7 @@ const displayIcon = computed(() => {
     :style="[
       outlineColorCS.style,
       rounded.style,
-      { minHeight: size === 'sm' ? '24px' : size === 'lg' ? '40px' : '32px' },
+      { minHeight: effectiveProps.size === 'sm' ? '24px' : effectiveProps.size === 'lg' ? '40px' : '32px' },
     ]"
     :class="[
       outlineColorCS.class,

@@ -2,7 +2,7 @@
 import type { Color } from '@/types'
 import { isClient, onClickOutside, onKeyStroke, useElementBounding } from '@vueuse/core'
 import { computed, ref, watch, watchEffect } from 'vue'
-import { useContainerDefaultCS, useContainerDefaultVariantCS, useContainerFilledCS, useInputColorStyle } from '@/shared'
+import { useContainerDefaultCS, useContainerDefaultVariantCS, useContainerFilledCS, useInputColorStyle, useTheme } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
 
 const props = withDefaults(defineProps<{
@@ -22,12 +22,12 @@ const props = withDefaults(defineProps<{
   options() {
     return []
   },
-  size: 'md',
-  color: 'primary',
+  size: undefined,
+  color: undefined,
   noneText: 'No options',
   notFoundText: 'Not found',
   placeholder: '',
-  rounded: 'md',
+  rounded: undefined,
   searchable: false,
   filter: (label: string, text: string) => label.includes(text),
   labelKey: undefined,
@@ -39,7 +39,17 @@ const emit = defineEmits<{
   input: [searchWord: string]
 }>()
 
-const rounded = useRounded(props)
+const theme = useTheme()
+
+// 创建带有 theme 默认值的有效 props
+const effectiveProps = computed(() => ({
+  ...props,
+  size: props.size ?? theme.value.defaultSize,
+  color: props.color ?? theme.value.defaultColor,
+  rounded: props.rounded ?? theme.value.rounded,
+}))
+
+const rounded = useRounded(effectiveProps.value)
 
 const model = defineModel<T | undefined>()
 const inputRef = ref<null | HTMLInputElement>(null)
@@ -174,11 +184,11 @@ function onItemPointerDown(option: T) {
   model.value = option
   focused.value = false
 }
-const color = computed(() => props.color)
+const color = computed(() => effectiveProps.value.color)
 const colorStyle = useInputColorStyle(color, 'default')
 
 const sizeCls = computed(() => {
-  switch (props.size) {
+  switch (effectiveProps.value.size) {
     case 'sm': {
       return {
         wrapper: 'h-6 w-full py-1 pl-1.5 pr-6 text-sm',

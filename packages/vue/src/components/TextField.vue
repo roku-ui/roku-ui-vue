@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, useAttrs } from 'vue'
 import { useId } from '@/composables'
-import { useInputColorStyle } from '@/shared'
+import { useInputColorStyle, useTheme } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
 
 const props = withDefaults(
@@ -21,16 +21,25 @@ const props = withDefaults(
     visibleEnd?: number
   }>(),
   {
-    color: 'primary',
-    rounded: 'md',
-    size: 'md',
+    color: undefined,
+    rounded: undefined,
+    size: undefined,
     visibleStart: 2,
     visibleEnd: 2,
   },
 )
+const theme = useTheme()
+
+// 创建带有 theme 默认值的有效 props
+const effectiveProps = computed(() => ({
+  ...props,
+  color: props.color ?? theme.value.defaultColor,
+  rounded: props.rounded ?? theme.value.rounded,
+  size: props.size ?? theme.value.defaultSize,
+}))
 const model = defineModel<string | number>()
 const sizeCls = computed(() => {
-  switch (props.size) {
+  switch (effectiveProps.value.size) {
     case 'sm': {
       return {
         wrapper: 'h-6 text-xs gap-1 px-2',
@@ -54,7 +63,7 @@ const sizeCls = computed(() => {
 })
 
 const labelSizeCls = computed(() => {
-  switch (props.size) {
+  switch (effectiveProps.value.size) {
     case 'sm': {
       return 'text-xs'
     }
@@ -67,7 +76,7 @@ const labelSizeCls = computed(() => {
     }
   }
 })
-const color = computed(() => props.color)
+const color = computed(() => effectiveProps.value.color)
 const colorStyle = useInputColorStyle(color)
 const disabledCls = computed(() => {
   if (props.disabled) {
@@ -76,7 +85,7 @@ const disabledCls = computed(() => {
   return ''
 })
 
-const rounded = useRounded(props)
+const rounded = useRounded(effectiveProps.value)
 
 const input = ref<HTMLInputElement | null>(null)
 defineExpose({

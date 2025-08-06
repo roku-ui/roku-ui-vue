@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Color } from '@/types'
 import { computed } from 'vue'
-import { useContainerFilledCS, useSurfaceCS } from '@/shared'
+import { useContainerFilledCS, useSurfaceCS, useTheme } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
 
 const props = withDefaults(defineProps<{
@@ -16,13 +16,23 @@ const props = withDefaults(defineProps<{
   value: 0,
   max: 100,
   min: 0,
-  size: 'md',
-  color: 'primary',
+  size: undefined,
+  color: undefined,
   rounded: 'full',
   loading: false,
 })
+
+const theme = useTheme()
+
+// 创建带有 theme 默认值的有效 props
+const effectiveProps = computed(() => ({
+  ...props,
+  size: props.size ?? theme.value.defaultSize,
+  color: props.color ?? theme.value.defaultColor,
+  rounded: props.rounded === 'full' ? 'full' : props.rounded ?? theme.value.rounded,
+}))
 const sizeCls = computed(() => {
-  switch (props.size) {
+  switch (effectiveProps.value.size) {
     case 'sm': {
       return 'h-0.25'
     }
@@ -37,11 +47,11 @@ const sizeCls = computed(() => {
     }
   }
 })
-const color = computed(() => props.color)
+const color = computed(() => effectiveProps.value.color)
 const containerFilledCS = useContainerFilledCS(color)
 const surfaceVariantCS = useSurfaceCS('bg', { dark: 7, light: 3 })
 
-const rounded = useRounded(props)
+const rounded = useRounded(effectiveProps.value)
 </script>
 
 <template>

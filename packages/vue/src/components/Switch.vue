@@ -4,7 +4,7 @@ import type { Color } from '@/types'
 import { useEventListener } from '@vueuse/core'
 import { computed, ref, watch } from 'vue'
 import { useId } from '@/composables'
-import { useColorCS, useOutlineCS as useOutlineColorCS, useSurfaceCS } from '@/shared'
+import { useColorCS, useOutlineCS as useOutlineColorCS, useSurfaceCS, useTheme } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
 
 defineOptions({
@@ -28,12 +28,22 @@ const props = withDefaults(
     offIndicatorIcon?: string | Component
   }>(),
   {
-    size: 'md',
+    size: undefined,
     rounded: 'full',
     animate: true,
-    color: 'primary',
+    color: undefined,
   },
 )
+
+const theme = useTheme()
+
+// 创建带有 theme 默认值的有效 props
+const effectiveProps = computed(() => ({
+  ...props,
+  size: props.size ?? theme.value.defaultSize,
+  color: props.color ?? theme.value.defaultColor,
+  rounded: props.rounded === 'full' ? 'full' : props.rounded ?? theme.value.rounded,
+}))
 const emit = defineEmits<{
   change: [boolean ]
 }>()
@@ -43,7 +53,7 @@ const model = defineModel<boolean>({
 const wrapper = ref<HTMLElement | null>(null)
 const isActivated = ref(false)
 const sizeCls = computed(() => {
-  switch (props.size) {
+  switch (effectiveProps.value.size) {
     case 'sm': {
       return {
         icon: 'text-xs mx-0.5',
@@ -88,8 +98,8 @@ const animateCls = computed(() => props.animate
 const id = useId(props)
 
 const wrapperBGCS = useSurfaceCS('bg', { dark: 7, light: 3 })
-const wrapperActiveBGCS = useColorCS(props.color, 'bg', 5)
-const activeTextCS = useColorCS(props.color, 'text', 5)
+const wrapperActiveBGCS = useColorCS(effectiveProps.value.color, 'bg', 5)
+const activeTextCS = useColorCS(effectiveProps.value.color, 'text', 5)
 const colorCls = computed(() => {
   return {
     wrapper: model.value ? [wrapperActiveBGCS.value.class] : [wrapperBGCS.value.class],
@@ -102,8 +112,8 @@ const colorStyle = computed(() => {
     indicator: model.value ? {} : '',
   }
 })
-const rounded = useRounded(props)
-const outlineColor = computed(() => props.color)
+const rounded = useRounded(effectiveProps.value)
+const outlineColor = computed(() => effectiveProps.value.color)
 const outlineColorCS = useOutlineColorCS(outlineColor)
 const wrapperRef = ref<HTMLElement | null>(null)
 useEventListener(wrapperRef, 'keydown', (e) => {
@@ -126,7 +136,7 @@ watch(model, (value) => {
     :style="[
       outlineColorCS.style,
       rounded.style,
-      { minHeight: size === 'sm' ? '24px' : size === 'lg' ? '40px' : '32px' },
+      { minHeight: effectiveProps.size === 'sm' ? '24px' : effectiveProps.size === 'lg' ? '40px' : '32px' },
     ]"
     :class="[
       outlineColorCS.class,
@@ -210,7 +220,7 @@ watch(model, (value) => {
             v-if="model && props.onIcon"
             key="on"
             class="left-0 top-1/2 absolute -translate-y-50%"
-            :class="[sizeCls.icon, `text-${color}-on-container-low`, typeof props.onIcon === 'string' ? props.onIcon : '']"
+            :class="[sizeCls.icon, `text-${effectiveProps.color}-on-container-low`, typeof props.onIcon === 'string' ? props.onIcon : '']"
           />
           <component
             :is="typeof props.offIcon === 'string' ? 'i' : props.offIcon"

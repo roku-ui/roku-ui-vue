@@ -3,7 +3,7 @@ import type { Component } from 'vue'
 import type { BtnVariant } from '@/types'
 import { useElementHover } from '@vueuse/core'
 import { computed, ref } from 'vue'
-import { useButtonCS, useOutlineCS } from '@/shared'
+import { useButtonCS, useOutlineCS, useTheme } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
 
 const props = withDefaults(
@@ -22,19 +22,27 @@ const props = withDefaults(
     outlineColor?: string
   }>(),
   {
-    rounded: 'md',
+    rounded: undefined,
     type: 'button',
-    size: 'md',
+    size: undefined,
     is: 'button',
     icon: false,
     pressEffect: 'translate',
     disabled: false,
   },
 )
-const rounded = useRounded(props)
+const theme = useTheme()
+
+// 创建带有 theme 默认值的 props 对象用于 useRounded
+const effectiveProps = computed(() => ({
+  ...props,
+  rounded: props.rounded ?? theme.value.rounded,
+  size: props.size ?? theme.value.defaultSize,
+}))
+const rounded = useRounded(effectiveProps.value)
 
 const sizeCls = computed(() => {
-  switch (props.size) {
+  switch (effectiveProps.value.size) {
     case 'sm': {
       return {
         normalContent: 'min-w-16 h-6 px-2 py-1 text-xs gap-1',
@@ -66,7 +74,7 @@ const variant = computed(() => {
   }
   return props.variant ?? 'default'
 })
-const color = computed(() => props.color ?? 'primary')
+const color = computed(() => props.color ?? theme.value.defaultColor)
 const cs = useButtonCS(variant, color)
 const outlineColor = computed(() => props.outlineColor ?? color.value)
 const outlineCS = useOutlineCS(outlineColor)
@@ -85,7 +93,7 @@ const outlineCS = useOutlineCS(outlineColor)
     :is="is"
     v-else
     ref="btn"
-    :data-size="size"
+    :data-size="effectiveProps.size"
     :type="type"
     class="outline-none decoration-none flex items-center justify-center children:flex-shrink-0"
     :style="[

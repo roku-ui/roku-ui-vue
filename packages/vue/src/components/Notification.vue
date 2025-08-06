@@ -2,7 +2,7 @@
 import type { Size } from '@/types'
 import { computed } from 'vue'
 import { Btn, Progress } from '@/components'
-import { useContainerDefaultCS, useContainerFilledCS, useTextCS } from '@/shared'
+import { useContainerDefaultCS, useContainerFilledCS, useTextCS, useTheme } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
 
 const props = withDefaults(
@@ -24,14 +24,24 @@ const props = withDefaults(
   {
     type: 'info',
     border: false,
-    color: 'primary',
-    rounded: 'md',
+    color: undefined,
+    rounded: undefined,
     block: false,
-    size: 'md',
+    size: undefined,
     total: 100,
     showLeftIndicator: false,
   },
 )
+
+const theme = useTheme()
+
+// 创建带有 theme 默认值的有效 props
+const effectiveProps = computed(() => ({
+  ...props,
+  size: props.size ?? theme.value.defaultSize,
+  color: props.color ?? theme.value.defaultColor,
+  rounded: props.rounded ?? theme.value.rounded,
+}))
 
 defineEmits(['close'])
 defineSlots<{
@@ -39,13 +49,13 @@ defineSlots<{
   message?: (props: any) => any
 }>()
 
-const rounded = useRounded(props)
-const color = computed(() => props.color)
+const rounded = useRounded(effectiveProps.value)
+const color = computed(() => effectiveProps.value.color)
 const containerFilledCS = useContainerFilledCS(color)
 const textCS = useTextCS(color)
 const containerSurfaceCS = useContainerDefaultCS()
 const shapeClass = computed(() => {
-  switch (props.size) {
+  switch (effectiveProps.value.size) {
     case 'sm': {
       return 'min-h-10 p-1'
     }
