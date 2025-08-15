@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, useAttrs } from 'vue'
 import { useId } from '@/composables'
-import { useInputColorStyle, useTheme } from '@/shared'
+import { useInputColorStyle, useTheme, useComponentDefaults } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
 
 const props = withDefaults(
@@ -29,13 +29,14 @@ const props = withDefaults(
   },
 )
 const theme = useTheme()
+const componentDefaults = useComponentDefaults('TextField')
 
 // 创建带有 theme 默认值的有效 props
 const effectiveProps = computed(() => ({
   ...props,
-  color: props.color ?? theme.value.defaultColor,
-  rounded: props.rounded ?? theme.value.rounded,
-  size: props.size ?? theme.value.defaultSize,
+  color: props.color ?? componentDefaults?.color ?? theme.value.defaultColor,
+  rounded: props.rounded ?? componentDefaults?.rounded ?? theme.value.rounded,
+  size: props.size ?? componentDefaults?.size ?? theme.value.defaultSize,
 }))
 const model = defineModel<string | number>()
 const sizeCls = computed(() => {

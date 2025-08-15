@@ -2,7 +2,7 @@
 import type { Component } from 'vue'
 import type { Color, ContainerVariant, Rounded } from '@/types'
 import { computed, onMounted, ref } from 'vue'
-import { useContainerCS } from '@/shared'
+import { useContainerCS, useTheme, useComponentDefaults } from '@/shared'
 import { useRounded } from '@/utils'
 
 const props = withDefaults(
@@ -17,18 +17,29 @@ const props = withDefaults(
     skeleton?: boolean
   }>(),
   {
-    size: 'md',
+    size: undefined,
     is: 'img',
     variant: 'default',
-    color: 'default',
-    rounded: 'full',
+    color: undefined,
+    rounded: undefined,
   },
 )
 
-const rounded = useRounded(props)
+const theme = useTheme()
+const componentDefaults = useComponentDefaults('Avatar')
+
+// 创建带有 theme 默认值的有效 props
+const effectiveProps = computed(() => ({
+  ...props,
+  size: props.size ?? componentDefaults?.size ?? theme.value.defaultSize,
+  color: props.color ?? componentDefaults?.color ?? 'default',
+  rounded: props.rounded ?? componentDefaults?.rounded ?? 'full',
+}))
+
+const rounded = useRounded(effectiveProps.value)
 const name = computed(() => props.name || '')
 const sizeStyle = computed(() => {
-  switch (props.size) {
+  switch (effectiveProps.value.size) {
     case 'xs': {
       return '--size: 2rem; --font-size: 1rem;'
     }
@@ -45,8 +56,8 @@ const sizeStyle = computed(() => {
       return '--size: 8rem; --font-size: 4rem;'
     }
     default: {
-      if (typeof props.size === 'number' && !Number.isNaN(Number(props.size))) {
-        return `--size: ${props.size}rem; --font-size: ${props.size / 2}rem;`
+      if (typeof effectiveProps.value.size === 'number' && !Number.isNaN(Number(effectiveProps.value.size))) {
+        return `--size: ${effectiveProps.value.size}rem; --font-size: ${Number(effectiveProps.value.size) / 2}rem;`
       }
       return `--size: 4rem;`
     }
@@ -74,7 +85,7 @@ onMounted(() => {
 function getAvatarDisplayString(name: string) {
   return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
 }
-const color = computed(() => props.color)
+const color = computed(() => effectiveProps.value.color)
 const containerCS = useContainerCS(props.variant, color)
 </script>
 

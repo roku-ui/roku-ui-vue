@@ -19,6 +19,7 @@ import ButtonDemo from './demo/ButtonDemo.vue'
 import CalendarDemo from './demo/CalendarDemo.vue'
 import CalendarInputDemo from './demo/CalendarInputDemo.vue'
 import ChatDemo from './demo/ChatDemo.vue'
+import ComponentDefaultsDemo from './demo/ComponentDefaultsDemo.vue'
 import FormDemo from './demo/FormDemo.vue'
 import LayoutDemo from './demo/LayoutDemo.vue'
 import MediaDemo from './demo/MediaDemo.vue'
@@ -27,6 +28,7 @@ import ModernColorDemo from './demo/ModernColorDemo.vue'
 import NavigationDemo from './demo/NavigationDemo.vue'
 import NotificationDemo from './demo/NotificationDemo.vue'
 import PopoverDemo from './demo/PopoverDemo.vue'
+import ProgressDemo from './demo/ProgressDemo.vue'
 import RatingDemo from './demo/RatingDemo.vue'
 import SelectAreaDemo from './demo/SelectAreaDemo.vue'
 import SelectDemo from './demo/SelectDemo.vue'
@@ -47,6 +49,7 @@ const demoPages = [
   { key: 'Calendar', title: 'Calendar', component: CalendarDemo },
   { key: 'CalendarInput', title: 'Calendar Input', component: CalendarInputDemo },
   { key: 'Chat', title: 'Chat', component: ChatDemo },
+  { key: 'ComponentDefaults', title: 'Component Defaults', component: ComponentDefaultsDemo },
   { key: 'Form', title: 'Form Controls', component: FormDemo },
   { key: 'Layout', title: 'Layout', component: LayoutDemo },
   { key: 'Media', title: 'Media & Colors', component: MediaDemo },
@@ -55,6 +58,7 @@ const demoPages = [
   { key: 'Navigation', title: 'Navigation', component: NavigationDemo },
   { key: 'Notification', title: 'Notification', component: NotificationDemo },
   { key: 'Popover', title: 'Popover', component: PopoverDemo },
+  { key: 'Progress', title: 'Progress', component: ProgressDemo },
   { key: 'Rating', title: 'Rating', component: RatingDemo },
   { key: 'Select', title: 'Select', component: SelectDemo },
   { key: 'SelectArea', title: 'Select Area', component: SelectAreaDemo },

@@ -2,7 +2,7 @@
 import type { Color } from '@/types'
 import { isClient, onClickOutside, onKeyStroke, useElementBounding } from '@vueuse/core'
 import { computed, ref, watch, watchEffect } from 'vue'
-import { useContainerDefaultCS, useContainerDefaultVariantCS, useContainerFilledCS, useInputColorStyle, useTheme } from '@/shared'
+import { useContainerDefaultCS, useContainerDefaultVariantCS, useContainerFilledCS, useInputColorStyle, useTheme, useComponentDefaults } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
 
 const props = withDefaults(defineProps<{
@@ -40,13 +40,14 @@ const emit = defineEmits<{
 }>()
 
 const theme = useTheme()
+const componentDefaults = useComponentDefaults('Select')
 
 // 创建带有 theme 默认值的有效 props
 const effectiveProps = computed(() => ({
   ...props,
-  size: props.size ?? theme.value.defaultSize,
-  color: props.color ?? theme.value.defaultColor,
-  rounded: props.rounded ?? theme.value.rounded,
+  size: props.size ?? componentDefaults?.size ?? theme.value.defaultSize,
+  color: props.color ?? componentDefaults?.color ?? theme.value.defaultColor,
+  rounded: props.rounded ?? componentDefaults?.rounded ?? theme.value.rounded,
 }))
 
 const rounded = useRounded(effectiveProps.value)

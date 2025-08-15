@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { BtnVariant } from '@/types'
 import { computed, useAttrs } from 'vue'
-import { useTagCS } from '@/shared'
+import { useComponentDefaults, useTagCS, useTheme } from '@/shared'
 import { useRounded } from '..'
 
 const props = withDefaults(defineProps<{
@@ -10,8 +10,10 @@ const props = withDefaults(defineProps<{
   rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full' | string | number
   size?: 'sm' | 'md' | 'lg'
 }>(), {
-  variant: 'default',
-  rounded: 'md',
+  variant: undefined,
+  rounded: undefined,
+  size: undefined,
+  color: undefined,
 })
 
 const _slots = defineSlots<{
@@ -20,8 +22,20 @@ const _slots = defineSlots<{
   leftSection?: (props: any) => any
 }>()
 
+const theme = useTheme()
+const componentDefaults = useComponentDefaults('Tag')
+
+// 创建带有 theme 默认值的有效 props
+const effectiveProps = computed(() => ({
+  ...props,
+  size: props.size ?? componentDefaults?.size ?? theme.value.defaultSize,
+  color: props.color ?? componentDefaults?.color ?? theme.value.defaultColor,
+  variant: props.variant ?? componentDefaults?.variant ?? 'default',
+  rounded: props.rounded ?? componentDefaults?.rounded ?? 'md',
+}))
+
 const sizeCls = computed(() => {
-  switch (props.size) {
+  switch (effectiveProps.value.size) {
     case 'sm': {
       return 'px-2 py-0.5 text-xs'
     }
@@ -35,9 +49,9 @@ const sizeCls = computed(() => {
   }
 })
 
-const rounded = useRounded(props)
-const color = computed(() => props.color ?? 'primary')
-const variant = computed(() => props.variant)
+const rounded = useRounded(effectiveProps.value)
+const color = computed(() => effectiveProps.value.color)
+const variant = computed(() => effectiveProps.value.variant)
 const hasInteraction = computed(() => {
   // 检测是否有点击相关的事件监听器
   const attrs = useAttrs()

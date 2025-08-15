@@ -4,7 +4,7 @@ import type { Color, Rounded } from '@/types'
 import { useElementBounding, useMouse } from '@vueuse/core'
 import { formatHex } from 'culori'
 import { computed, ref } from 'vue'
-import { useColors, useTheme } from '@/shared'
+import { useColors, useTheme, useComponentDefaults } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
 
 const props = withDefaults(
@@ -28,15 +28,19 @@ const props = withDefaults(
   },
 )
 const theme = useTheme()
+const componentDefaults = useComponentDefaults('Paper')
+
 const withBorder = computed(() => props.withBorder ?? theme.value.withBorder)
-const color = computed(() => props.color)
 const loading = computed(() => props.loading)
 
 // 创建带有 theme 默认值的 props 对象用于 useRounded
 const effectiveProps = computed(() => ({
   ...props,
-  rounded: props.rounded ?? theme.value.rounded,
+  color: props.color ?? componentDefaults?.color ?? 'primary',
+  rounded: props.rounded ?? componentDefaults?.rounded ?? theme.value.rounded,
 }))
+
+const color = computed(() => effectiveProps.value.color)
 const roundedCls = useRounded(effectiveProps.value)
 const { x, y } = useMouse({ type: 'client' })
 const paperRef = ref<HTMLElement | null>(null)

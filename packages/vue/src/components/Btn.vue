@@ -3,7 +3,7 @@ import type { Component } from 'vue'
 import type { BtnVariant } from '@/types'
 import { useElementHover } from '@vueuse/core'
 import { computed, ref } from 'vue'
-import { useButtonCS, useOutlineCS, useTheme } from '@/shared'
+import { useButtonCS, useOutlineCS, useTheme, useComponentDefaults } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
 
 const props = withDefaults(
@@ -32,12 +32,16 @@ const props = withDefaults(
   },
 )
 const theme = useTheme()
+const componentDefaults = useComponentDefaults('Btn')
 
 // 创建带有 theme 默认值的 props 对象用于 useRounded
 const effectiveProps = computed(() => ({
   ...props,
-  rounded: props.rounded ?? theme.value.rounded,
-  size: props.size ?? theme.value.defaultSize,
+  rounded: props.rounded ?? componentDefaults?.rounded ?? theme.value.rounded,
+  size: props.size ?? componentDefaults?.size ?? theme.value.defaultSize,
+  variant: props.variant ?? componentDefaults?.variant,
+  pressEffect: props.pressEffect ?? componentDefaults?.pressEffect ?? 'translate',
+  color: props.color ?? componentDefaults?.color,
 }))
 const rounded = useRounded(effectiveProps.value)
 
@@ -72,9 +76,9 @@ const variant = computed(() => {
   if (props.hoverVariant && isHover.value) {
     return props.hoverVariant
   }
-  return props.variant ?? 'default'
+  return effectiveProps.value.variant ?? 'default'
 })
-const color = computed(() => props.color ?? theme.value.defaultColor)
+const color = computed(() => effectiveProps.value.color ?? theme.value.defaultColor)
 const cs = useButtonCS(variant, color)
 const outlineColor = computed(() => props.outlineColor ?? color.value)
 const outlineCS = useOutlineCS(outlineColor)
@@ -108,7 +112,8 @@ const outlineCS = useOutlineCS(outlineColor)
       icon ? sizeCls.iconContent : sizeCls.normalContent,
       {
         'opacity-60 pointer-events-none select-none': disabled,
-        'active:translate-y-0.25': pressEffect === 'translate',
+        'active:translate-y-0.25': effectiveProps.pressEffect === 'translate',
+        'active:scale-97': effectiveProps.pressEffect === 'scale',
       },
     ]"
     :disabled="disabled"

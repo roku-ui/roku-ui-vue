@@ -4,7 +4,7 @@ import type { Color } from '@/types'
 import { useEventListener } from '@vueuse/core'
 import { computed, ref, watch } from 'vue'
 import { useId } from '@/composables'
-import { useColorCS, useOutlineCS as useOutlineColorCS, useSurfaceCS, useTheme } from '@/shared'
+import { useColorCS, useOutlineCS as useOutlineColorCS, useSurfaceCS, useTheme, useComponentDefaults } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
 
 defineOptions({
@@ -34,13 +34,14 @@ const props = withDefaults(
 )
 
 const theme = useTheme()
+const componentDefaults = useComponentDefaults('Checkbox')
 
 // 创建带有 theme 默认值的有效 props
 const effectiveProps = computed(() => ({
   ...props,
-  size: props.size ?? theme.value.defaultSize,
-  color: props.color ?? theme.value.defaultColor,
-  rounded: props.rounded ?? theme.value.rounded,
+  size: props.size ?? componentDefaults?.size ?? theme.value.defaultSize,
+  color: props.color ?? componentDefaults?.color ?? theme.value.defaultColor,
+  rounded: props.rounded ?? componentDefaults?.rounded ?? theme.value.rounded,
 }))
 
 const emit = defineEmits<{
