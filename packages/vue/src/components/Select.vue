@@ -2,7 +2,7 @@
 import type { Color } from '@/types'
 import { isClient, onClickOutside, onKeyStroke, useElementBounding } from '@vueuse/core'
 import { computed, ref, watch, watchEffect } from 'vue'
-import { useContainerDefaultCS, useContainerDefaultVariantCS, useContainerFilledCS, useInputColorStyle, useTheme, useComponentDefaults } from '@/shared'
+import { useComponentDefaults, useContainerDefaultCS, useContainerDefaultVariantCS, useContainerFilledCS, useInputColorStyle, useTheme } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
 
 const props = withDefaults(defineProps<{

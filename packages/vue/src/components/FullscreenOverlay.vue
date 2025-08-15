@@ -27,8 +27,8 @@ function onMouseDown(event: MouseEvent) {
 }
 
 function onMouseUp(event: MouseEvent) {
-  if (!props.persistent 
-      && mousedownTarget === wrapperRef.value 
+  if (!props.persistent
+      && mousedownTarget === wrapperRef.value
       && event.target === wrapperRef.value) {
     emit('maskClick')
     model.value = false

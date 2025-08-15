@@ -11,9 +11,6 @@ const stackedSections = ref([
   { value: 15, color: 'warning' },
 ])
 
-// 添加调试信息
-console.log('stackedSections:', stackedSections.value)
-
 function toggleLoading() {
   loading.value = !loading.value
 }

@@ -3,7 +3,7 @@ import type { Component } from 'vue'
 import type { BtnVariant } from '@/types'
 import { useElementHover } from '@vueuse/core'
 import { computed, ref } from 'vue'
-import { useButtonCS, useOutlineCS, useTheme, useComponentDefaults } from '@/shared'
+import { useButtonCS, useComponentDefaults, useOutlineCS, useTheme } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
 
 const props = withDefaults(
@@ -91,7 +91,7 @@ const outlineCS = useOutlineCS(outlineColor)
       rounded.style,
     ]"
     :class="sizeCls.normalContent"
-    class="rounded-md bg-surface-variant-1 inline-block animate-pulse"
+    class="bg-surface-variant-1 rounded-md inline-block animate-pulse"
   />
   <component
     :is="is"

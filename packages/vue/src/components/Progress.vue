@@ -60,7 +60,6 @@ const surfaceVariantCS = useSurfaceCS('bg', { dark: 7, light: 3 })
 
 const rounded = useRounded(effectiveProps.value)
 
-
 // 计算堆叠进度条的sections
 const normalizedSections = computed(() => {
   if (props.sections) {
@@ -71,9 +70,9 @@ const normalizedSections = computed(() => {
       const width = (sectionValue / range) * 100
       const left = currentPosition
       currentPosition += width
-      
+
       const sectionColor = section.color ?? effectiveProps.value.color
-      
+
       return {
         ...section,
         width,
@@ -102,7 +101,7 @@ const normalizedSections = computed(() => {
         class="h-full absolute"
         :class="[
           `bg-${section.color}-4`,
-          `dark:bg-${section.color}-5`
+          `dark:bg-${section.color}-5`,
         ]"
         :style="{
           width: `${section.width}%`,
@@ -110,7 +109,7 @@ const normalizedSections = computed(() => {
         }"
       />
     </template>
-    
+
     <!-- 单一进度条模式 -->
     <template v-else>
       <div

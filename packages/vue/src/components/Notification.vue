@@ -33,6 +33,13 @@ const props = withDefaults(
   },
 )
 
+defineEmits(['close'])
+
+defineSlots<{
+  closeIcon?: (props: any) => any
+  message?: (props: any) => any
+}>()
+
 const theme = useTheme()
 
 // 创建带有 theme 默认值的有效 props
@@ -42,12 +49,6 @@ const effectiveProps = computed(() => ({
   color: props.color ?? theme.value.defaultColor,
   rounded: props.rounded ?? theme.value.rounded,
 }))
-
-defineEmits(['close'])
-defineSlots<{
-  closeIcon?: (props: any) => any
-  message?: (props: any) => any
-}>()
 
 const rounded = useRounded(effectiveProps.value)
 const color = computed(() => effectiveProps.value.color)

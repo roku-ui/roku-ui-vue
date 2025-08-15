@@ -40,12 +40,12 @@ export interface ColorGenerationOptions {
 
 // Enhanced OKLCH-based color generation with advanced algorithms
 export function generateColorsObjMapOKLCH(
-  color: ColorInput, 
+  color: ColorInput,
   lightnessMap = COLOR_LIGHTNESS_MAP,
-  options: ColorGenerationOptions = {}
+  options: ColorGenerationOptions = {},
 ) {
   const { strategy = 'balanced', gamut = 'srgb' } = options
-  
+
   const baseOklch = oklch(color)
   if (!baseOklch) {
     return { baseColorIndex: 0, colors: [] }
@@ -56,11 +56,11 @@ export function generateColorsObjMapOKLCH(
 
   const colors = lightnessMap.map((lightness) => {
     const adjustedChroma = calculateOptimalChroma(
-      baseOklch.c || 0, 
-      lightness, 
+      baseOklch.c || 0,
+      lightness,
       baseOklch.h || 0,
       strategy,
-      options.customChromaCurve
+      options.customChromaCurve,
     )
 
     // Create new OKLCH color with optimized values
@@ -85,7 +85,7 @@ function calculateOptimalChroma(
   lightness: number,
   hue: number,
   strategy: 'conservative' | 'balanced' | 'vibrant',
-  customCurve?: (lightness: number) => number
+  customCurve?: (lightness: number) => number,
 ): number {
   if (customCurve) {
     return baseChroma * customCurve(lightness)
@@ -93,10 +93,10 @@ function calculateOptimalChroma(
 
   // Use perceptually uniform chroma curve based on human vision research
   const chromaMultiplier = getPerceptualChromaMultiplier(lightness, strategy)
-  
+
   // Apply hue-specific adjustments (some hues appear more saturated than others)
   const hueAdjustment = getHueSpecificChromaAdjustment(hue)
-  
+
   return baseChroma * chromaMultiplier * hueAdjustment
 }
 
@@ -105,23 +105,23 @@ function getPerceptualChromaMultiplier(lightness: number, strategy: 'conservativ
   // Base curve using a modified sine wave that follows human perception
   // Peak chroma perception occurs around L=0.6-0.7
   const baseCurve = Math.sin(lightness * Math.PI) * 0.7 + 0.3
-  
+
   switch (strategy) {
     case 'conservative': {
       // More muted colors, reduce chroma in extreme ranges
       return baseCurve * (0.6 + 0.4 * baseCurve)
     }
-    
+
     case 'vibrant': {
       // More saturated colors, boost chroma in mid-range
       return Math.min(1.2, baseCurve * (1.1 + 0.3 * Math.sin(lightness * Math.PI * 2)))
     }
-    
+
     case 'balanced': {
       // Balanced approach with smooth transitions
       return baseCurve * (0.8 + 0.3 * (1 - Math.abs(lightness - 0.6) * 2))
     }
-    
+
     default: {
       // Default to balanced strategy
       return baseCurve * (0.8 + 0.3 * (1 - Math.abs(lightness - 0.6) * 2))
@@ -131,25 +131,27 @@ function getPerceptualChromaMultiplier(lightness: number, strategy: 'conservativ
 
 // Adjust chroma based on hue characteristics
 function getHueSpecificChromaAdjustment(hue: number): number {
-  if (hue === undefined) return 1
-  
+  if (hue === undefined) {
+ return 1
+}
+
   // Some hues (like yellow) appear more saturated than others (like blue/purple)
   // This adjustment compensates for perceptual differences
   const hueRad = (hue * Math.PI) / 180
-  
+
   // Yellow (60°) and red (0°/360°) appear more saturated
   // Blue (240°) and purple (270°) appear less saturated
   const yellowBoost = Math.cos(hueRad - Math.PI / 3) * 0.1 + 1 // Peak at 60°
   const redBoost = Math.cos(hueRad) * 0.05 + 1 // Peak at 0°/360°
   const blueReduction = Math.cos(hueRad - 4 * Math.PI / 3) * -0.1 + 1 // Dip at 240°
-  
+
   return Math.max(0.7, Math.min(1.3, yellowBoost * redBoost * blueReduction))
 }
 
 // Enhanced gamut validation and color correction
 export interface GamutInfo {
   name: 'srgb' | 'p3' | 'rec2020'
-  rgbLimits: { min: number; max: number }
+  rgbLimits: { min: number, max: number }
   description: string
 }
 
@@ -174,27 +176,29 @@ export const GAMUT_DEFINITIONS: Record<string, GamutInfo> = {
 // Check if a color is within the specified gamut
 export function isColorInGamut(color: any, gamut: 'srgb' | 'p3' | 'rec2020'): boolean {
   const rgbColor = rgb(color)
-  if (!rgbColor || !('r' in rgbColor)) return false
-  
+  if (!rgbColor || !('r' in rgbColor)) {
+ return false
+}
+
   const { r, g, b } = rgbColor
   const { min, max } = GAMUT_DEFINITIONS[gamut].rgbLimits
-  
+
   return r >= min && r <= max && g >= min && g <= max && b >= min && b <= max
 }
 
 // Get the maximum chroma for a given lightness and hue within a gamut
 function getMaxChromaForGamut(
-  lightness: number, 
-  hue: number, 
-  gamut: 'srgb' | 'p3' | 'rec2020'
+  lightness: number,
+  hue: number,
+  gamut: 'srgb' | 'p3' | 'rec2020',
 ): number {
   let maxChroma = 0
-  
+
   // Binary search for maximum chroma
   let low = 0
   let high = 0.4 // Maximum reasonable chroma
   let iterations = 0
-  
+
   while (high - low > 0.001 && iterations < 50) {
     const midChroma = (low + high) / 2
     const testColor = {
@@ -203,17 +207,18 @@ function getMaxChromaForGamut(
       c: midChroma,
       h: hue,
     }
-    
+
     if (isColorInGamut(testColor, gamut)) {
       low = midChroma
       maxChroma = midChroma
-    } else {
+    }
+ else {
       high = midChroma
     }
-    
+
     iterations++
   }
-  
+
   return maxChroma
 }
 
@@ -222,14 +227,14 @@ function applyGamutConstraints(oklchColor: any, gamut: 'srgb' | 'p3' | 'rec2020'
   if (isColorInGamut(oklchColor, gamut)) {
     return oklchColor // Color is already within gamut
   }
-  
+
   // Find the maximum chroma for this lightness and hue
   const maxChroma = getMaxChromaForGamut(
     oklchColor.l || 0,
     oklchColor.h || 0,
-    gamut
+    gamut,
   )
-  
+
   // Clamp chroma to the maximum allowed
   return {
     ...oklchColor,
@@ -242,40 +247,52 @@ export function analyzeColorGamut(colors: any[]): {
   srgbCoverage: number
   p3Coverage: number
   rec2020Coverage: number
-  outOfGamutColors: { index: number; gamuts: string[] }[]
+  outOfGamutColors: { index: number, gamuts: string[] }[]
 } {
   const results = {
     srgbCoverage: 0,
     p3Coverage: 0,
     rec2020Coverage: 0,
-    outOfGamutColors: [] as { index: number; gamuts: string[] }[],
+    outOfGamutColors: [] as { index: number, gamuts: string[] }[],
   }
-  
+
   for (const [index, color] of colors.entries()) {
     const inSrgb = isColorInGamut(color, 'srgb')
     const inP3 = isColorInGamut(color, 'p3')
     const inRec2020 = isColorInGamut(color, 'rec2020')
-    
-    if (inSrgb) results.srgbCoverage++
-    if (inP3) results.p3Coverage++
-    if (inRec2020) results.rec2020Coverage++
-    
+
+    if (inSrgb) {
+ results.srgbCoverage++
+}
+    if (inP3) {
+ results.p3Coverage++
+}
+    if (inRec2020) {
+ results.rec2020Coverage++
+}
+
     const outOfGamuts: string[] = []
-    if (!inSrgb) outOfGamuts.push('srgb')
-    if (!inP3) outOfGamuts.push('p3')
-    if (!inRec2020) outOfGamuts.push('rec2020')
-    
+    if (!inSrgb) {
+ outOfGamuts.push('srgb')
+}
+    if (!inP3) {
+ outOfGamuts.push('p3')
+}
+    if (!inRec2020) {
+ outOfGamuts.push('rec2020')
+}
+
     if (outOfGamuts.length > 0) {
       results.outOfGamutColors.push({ index, gamuts: outOfGamuts })
     }
   }
-  
+
   // Convert to percentages
   const total = colors.length
   results.srgbCoverage = (results.srgbCoverage / total) * 100
   results.p3Coverage = (results.p3Coverage / total) * 100
   results.rec2020Coverage = (results.rec2020Coverage / total) * 100
-  
+
   return results
 }
 
@@ -288,14 +305,16 @@ function linearize(c: number): number {
 // WCAG contrast ratio calculation using relative luminance
 function getRelativeLuminance(color: any): number {
   const rgbColor = rgb(color)
-  if (!rgbColor || !('r' in rgbColor)) return 0
-  
+  if (!rgbColor || !('r' in rgbColor)) {
+ return 0
+}
+
   const { r, g, b } = rgbColor
-  
+
   const rLinear = linearize(r)
   const gLinear = linearize(g)
   const bLinear = linearize(b)
-  
+
   // Calculate relative luminance using WCAG formula
   return 0.2126 * rLinear + 0.7152 * gLinear + 0.0722 * bLinear
 }
@@ -303,10 +322,10 @@ function getRelativeLuminance(color: any): number {
 function calculateContrastRatio(color1: any, color2: any): number {
   const lum1 = getRelativeLuminance(color1)
   const lum2 = getRelativeLuminance(color2)
-  
+
   const lighter = Math.max(lum1, lum2)
   const darker = Math.min(lum1, lum2)
-  
+
   return (lighter + 0.05) / (darker + 0.05)
 }
 
@@ -314,20 +333,20 @@ function calculateContrastRatio(color1: any, color2: any): number {
 export function generateContrastAwareColors(
   color: ColorInput,
   backgroundLightness = 0.95, // Default to light background
-  options: ColorGenerationOptions = {}
+  options: ColorGenerationOptions = {},
 ): ColorsTuple {
   const { contrastTarget = 'AA' } = options
   const minContrast = contrastTarget === 'AAA' ? 7 : (contrastTarget === 'AA' ? 4.5 : 0)
-  
+
   if (contrastTarget === 'none') {
     return generateColorsOKLCH(color, COLOR_LIGHTNESS_MAP, options)
   }
-  
+
   const baseOklch = oklch(color)
   if (!baseOklch) {
     return generateColorsOKLCH(color, COLOR_LIGHTNESS_MAP, options)
   }
-  
+
   // Create background color for contrast calculation
   const backgroundColor = {
     mode: 'oklch' as const,
@@ -335,7 +354,7 @@ export function generateContrastAwareColors(
     c: 0, // Gray background for neutral contrast testing
     h: 0,
   }
-  
+
   const adjustedLightnessMap = COLOR_LIGHTNESS_MAP.map((lightness) => {
     const testColor = {
       mode: 'oklch' as const,
@@ -344,51 +363,51 @@ export function generateContrastAwareColors(
       h: baseOklch.h,
       alpha: baseOklch.alpha,
     }
-    
+
     const contrast = calculateContrastRatio(testColor, backgroundColor)
-    
+
     // If contrast is insufficient, adjust lightness
     if (contrast < minContrast) {
       // Determine if we should make it lighter or darker
       const shouldDarken = backgroundLightness > 0.5
-      
+
       let adjustedLightness = lightness
       let iterations = 0
       const maxIterations = 20
-      
+
       while (iterations < maxIterations) {
         const adjustedColor = {
           ...testColor,
           l: adjustedLightness,
         }
-        
+
         const newContrast = calculateContrastRatio(adjustedColor, backgroundColor)
-        
+
         if (newContrast >= minContrast) {
           break
         }
-        
+
         // Adjust lightness towards better contrast
-        adjustedLightness = shouldDarken 
+        adjustedLightness = shouldDarken
           ? Math.max(0, adjustedLightness - 0.05)
           : Math.min(1, adjustedLightness + 0.05)
-        
+
         iterations++
       }
-      
+
       return Math.max(0, Math.min(1, adjustedLightness))
     }
-    
+
     return lightness
   })
-  
+
   return generateColorsOKLCH(color, adjustedLightnessMap, options)
 }
 
 // Adaptive lightness mapping based on color characteristics
 export function generateAdaptiveLightnessMap(
   color: ColorInput,
-  purpose: 'primary' | 'secondary' | 'surface' | 'accent' = 'primary'
+  purpose: 'primary' | 'secondary' | 'surface' | 'accent' = 'primary',
 ): number[] {
   const baseOklch = oklch(color)
   if (!baseOklch) {
@@ -414,11 +433,11 @@ export function generateAdaptiveLightnessMap(
         0.08,
       ]
     }
-    
+
     case 'accent': {
       // Accent colors can be more vibrant with sharper transitions
       const boost = Math.min(0.15, (baseChroma || 0) * 0.3)
-      return COLOR_LIGHTNESS_MAP.map(l => {
+      return COLOR_LIGHTNESS_MAP.map((l) => {
         // Boost mid-range lightness for more pop
         if (l >= 0.3 && l <= 0.7) {
           return Math.min(0.95, l + boost)
@@ -426,41 +445,51 @@ export function generateAdaptiveLightnessMap(
         return l
       })
     }
-    
+
     case 'secondary': {
       // Secondary colors should be more muted
       const reduction = Math.min(0.1, (baseChroma || 0) * 0.2)
-      return COLOR_LIGHTNESS_MAP.map(l => {
+      return COLOR_LIGHTNESS_MAP.map((l) => {
         // Slightly reduce extreme values
-        if (l > 0.8) return Math.max(0.75, l - reduction)
-        if (l < 0.2) return Math.min(0.25, l + reduction)
+        if (l > 0.8) {
+ return Math.max(0.75, l - reduction)
+}
+        if (l < 0.2) {
+ return Math.min(0.25, l + reduction)
+}
         return l
       })
     }
-    
+
     case 'primary': {
       // Primary colors get hue-specific adjustments
-      if (baseHue === undefined) return COLOR_LIGHTNESS_MAP
-      
+      if (baseHue === undefined) {
+ return COLOR_LIGHTNESS_MAP
+}
+
       // Yellow hues (45-75°) need darker variants to maintain readability
       if (baseHue >= 45 && baseHue <= 75) {
-        return COLOR_LIGHTNESS_MAP.map(l => {
-          if (l > 0.6) return Math.max(0.5, l - 0.1)
+        return COLOR_LIGHTNESS_MAP.map((l) => {
+          if (l > 0.6) {
+ return Math.max(0.5, l - 0.1)
+}
           return l
         })
       }
-      
+
       // Blue hues (200-260°) can handle lighter variants better
       if (baseHue >= 200 && baseHue <= 260) {
-        return COLOR_LIGHTNESS_MAP.map(l => {
-          if (l < 0.4) return Math.min(0.5, l + 0.1)
+        return COLOR_LIGHTNESS_MAP.map((l) => {
+          if (l < 0.4) {
+ return Math.min(0.5, l + 0.1)
+}
           return l
         })
       }
-      
+
       return COLOR_LIGHTNESS_MAP
     }
-    
+
     default: {
       return COLOR_LIGHTNESS_MAP
     }
@@ -471,7 +500,7 @@ export function generateAdaptiveLightnessMap(
 export function generateAdaptiveColors(
   color: ColorInput,
   purpose: 'primary' | 'secondary' | 'surface' | 'accent' = 'primary',
-  options: ColorGenerationOptions = {}
+  options: ColorGenerationOptions = {},
 ): ColorsTuple {
   const adaptiveLightnessMap = generateAdaptiveLightnessMap(color, purpose)
   return generateColorsOKLCH(color, adaptiveLightnessMap, options)
@@ -505,7 +534,7 @@ export interface ColorPaletteResult {
 // Master function for advanced color palette generation
 export function generateAdvancedColorPalette(
   color: ColorInput,
-  options: AdvancedColorOptions = {}
+  options: AdvancedColorOptions = {},
 ): ColorPaletteResult {
   const {
     purpose = 'primary',
@@ -519,12 +548,13 @@ export function generateAdvancedColorPalette(
 
   // Generate the primary palette
   let colors: ColorsTuple
-  let objMap: { baseColorIndex: number; colors: any[] }
+  let objMap: { baseColorIndex: number, colors: any[] }
 
   if (contrastTarget === 'none') {
     colors = generateAdaptiveColors(color, purpose, options)
     objMap = generateColorsObjMapOKLCH(color, generateAdaptiveLightnessMap(color, purpose), options)
-  } else {
+  }
+ else {
     colors = generateContrastAwareColors(color, backgroundLightness, options)
     objMap = generateColorsObjMapOKLCH(color, COLOR_LIGHTNESS_MAP, options)
   }
@@ -560,7 +590,7 @@ export function generateAdvancedColorPalette(
 // Utility function for quick color palette generation with sensible defaults
 export function createColorPalette(
   color: string,
-  type: 'primary' | 'secondary' | 'accent' | 'surface' = 'primary'
+  type: 'primary' | 'secondary' | 'accent' | 'surface' = 'primary',
 ): ColorsTuple {
   return generateAdvancedColorPalette(color, {
     purpose: type,
@@ -573,7 +603,7 @@ export function createColorPalette(
 // Export enhanced version of existing functions with new options
 export function generateColorsEnhanced(
   color: ColorInput,
-  options: AdvancedColorOptions = {}
+  options: AdvancedColorOptions = {},
 ): ColorsTuple {
   return generateAdvancedColorPalette(color, options).colors
 }
@@ -592,9 +622,9 @@ function getCachedResult<T>(key: string, generator: () => T): T {
   if (colorCache.has(key)) {
     return colorCache.get(key)
   }
-  
+
   const result = generator()
-  
+
   // Implement LRU cache by removing oldest entries
   if (colorCache.size >= MAX_CACHE_SIZE) {
     const firstKey = colorCache.keys().next().value
@@ -602,48 +632,46 @@ function getCachedResult<T>(key: string, generator: () => T): T {
       colorCache.delete(firstKey)
     }
   }
-  
+
   colorCache.set(key, result)
   return result
 }
 
 // Cached version of generateColorsObjMapOKLCH
 export function generateColorsObjMapOKLCHCached(
-  color: ColorInput, 
+  color: ColorInput,
   lightnessMap = COLOR_LIGHTNESS_MAP,
-  options: ColorGenerationOptions = {}
-): { baseColorIndex: number; colors: any[] } {
+  options: ColorGenerationOptions = {},
+): { baseColorIndex: number, colors: any[] } {
   const cacheKey = getCacheKey(color, { lightnessMap, ...options })
-  
-  return getCachedResult(cacheKey, () => 
-    generateColorsObjMapOKLCH(color, lightnessMap, options)
-  )
+
+  return getCachedResult(cacheKey, () =>
+    generateColorsObjMapOKLCH(color, lightnessMap, options))
 }
 
 // Cached version of generateAdvancedColorPalette
 export function generateAdvancedColorPaletteCached(
   color: ColorInput,
-  options: AdvancedColorOptions = {}
+  options: AdvancedColorOptions = {},
 ): ColorPaletteResult {
   const cacheKey = getCacheKey(color, options)
-  
-  return getCachedResult(cacheKey, () => 
-    generateAdvancedColorPalette(color, options)
-  )
+
+  return getCachedResult(cacheKey, () =>
+    generateAdvancedColorPalette(color, options))
 }
 
 // Performance utilities
 export const ColorPalettePerformance = {
   // Clear the cache
   clearCache: () => colorCache.clear(),
-  
+
   // Get cache statistics
   getCacheStats: () => ({
     size: colorCache.size,
     maxSize: MAX_CACHE_SIZE,
     hitRate: 0, // TODO: Implement hit rate tracking
   }),
-  
+
   // Precompute common color palettes
   precomputePalettes: (colors: string[]) => {
     const commonOptions = [
@@ -652,7 +680,7 @@ export const ColorPalettePerformance = {
       { purpose: 'accent', strategy: 'vibrant' },
       { purpose: 'surface', strategy: 'balanced' },
     ] as AdvancedColorOptions[]
-    
+
     for (const color of colors) {
       for (const options of commonOptions) {
         generateAdvancedColorPaletteCached(color, options)
@@ -714,9 +742,9 @@ export function generateColors(color: ColorInput, lightnessMap: number[] = COLOR
 
 // OKLCH version for better color accuracy
 export function generateColorsOKLCH(
-  color: ColorInput, 
+  color: ColorInput,
   lightnessMap: number[] = COLOR_LIGHTNESS_MAP,
-  options?: ColorGenerationOptions
+  options?: ColorGenerationOptions,
 ) {
   const objMap = generateColorsObjMapOKLCH(color, lightnessMap, options)
   return objMap.colors.map(c => formatHex(c) || '#000000') as unknown as ColorsTuple
@@ -744,12 +772,11 @@ export function generateEditorFriendlyColors(color: ColorInput, lightnessMap: nu
     return {
       index,
       hex,
-      rgb: (rgbColor && 'r' in rgbColor && 'g' in rgbColor && 'b' in rgbColor) 
-        ? `${Math.round((rgbColor as any).r * 255)} ${Math.round((rgbColor as any).g * 255)} ${Math.round((rgbColor as any).b * 255)}` 
+      rgb: (rgbColor && 'r' in rgbColor && 'g' in rgbColor && 'b' in rgbColor)
+        ? `${Math.round((rgbColor as any).r * 255)} ${Math.round((rgbColor as any).g * 255)} ${Math.round((rgbColor as any).b * 255)}`
         : '0 0 0',
       oklch: oklchString,
       lightness: lightnessMap[index],
     }
   })
 }
-

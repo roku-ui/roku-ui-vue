@@ -18,6 +18,9 @@
     "dev": "pnpm --filter @roku-ui/docs dev",
     "dev:spa": "pnpm --filter @roku-ui/vue dev"
   },
+  "dependencies": {
+    "culori": "^4.0.2"
+  },
   "devDependencies": {
     "@jannchie/eslint-config": "^3.7.0",
     "@types/culori": "^4.0.0",
@@ -31,8 +34,5 @@
   },
   "lint-staged": {
     "*": "eslint --fix"
-  },
-  "dependencies": {
-    "culori": "^4.0.2"
   }
 }

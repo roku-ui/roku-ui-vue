@@ -4,7 +4,7 @@ import type { Color, Rounded } from '@/types'
 import { useElementBounding, useMouse } from '@vueuse/core'
 import { formatHex } from 'culori'
 import { computed, ref } from 'vue'
-import { useColors, useTheme, useComponentDefaults } from '@/shared'
+import { useColors, useComponentDefaults, useTheme } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
 
 const props = withDefaults(

@@ -33,6 +33,10 @@ const props = withDefaults(
   },
 )
 
+const emit = defineEmits<{
+  'update:modelValue': [value: Date | Date[] | { start: Date, end: Date } | undefined]
+}>()
+
 const theme = useTheme()
 
 // 创建带有 theme 默认值的有效 props
@@ -42,10 +46,6 @@ const effectiveProps = computed(() => ({
   color: props.color ?? theme.value.defaultColor,
   rounded: props.rounded ?? theme.value.rounded,
 }))
-
-const emit = defineEmits<{
-  'update:modelValue': [value: Date | Date[] | { start: Date, end: Date } | undefined]
-}>()
 
 const currentDate = ref(new Date())
 const hoveredDate = ref<Date | null>(null)
@@ -360,7 +360,7 @@ function getCellCS(day: any) {
   >
     <!-- Header -->
     <div
-      class="border-surface-variant-1 border-b bg-surface-variant-1 flex items-center justify-between"
+      class="border-surface-variant-1 bg-surface-variant-1 border-b flex items-center justify-between"
       :class="[sizeCls.header]"
     >
       <div class="flex gap-1 items-center">
@@ -410,7 +410,7 @@ function getCellCS(day: any) {
     </div>
 
     <!-- Week headers -->
-    <div class="border-surface-variant-1 border-b border-l bg-surface-variant-1 grid grid-cols-7">
+    <div class="border-surface-variant-1 bg-surface-variant-1 border-b border-l grid grid-cols-7">
       <div
         v-for="weekDay in weekDayNames"
         :key="weekDay"

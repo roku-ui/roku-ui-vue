@@ -2,7 +2,7 @@
 import type { Component } from 'vue'
 import type { Color, ContainerVariant, Rounded } from '@/types'
 import { computed, onMounted, ref } from 'vue'
-import { useContainerCS, useTheme, useComponentDefaults } from '@/shared'
+import { useComponentDefaults, useContainerCS, useTheme } from '@/shared'
 import { useRounded } from '@/utils'
 
 const props = withDefaults(
@@ -92,7 +92,7 @@ const containerCS = useContainerCS(props.variant, color)
 <template>
   <div
     v-if="skeleton"
-    class="rounded-full bg-surface-variant-1 min-h-[--size] min-w-[--size] inline-block animate-pulse"
+    class="bg-surface-variant-1 rounded-full min-h-[--size] min-w-[--size] inline-block animate-pulse"
     :style="[rounded.style, sizeStyle]"
   />
   <div

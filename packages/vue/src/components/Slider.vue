@@ -323,7 +323,7 @@ const animateCls = computed(() => props.animate && !isMoving.value
       @touchmove.prevent
     >
       <div
-        class="rounded-full bg-surface-variant-1"
+        class="bg-surface-variant-1 rounded-full"
         :class="sizeCls.innerWrapper"
         :style="{
           width: '100%',
@@ -343,7 +343,7 @@ const animateCls = computed(() => props.animate && !isMoving.value
             :style="{
               left: `${props.reverse ? 100 - valueToPosition(option, props.min, props.max, props.options !== undefined) : valueToPosition(option, props.min, props.max, props.options !== undefined)}%`,
             }"
-            class="rounded-full bg-surface-variant-2 top-50% absolute"
+            class="bg-surface-variant-2 rounded-full top-50% absolute"
             :class="sizeCls.tick"
           />
           <div

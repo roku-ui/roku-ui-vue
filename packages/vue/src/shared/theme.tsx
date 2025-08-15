@@ -152,7 +152,7 @@ export function useComponentDefaults<K extends keyof ComponentDefaults>(componen
 export function getComponentDefault<K extends keyof ComponentDefaults>(
   componentName: K,
   propName: string,
-  fallback?: any
+  fallback?: any,
 ): any {
   const theme = useTheme()
   const componentDefaults = theme?.value.componentDefaults?.[componentName] as any

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { Paper, TextField, Select, Slider, Switch, SchemeSwitch, BtnGroup, PinInput } from '../../components'
+import { BtnGroup, Paper, PinInput, SchemeSwitch, Select, Slider, Switch, TextField } from '../../components'
 
 const text = ref('1')
 const slider = ref(47)

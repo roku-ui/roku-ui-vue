@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, useAttrs } from 'vue'
 import { useId } from '@/composables'
-import { useInputColorStyle, useTheme, useComponentDefaults } from '@/shared'
+import { useComponentDefaults, useInputColorStyle, useTheme } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
 
 const props = withDefaults(

@@ -90,7 +90,7 @@ const navbarWidth = ref('200px')
                 Sidebar
               </h4>
               <div class="space-y-2">
-                <Paper class="p-3 bg-surface-variant-1">
+                <Paper class="bg-surface-variant-1 p-3">
                   <div class="text-surface-on text-sm font-medium">
                     Widget 1
                   </div>
@@ -98,7 +98,7 @@ const navbarWidth = ref('200px')
                     Some widget content
                   </div>
                 </Paper>
-                <Paper class="p-3 bg-surface-variant-1">
+                <Paper class="bg-surface-variant-1 p-3">
                   <div class="text-surface-on text-sm font-medium">
                     Widget 2
                   </div>

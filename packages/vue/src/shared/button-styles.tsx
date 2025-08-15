@@ -1,9 +1,11 @@
 import type { Color as CuloriColor } from 'culori'
 import type { ComputedRef, MaybeRef } from 'vue'
+import type { CS } from './color-system'
 import type { BtnVariant, Color } from '@/types'
 import { formatHex, formatHex8 } from 'culori'
 import { computed, unref } from 'vue'
 import { generateAdaptiveLightnessMap, generateColorsObjMapOKLCH } from '@/utils'
+import { useColors } from './color-system'
 import {
   darkBgIndex,
   darkBgVariantIndex,
@@ -24,7 +26,6 @@ import {
   lightSurfaceBgVariantIndex,
   lightTextIndex,
 } from './constants'
-import { CS, useColors } from './color-system'
 import { getThemeColorString } from './theme'
 
 export function useButtonCS(variant: MaybeRef<BtnVariant> = 'default', color: MaybeRef<Color> = 'primary'): ComputedRef<CS> {

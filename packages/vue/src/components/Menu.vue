@@ -175,8 +175,8 @@ onKeyStroke('ArrowDown', (e) => {
   let nextIdx = (lastIdx + 1) % maxIdx.value
   let attempts = 0
   while (
-    attempts < maxIdx.value &&
-    (!isMenuItem(getMenuItemData(items.value, [...idx.slice(0, -1), nextIdx])) || getMenuItemData(items.value, [...idx.slice(0, -1), nextIdx])?.render)
+    attempts < maxIdx.value
+    && (!isMenuItem(getMenuItemData(items.value, [...idx.slice(0, -1), nextIdx])) || getMenuItemData(items.value, [...idx.slice(0, -1), nextIdx])?.render)
   ) {
     nextIdx = (nextIdx + 1) % maxIdx.value
     attempts++
@@ -203,8 +203,8 @@ onKeyStroke('ArrowUp', (e) => {
   let attempts = 0
   // jump to the next item that is not render
   while (
-    attempts < maxIdx.value &&
-    (!isMenuItem(getMenuItemData(items.value, [...idx.slice(0, -1), nextIdx]))
+    attempts < maxIdx.value
+    && (!isMenuItem(getMenuItemData(items.value, [...idx.slice(0, -1), nextIdx]))
     || getMenuItemData(items.value, [...idx.slice(0, -1), nextIdx])?.render)
   ) {
     nextIdx = (nextIdx - 1 + maxIdx.value) % maxIdx.value
@@ -234,7 +234,7 @@ onKeyStroke('ArrowRight', (e) => {
   // 如果当前项有子菜单，进入子菜单的第一项
   let nextChildIdx = 0
   const children = currentItem.children
-  
+
   // 找到第一个可选择的子菜单项
   while (nextChildIdx < children.length) {
     const childItem = children[nextChildIdx]
@@ -243,7 +243,7 @@ onKeyStroke('ArrowRight', (e) => {
     }
     nextChildIdx++
   }
-  
+
   if (nextChildIdx < children.length) {
     menuCurrentIdx.value = [...menuCurrentIdx.value, nextChildIdx]
   }

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { AdvancedColorOptions } from '@/utils'
 import { computed, ref } from 'vue'
 import { Btn, Paper, Switch, TextField } from '@/components'
 import {
@@ -7,13 +8,13 @@ import {
   useSchemeString,
 } from '@/composables'
 import {
+
+  ColorPalettePerformance,
   generateAdvancedColorPalette,
   isColorInGamut,
-  ColorPalettePerformance,
-  type AdvancedColorOptions,
 } from '@/utils'
 
-// Theme management  
+// Theme management
 const scheme = useSchemeString()
 function toggleScheme() {
   scheme.value = scheme.value === 'light' ? 'dark' : 'light'
@@ -71,7 +72,7 @@ const advancedColorInfo = computed(() => {
     backgroundLightness: backgroundLightness.value / 100,
     enableAnalysis: true,
   }
-  
+
   return {
     primary: generateAdvancedColorPalette(primaryColor.value, options),
     secondary: generateAdvancedColorPalette(secondaryColor.value, { ...options, purpose: 'secondary' }),
@@ -93,7 +94,7 @@ const gamutValidation = computed(() => {
     errorColor.value,
     surfaceColor.value,
   ]
-  
+
   return colors.map((color, index) => ({
     color,
     name: ['Primary', 'Secondary', 'Tertiary', 'Error', 'Surface'][index],
@@ -131,7 +132,6 @@ const gamutValidation = computed(() => {
           />
           <span class="text-sm text-surface-dimmed">{{ scheme }}</span>
         </div>
-
       </div>
     </Paper>
 
@@ -213,53 +213,79 @@ const gamutValidation = computed(() => {
       <div class="gap-4 grid grid-cols-1 lg:grid-cols-5 md:grid-cols-3">
         <div class="space-y-2">
           <label class="text-sm text-surface font-medium">Strategy</label>
-          <select 
+          <select
             v-model="colorStrategy"
             class="text-surface px-3 py-2 border border-surface rounded-lg bg-surface w-full"
           >
-            <option value="conservative">Conservative</option>
-            <option value="balanced">Balanced</option>
-            <option value="vibrant">Vibrant</option>
+            <option value="conservative">
+              Conservative
+            </option>
+            <option value="balanced">
+              Balanced
+            </option>
+            <option value="vibrant">
+              Vibrant
+            </option>
           </select>
         </div>
-        
+
         <div class="space-y-2">
           <label class="text-sm text-surface font-medium">Purpose</label>
-          <select 
+          <select
             v-model="colorPurpose"
             class="text-surface px-3 py-2 border border-surface rounded-lg bg-surface w-full"
           >
-            <option value="primary">Primary</option>
-            <option value="secondary">Secondary</option>
-            <option value="accent">Accent</option>
-            <option value="surface">Surface</option>
+            <option value="primary">
+              Primary
+            </option>
+            <option value="secondary">
+              Secondary
+            </option>
+            <option value="accent">
+              Accent
+            </option>
+            <option value="surface">
+              Surface
+            </option>
           </select>
         </div>
-        
+
         <div class="space-y-2">
           <label class="text-sm text-surface font-medium">Contrast</label>
-          <select 
+          <select
             v-model="contrastTarget"
             class="text-surface px-3 py-2 border border-surface rounded-lg bg-surface w-full"
           >
-            <option value="none">None</option>
-            <option value="AA">AA (4.5:1)</option>
-            <option value="AAA">AAA (7:1)</option>
+            <option value="none">
+              None
+            </option>
+            <option value="AA">
+              AA (4.5:1)
+            </option>
+            <option value="AAA">
+              AAA (7:1)
+            </option>
           </select>
         </div>
-        
+
         <div class="space-y-2">
           <label class="text-sm text-surface font-medium">Gamut</label>
-          <select 
+          <select
             v-model="selectedGamut"
             class="text-surface px-3 py-2 border border-surface rounded-lg bg-surface w-full"
           >
-            <option value="srgb">sRGB</option>
-            <option value="p3">Display P3</option>
-            <option value="rec2020">Rec 2020</option>
+            <option value="srgb">
+              sRGB
+            </option>
+            <option value="p3">
+              Display P3
+            </option>
+            <option value="rec2020">
+              Rec 2020
+            </option>
           </select>
         </div>
-        
+
         <div class="space-y-2">
           <label class="text-sm text-surface font-medium">Background Lightness</label>
           <input
@@ -269,7 +295,9 @@ const gamutValidation = computed(() => {
             max="100"
             class="w-full"
           >
-          <div class="text-xs text-surface-dimmed text-center">{{ backgroundLightness }}%</div>
+          <div class="text-xs text-surface-dimmed text-center">
+            {{ backgroundLightness }}%
+          </div>
         </div>
       </div>
     </Paper>
@@ -280,20 +308,20 @@ const gamutValidation = computed(() => {
         Color Gamut Validation
       </h2>
 
-      <div class="gap-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5">
+      <div class="gap-4 grid grid-cols-1 lg:grid-cols-5 md:grid-cols-3">
         <div
           v-for="validation in gamutValidation"
           :key="validation.name"
           class="space-y-2"
         >
           <div class="flex gap-2 items-center">
-            <div 
-              class="border border-surface-variant rounded w-6 h-6"
+            <div
+              class="border-surface-variant border rounded h-6 w-6"
               :style="{ backgroundColor: validation.color }"
             />
             <span class="text-sm text-surface font-medium">{{ validation.name }}</span>
           </div>
-          
+
           <div class="text-xs space-y-1">
             <div class="flex items-center justify-between">
               <span>sRGB:</span>
@@ -326,32 +354,42 @@ const gamutValidation = computed(() => {
 
       <div class="gap-4 grid grid-cols-1 md:grid-cols-3">
         <div class="space-y-2">
-          <div class="text-sm text-surface font-medium">Cache Usage</div>
+          <div class="text-sm text-surface font-medium">
+            Cache Usage
+          </div>
           <div class="text-2xl text-primary font-bold">
             {{ performanceStats.size }} / {{ performanceStats.maxSize }}
           </div>
-          <div class="text-xs text-surface-dimmed">Cached results</div>
+          <div class="text-xs text-surface-dimmed">
+            Cached results
+          </div>
         </div>
-        
+
         <div class="space-y-2">
-          <div class="text-sm text-surface font-medium">Hit Rate</div>
-          <div class="text-2xl text-secondary font-bold">
+          <div class="text-sm text-surface font-medium">
+            Hit Rate
+          </div>
+          <div class="text-secondary text-2xl font-bold">
             {{ performanceStats.hitRate }}%
           </div>
-          <div class="text-xs text-surface-dimmed">Cache efficiency</div>
+          <div class="text-xs text-surface-dimmed">
+            Cache efficiency
+          </div>
         </div>
-        
+
         <div class="space-y-2">
-          <div class="text-sm text-surface font-medium">Actions</div>
+          <div class="text-sm text-surface font-medium">
+            Actions
+          </div>
           <div class="space-y-2">
-            <Btn 
-              size="sm" 
+            <Btn
+              size="sm"
               @click="ColorPalettePerformance.clearCache()"
             >
               Clear Cache
             </Btn>
-            <Btn 
-              size="sm" 
+            <Btn
+              size="sm"
               @click="ColorPalettePerformance.precomputePalettes([primaryColor, secondaryColor, tertiaryColor, errorColor, surfaceColor])"
             >
               Precompute
@@ -384,18 +422,18 @@ const gamutValidation = computed(() => {
               {{ colorName }}
             </h3>
             <div class="text-xs text-surface-dimmed">
-              Strategy: {{ paletteResult.metadata.strategy }} | 
-              Gamut: {{ paletteResult.metadata.gamut }} | 
+              Strategy: {{ paletteResult.metadata.strategy }} |
+              Gamut: {{ paletteResult.metadata.gamut }} |
               Contrast: {{ paletteResult.metadata.contrastTarget }}
             </div>
           </div>
-          
+
           <!-- Main palette -->
           <div class="gap-1 grid grid-cols-11">
             <div
               v-for="(color, index) in paletteResult.colors"
               :key="index"
-              class="group border border-surface-variant rounded-lg aspect-square cursor-pointer relative"
+              class="group border-surface-variant border rounded-lg aspect-square cursor-pointer relative"
               :style="{ backgroundColor: color }"
               :title="color"
             >
@@ -406,22 +444,29 @@ const gamutValidation = computed(() => {
               </div>
             </div>
           </div>
-          
+
           <!-- Alternative strategies -->
-          <div v-if="paletteResult.alternatives" class="space-y-2">
-            <div class="text-sm text-surface font-medium">Alternative Strategies:</div>
+          <div
+            v-if="paletteResult.alternatives"
+            class="space-y-2"
+          >
+            <div class="text-sm text-surface font-medium">
+              Alternative Strategies:
+            </div>
             <div class="space-y-2">
               <div
                 v-for="(altColors, strategyName) in paletteResult.alternatives"
                 :key="strategyName"
                 class="space-y-1"
               >
-                <div class="text-xs text-surface-dimmed capitalize">{{ strategyName }}:</div>
+                <div class="text-xs text-surface-dimmed capitalize">
+                  {{ strategyName }}:
+                </div>
                 <div class="gap-1 grid grid-cols-11">
                   <div
                     v-for="(color, index) in altColors"
                     :key="index"
-                    class="border border-surface-variant rounded h-6"
+                    class="border-surface-variant border rounded h-6"
                     :style="{ backgroundColor: color }"
                     :title="color"
                   />
@@ -429,12 +474,16 @@ const gamutValidation = computed(() => {
               </div>
             </div>
           </div>
-          
+
           <!-- Gamut analysis -->
-          <div v-if="paletteResult.metadata.gamutAnalysis" class="text-xs text-surface-dimmed space-y-1">
-            <div>Gamut Coverage: 
-              sRGB {{ Math.round(paletteResult.metadata.gamutAnalysis.srgbCoverage) }}% | 
-              P3 {{ Math.round(paletteResult.metadata.gamutAnalysis.p3Coverage) }}% | 
+          <div
+            v-if="paletteResult.metadata.gamutAnalysis"
+            class="text-xs text-surface-dimmed space-y-1"
+          >
+            <div>
+              Gamut Coverage:
+              sRGB {{ Math.round(paletteResult.metadata.gamutAnalysis.srgbCoverage) }}% |
+              P3 {{ Math.round(paletteResult.metadata.gamutAnalysis.p3Coverage) }}% |
               Rec2020 {{ Math.round(paletteResult.metadata.gamutAnalysis.rec2020Coverage) }}%
             </div>
             <div v-if="paletteResult.metadata.gamutAnalysis.outOfGamutColors.length > 0">
@@ -470,7 +519,7 @@ const gamutValidation = computed(() => {
             <div
               v-for="color in colors"
               :key="color.index"
-              class="group border border-surface-variant rounded-lg aspect-square cursor-pointer relative"
+              class="group border-surface-variant border rounded-lg aspect-square cursor-pointer relative"
               :style="{ backgroundColor: color.hex }"
               :title="showOKLCH ? color.oklch : color.hex"
             >
@@ -520,7 +569,7 @@ const gamutValidation = computed(() => {
               Primary
             </div>
             <div
-              class="border border-surface-variant rounded-lg h-16"
+              class="border-surface-variant border rounded-lg h-16"
               :class="showColorMix ? `bg-primary-mix-${selectedOpacity}` : ''"
               :style="!showColorMix ? { backgroundColor: `rgba(var(--r-color-primary-4), ${selectedOpacity / 100})` } : {}"
             />
@@ -534,7 +583,7 @@ const gamutValidation = computed(() => {
               Secondary
             </div>
             <div
-              class="border border-surface-variant rounded-lg h-16"
+              class="border-surface-variant border rounded-lg h-16"
               :class="showColorMix ? `bg-secondary-mix-${selectedOpacity}` : ''"
               :style="!showColorMix ? { backgroundColor: `rgba(var(--r-color-secondary-4), ${selectedOpacity / 100})` } : {}"
             />
@@ -548,7 +597,7 @@ const gamutValidation = computed(() => {
               Tertiary
             </div>
             <div
-              class="border border-surface-variant rounded-lg h-16"
+              class="border-surface-variant border rounded-lg h-16"
               :style="{ backgroundColor: `color-mix(in oklch, var(--r-tertiary-background-color) ${selectedOpacity}%, transparent)` }"
             />
             <div class="text-xs text-surface-dimmed">
@@ -561,7 +610,7 @@ const gamutValidation = computed(() => {
               Surface
             </div>
             <div
-              class="border border-surface-variant rounded-lg h-16"
+              class="border-surface-variant border rounded-lg h-16"
               :class="showColorMix ? `bg-surface-mix-${selectedOpacity}` : ''"
               :style="!showColorMix ? { backgroundColor: `rgba(var(--r-color-surface-1), ${selectedOpacity / 100})` } : {}"
             />
@@ -626,13 +675,13 @@ const gamutValidation = computed(() => {
             <div class="text-white p-4 text-center rounded-lg bg-primary">
               Primary BG
             </div>
-            <div class="text-white p-4 text-center rounded-lg bg-secondary">
+            <div class="bg-secondary text-white p-4 text-center rounded-lg">
               Secondary BG
             </div>
-            <div class="text-white p-4 text-center rounded-lg bg-tertiary">
+            <div class="bg-tertiary text-white p-4 text-center rounded-lg">
               Tertiary BG
             </div>
-            <div class="text-white p-4 text-center rounded-lg bg-error">
+            <div class="bg-error text-white p-4 text-center rounded-lg">
               Error BG
             </div>
           </div>
