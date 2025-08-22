@@ -256,24 +256,28 @@ const customCheckboxValue = ref(false)
         <div class="space-y-3">
           <div class="flex gap-3">
             <button
+              type="button"
               class="text-white px-3 py-1 rounded bg-primary"
               @click="customTheme.componentDefaults!.Btn!.variant = 'filled'"
             >
               Set Variant: Filled
             </button>
             <button
+              type="button"
               class="text-white px-3 py-1 rounded bg-primary"
               @click="customTheme.componentDefaults!.Btn!.variant = 'outline'"
             >
               Set Variant: Outline
             </button>
             <button
+              type="button"
               class="bg-secondary text-white px-3 py-1 rounded"
               @click="customTheme.componentDefaults!.Btn!.size = 'sm'"
             >
               Set Size: Small
             </button>
             <button
+              type="button"
               class="bg-secondary text-white px-3 py-1 rounded"
               @click="customTheme.componentDefaults!.Btn!.size = 'lg'"
             >

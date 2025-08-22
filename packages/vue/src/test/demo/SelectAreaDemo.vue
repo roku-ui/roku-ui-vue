@@ -48,8 +48,10 @@ function setPresetColor(preset: { border: string, bg: string }) {
   <div class="space-y-4">
     <!-- Color Controls -->
     <div class="space-y-2">
-      <h3 class="text-lg font-medium">Selection Box Style</h3>
-      <div class="flex gap-2 flex-wrap">
+      <h3 class="text-lg font-medium">
+        Selection Box Style
+      </h3>
+      <div class="flex flex-wrap gap-2">
         <button
           v-for="preset in presetColors"
           :key="preset.name"
@@ -60,23 +62,40 @@ function setPresetColor(preset: { border: string, bg: string }) {
           {{ preset.name }}
         </button>
       </div>
-      
-      <div class="grid grid-cols-3 gap-4 text-sm">
+
+      <div class="text-sm gap-4 grid grid-cols-3">
         <div>
-          <label class="block font-medium mb-1">Border Style</label>
-          <select v-model="borderStyle" class="w-full px-2 py-1 border rounded">
-            <option value="solid">Solid</option>
-            <option value="dashed">Dashed</option>
-            <option value="dotted">Dotted</option>
+          <label class="font-medium mb-1 block">Border Style</label>
+          <select
+            v-model="borderStyle"
+            class="px-2 py-1 border rounded w-full"
+          >
+            <option value="solid">
+              Solid
+            </option>
+            <option value="dashed">
+              Dashed
+            </option>
+            <option value="dotted">
+              Dotted
+            </option>
           </select>
         </div>
         <div>
-          <label class="block font-medium mb-1">Border Color</label>
-          <input v-model="borderColor" type="text" class="w-full px-2 py-1 border rounded text-xs">
+          <label class="font-medium mb-1 block">Border Color</label>
+          <input
+            v-model="borderColor"
+            type="text"
+            class="text-xs px-2 py-1 border rounded w-full"
+          >
         </div>
         <div>
-          <label class="block font-medium mb-1">Background Color</label>
-          <input v-model="backgroundColor" type="text" class="w-full px-2 py-1 border rounded text-xs">
+          <label class="font-medium mb-1 block">Background Color</label>
+          <input
+            v-model="backgroundColor"
+            type="text"
+            class="text-xs px-2 py-1 border rounded w-full"
+          >
         </div>
       </div>
     </div>
@@ -84,7 +103,7 @@ function setPresetColor(preset: { border: string, bg: string }) {
     <!-- Selection Area -->
     <div
       ref="areaRef"
-      class="bg-surface-base h-200px w-200px select-none relative border grid grid-cols-2"
+      class="border bg-surface-base grid grid-cols-2 h-200px w-200px select-none relative"
     >
       <SelectArea
         :target="areaRef"
@@ -97,7 +116,7 @@ function setPresetColor(preset: { border: string, bg: string }) {
       <div
         v-for="item in items"
         :key="item"
-        class="flex h-100px w-100px items-center justify-center border-r border-b border-gray-300"
+        class="border-b border-r border-gray-300 flex h-100px w-100px items-center justify-center"
         :class="{
           'bg-red-500 text-white': selectingItems.includes(item),
           'bg-gray-100': !selectingItems.includes(item),
@@ -106,7 +125,7 @@ function setPresetColor(preset: { border: string, bg: string }) {
         {{ item }}
       </div>
     </div>
-    
+
     <p class="text-sm text-gray-600">
       拖拽鼠标来选择方块。选中的方块会变成红色。
     </p>
