@@ -25,18 +25,15 @@ function rokuPresetImpl(): Preset {
   // Dynamic rules generator - replaces many static shortcuts
   const dynamicRules: Array<[RegExp, (match: RegExpMatchArray) => string]> = [
     // Color-mix transparency: bg-{color}-mix-{percentage}
-    [/^bg-([a-z]+)-mix-(\d+)$/, ([, color,
-percentage]) => {
+    [/^bg-([a-z]+)-mix-(\d+)$/, ([, color, percentage]) => {
       return `background-color: color-mix(in oklch, var(--r-${color}-background-color) ${percentage}%, transparent);`
     }],
     // Color-mix transparency: text-{color}-mix-{percentage}
-    [/^text-([a-z]+)-mix-(\d+)$/, ([, color,
-percentage]) => {
+    [/^text-([a-z]+)-mix-(\d+)$/, ([, color, percentage]) => {
       return `color: color-mix(in oklch, var(--r-${color}-text-color) ${percentage}%, transparent);`
     }],
     // Color-mix transparency: border-{color}-mix-{percentage}
-    [/^border-([a-z]+)-mix-(\d+)$/, ([, color,
-percentage]) => {
+    [/^border-([a-z]+)-mix-(\d+)$/, ([, color, percentage]) => {
       return `border-color: color-mix(in oklch, var(--r-${color}-background-color) ${percentage}%, transparent);`
     }],
 

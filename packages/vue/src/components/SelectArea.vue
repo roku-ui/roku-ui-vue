@@ -2,9 +2,18 @@
 import { useElementBounding, useEventListener, useMagicKeys, useMouse, useScroll } from '@vueuse/core'
 import { computed, ref } from 'vue'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   target?: HTMLElement | null
-}>()
+  borderColor?: string
+  backgroundColor?: string
+  borderWidth?: number
+  borderStyle?: 'solid' | 'dashed' | 'dotted'
+}>(), {
+  borderColor: 'rgba(59, 130, 246, 0.8)', // blue-500/80
+  backgroundColor: 'rgba(59, 130, 246, 0.1)', // blue-500/10
+  borderWidth: 2,
+  borderStyle: 'solid',
+})
 const emit = defineEmits<{
   selectStart: [{ target: EventTarget | null, shift: boolean, ctrl: boolean }]
   selectChange: [Area, { target: EventTarget | null, shift: boolean, ctrl: boolean }]
@@ -101,16 +110,18 @@ useEventListener(globalThis, 'dragend', () => {
 </script>
 
 <template>
-  <div class="relative">
-    <div
-      v-if="dragging"
-      class="border-primary-800/75 bg-primary-800/25 h-1 absolute z-10000"
-      :style="{
-        left: `${Math.min(startPoint.x, endPoint.x)}px`,
-        top: `${Math.min(startPoint.y, endPoint.y)}px`,
-        width: `${Math.abs(startPoint.x - endPoint.x)}px`,
-        height: `${Math.abs(startPoint.y - endPoint.y)}px`,
-      }"
-    />
-  </div>
+  <div
+    v-if="dragging"
+    class="pointer-events-none transition-opacity fixed z-10000"
+    :style="{
+      left: `${Math.min(startPoint.x, endPoint.x) + targetBounds.left.value}px`,
+      top: `${Math.min(startPoint.y, endPoint.y) + targetBounds.top.value}px`,
+      width: `${Math.abs(startPoint.x - endPoint.x)}px`,
+      height: `${Math.abs(startPoint.y - endPoint.y)}px`,
+      borderColor: props.borderColor,
+      backgroundColor: props.backgroundColor,
+      borderWidth: `${props.borderWidth}px`,
+      borderStyle: props.borderStyle,
+    }"
+  />
 </template>
