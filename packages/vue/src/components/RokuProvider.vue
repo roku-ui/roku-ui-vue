@@ -22,7 +22,12 @@ const wrapperRef = ref<any>(null)
 // Use themeObj if provided, otherwise use defaultThemeData
 const currentTheme = computed(() => {
   if (props.themeObj) {
-    return Object.assign({}, defaultThemeData, props.themeObj)
+    const merged = Object.assign({}, defaultThemeData, props.themeObj)
+    // Merge colors specifically to ensure partial colors work
+    if (props.themeObj.colors) {
+      merged.colors = Object.assign({}, defaultThemeData.colors, props.themeObj.colors)
+    }
+    return merged
   }
   return defaultThemeData
 })

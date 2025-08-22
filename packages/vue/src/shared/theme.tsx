@@ -3,11 +3,11 @@ import type { Rounded } from '@/types'
 import { computed, inject, provide } from 'vue'
 
 export interface ThemeColors {
-  primary: string
-  secondary: string
-  tertiary: string
-  error: string
-  surface: string
+  primary?: string
+  secondary?: string
+  tertiary?: string
+  error?: string
+  surface?: string
 }
 
 export interface ComponentDefaults {
@@ -97,6 +97,12 @@ export interface ComponentDefaults {
   Dropzone?: {
     rounded?: Rounded
   }
+  Step?: {
+    size?: 'sm' | 'md' | 'lg'
+    color?: 'primary' | 'secondary' | 'tertiary' | 'error'
+    direction?: 'horizontal' | 'vertical'
+    type?: 'default' | 'navigation' | 'dot' | 'simple'
+  }
 }
 
 export interface ThemeData {
@@ -139,9 +145,9 @@ export function provideTheme(theme: ComputedRef<ThemeData>) {
 export function getThemeColorString(colorKey: keyof ThemeColors): string {
   const theme = useTheme()
   if (!theme || !theme.value.colors) {
-    return defaultThemeData.colors[colorKey]
+    return defaultThemeData.colors[colorKey]!
   }
-  return theme.value.colors[colorKey] || defaultThemeData.colors[colorKey]
+  return theme.value.colors[colorKey] || defaultThemeData.colors[colorKey]!
 }
 
 export function useComponentDefaults<K extends keyof ComponentDefaults>(componentName: K): ComponentDefaults[K] {

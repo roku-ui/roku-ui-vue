@@ -53,6 +53,9 @@ export function useThemeStyles(theme: import('@/shared').ThemeData) {
   for (const key of Object.keys(currentTheme.value.colors)) {
     const color = key as KeyOfThemeColors
     const colorValue = currentTheme.value.colors[color]
+    if (!colorValue) {
+ continue
+}
     const colorTuple = useColorTuple(colorValue, color === 'surface' ? SURFACE_LIGHTNESS_MAP : COLOR_LIGHTNESS_MAP)
     const colorTupleValue = [...colorTuple.value]
     for (const [idx, cur] of colorTupleValue.entries()) {
@@ -85,6 +88,9 @@ export function useEditorFriendlyThemeStyles(theme: import('@/shared').ThemeData
   for (const key of Object.keys(currentTheme.value.colors)) {
     const color = key as KeyOfThemeColors
     const colorValue = currentTheme.value.colors[color]
+    if (!colorValue) {
+ continue
+}
     const colorTuple = useColorTuple(colorValue, color === 'surface' ? SURFACE_LIGHTNESS_MAP : COLOR_LIGHTNESS_MAP)
     const colorTupleValue = [...colorTuple.value]
     for (const [idx, cur] of colorTupleValue.entries()) {

@@ -27,12 +27,14 @@ import ModalDemo from './demo/ModalDemo.vue'
 import ModernColorDemo from './demo/ModernColorDemo.vue'
 import NavigationDemo from './demo/NavigationDemo.vue'
 import NotificationDemo from './demo/NotificationDemo.vue'
+import PartialColorsDemo from './demo/PartialColorsDemo.vue'
 import PopoverDemo from './demo/PopoverDemo.vue'
 import ProgressDemo from './demo/ProgressDemo.vue'
 import RatingDemo from './demo/RatingDemo.vue'
 import SelectAreaDemo from './demo/SelectAreaDemo.vue'
 import SelectDemo from './demo/SelectDemo.vue'
 import SliderDemo from './demo/SliderDemo.vue'
+import StepDemo from './demo/StepDemo.vue'
 import SwitchDemo from './demo/SwitchDemo.vue'
 import TagsDemo from './demo/TagsDemo.vue'
 import TextFieldDemo from './demo/TextFieldDemo.vue'
@@ -57,11 +59,13 @@ const demoPages = [
   { key: 'ModernColor', title: 'Modern Color System', component: ModernColorDemo },
   { key: 'Navigation', title: 'Navigation', component: NavigationDemo },
   { key: 'Notification', title: 'Notification', component: NotificationDemo },
+  { key: 'PartialColors', title: 'Partial Colors', component: PartialColorsDemo },
   { key: 'Popover', title: 'Popover', component: PopoverDemo },
   { key: 'Progress', title: 'Progress', component: ProgressDemo },
   { key: 'Rating', title: 'Rating', component: RatingDemo },
   { key: 'Select', title: 'Select', component: SelectDemo },
   { key: 'SelectArea', title: 'Select Area', component: SelectAreaDemo },
+  { key: 'Step', title: 'Step', component: StepDemo },
   { key: 'Tags', title: 'Tags', component: TagsDemo },
   { key: 'TextField', title: 'TextField', component: TextFieldDemo },
   { key: 'ThemeManager', title: 'Theme Manager', component: ThemeManagerDemo },

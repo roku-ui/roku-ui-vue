@@ -53,9 +53,13 @@ pnpm release
 
 ```bash
 # Vue library (@roku-ui/vue)
-pnpm --filter @roku-ui/vue build
-pnpm --filter @roku-ui/vue test    # Run Vitest tests
-pnpm --filter @roku-ui/vue dev     # Development server
+pnpm --filter @roku-ui/vue build    # Build library with TypeScript checking
+pnpm --filter @roku-ui/vue test     # Run Vitest tests
+pnpm --filter @roku-ui/vue dev      # Development server
+pnpm --filter @roku-ui/vue watch    # Watch mode for development
+
+# Type checking (runs vue-tsc)
+vue-tsc --noEmit                     # Type check without emitting files
 
 # Preset (@roku-ui/preset)
 pnpm --filter @roku-ui/preset build
@@ -138,9 +142,11 @@ Components are auto-exported from `packages/vue/src/components/index.ts` using u
 - **Test Framework**: Vitest for unit and integration testing
 - **Test Location**: `packages/vue/src/test/` directory
 - **Run Command**: `pnpm --filter @roku-ui/vue test`
+- **Test Watch Mode**: `vitest --watch` (from within packages/vue directory)
 - **Demo System**: Comprehensive demo components in `packages/vue/src/test/demo/`
+- **Demo Navigation**: Main demo app at `packages/vue/src/test/App.vue` with TreeList navigation
+- **Visual Testing**: Use demo system (`pnpm dev:spa`) for manual testing and visual regression
 - **Test Coverage**: Basic test setup exists, more comprehensive testing should be added for new components
-- **Visual Testing**: Use demo components for manual testing and visual regression
 
 ### Auto-generation
 
@@ -151,8 +157,15 @@ Components are auto-exported from `packages/vue/src/components/index.ts` using u
 ### Build Process
 
 1. **Preset package** must be built first since Vue library depends on `@roku-ui/preset`
-2. **Vue library** builds as both ESM and CJS with TypeScript declarations
-3. **Documentation** is built as a static Nuxt.js site
+   - Rollup builds CJS and ESM formats for the UnoCSS preset
+2. **Vue library** builds as library with Vite
+   - TypeScript compilation with `vue-tsc`
+   - Auto-export generation via `unplugin-auto-export`
+   - Type declaration files (.d.ts) generation
+   - External dependencies: Vue is excluded from bundle
+3. **Documentation** is built as a static Nuxt.js site with SSG
+
+**Build Dependencies**: The build system ensures proper dependency order through PNPM workspace configuration and explicit build scripts.
 
 ## Development Workflow
 
@@ -189,10 +202,12 @@ When adding new demos:
 
 ### Code Quality
 
-- All code is linted with ESLint using @jannchie/eslint-config
-- Pre-commit hooks automatically lint staged files
-- Run `pnpm lint` to lint and fix all files
-- TypeScript strict mode is enabled
+- **ESLint Configuration**: Uses `@jannchie/eslint-config` with Vue, TypeScript, UnoCSS support
+  - Includes formatters for HTML and Markdown
+  - Custom rules: disabled `style/indent-binary-ops` and `style/indent`
+- **Pre-commit Hooks**: Automatic linting on staged files via `simple-git-hooks` and `lint-staged`
+- **Lint Command**: `pnpm lint` to lint and fix all files across monorepo
+- **TypeScript**: Strict mode enabled with `vue-tsc` for type checking
 
 ## Style Guidelines
 
