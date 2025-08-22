@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@iconify/json": "^2.2.377",
-    "@jannchie/eslint-config": "^3.7.0",
+    "@jannchie/eslint-config": "^3.7.1",
     "@roku-ui/preset": "workspace:^",
     "@unocss/eslint-config": "66.4.2",
     "@unocss/eslint-plugin": "66.4.2",

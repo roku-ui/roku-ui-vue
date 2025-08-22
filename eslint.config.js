@@ -15,6 +15,7 @@ export default jannchie(
     rules: {
       'style/indent-binary-ops': 'off',
       'style/indent': 'off',
+      'style/array-element-newline': 'off',
     },
   },
 )

@@ -32,7 +32,7 @@
     "watch": "rollup --config --watch"
   },
   "devDependencies": {
-    "@jannchie/eslint-config": "^3.7.0",
+    "@jannchie/eslint-config": "^3.7.1",
     "@rollup/plugin-commonjs": "^28.0.6",
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@rollup/plugin-typescript": "^12.1.4",
