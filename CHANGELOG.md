@@ -1,3 +1,31 @@
+## v0.28.0
+
+[v0.27.0...v0.28.0](https://github.com/roku-ui/roku-ui-vue/compare/v0.27.0...v0.28.0)
+
+### :rocket: Breaking Changes
+
+- **color**: replace tinycolor2 with culori and add advanced oklch color generation, adaptive strategies, caching, contrast and gamut validation - By [Jannchie](mailto:jannchie@gmail.com) in [6157182](https://github.com/roku-ui/roku-ui-vue/commit/6157182)
+- **theme**: replace multi-theme system with single theme object and composables - By [Jannchie](mailto:jannchie@gmail.com) in [f857f7c](https://github.com/roku-ui/roku-ui-vue/commit/f857f7c)
+
+### :sparkles: Features
+
+- **theme**: add component defaults system and demo - By [Jannchie](mailto:jannchie@gmail.com) in [33a020b](https://github.com/roku-ui/roku-ui-vue/commit/33a020b)
+- **theme**: add global theme defaults to components - By [Jannchie](mailto:jannchie@gmail.com) in [554cd63](https://github.com/roku-ui/roku-ui-vue/commit/554cd63)
+- **theme**: add oklch color system and multi-theme support - By [Jannchie](mailto:jannchie@gmail.com) in [862e620](https://github.com/roku-ui/roku-ui-vue/commit/862e620)
+- **vue**: add Step component with demo and improve theme partial color support - By [Jannchie](mailto:jannchie@gmail.com) in [b873086](https://github.com/roku-ui/roku-ui-vue/commit/b873086)
+
+### :adhesive_bandage: Fixes
+
+- **color**: format hex color in mainColor && update dark background index - By [Jannchie](mailto:jannchie@gmail.com) in [cc09b4e](https://github.com/roku-ui/roku-ui-vue/commit/cc09b4e)
+
+### :lipstick: Styles
+
+- **vue**: reorder class attributes for consistency && reorder imports alphabetically - By [Jannchie](mailto:jannchie@gmail.com) in [23b3a66](https://github.com/roku-ui/roku-ui-vue/commit/23b3a66)
+
+### :wrench: Chores
+
+- **deps**: update unocss and related dependencies - By [Jannchie](mailto:jannchie@gmail.com) in [86cd63c](https://github.com/roku-ui/roku-ui-vue/commit/86cd63c)
+
 ## v0.27.0
 
 [v0.26.0...v0.27.0](https://github.com/roku-ui/roku-ui-vue/compare/v0.26.0...v0.27.0)
