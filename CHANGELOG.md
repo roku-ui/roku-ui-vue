@@ -1,3 +1,21 @@
+## v0.29.0
+
+[v0.28.0...v0.29.0](https://github.com/roku-ui/roku-ui-vue/compare/v0.28.0...v0.29.0)
+
+### :sparkles: Features
+
+- **preset**: add semantic color shortcuts and improve dynamic rule output - By [Jannchie](mailto:jannchie@gmail.com) in [004b855](https://github.com/roku-ui/roku-ui-vue/commit/004b855)
+- **select-area**: add customizable selection box style - By [Jannchie](mailto:jannchie@gmail.com) in [ec7ce16](https://github.com/roku-ui/roku-ui-vue/commit/ec7ce16)
+
+### :lipstick: Styles
+
+- **demo**: add button type attrs && improve input and layout classes - By [Jannchie](mailto:jannchie@gmail.com) in [5bd353c](https://github.com/roku-ui/roku-ui-vue/commit/5bd353c)
+- **preset**: fix parameter formatting in dynamic rules - By [Jannchie](mailto:jannchie@gmail.com) in [a71296c](https://github.com/roku-ui/roku-ui-vue/commit/a71296c)
+
+### :wrench: Chores
+
+- **eslint**: update config and deps version - By [Jannchie](mailto:jannchie@gmail.com) in [e790315](https://github.com/roku-ui/roku-ui-vue/commit/e790315)
+
 ## v0.28.0
 
 [v0.27.0...v0.28.0](https://github.com/roku-ui/roku-ui-vue/compare/v0.27.0...v0.28.0)
