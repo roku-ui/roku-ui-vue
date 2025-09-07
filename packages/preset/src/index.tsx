@@ -23,45 +23,42 @@ function rokuPresetImpl(): Preset {
   catch {}
 
   // Dynamic rules generator - replaces many static shortcuts
-  const dynamicRules: Array<[RegExp, (match: RegExpMatchArray) => string]> = [
+  const dynamicRules: Array<[RegExp, (match: RegExpMatchArray) => Record<string, string>]> = [
     // Color-mix transparency: bg-{color}-mix-{percentage}
-    [/^bg-([a-z]+)-mix-(\d+)$/, ([, color, percentage]) => {
-      return `background-color: color-mix(in oklch, var(--r-${color}-background-color) ${percentage}%, transparent);`
-    }],
+    [/^bg-([a-z]+)-mix-(\d+)$/, ([, color, percentage]) => ({
+      'background-color': `color-mix(in oklch, var(--r-${color}-background-color) ${percentage}%, transparent)`,
+    })],
     // Color-mix transparency: text-{color}-mix-{percentage}
-    [/^text-([a-z]+)-mix-(\d+)$/, ([, color, percentage]) => {
-      return `color: color-mix(in oklch, var(--r-${color}-text-color) ${percentage}%, transparent);`
-    }],
+    [/^text-([a-z]+)-mix-(\d+)$/, ([, color, percentage]) => ({
+      color: `color-mix(in oklch, var(--r-${color}-text-color) ${percentage}%, transparent)`,
+    })],
     // Color-mix transparency: border-{color}-mix-{percentage}
-    [/^border-([a-z]+)-mix-(\d+)$/, ([, color, percentage]) => {
-      return `border-color: color-mix(in oklch, var(--r-${color}-background-color) ${percentage}%, transparent);`
-    }],
+    [/^border-([a-z]+)-mix-(\d+)$/, ([, color, percentage]) => ({
+      'border-color': `color-mix(in oklch, var(--r-${color}-background-color) ${percentage}%, transparent)`,
+    })],
 
     // Standard color backgrounds: bg-{color}
-    [/^bg-(secondary|tertiary|error)$/, ([, color]) => {
-      return `background-color: var(--r-${color}-background-color);`
-    }],
+    [/^bg-(secondary|tertiary|error)$/, ([, color]) => ({
+      'background-color': `var(--r-${color}-background-color)`,
+    })],
     // Standard color text: text-{color}
-    [/^text-(secondary|tertiary|error)$/, ([, color]) => {
-      return `color: var(--r-${color}-text-color);`
-    }],
-    // Standard color borders: border-{color}
-    [/^border-(primary|secondary|tertiary|error)$/, ([, color]) => {
-      return `border-color: var(--r-${color}-background-color);`
-    }],
+    [/^text-(secondary|tertiary|error)$/, ([, color]) => ({
+      color: `var(--r-${color}-text-color)`,
+    })],
+    // Note: border-{color} handled via shortcuts below to avoid raw declarations
     // Standard color outlines: outline-{color}
-    [/^outline-(primary|secondary|tertiary|error)$/, ([, color]) => {
-      return `outline-color: var(--r-${color}-background-color);`
-    }],
+    [/^outline-(primary|secondary|tertiary|error)$/, ([, color]) => ({
+      'outline-color': `var(--r-${color}-background-color)`,
+    })],
 
     // Surface variants: bg-surface-variant-{number}
-    [/^bg-surface-variant-([12])$/, ([, variant]) => {
-      return `background-color: var(--r-surface-background-variant-${variant}-color);`
-    }],
+    [/^bg-surface-variant-([12])$/, ([, variant]) => ({
+      'background-color': `var(--r-surface-background-variant-${variant}-color)`,
+    })],
     // Surface border variants: border-surface-variant
-    [/^border-surface-variant$/, () => {
-      return `border-color: var(--r-surface-border-variant-color);`
-    }],
+    [/^border-surface-variant$/, () => ({
+      'border-color': 'var(--r-surface-border-variant-color)',
+    })],
   ]
 
   return {
@@ -91,6 +88,28 @@ function rokuPresetImpl(): Preset {
       // Core color shortcuts (most commonly used)
       'bg-primary': 'bg-[--r-primary-background-color]',
       'text-primary': 'text-[--r-primary-text-color]',
+
+      // Background shortcuts for other semantic colors
+      'bg-secondary': 'bg-[--r-secondary-background-color]',
+      'bg-tertiary': 'bg-[--r-tertiary-background-color]',
+      'bg-error': 'bg-[--r-error-background-color]',
+
+      // Text shortcuts for other semantic colors
+      'text-secondary': 'text-[--r-secondary-text-color]',
+      'text-tertiary': 'text-[--r-tertiary-text-color]',
+      'text-error': 'text-[--r-error-text-color]',
+
+      // Border color shortcuts using arbitrary values
+      'border-primary': 'border-[--r-primary-background-color]',
+      'border-secondary': 'border-[--r-secondary-background-color]',
+      'border-tertiary': 'border-[--r-tertiary-background-color]',
+      'border-error': 'border-[--r-error-background-color]',
+
+      // Outline color shortcuts
+      'outline-primary': 'outline-[--r-primary-background-color]',
+      'outline-secondary': 'outline-[--r-secondary-background-color]',
+      'outline-tertiary': 'outline-[--r-tertiary-background-color]',
+      'outline-error': 'outline-[--r-error-background-color]',
 
       // Note: Other color combinations (bg-secondary, text-tertiary, etc.) are handled by dynamic rules
       // Note: Color-mix transparency (bg-primary-mix-30, etc.) is handled by dynamic rules
