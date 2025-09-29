@@ -271,14 +271,14 @@ const customCheckboxValue = ref(false)
             </button>
             <button
               type="button"
-              class="bg-secondary text-white px-3 py-1 rounded"
+              class="text-white px-3 py-1 rounded bg-secondary"
               @click="customTheme.componentDefaults!.Btn!.size = 'sm'"
             >
               Set Size: Small
             </button>
             <button
               type="button"
-              class="bg-secondary text-white px-3 py-1 rounded"
+              class="text-white px-3 py-1 rounded bg-secondary"
               @click="customTheme.componentDefaults!.Btn!.size = 'lg'"
             >
               Set Size: Large

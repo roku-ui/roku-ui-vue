@@ -10,61 +10,121 @@ const partialPasswordInput = ref('')
 const labeledInput = ref('')
 const customInput = ref('')
 
+interface FormatParseContext {
+  event?: Event
+  previousDisplay: string
+  previousValue: string
+}
+
 // 格式化函数示例
 const formatters = {
   // 数字逗号分隔符
-  number: (value: string): string => {
-    const cleanValue = value.replaceAll(/[^\d.]/g, '')
-    const parts = cleanValue.split('.')
-    const integerPart = parts[0].replaceAll(/\B(?=(\d{3})+(?!\d))/g, ',')
-    return parts.length > 1 ? `${integerPart}.${parts[1]}` : integerPart
+  number: {
+    format: (value: string): string => {
+      const cleanValue = value.replaceAll(/[^\d.]/g, '')
+      const parts = cleanValue.split('.')
+      const integerPart = parts[0].replaceAll(/\B(?=(\d{3})+(?!\d))/g, ',')
+      return parts.length > 1 ? `${integerPart}.${parts[1]}` : integerPart
+    },
+    parse: (value: string): string => {
+      return value.replaceAll(/[^\d.]/g, '')
+    },
   },
 
   // 货币格式
-  currency: (value: string): string => {
-    const cleanValue = value.replaceAll(/[^\d.]/g, '')
-    if (!cleanValue) {
-      return ''
-    }
-    const parts = cleanValue.split('.')
-    const integerPart = parts[0].replaceAll(/\B(?=(\d{3})+(?!\d))/g, ',')
-    const formatted = parts.length > 1 ? `${integerPart}.${parts[1].slice(0, 2)}` : integerPart
-    return `$${formatted}`
+  currency: {
+    format: (value: string): string => {
+      const cleanValue = value.replaceAll(/[^\d.]/g, '')
+      if (!cleanValue) {
+        return ''
+      }
+      const parts = cleanValue.split('.')
+      const integerPart = parts[0].replaceAll(/\B(?=(\d{3})+(?!\d))/g, ',')
+      const formatted = parts.length > 1 ? `${integerPart}.${parts[1].slice(0, 2)}` : integerPart
+      return `$${formatted}`
+    },
+    parse: (value: string): string => {
+      return value.replaceAll(/[^\d.]/g, '')
+    },
   },
 
   // 美国电话号码格式
-  phoneUS: (value: string): string => {
-    const cleanValue = value.replaceAll(/\D/g, '')
-    if (cleanValue.length <= 3) {
-      return cleanValue
-    }
-    if (cleanValue.length <= 6) {
-      return `(${cleanValue.slice(0, 3)}) ${cleanValue.slice(3)}`
-    }
-    return `(${cleanValue.slice(0, 3)}) ${cleanValue.slice(3, 6)}-${cleanValue.slice(6, 10)}`
+  phoneUS: {
+    format: (value: string): string => {
+      const cleanValue = value.replaceAll(/\D/g, '')
+      if (cleanValue.length <= 3) {
+        return cleanValue
+      }
+      if (cleanValue.length <= 6) {
+        return `(${cleanValue.slice(0, 3)}) ${cleanValue.slice(3)}`
+      }
+      return `(${cleanValue.slice(0, 3)}) ${cleanValue.slice(3, 6)}-${cleanValue.slice(6, 10)}`
+    },
+    parse: (value: string): string => {
+      return value.replaceAll(/\D/g, '')
+    },
   },
 
   // 信用卡号格式
-  creditCard: (value: string): string => {
-    const cleanValue = value.replaceAll(/\D/g, '')
-    return cleanValue.replaceAll(/(.{4})/g, '$1 ').trim()
+  creditCard: {
+    format: (value: string): string => {
+      const cleanValue = value.replaceAll(/\D/g, '')
+      return cleanValue.replaceAll(/(.{4})/g, '$1 ').trim()
+    },
+    parse: (value: string): string => {
+      return value.replaceAll(/\D/g, '')
+    },
   },
 
   // 大写转换
-  uppercase: (value: string): string => {
-    return value.toUpperCase()
+  uppercase: {
+    format: (value: string): string => {
+      return value.toUpperCase()
+    },
+    parse: (value: string, context: FormatParseContext): string => {
+      const previousDisplay = context.previousDisplay
+      const previousValue = context.previousValue
+      if (!previousDisplay) {
+        return value
+      }
+      let start = 0
+      const maxStart = Math.min(previousDisplay.length, value.length)
+      while (start < maxStart && previousDisplay[start] === value[start]) {
+        start += 1
+      }
+      let endPrev = previousDisplay.length
+      let endValue = value.length
+      while (
+        endPrev > start
+        && endValue > start
+        && previousDisplay[endPrev - 1] === value[endValue - 1]
+      ) {
+        endPrev -= 1
+        endValue -= 1
+      }
+      const prefix = previousValue.slice(0, start)
+      const suffixLength = previousDisplay.length - endPrev
+      const suffix = suffixLength > 0 ? previousValue.slice(previousValue.length - suffixLength) : ''
+      const middle = value.slice(start, endValue)
+      return `${prefix}${middle}${suffix}`
+    },
   },
 
   // 日期格式 MM/DD/YYYY
-  date: (value: string): string => {
-    const cleanValue = value.replaceAll(/\D/g, '')
-    if (cleanValue.length <= 2) {
-      return cleanValue
-    }
-    if (cleanValue.length <= 4) {
-      return `${cleanValue.slice(0, 2)}/${cleanValue.slice(2)}`
-    }
-    return `${cleanValue.slice(0, 2)}/${cleanValue.slice(2, 4)}/${cleanValue.slice(4, 8)}`
+  date: {
+    format: (value: string): string => {
+      const cleanValue = value.replaceAll(/\D/g, '')
+      if (cleanValue.length <= 2) {
+        return cleanValue
+      }
+      if (cleanValue.length <= 4) {
+        return `${cleanValue.slice(0, 2)}/${cleanValue.slice(2)}`
+      }
+      return `${cleanValue.slice(0, 2)}/${cleanValue.slice(2, 4)}/${cleanValue.slice(4, 8)}`
+    },
+    parse: (value: string): string => {
+      return value.replaceAll(/\D/g, '')
+    },
   },
 }
 
@@ -626,13 +686,13 @@ const dateInput = ref('')
           </p>
           <div class="text-xs font-mono p-3 rounded space-y-2">
             <div>// Number formatting</div>
-            <div>:format="(value) => value.replace(/[^\d.]/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ',')"</div>
+            <div>:format="{ format: (value) => value.replace(/[^\d.]/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ','), parse: (value) => value.replace(/[^\d.]/g, '') }"</div>
             <div />
             <div>// Phone number formatting</div>
-            <div>:format="(value) => formatAsPhone(value)"</div>
+            <div>:format="{ format: (value) => formatAsPhone(value), parse: (value) => value.replace(/\D/g, '') }"</div>
             <div />
             <div>// Currency formatting</div>
-            <div>:format="(value) => '$' + value.replace(/[^\d.]/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ',')"</div>
+            <div>:format="{ format: (value) => '$' + value.replace(/[^\d.]/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ','), parse: (value) => value.replace(/[^\d.]/g, '') }"</div>
           </div>
         </div>
 
@@ -640,7 +700,10 @@ const dateInput = ref('')
           v-model="customInput"
           label="Custom Format (Credit Card)"
           placeholder="Try typing numbers..."
-          :format="(value) => value.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim()"
+          :format="{
+            format: (value) => value.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim(),
+            parse: (value) => value.replace(/\D/g, ''),
+          }"
         />
         <div class="text-sm text-surface-dimmed">
           Value: {{ customInput }}

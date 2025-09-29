@@ -369,7 +369,7 @@ const gamutValidation = computed(() => {
           <div class="text-sm text-surface font-medium">
             Hit Rate
           </div>
-          <div class="text-secondary text-2xl font-bold">
+          <div class="text-2xl text-secondary font-bold">
             {{ performanceStats.hitRate }}%
           </div>
           <div class="text-xs text-surface-dimmed">
@@ -675,13 +675,13 @@ const gamutValidation = computed(() => {
             <div class="text-white p-4 text-center rounded-lg bg-primary">
               Primary BG
             </div>
-            <div class="bg-secondary text-white p-4 text-center rounded-lg">
+            <div class="text-white p-4 text-center rounded-lg bg-secondary">
               Secondary BG
             </div>
-            <div class="bg-tertiary text-white p-4 text-center rounded-lg">
+            <div class="text-white p-4 text-center rounded-lg bg-tertiary">
               Tertiary BG
             </div>
-            <div class="bg-error text-white p-4 text-center rounded-lg">
+            <div class="text-white p-4 text-center rounded-lg bg-error">
               Error BG
             </div>
           </div>

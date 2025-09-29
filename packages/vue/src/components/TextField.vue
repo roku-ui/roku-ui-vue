@@ -1,8 +1,20 @@
 <script setup lang="ts">
-import { computed, ref, useAttrs } from 'vue'
+import { computed, ref, useAttrs, watch } from 'vue'
 import { useId } from '@/composables'
 import { useComponentDefaults, useInputColorStyle, useTheme } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
+
+export type TextFieldFormatFn = (value: string) => string
+export interface TextFieldParseContext {
+  event?: Event
+  previousDisplay: string
+  previousValue: string
+}
+export interface TextFieldFormatConfig {
+  format: TextFieldFormatFn
+  parse?: (value: string, context: TextFieldParseContext) => string
+}
+export type TextFieldFormat = TextFieldFormatFn | TextFieldFormatConfig
 
 const props = withDefaults(
   defineProps<{
@@ -15,7 +27,7 @@ const props = withDefaults(
     password?: boolean
     placeholder?: string
     label?: string
-    format?: (value: string) => string
+    format?: TextFieldFormat
     partialVisible?: boolean
     visibleStart?: number
     visibleEnd?: number
@@ -31,7 +43,7 @@ const props = withDefaults(
 const theme = useTheme()
 const componentDefaults = useComponentDefaults('TextField')
 
-// 创建带有 theme 默认值的有效 props
+// Build effective props merged with theme defaults
 const effectiveProps = computed(() => ({
   ...props,
   color: props.color ?? componentDefaults?.color ?? theme.value.defaultColor,
@@ -53,7 +65,7 @@ const sizeCls = computed(() => {
         input: 'py-2',
       }
     }
-    // case 'md':
+    // case 'md': covered in default branch
     default: {
       return {
         wrapper: 'h-8 text-sm gap-2 px-3',
@@ -71,7 +83,7 @@ const labelSizeCls = computed(() => {
     case 'lg': {
       return 'md-md'
     }
-    // case 'md':
+    // case 'md': covered in default branch
     default: {
       return 'text-sm'
     }
@@ -95,7 +107,38 @@ defineExpose({
 const attrs = useAttrs()
 const id = useId(attrs)
 
-// 获取部分可见的遮罩值
+// Internal display value to support formatting
+function formatValue(value: string): string {
+  if (!props.format) {
+    return value
+  }
+  if (typeof props.format === 'function') {
+    return props.format(value)
+  }
+  return props.format.format(value)
+}
+
+const displayValue = ref(
+  props.password && props.partialVisible
+    ? getMaskedValue(model.value?.toString() || '')
+    : formatValue(model.value?.toString() || ''),
+)
+
+function parseValue(value: string, event?: Event): string {
+  if (!props.format) {
+    return value
+  }
+  if (typeof props.format === 'function' || !props.format.parse) {
+    return value
+  }
+  return props.format.parse(value, {
+    event,
+    previousDisplay: displayValue.value,
+    previousValue: model.value?.toString() || '',
+  })
+}
+
+// Masked value helper for partially visible passwords
 function getMaskedValue(value: string) {
   if (!value || value.length <= props.visibleStart + props.visibleEnd) {
     return value
@@ -109,37 +152,56 @@ function getMaskedValue(value: string) {
   return start + masked + end
 }
 
-// 处理输入事件
+// Handle input events
 function handleInput(event: Event) {
   const target = event.target as HTMLInputElement
   const currentValue = target.value
 
   if (props.password && props.partialVisible) {
-    // 部分可见密码模式：立即更新真实值，然后替换显示值
+    // Partial password visibility: update actual value then mask display
     model.value = currentValue
+    displayValue.value = getMaskedValue(currentValue)
+    props.onChange?.(currentValue)
 
-    // 保存光标位置
+    // Preserve cursor position
     const cursorPos = target.selectionStart || 0
 
-    // 立即替换为遮罩值
-    const maskedValue = getMaskedValue(currentValue)
-    target.value = maskedValue
-
-    // 恢复光标位置
-    target.setSelectionRange(cursorPos, cursorPos)
+    // Restore cursor position on next tick
+    setTimeout(() => {
+      if (target) {
+        target.setSelectionRange(cursorPos, cursorPos)
+      }
+    }, 0)
   }
   else {
-    // 普通模式
-    if (props.format && typeof props.format === 'function') {
-      const formattedValue = props.format(currentValue)
-      target.value = formattedValue
-      model.value = formattedValue
-    }
-    else {
-      model.value = currentValue
-    }
+    // Standard mode
+    // Persist the unformatted value
+    const parsedValue = parseValue(currentValue, event)
+    model.value = parsedValue
+    displayValue.value = formatValue(parsedValue)
+    props.onChange?.(parsedValue)
   }
 }
+
+// Sync display value when model changes
+watch(model, (newValue) => {
+  if (props.password && props.partialVisible) {
+    displayValue.value = getMaskedValue(newValue?.toString() || '')
+    return
+  }
+  displayValue.value = formatValue(newValue?.toString() || '')
+})
+
+watch(
+  () => props.format,
+  () => {
+    if (props.password && props.partialVisible) {
+      displayValue.value = getMaskedValue(model.value?.toString() || '')
+      return
+    }
+    displayValue.value = formatValue(model.value?.toString() || '')
+  },
+)
 </script>
 
 <template>
@@ -178,7 +240,7 @@ function handleInput(event: Event) {
         :id="id"
         v-bind="$attrs"
         ref="input"
-        v-model="model"
+        :value="displayValue"
         :disabled="disabled"
         class="outline-none bg-transparent flex-1"
         :class="[sizeCls.input]"

@@ -19,7 +19,6 @@ const props = withDefaults(
     color?: Color
     variant?: 'default' | 'filled' | 'light'
     rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full' | string | number
-    animate?: boolean
   }>(),
   {
     mode: 'single',
@@ -29,7 +28,6 @@ const props = withDefaults(
     color: undefined,
     variant: 'default',
     rounded: undefined,
-    animate: true,
   },
 )
 
@@ -426,7 +424,7 @@ function getCellCS(day: any) {
       <div
         v-for="day in calendarDays"
         :key="day.date.getTime()"
-        class="border-surface-variant-1 border-b border-r transition-colors relative"
+        class="border-surface-variant-1 border-b border-r relative"
         :class="[
           sizeCls.cell,
           {
@@ -450,7 +448,7 @@ function getCellCS(day: any) {
           }"
         >
           <span
-            class="rounded-full flex h-6 w-6 transition-all duration-200 items-center justify-center"
+            class="rounded-full flex h-6 w-6 items-center justify-center"
             :class="[
               {
                 'bg-primary text-white font-semibold': day.isSelected || day.isRangeStart || day.isRangeEnd,
@@ -460,8 +458,6 @@ function getCellCS(day: any) {
                 'ring-2 ring-primary ring-offset-1': day.isToday && !day.isSelected && !day.isRangeStart && !day.isRangeEnd && !day.isPreviewEnd,
                 'text-primary font-semibold': day.isToday && !day.isSelected && !day.isRangeStart && !day.isRangeEnd && !day.isPreviewEnd,
               },
-              props.animate && day.isPreviewRange ? 'animate-pulse' : '',
-              props.animate && day.isPreviewEnd ? 'animate-pulse' : '',
             ]"
             :style="[
               (day.isSelected || day.isRangeStart || day.isRangeEnd) ? getCellCS(day).value.style : {},
@@ -481,7 +477,6 @@ function getCellCS(day: any) {
         <div
           v-if="day.isPreviewRange"
           class="bg-primary-light opacity-10 inset-0 absolute"
-          :class="props.animate ? 'animate-pulse' : ''"
         />
       </div>
     </div>

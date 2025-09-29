@@ -24,10 +24,10 @@
   "devDependencies": {
     "@jannchie/eslint-config": "^3.7.1",
     "@types/culori": "^4.0.1",
-    "@unocss/eslint-config": "66.5.0",
-    "@unocss/eslint-plugin": "66.5.0",
-    "eslint": "^9.35.0",
-    "eslint-plugin-format": "^1.0.1"
+    "@unocss/eslint-config": "66.5.2",
+    "@unocss/eslint-plugin": "66.5.2",
+    "eslint": "^9.36.0",
+    "eslint-plugin-format": "^1.0.2"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm lint-staged"

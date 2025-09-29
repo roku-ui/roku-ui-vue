@@ -1,3 +1,4 @@
+/* eslint-disable */
 export { default as AppShell } from './AppShell.vue'
 export { default as AspectRatio } from './AspectRatio.vue'
 export { default as AutoHeightTransition } from './AutoHeightTransition.vue'
@@ -24,6 +25,7 @@ export { default as Modal } from './Modal.vue'
 export { default as ModalSystem } from './ModalSystem.vue'
 export { default as Notification } from './Notification.vue'
 export { default as NotificationSystem } from './NotificationSystem.vue'
+export { default as NumberField } from './NumberField.vue'
 export { default as Overlay } from './Overlay.vue'
 export { default as Paper } from './Paper.vue'
 export { default as PinInput } from './PinInput.vue'
