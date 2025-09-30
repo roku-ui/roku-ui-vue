@@ -2,12 +2,14 @@ import type { ComputedRef } from 'vue'
 import type { Rounded } from '@/types'
 import { computed, inject, provide } from 'vue'
 
+export type ThemeColorValue = string | readonly [string, ...string[]]
+
 export interface ThemeColors {
-  primary?: string
-  secondary?: string
-  tertiary?: string
-  error?: string
-  surface?: string
+  primary?: ThemeColorValue
+  secondary?: ThemeColorValue
+  tertiary?: ThemeColorValue
+  error?: ThemeColorValue
+  surface?: ThemeColorValue
 }
 
 export interface ComponentDefaults {
@@ -144,10 +146,25 @@ export function provideTheme(theme: ComputedRef<ThemeData>) {
 
 export function getThemeColorString(colorKey: keyof ThemeColors): string {
   const theme = useTheme()
+  const fallback = resolveThemeColor(defaultThemeData.colors[colorKey]) || '#000000'
   if (!theme || !theme.value.colors) {
-    return defaultThemeData.colors[colorKey]!
+    return fallback
   }
-  return theme.value.colors[colorKey] || defaultThemeData.colors[colorKey]!
+  return resolveThemeColor(theme.value.colors[colorKey]) || fallback
+}
+
+function resolveThemeColor(color: ThemeColorValue | undefined): string | undefined {
+  if (!color) {
+    return undefined
+  }
+  if (typeof color === 'string') {
+    return color
+  }
+  if (Array.isArray(color) && color.length > 0) {
+    const midIndex = Math.floor(color.length / 2)
+    return color[midIndex] ?? color[0]
+  }
+  return undefined
 }
 
 export function useComponentDefaults<K extends keyof ComponentDefaults>(componentName: K): ComponentDefaults[K] {
