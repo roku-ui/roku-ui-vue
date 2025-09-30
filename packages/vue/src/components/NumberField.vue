@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { computed, watch } from 'vue'
-import type { Color } from '@/types'
-import TextField from './TextField.vue'
 import type { TextFieldFormat } from './TextField.vue'
+import type { Color } from '@/types'
+import { computed, ref, watch } from 'vue'
+import TextField from './TextField.vue'
 
 interface Props {
   modelValue?: number | string
@@ -17,8 +17,15 @@ interface Props {
   placeholder?: string
   label?: string
   format?: TextFieldFormat
+  incrementAriaLabel?: string
+  decrementAriaLabel?: string
 }
 
+const props = withDefaults(defineProps<Props>(), {
+  step: 1,
+  incrementAriaLabel: 'Increment',
+  decrementAriaLabel: 'Decrement',
+})
 const supportedColors = ['primary', 'secondary', 'tertiary', 'error'] as const
 type SupportedColor = (typeof supportedColors)[number]
 
@@ -26,16 +33,12 @@ function isSupportedColor(color: string): color is SupportedColor {
   return supportedColors.includes(color as SupportedColor)
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  step: 1,
-})
-
 const model = defineModel<number | string>()
 
 const textFieldColor = computed<SupportedColor | undefined>(() => {
   const candidate = props.color
   if (!candidate) {
-    return undefined
+    return
   }
   if (typeof candidate !== 'string') {
     return candidate
@@ -144,6 +147,17 @@ const spinnerSizeClasses = computed(() => {
   }
 })
 
+const incrementAriaLabel = computed<string>(() => {
+  return props.incrementAriaLabel
+})
+
+const decrementAriaLabel = computed<string>(() => {
+  return props.decrementAriaLabel
+})
+
+const isHovered = ref(false)
+const isFocused = ref(false)
+
 const isIncrementDisabled = computed<boolean>(() => {
   if (props.disabled) {
     return true
@@ -179,7 +193,12 @@ function handleInput(value: string | number | undefined): void {
   model.value = sanitized
 }
 
-function handleBlur(event: FocusEvent): void {
+function handleFocusIn(): void {
+  isFocused.value = true
+}
+
+function handleFocusOut(event: FocusEvent): void {
+  isFocused.value = false
   const target = event.target
   if (!(target instanceof HTMLInputElement)) {
     return
@@ -198,6 +217,37 @@ function handleStep(increment: boolean): void {
   const stepped = getStepValue(increment)
   const clamped = clampValue(stepped)
   model.value = clamped
+}
+
+function handleMouseEnter(): void {
+  isHovered.value = true
+}
+
+function handleMouseLeave(): void {
+  isHovered.value = false
+}
+
+function handleWheel(event: WheelEvent): void {
+  if (!isHovered.value || !isFocused.value) {
+    return
+  }
+  if (props.disabled) {
+    return
+  }
+  if (event.deltaY === 0) {
+    return
+  }
+  if (event.deltaY < 0) {
+    if (isIncrementDisabled.value) {
+      return
+    }
+    handleStep(true)
+    return
+  }
+  if (isDecrementDisabled.value) {
+    return
+  }
+  handleStep(false)
 }
 
 watch(
@@ -234,7 +284,11 @@ watch(
     :format="format"
     type="text"
     @update:model-value="handleInput"
-    @focusout="handleBlur"
+    @focusin="handleFocusIn"
+    @focusout="handleFocusOut"
+    @mouseenter="handleMouseEnter"
+    @mouseleave="handleMouseLeave"
+    @wheel.prevent="handleWheel"
   >
     <template
       v-if="$slots.leftSection"
@@ -245,38 +299,42 @@ watch(
 
     <template #rightSection>
       <div
-        class="flex self-stretch items-stretch"
+        class="flex items-stretch self-stretch"
         :class="spinnerSizeClasses.wrapper"
       >
         <div
-          class="flex self-stretch flex-col overflow-hidden rounded-r-inherit border-l border-surface/20 bg-surface/4 dark:border-surface/25"
+          class="border-surface/20 bg-surface/4 dark:border-surface/25 border-l rounded-r-inherit flex flex-col self-stretch overflow-hidden"
           :class="spinnerSizeClasses.container"
         >
           <button
             type="button"
-            class="flex flex-1 items-center justify-center text-xs text-surface-dimmed transition-colors duration-150 hover:bg-surface/8 hover:text-surface focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-60 disabled:text-surface-dimmed border-b border-surface/15 dark:border-surface/30"
+            class="hover:bg-surface/8 focus-visible:ring-primary border-surface/15 dark:border-surface/30 text-xs text-surface-dimmed border-b flex flex-1 transition-colors duration-150 items-center justify-center disabled:text-surface-dimmed hover:text-surface focus-visible:outline-none disabled:opacity-60 disabled:cursor-not-allowed focus-visible:ring-1"
             :class="spinnerSizeClasses.buttonPadding"
-            :aria-label="$t ? $t('numberField.increment') : 'Increment'"
+            :aria-label="incrementAriaLabel"
             :disabled="isIncrementDisabled"
             @click="handleStep(true)"
           >
-            <div
-              class="i-heroicons-chevron-up-16-solid"
-              :class="spinnerSizeClasses.icon"
-            />
+            <slot name="incrementIcon">
+              <div
+                class="i-heroicons-chevron-up-16-solid"
+                :class="spinnerSizeClasses.icon"
+              />
+            </slot>
           </button>
           <button
             type="button"
-            class="flex flex-1 items-center justify-center text-xs text-surface-dimmed transition-colors duration-150 hover:bg-surface/8 hover:text-surface focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-60 disabled:text-surface-dimmed"
+            class="hover:bg-surface/8 focus-visible:ring-primary text-xs text-surface-dimmed flex flex-1 transition-colors duration-150 items-center justify-center disabled:text-surface-dimmed hover:text-surface focus-visible:outline-none disabled:opacity-60 disabled:cursor-not-allowed focus-visible:ring-1"
             :class="spinnerSizeClasses.buttonPadding"
-            :aria-label="$t ? $t('numberField.decrement') : 'Decrement'"
+            :aria-label="decrementAriaLabel"
             :disabled="isDecrementDisabled"
             @click="handleStep(false)"
           >
-            <div
-              class="i-heroicons-chevron-down-16-solid"
-              :class="spinnerSizeClasses.icon"
-            />
+            <slot name="decrementIcon">
+              <div
+                class="i-heroicons-chevron-down-16-solid"
+                :class="spinnerSizeClasses.icon"
+              />
+            </slot>
           </button>
         </div>
       </div>
