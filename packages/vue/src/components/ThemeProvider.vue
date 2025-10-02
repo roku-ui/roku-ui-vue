@@ -23,16 +23,22 @@ function mergeTheme(
     ...incomingTheme.colors,
   }
 
-  const baseComponentDefaults: ComponentDefaults = baseTheme.componentDefaults
-    ? { ...baseTheme.componentDefaults }
-    : {}
-  const incomingComponentDefaults: ComponentDefaults = incomingTheme.componentDefaults ?? {}
-  const mergedComponentDefaults: ComponentDefaults = { ...baseComponentDefaults }
-  for (const key of Object.keys(incomingComponentDefaults)) {
-    const componentKey = key as keyof ComponentDefaults
-    mergedComponentDefaults[componentKey] = {
-      ...baseComponentDefaults[componentKey],
-      ...incomingComponentDefaults[componentKey],
+  const baseDefaults = baseTheme.componentDefaults ?? {}
+  const incomingDefaults = incomingTheme.componentDefaults ?? {}
+  const mergedDefaults: Record<string, unknown> = {}
+  const componentKeys = new Set([
+    ...Object.keys(baseDefaults),
+    ...Object.keys(incomingDefaults),
+  ]) as Set<keyof ComponentDefaults>
+
+  for (const componentKey of componentKeys) {
+    const mergedValue = mergeComponentDefault(
+      componentKey,
+      baseDefaults[componentKey],
+      incomingDefaults[componentKey],
+    )
+    if (mergedValue) {
+      mergedDefaults[componentKey as string] = mergedValue
     }
   }
 
@@ -40,8 +46,19 @@ function mergeTheme(
     ...baseTheme,
     ...incomingTheme,
     colors: mergedColors,
-    componentDefaults: Object.keys(mergedComponentDefaults).length > 0 ? mergedComponentDefaults : undefined,
+    componentDefaults: Object.keys(mergedDefaults).length > 0 ? mergedDefaults as ComponentDefaults : undefined,
   }
+}
+
+function mergeComponentDefault<K extends keyof ComponentDefaults>(
+  _key: K,
+  baseValue: ComponentDefaults[K] | undefined,
+  incomingValue: ComponentDefaults[K] | undefined,
+): ComponentDefaults[K] | undefined {
+  if (!baseValue && !incomingValue) {
+    return undefined
+  }
+  return Object.assign({}, baseValue ?? {}, incomingValue ?? {}) as ComponentDefaults[K]
 }
 
 const parentTheme = useTheme()

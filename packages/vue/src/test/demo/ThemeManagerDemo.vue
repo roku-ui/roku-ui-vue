@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { ThemeColorValue } from '@/shared'
 import { inject, reactive, ref, watch } from 'vue'
 import { Btn, Paper } from '@/components'
 import { useSchemeString } from '@/composables'
@@ -55,6 +56,17 @@ function setScheme(newScheme: string) {
 
 function toggleScheme() {
   setScheme(scheme.value === 'light' ? 'dark' : 'light')
+}
+
+function resolveThemeColorValue(color: ThemeColorValue | undefined): string {
+  if (!color) {
+    return ''
+  }
+  if (typeof color === 'string') {
+    return color
+  }
+  const midIndex = Math.floor(color.length / 2)
+  return color[midIndex] ?? color[0] ?? ''
 }
 </script>
 
@@ -177,25 +189,25 @@ function toggleScheme() {
       <div class="gap-2 grid grid-cols-4">
         <div
           class="text-sm font-medium rounded flex h-16 items-center justify-center"
-          :style="{ backgroundColor: editableTheme.colors.primary, color: 'white' }"
+          :style="{ backgroundColor: resolveThemeColorValue(editableTheme.colors.primary), color: 'white' }"
         >
           Primary
         </div>
         <div
           class="text-sm font-medium rounded flex h-16 items-center justify-center"
-          :style="{ backgroundColor: editableTheme.colors.secondary, color: 'white' }"
+          :style="{ backgroundColor: resolveThemeColorValue(editableTheme.colors.secondary), color: 'white' }"
         >
           Secondary
         </div>
         <div
           class="text-sm font-medium rounded flex h-16 items-center justify-center"
-          :style="{ backgroundColor: editableTheme.colors.tertiary, color: 'white' }"
+          :style="{ backgroundColor: resolveThemeColorValue(editableTheme.colors.tertiary), color: 'white' }"
         >
           Tertiary
         </div>
         <div
           class="text-sm font-medium rounded flex h-16 items-center justify-center"
-          :style="{ backgroundColor: editableTheme.colors.error, color: 'white' }"
+          :style="{ backgroundColor: resolveThemeColorValue(editableTheme.colors.error), color: 'white' }"
         >
           Error
         </div>

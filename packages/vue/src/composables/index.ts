@@ -1,5 +1,6 @@
 import type { RemovableRef } from '@vueuse/core'
 import type { MaybeRef } from 'vue'
+import type { ThemeColorValue } from '@/shared'
 import { isClient, useLocalStorage } from '@vueuse/core'
 import { rgb } from 'culori'
 import { computed, onMounted, ref, unref } from 'vue'
@@ -35,7 +36,7 @@ export const SURFACE_LIGHTNESS_MAP = [
   0.08,
 ]
 
-function useColorTuple(color: MaybeRef<string | readonly [string, string, string, string, string, string, string, string, string, string, string, ...string[]]>, lightnessMap = COLOR_LIGHTNESS_MAP) {
+function useColorTuple(color: MaybeRef<ThemeColorValue>, lightnessMap: number[] = COLOR_LIGHTNESS_MAP) {
   return computed(() => {
     const colorVal = unref(color)
     if (typeof colorVal === 'string') {
@@ -54,8 +55,8 @@ export function useThemeStyles(theme: import('@/shared').ThemeData) {
     const color = key as KeyOfThemeColors
     const colorValue = currentTheme.value.colors[color]
     if (!colorValue) {
- continue
-}
+      continue
+    }
     const colorTuple = useColorTuple(colorValue, color === 'surface' ? SURFACE_LIGHTNESS_MAP : COLOR_LIGHTNESS_MAP)
     const colorTupleValue = [...colorTuple.value]
     for (const [idx, cur] of colorTupleValue.entries()) {
@@ -89,8 +90,8 @@ export function useEditorFriendlyThemeStyles(theme: import('@/shared').ThemeData
     const color = key as KeyOfThemeColors
     const colorValue = currentTheme.value.colors[color]
     if (!colorValue) {
- continue
-}
+      continue
+    }
     const colorTuple = useColorTuple(colorValue, color === 'surface' ? SURFACE_LIGHTNESS_MAP : COLOR_LIGHTNESS_MAP)
     const colorTupleValue = [...colorTuple.value]
     for (const [idx, cur] of colorTupleValue.entries()) {

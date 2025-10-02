@@ -16,6 +16,8 @@ export default jannchie(
       'style/indent-binary-ops': 'off',
       'style/indent': 'off',
       'style/array-element-newline': 'off',
+      'eslint-comments/no-unlimited-disable': 'off',
+      'unicorn/no-abusive-eslint-disable': 'off',
     },
   },
 )
