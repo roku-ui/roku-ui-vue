@@ -6,6 +6,7 @@ import UnoCSS from 'unocss/vite'
 import AutoExport from 'unplugin-auto-export/vite'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
+import roku from './src/vite/index'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -20,6 +21,7 @@ export default defineConfig({
       path: ['./src/components/**/*'],
       extname: 'ts',
     }),
+    roku({ prefix: 'R' }),
   ],
   build: {
     lib: {
