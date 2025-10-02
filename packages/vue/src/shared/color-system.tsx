@@ -1,10 +1,11 @@
 import type { Color as CuloriColor } from 'culori'
 import type { MaybeRef } from 'vue'
 import type { Color, InputVariant } from '@/types'
-import { formatHex, formatHex8, rgb } from 'culori'
+import { formatHex, rgb } from 'culori'
 import { computed, unref } from 'vue'
 import { generateAdaptiveLightnessMap, generateColorsObjMap, generateColorsObjMapOKLCH } from '@/utils'
 import { COLOR_LIGHTNESS_MAP } from '..'
+import { safeHex, safeHex8 } from './color-helpers'
 import {
   darkBgIndex,
   darkBorderIndex,
@@ -119,8 +120,6 @@ export interface CS {
 export function getCSInner(colors: CuloriColor[], type: CSType, darkIndex: number, lightIndex: number, alpha = 1): CS {
   const dColor = colors[darkIndex]
   const lColor = colors[lightIndex]
-  const safeHex8 = (c: CuloriColor | undefined, a: number) => c ? (formatHex8({ ...c, alpha: a }) || '#00000000') : '#00000000'
-  const safeHex = (c: CuloriColor | undefined) => c ? (formatHex(c) || '#000000') : '#000000'
   switch (type) {
     case 'outline': {
       return {

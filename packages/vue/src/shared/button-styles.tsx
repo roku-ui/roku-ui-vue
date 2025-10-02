@@ -2,9 +2,9 @@ import type { Color as CuloriColor } from 'culori'
 import type { ComputedRef, MaybeRef } from 'vue'
 import type { CS } from './color-system'
 import type { BtnVariant, Color } from '@/types'
-import { formatHex, formatHex8 } from 'culori'
 import { computed, unref } from 'vue'
 import { generateAdaptiveLightnessMap, generateColorsObjMapOKLCH } from '@/utils'
+import { safeHex, safeHex8 } from './color-helpers'
 import { useColors } from './color-system'
 import {
   darkBgIndex,
@@ -53,10 +53,6 @@ export function useButtonCS(variant: MaybeRef<BtnVariant> = 'default', color: Ma
     }
   })
 }
-
-// Helper formatters to avoid unsafe spreading of possibly undefined colors
-const safeHex = (c: CuloriColor | undefined) => c ? (formatHex(c) || '#000000') : '#000000'
-const safeHex8 = (c: CuloriColor | undefined, alpha: number) => c ? (formatHex8({ ...c, alpha }) || '#00000000') : '#00000000'
 
 function getDefaultVariantStyle(surface: CuloriColor[]): Record<string, string> {
   return {

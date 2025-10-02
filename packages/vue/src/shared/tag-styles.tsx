@@ -2,9 +2,10 @@ import type { Color as CuloriColor } from 'culori'
 import type { ComputedRef, MaybeRef } from 'vue'
 import type { CS } from './color-system'
 import type { BtnVariant, Color } from '@/types'
-import { formatHex, formatHex8 } from 'culori'
+import { formatHex } from 'culori'
 import { computed, unref } from 'vue'
 import { generateAdaptiveLightnessMap, generateColorsObjMapOKLCH } from '@/utils'
+import { safeHex, safeHex8 } from './color-helpers'
 import { useColors } from './color-system'
 import {
   darkBgIndex,
@@ -27,9 +28,6 @@ import {
   lightTextIndex,
 } from './constants'
 import { getThemeColorString } from './theme'
-// Safe helpers (placed early to avoid TDZ issues)
-const safeHex = (c: CuloriColor | undefined) => c ? (formatHex(c) || '#000000') : '#000000'
-const safeHex8 = (c: CuloriColor | undefined, alpha: number) => c ? (formatHex8({ ...c, alpha }) || '#00000000') : '#00000000'
 
 export function useTagCS(variant: MaybeRef<BtnVariant> = 'default', color: MaybeRef<Color> = 'primary', hasInteraction: MaybeRef<boolean> = false): ComputedRef<CS> {
   return computed(() => {
@@ -394,4 +392,3 @@ function getWhiteTagVariantStyle(color: CuloriColor[], hasInteraction: boolean):
     class: baseClass,
   }
 }
-
