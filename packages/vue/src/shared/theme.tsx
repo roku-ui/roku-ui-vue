@@ -1,5 +1,5 @@
 import type { ComputedRef } from 'vue'
-import type { Rounded } from '@/types'
+import type { Color, Rounded, Size } from '@/types'
 import { computed, inject, provide } from 'vue'
 
 export type ThemeColorValue = string | readonly [string, ...string[]]
@@ -8,100 +8,103 @@ export interface ThemeColors {
   primary?: ThemeColorValue
   secondary?: ThemeColorValue
   tertiary?: ThemeColorValue
+  success?: ThemeColorValue
+  info?: ThemeColorValue
+  warning?: ThemeColorValue
   error?: ThemeColorValue
   surface?: ThemeColorValue
 }
 
 export interface ComponentDefaults {
   Btn?: {
-    size?: 'sm' | 'md' | 'lg'
+    size?: Size
     variant?: import('@/types').BtnVariant
     color?: string
     rounded?: Rounded
     pressEffect?: 'translate' | 'scale'
   }
   TextField?: {
-    size?: 'sm' | 'md' | 'lg'
-    color?: 'primary' | 'secondary' | 'tertiary' | 'error'
+    size?: Size
+    color?: Color
     rounded?: Rounded
   }
   Switch?: {
-    size?: 'sm' | 'md' | 'lg'
-    color?: 'primary' | 'secondary' | 'tertiary' | 'error'
+      size?: Size
+      color?: Color
   }
   Select?: {
-    size?: 'sm' | 'md' | 'lg'
-    color?: 'primary' | 'secondary' | 'tertiary' | 'error'
+    size?: Size
+    color?: Color
     rounded?: Rounded
   }
   Checkbox?: {
-    size?: 'sm' | 'md' | 'lg'
-    color?: 'primary' | 'secondary' | 'tertiary' | 'error'
+    size?: Size
+    color?: Color
     rounded?: Rounded
   }
   Paper?: {
     variant?: import('@/types').ContainerVariant
-    color?: string
+    color?: Color
     rounded?: Rounded
   }
   Progress?: {
-    size?: 'sm' | 'md' | 'lg'
-    color?: 'primary' | 'secondary' | 'tertiary' | 'error'
+    size?: Size
+    color?: Color
   }
   Rating?: {
-    size?: 'sm' | 'md' | 'lg'
-    color?: 'primary' | 'secondary' | 'tertiary' | 'error'
+    size?: Size
+    color?: Color
   }
   Slider?: {
-    size?: 'sm' | 'md' | 'lg'
-    color?: 'primary' | 'secondary' | 'tertiary' | 'error'
+    size?: Size
+    color?: Color
   }
   Avatar?: {
-    size?: 'sm' | 'md' | 'lg'
-    color?: string
+    size?: Size
+    color?: Color
     rounded?: Rounded
   }
   Tag?: {
-    size?: 'sm' | 'md' | 'lg'
+    size?: Size
     variant?: import('@/types').ContainerVariant
     color?: string
     rounded?: Rounded
   }
   Chip?: {
-    size?: 'sm' | 'md' | 'lg'
+    size?: Size
     variant?: import('@/types').ContainerVariant
     color?: string
     rounded?: Rounded
   }
   Modal?: {
-    size?: 'sm' | 'md' | 'lg'
+    size?: Size
     rounded?: Rounded
   }
   Drawer?: {
-    size?: 'sm' | 'md' | 'lg'
+    size?: Size
   }
   Notification?: {
-    color?: 'primary' | 'secondary' | 'tertiary' | 'error'
+    color?: Color
     rounded?: Rounded
   }
   ColorInput?: {
-    size?: 'sm' | 'md' | 'lg'
+    size?: Size
     rounded?: Rounded
   }
   CalendarInput?: {
-    size?: 'sm' | 'md' | 'lg'
+    size?: Size
     rounded?: Rounded
   }
   PinInput?: {
-    size?: 'sm' | 'md' | 'lg'
+    size?: Size
     rounded?: Rounded
   }
   Dropzone?: {
     rounded?: Rounded
   }
   Step?: {
-    size?: 'sm' | 'md' | 'lg'
-    color?: 'primary' | 'secondary' | 'tertiary' | 'error'
+    size?: Size
+    color?: Color
     direction?: 'horizontal' | 'vertical'
     type?: 'default' | 'navigation' | 'dot' | 'simple'
   }
@@ -111,8 +114,8 @@ export interface ThemeData {
   withBorder: boolean
   rounded: Rounded
   colors: ThemeColors
-  defaultSize: 'sm' | 'md' | 'lg'
-  defaultColor: 'primary' | 'secondary' | 'tertiary' | 'error'
+  defaultSize: Size
+  defaultColor: Color
   componentDefaults?: ComponentDefaults
 }
 
@@ -122,9 +125,12 @@ export const defaultThemeData: ThemeData = {
   defaultSize: 'md',
   defaultColor: 'primary',
   colors: {
-    primary: '#0067cc',
-    secondary: '#5999A6',
-    tertiary: '#F76C22',
+    primary: '#2c9be6ff',
+    secondary: '#10c3e7ff',
+    tertiary: '#e03ba9ff',
+    success: '#00dc82',
+    info: '#3AAFF5',
+    warning: '#F5A623',
     error: '#F95858',
     surface: '#121212',
   },

@@ -7,6 +7,9 @@
       <div class="text-secondary">
         Secondary
       </div>
+      <div class="text-tertiary">
+        Tertiary
+      </div>
       <div class="text-success">
         Success
       </div>
@@ -20,7 +23,7 @@
         Error
       </div>
     </div>
-    <div class="flex gap-8">
+    <div class="children:bg-surface-muted flex gap-8 children:px-3 children:py-1 children:border children:rounded-xl">
       <div class="text-dimmed">
         Dimmed
       </div>

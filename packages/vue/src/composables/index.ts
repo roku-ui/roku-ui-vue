@@ -71,7 +71,7 @@ export function useThemeStyles(theme: import('@/shared').ThemeData) {
   const themeStyles = {
     'backgroundColor': 'var(--r-surface-background-base-color)',
     'color': 'var(--r-surface-text-color)',
-    '--un-default-border-color': 'var(--r-surface-border-color)',
+    '--un-default-border-color': 'var(--r-border)',
   }
 
   return {
@@ -106,7 +106,7 @@ export function useEditorFriendlyThemeStyles(theme: import('@/shared').ThemeData
   const themeStyles = {
     'backgroundColor': 'var(--r-surface-background-base-color)',
     'color': 'var(--r-surface-text-color)',
-    '--un-default-border-color': 'var(--r-surface-border-color)',
+    '--un-default-border-color': 'var(--r-border)',
   }
 
   return {

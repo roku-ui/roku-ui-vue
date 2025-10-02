@@ -96,7 +96,7 @@ const loadingStyle = computed(() => {
     return {
       '--main-color': mainColor.value,
       '--gradient': `radial-gradient(circle at center, var(--main-color) ${shortEdge.value * 0.5}px, var(--border-color) ${shortEdge.value * 0.5}px)`,
-      '--border-color': 'var(--r-surface-border-color)',
+      '--border-color': 'var(--r-border)',
       '--bg': `var(--r-surface-background-color)`,
       'background': 'linear-gradient(var(--bg), var(--bg)) padding-box, var(--gradient) border-box',
       'border-color': 'transparent',
@@ -165,7 +165,7 @@ const traceAnimateStyle = computed(() => {
     })
     return {
       '--main-color': mainColor.value,
-      '--border-color': 'var(--r-surface-border-color)',
+      '--border-color': 'var(--r-border)',
       '--bg': `var(--r-surface-background-color)`,
       '--gradient': `radial-gradient(circle at ${points.value.x - left.value}px ${points.value.y - top.value}px, var(--main-color) ${shortEdge.value * 0.5}px, var(--border-color) ${shortEdge.value * 0.5}px)`,
       'background': 'linear-gradient(var(--bg), var(--bg)) padding-box, var(--gradient) border-box',
@@ -187,7 +187,7 @@ const traceAnimateStyle = computed(() => {
     :class="[
       {
         'p-4': !noPadding,
-        'border-[var(--r-surface-border-color)]': withBorder && !traceAnimate && !loading,
+        'border-[var(--r-border)]': withBorder && !traceAnimate && !loading,
         'border-transparent': !withBorder || traceAnimate || loading,
       },
       roundedCls.class,

@@ -19,6 +19,7 @@
         
         --r-text-primary: rgb(var(--r-color-primary-5));
         --r-text-secondary: rgb(var(--r-color-secondary-5));
+        --r-text-tertiary: rgb(var(--r-color-tertiary-5));
         --r-text-success: rgb(var(--r-color-success-5));
         --r-text-info: rgb(var(--r-color-info-5));
         --r-text-warning: rgb(var(--r-color-warning-5));
@@ -36,25 +37,16 @@
         --r-bg-active: rgb(var(--r-color-surface-3));
         --r-bg-inverted: rgb(var(--r-color-surface-9));
 
+        --r-bg-primary: rgb(var(--r-color-primary-5));
+        --r-bg-secondary: rgb(var(--r-color-secondary-5));
+        --r-bg-tertiary: rgb(var(--r-color-tertiary-5));
+        --r-bg-success: rgb(var(--r-color-success-5));
+        --r-bg-info: rgb(var(--r-color-info-5));
+        --r-bg-warning: rgb(var(--r-color-warning-5));
+        --r-bg-error: rgb(var(--r-color-error-5));
 
-        --r-surface-background-base-color: rgb(var(--r-color-surface-0));
-        --r-surface-background-color: rgb(var(--r-color-surface-1));
-        --r-surface-background-variant-1-color: rgb(var(--r-color-surface-2));
-        --r-surface-background-variant-2-color: rgb(var(--r-color-surface-2));
-        --r-surface-border-color: rgb(var(--r-color-surface-3));
-        --r-surface-border-variant-color: rgb(var(--r-color-surface-4));
-        --r-surface-text-color: rgb(var(--r-color-surface-7));
-        --r-surface-text-dimmed-color: rgb(var(--r-color-surface-5));
+        --r-border: rgb(var(--r-color-surface-3));
 
-        --r-primary-background-color: rgb(var(--r-color-primary-4));
-        --r-secondary-background-color: rgb(var(--r-color-secondary-4));
-        --r-tertiary-background-color: rgb(var(--r-color-tertiary-4));
-        --r-error-background-color: rgb(var(--r-color-error-4));
-
-        --r-primary-text-color: rgb(var(--r-color-primary-6));
-        --r-secondary-text-color: rgb(var(--r-color-secondary-6));
-        --r-tertiary-text-color: rgb(var(--r-color-tertiary-6));
-        --r-error-text-color: rgb(var(--r-color-error-6));
     }
 
     /* Dark theme overrides */
@@ -64,6 +56,7 @@
 
         --r-text-primary: rgb(var(--r-color-primary-4));
         --r-text-secondary: rgb(var(--r-color-secondary-4));
+        --r-text-tertiary: rgb(var(--r-color-tertiary-4));
         --r-text-success: rgb(var(--r-color-success-4));
         --r-text-info: rgb(var(--r-color-info-4));
         --r-text-warning: rgb(var(--r-color-warning-4));
@@ -79,25 +72,16 @@
         --r-bg-muted: rgb(var(--r-color-surface-8));
         --r-bg-hover: rgb(var(--r-color-surface-7));
         --r-bg-active: rgb(var(--r-color-surface-6));
-        --r-bg-inverted: rgb(var(--r-color-surface-9));
+        --r-bg-inverted: rgb(var(--r-color-surface-1));
 
-        --r-surface-background-base-color: rgb(var(--r-color-surface-10));
-        --r-surface-background-color: rgb(var(--r-color-surface-9));
-        --r-surface-background-variant-1-color: rgb(var(--r-color-surface-8));
-        --r-surface-background-variant-2-color: rgb(var(--r-color-surface-7));
-        --r-surface-border-color: rgb(var(--r-color-surface-7));
-        --r-surface-border-variant-color: rgb(var(--r-color-surface-6));
-        --r-surface-text-color: rgb(var(--r-color-surface-3));
-        --r-surface-text-dimmed-color: rgb(var(--r-color-surface-4));
-
-        --r-primary-background-color: rgb(var(--r-color-primary-5));
-        --r-secondary-background-color: rgb(var(--r-color-secondary-5));
-        --r-tertiary-background-color: rgb(var(--r-color-tertiary-5));
-        --r-error-background-color: rgb(var(--r-color-error-5));
-
-        --r-primary-text-color: rgb(var(--r-color-primary-3));
-        --r-secondary-text-color: rgb(var(--r-color-secondary-3));
-        --r-tertiary-text-color: rgb(var(--r-color-tertiary-3));
-        --r-error-text-color: rgb(var(--r-color-error-3));
+        --r-bg-primary: rgb(var(--r-color-primary-4));
+        --r-bg-secondary: rgb(var(--r-color-secondary-4));
+        --r-bg-tertiary: rgb(var(--r-color-tertiary-4));
+        --r-bg-success: rgb(var(--r-color-success-4));
+        --r-bg-info: rgb(var(--r-color-info-4));
+        --r-bg-warning: rgb(var(--r-color-warning-4));
+        --r-bg-error: rgb(var(--r-color-error-4));
+ 
+        --r-border: rgb(var(--r-color-surface-8));
     }
 }
