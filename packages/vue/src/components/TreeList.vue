@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import type { VNode } from 'vue'
+import type { Component, VNode } from 'vue'
 import type { Rounded } from '@/types'
 import { computed, h, ref, watchEffect } from 'vue'
 import { useRounded } from '@/index'
@@ -10,7 +10,7 @@ export interface TreeListLeafData {
   title: string
   value: string
   attrs?: Record<string, any>
-  is?: string | VNode
+  is?: string | Component
 }
 
 export interface TreeListHeaderData {

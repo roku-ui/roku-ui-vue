@@ -24,10 +24,7 @@ const props = withDefaults(
   {
     type: 'info',
     border: false,
-    color: undefined,
-    rounded: undefined,
     block: false,
-    size: undefined,
     total: 100,
     showLeftIndicator: false,
   },

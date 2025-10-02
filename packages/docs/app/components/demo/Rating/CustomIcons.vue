@@ -41,7 +41,7 @@ const code = computed(() => {
           :color="['green', 'yellow', 'orange', 'red']"
           highlight-selected-only
         />
-        <div class="text-sm text-surface-dimmed">
+        <div class="text-surface-dimmed text-sm">
           状态: {{ ['良好', '一般', '警告', '错误'][rating - 1] || '未选择' }}
         </div>
       </div>

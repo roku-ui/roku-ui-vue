@@ -22,16 +22,11 @@ const props = withDefaults(defineProps<{
   options() {
     return []
   },
-  size: undefined,
-  color: undefined,
   noneText: 'No options',
   notFoundText: 'Not found',
   placeholder: '',
-  rounded: undefined,
   searchable: false,
   filter: (label: string, text: string) => label.includes(text),
-  labelKey: undefined,
-  labelGetter: undefined,
 })
 
 const emit = defineEmits<{

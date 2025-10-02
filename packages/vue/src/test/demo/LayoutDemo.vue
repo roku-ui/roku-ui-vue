@@ -91,7 +91,7 @@ const loading = ref(false)
         <div class="bg-surface-variant-1">
           bg-surface-variant-1
         </div>
-        <div class="border border-surface">
+        <div class="border-surface border">
           border-surface
         </div>
         <div class="text-surface">

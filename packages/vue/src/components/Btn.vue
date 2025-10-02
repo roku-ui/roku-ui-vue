@@ -22,9 +22,7 @@ const props = withDefaults(
     outlineColor?: string
   }>(),
   {
-    rounded: undefined,
     type: 'button',
-    size: undefined,
     is: 'button',
     icon: false,
     pressEffect: 'translate',

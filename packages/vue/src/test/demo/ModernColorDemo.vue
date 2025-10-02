@@ -109,7 +109,7 @@ const gamutValidation = computed(() => {
   <div class="p-6 space-y-6">
     <!-- Header -->
     <div class="space-y-4">
-      <h1 class="text-3xl text-surface font-bold">
+      <h1 class="text-surface text-3xl font-bold">
         Enhanced Color System Demo
       </h1>
       <p class="text-surface-dimmed">
@@ -119,85 +119,85 @@ const gamutValidation = computed(() => {
 
     <!-- Theme Controls -->
     <Paper class="p-6 space-y-4">
-      <h2 class="text-xl text-surface font-semibold">
+      <h2 class="text-surface text-xl font-semibold">
         Theme Controls
       </h2>
 
       <div class="flex flex-wrap gap-4 items-center">
         <div class="flex gap-2 items-center">
-          <label class="text-sm text-surface font-medium">Color Scheme:</label>
+          <label class="text-surface text-sm font-medium">Color Scheme:</label>
           <Switch
             :model-value="scheme === 'dark'"
             @update:model-value="toggleScheme()"
           />
-          <span class="text-sm text-surface-dimmed">{{ scheme }}</span>
+          <span class="text-surface-dimmed text-sm">{{ scheme }}</span>
         </div>
       </div>
     </Paper>
 
     <!-- Color Customization -->
     <Paper class="p-6 space-y-4">
-      <h2 class="text-xl text-surface font-semibold">
+      <h2 class="text-surface text-xl font-semibold">
         Custom Colors (OKLCH)
       </h2>
 
       <div class="gap-4 grid grid-cols-1 lg:grid-cols-5 md:grid-cols-2">
         <div class="space-y-2">
-          <label class="text-sm text-surface font-medium">Primary</label>
+          <label class="text-surface text-sm font-medium">Primary</label>
           <TextField
             v-model="primaryColor"
             type="color"
             class="h-12"
           />
-          <div class="text-xs text-surface-dimmed">
+          <div class="text-surface-dimmed text-xs">
             OKLCH: {{ generateOKLCHString(primaryColor) }}
           </div>
         </div>
 
         <div class="space-y-2">
-          <label class="text-sm text-surface font-medium">Secondary</label>
+          <label class="text-surface text-sm font-medium">Secondary</label>
           <TextField
             v-model="secondaryColor"
             type="color"
             class="h-12"
           />
-          <div class="text-xs text-surface-dimmed">
+          <div class="text-surface-dimmed text-xs">
             OKLCH: {{ generateOKLCHString(secondaryColor) }}
           </div>
         </div>
 
         <div class="space-y-2">
-          <label class="text-sm text-surface font-medium">Tertiary</label>
+          <label class="text-surface text-sm font-medium">Tertiary</label>
           <TextField
             v-model="tertiaryColor"
             type="color"
             class="h-12"
           />
-          <div class="text-xs text-surface-dimmed">
+          <div class="text-surface-dimmed text-xs">
             OKLCH: {{ generateOKLCHString(tertiaryColor) }}
           </div>
         </div>
 
         <div class="space-y-2">
-          <label class="text-sm text-surface font-medium">Error</label>
+          <label class="text-surface text-sm font-medium">Error</label>
           <TextField
             v-model="errorColor"
             type="color"
             class="h-12"
           />
-          <div class="text-xs text-surface-dimmed">
+          <div class="text-surface-dimmed text-xs">
             OKLCH: {{ generateOKLCHString(errorColor) }}
           </div>
         </div>
 
         <div class="space-y-2">
-          <label class="text-sm text-surface font-medium">Surface</label>
+          <label class="text-surface text-sm font-medium">Surface</label>
           <TextField
             v-model="surfaceColor"
             type="color"
             class="h-12"
           />
-          <div class="text-xs text-surface-dimmed">
+          <div class="text-surface-dimmed text-xs">
             OKLCH: {{ generateOKLCHString(surfaceColor) }}
           </div>
         </div>
@@ -206,16 +206,16 @@ const gamutValidation = computed(() => {
 
     <!-- Advanced Color Generation Settings -->
     <Paper class="p-6 space-y-4">
-      <h2 class="text-xl text-surface font-semibold">
+      <h2 class="text-surface text-xl font-semibold">
         Advanced Generation Settings
       </h2>
 
       <div class="gap-4 grid grid-cols-1 lg:grid-cols-5 md:grid-cols-3">
         <div class="space-y-2">
-          <label class="text-sm text-surface font-medium">Strategy</label>
+          <label class="text-surface text-sm font-medium">Strategy</label>
           <select
             v-model="colorStrategy"
-            class="text-surface px-3 py-2 border border-surface rounded-lg bg-surface w-full"
+            class="text-surface border-surface bg-surface px-3 py-2 border rounded-lg w-full"
           >
             <option value="conservative">
               Conservative
@@ -230,10 +230,10 @@ const gamutValidation = computed(() => {
         </div>
 
         <div class="space-y-2">
-          <label class="text-sm text-surface font-medium">Purpose</label>
+          <label class="text-surface text-sm font-medium">Purpose</label>
           <select
             v-model="colorPurpose"
-            class="text-surface px-3 py-2 border border-surface rounded-lg bg-surface w-full"
+            class="text-surface border-surface bg-surface px-3 py-2 border rounded-lg w-full"
           >
             <option value="primary">
               Primary
@@ -251,10 +251,10 @@ const gamutValidation = computed(() => {
         </div>
 
         <div class="space-y-2">
-          <label class="text-sm text-surface font-medium">Contrast</label>
+          <label class="text-surface text-sm font-medium">Contrast</label>
           <select
             v-model="contrastTarget"
-            class="text-surface px-3 py-2 border border-surface rounded-lg bg-surface w-full"
+            class="text-surface border-surface bg-surface px-3 py-2 border rounded-lg w-full"
           >
             <option value="none">
               None
@@ -269,10 +269,10 @@ const gamutValidation = computed(() => {
         </div>
 
         <div class="space-y-2">
-          <label class="text-sm text-surface font-medium">Gamut</label>
+          <label class="text-surface text-sm font-medium">Gamut</label>
           <select
             v-model="selectedGamut"
-            class="text-surface px-3 py-2 border border-surface rounded-lg bg-surface w-full"
+            class="text-surface border-surface bg-surface px-3 py-2 border rounded-lg w-full"
           >
             <option value="srgb">
               sRGB
@@ -287,7 +287,7 @@ const gamutValidation = computed(() => {
         </div>
 
         <div class="space-y-2">
-          <label class="text-sm text-surface font-medium">Background Lightness</label>
+          <label class="text-surface text-sm font-medium">Background Lightness</label>
           <input
             v-model="backgroundLightness"
             type="range"
@@ -295,7 +295,7 @@ const gamutValidation = computed(() => {
             max="100"
             class="w-full"
           >
-          <div class="text-xs text-surface-dimmed text-center">
+          <div class="text-surface-dimmed text-xs text-center">
             {{ backgroundLightness }}%
           </div>
         </div>
@@ -304,7 +304,7 @@ const gamutValidation = computed(() => {
 
     <!-- Gamut Validation -->
     <Paper class="p-6 space-y-4">
-      <h2 class="text-xl text-surface font-semibold">
+      <h2 class="text-surface text-xl font-semibold">
         Color Gamut Validation
       </h2>
 
@@ -319,7 +319,7 @@ const gamutValidation = computed(() => {
               class="border-surface-variant border rounded h-6 w-6"
               :style="{ backgroundColor: validation.color }"
             />
-            <span class="text-sm text-surface font-medium">{{ validation.name }}</span>
+            <span class="text-surface text-sm font-medium">{{ validation.name }}</span>
           </div>
 
           <div class="text-xs space-y-1">
@@ -348,37 +348,37 @@ const gamutValidation = computed(() => {
 
     <!-- Performance Stats -->
     <Paper class="p-6 space-y-4">
-      <h2 class="text-xl text-surface font-semibold">
+      <h2 class="text-surface text-xl font-semibold">
         Performance & Caching
       </h2>
 
       <div class="gap-4 grid grid-cols-1 md:grid-cols-3">
         <div class="space-y-2">
-          <div class="text-sm text-surface font-medium">
+          <div class="text-surface text-sm font-medium">
             Cache Usage
           </div>
-          <div class="text-2xl text-primary font-bold">
+          <div class="text-primary text-2xl font-bold">
             {{ performanceStats.size }} / {{ performanceStats.maxSize }}
           </div>
-          <div class="text-xs text-surface-dimmed">
+          <div class="text-surface-dimmed text-xs">
             Cached results
           </div>
         </div>
 
         <div class="space-y-2">
-          <div class="text-sm text-surface font-medium">
+          <div class="text-surface text-sm font-medium">
             Hit Rate
           </div>
-          <div class="text-2xl text-secondary font-bold">
+          <div class="text-secondary text-2xl font-bold">
             {{ performanceStats.hitRate }}%
           </div>
-          <div class="text-xs text-surface-dimmed">
+          <div class="text-surface-dimmed text-xs">
             Cache efficiency
           </div>
         </div>
 
         <div class="space-y-2">
-          <div class="text-sm text-surface font-medium">
+          <div class="text-surface text-sm font-medium">
             Actions
           </div>
           <div class="space-y-2">
@@ -402,7 +402,7 @@ const gamutValidation = computed(() => {
     <!-- Enhanced Color Palettes -->
     <Paper class="p-6 space-y-4">
       <div class="flex items-center justify-between">
-        <h2 class="text-xl text-surface font-semibold">
+        <h2 class="text-surface text-xl font-semibold">
           Enhanced Color Palettes
         </h2>
         <Switch
@@ -418,10 +418,10 @@ const gamutValidation = computed(() => {
           class="space-y-4"
         >
           <div class="flex items-center justify-between">
-            <h3 class="text-lg text-surface font-medium capitalize">
+            <h3 class="text-surface text-lg font-medium capitalize">
               {{ colorName }}
             </h3>
-            <div class="text-xs text-surface-dimmed">
+            <div class="text-surface-dimmed text-xs">
               Strategy: {{ paletteResult.metadata.strategy }} |
               Gamut: {{ paletteResult.metadata.gamut }} |
               Contrast: {{ paletteResult.metadata.contrastTarget }}
@@ -450,7 +450,7 @@ const gamutValidation = computed(() => {
             v-if="paletteResult.alternatives"
             class="space-y-2"
           >
-            <div class="text-sm text-surface font-medium">
+            <div class="text-surface text-sm font-medium">
               Alternative Strategies:
             </div>
             <div class="space-y-2">
@@ -459,7 +459,7 @@ const gamutValidation = computed(() => {
                 :key="strategyName"
                 class="space-y-1"
               >
-                <div class="text-xs text-surface-dimmed capitalize">
+                <div class="text-surface-dimmed text-xs capitalize">
                   {{ strategyName }}:
                 </div>
                 <div class="gap-1 grid grid-cols-11">
@@ -478,7 +478,7 @@ const gamutValidation = computed(() => {
           <!-- Gamut analysis -->
           <div
             v-if="paletteResult.metadata.gamutAnalysis"
-            class="text-xs text-surface-dimmed space-y-1"
+            class="text-surface-dimmed text-xs space-y-1"
           >
             <div>
               Gamut Coverage:
@@ -497,7 +497,7 @@ const gamutValidation = computed(() => {
     <!-- Legacy Color Palettes -->
     <Paper class="p-6 space-y-4">
       <div class="flex items-center justify-between">
-        <h2 class="text-xl text-surface font-semibold">
+        <h2 class="text-surface text-xl font-semibold">
           Generated Color Palettes
         </h2>
         <Switch
@@ -512,7 +512,7 @@ const gamutValidation = computed(() => {
           :key="colorName"
           class="space-y-2"
         >
-          <h3 class="text-lg text-surface font-medium capitalize">
+          <h3 class="text-surface text-lg font-medium capitalize">
             {{ colorName }}
           </h3>
           <div class="gap-1 grid grid-cols-11">
@@ -530,7 +530,7 @@ const gamutValidation = computed(() => {
               </div>
             </div>
           </div>
-          <div class="text-xs text-surface-dimmed">
+          <div class="text-surface-dimmed text-xs">
             Lightness range: 0 (lightest) → 10 (darkest)
           </div>
         </div>
@@ -540,7 +540,7 @@ const gamutValidation = computed(() => {
     <!-- Color-mix() Demo -->
     <Paper class="p-6 space-y-4">
       <div class="flex items-center justify-between">
-        <h2 class="text-xl text-surface font-semibold">
+        <h2 class="text-surface text-xl font-semibold">
           Color-mix() Transparency Demo
         </h2>
         <Switch
@@ -551,7 +551,7 @@ const gamutValidation = computed(() => {
 
       <div class="space-y-4">
         <div class="flex gap-4 items-center">
-          <label class="text-sm text-surface font-medium">Opacity:</label>
+          <label class="text-surface text-sm font-medium">Opacity:</label>
           <input
             v-model="selectedOpacity"
             type="range"
@@ -560,12 +560,12 @@ const gamutValidation = computed(() => {
             step="10"
             class="flex-1"
           >
-          <span class="text-sm text-surface-dimmed w-12">{{ selectedOpacity }}%</span>
+          <span class="text-surface-dimmed text-sm w-12">{{ selectedOpacity }}%</span>
         </div>
 
         <div class="gap-4 grid grid-cols-2 md:grid-cols-4">
           <div class="space-y-2">
-            <div class="text-sm text-surface font-medium">
+            <div class="text-surface text-sm font-medium">
               Primary
             </div>
             <div
@@ -573,13 +573,13 @@ const gamutValidation = computed(() => {
               :class="showColorMix ? `bg-primary-mix-${selectedOpacity}` : ''"
               :style="!showColorMix ? { backgroundColor: `rgba(var(--r-color-primary-4), ${selectedOpacity / 100})` } : {}"
             />
-            <div class="text-xs text-surface-dimmed">
+            <div class="text-surface-dimmed text-xs">
               {{ showColorMix ? `bg-primary-mix-${selectedOpacity}` : `rgba() fallback` }}
             </div>
           </div>
 
           <div class="space-y-2">
-            <div class="text-sm text-surface font-medium">
+            <div class="text-surface text-sm font-medium">
               Secondary
             </div>
             <div
@@ -587,26 +587,26 @@ const gamutValidation = computed(() => {
               :class="showColorMix ? `bg-secondary-mix-${selectedOpacity}` : ''"
               :style="!showColorMix ? { backgroundColor: `rgba(var(--r-color-secondary-4), ${selectedOpacity / 100})` } : {}"
             />
-            <div class="text-xs text-surface-dimmed">
+            <div class="text-surface-dimmed text-xs">
               {{ showColorMix ? `bg-secondary-mix-${selectedOpacity}` : `rgba() fallback` }}
             </div>
           </div>
 
           <div class="space-y-2">
-            <div class="text-sm text-surface font-medium">
+            <div class="text-surface text-sm font-medium">
               Tertiary
             </div>
             <div
               class="border-surface-variant border rounded-lg h-16"
               :style="{ backgroundColor: `color-mix(in oklch, var(--r-tertiary-background-color) ${selectedOpacity}%, transparent)` }"
             />
-            <div class="text-xs text-surface-dimmed">
+            <div class="text-surface-dimmed text-xs">
               color-mix() inline
             </div>
           </div>
 
           <div class="space-y-2">
-            <div class="text-sm text-surface font-medium">
+            <div class="text-surface text-sm font-medium">
               Surface
             </div>
             <div
@@ -614,7 +614,7 @@ const gamutValidation = computed(() => {
               :class="showColorMix ? `bg-surface-mix-${selectedOpacity}` : ''"
               :style="!showColorMix ? { backgroundColor: `rgba(var(--r-color-surface-1), ${selectedOpacity / 100})` } : {}"
             />
-            <div class="text-xs text-surface-dimmed">
+            <div class="text-surface-dimmed text-xs">
               {{ showColorMix ? `bg-surface-mix-${selectedOpacity}` : `rgba() fallback` }}
             </div>
           </div>
@@ -624,13 +624,13 @@ const gamutValidation = computed(() => {
 
     <!-- Component Examples -->
     <Paper class="p-6 space-y-4">
-      <h2 class="text-xl text-surface font-semibold">
+      <h2 class="text-surface text-xl font-semibold">
         Component Examples
       </h2>
 
       <div class="space-y-4">
         <div class="space-y-2">
-          <h3 class="text-lg text-surface font-medium">
+          <h3 class="text-surface text-lg font-medium">
             Buttons
           </h3>
           <div class="flex gap-2">
@@ -642,7 +642,7 @@ const gamutValidation = computed(() => {
         </div>
 
         <div class="space-y-2">
-          <h3 class="text-lg text-surface font-medium">
+          <h3 class="text-surface text-lg font-medium">
             Text Colors
           </h3>
           <div class="space-y-1">
@@ -668,20 +668,20 @@ const gamutValidation = computed(() => {
         </div>
 
         <div class="space-y-2">
-          <h3 class="text-lg text-surface font-medium">
+          <h3 class="text-surface text-lg font-medium">
             Background Colors
           </h3>
           <div class="gap-2 grid grid-cols-2 md:grid-cols-4">
-            <div class="text-white p-4 text-center rounded-lg bg-primary">
+            <div class="bg-primary text-white p-4 text-center rounded-lg">
               Primary BG
             </div>
-            <div class="text-white p-4 text-center rounded-lg bg-secondary">
+            <div class="bg-secondary text-white p-4 text-center rounded-lg">
               Secondary BG
             </div>
-            <div class="text-white p-4 text-center rounded-lg bg-tertiary">
+            <div class="bg-tertiary text-white p-4 text-center rounded-lg">
               Tertiary BG
             </div>
-            <div class="text-white p-4 text-center rounded-lg bg-error">
+            <div class="bg-error text-white p-4 text-center rounded-lg">
               Error BG
             </div>
           </div>
@@ -691,16 +691,16 @@ const gamutValidation = computed(() => {
 
     <!-- Technical Information -->
     <Paper class="p-6 space-y-4">
-      <h2 class="text-xl text-surface font-semibold">
+      <h2 class="text-surface text-xl font-semibold">
         Technical Information
       </h2>
 
       <div class="gap-6 grid grid-cols-1 md:grid-cols-2">
         <div class="space-y-2">
-          <h3 class="text-lg text-surface font-medium">
+          <h3 class="text-surface text-lg font-medium">
             Enhanced Features Implemented
           </h3>
-          <ul class="text-sm text-surface-dimmed space-y-1">
+          <ul class="text-surface-dimmed text-sm space-y-1">
             <li>✅ Scientific perceptual chroma curves</li>
             <li>✅ WCAG contrast-aware color generation</li>
             <li>✅ Adaptive lightness mapping strategies</li>
@@ -715,10 +715,10 @@ const gamutValidation = computed(() => {
         </div>
 
         <div class="space-y-2">
-          <h3 class="text-lg text-surface font-medium">
+          <h3 class="text-surface text-lg font-medium">
             Browser Support
           </h3>
-          <ul class="text-sm text-surface-dimmed space-y-1">
+          <ul class="text-surface-dimmed text-sm space-y-1">
             <li>🟢 color-mix(): Chrome 111+, Firefox 113+, Safari 16.2+</li>
             <li>🟢 @layer: Chrome 99+, Firefox 97+, Safari 15.4+</li>
             <li>🟢 OKLCH: Chrome 111+, Firefox 113+, Safari 15.4+</li>

@@ -43,20 +43,20 @@ const navbarWidth = ref('200px')
                 Navigation
               </h4>
               <nav class="space-y-1">
-                <div class="text-surface-on text-sm px-3 py-2 rounded cursor-pointer hover:bg-surface-variant-1">
+                <div class="text-surface-on hover:bg-surface-variant-1 text-sm px-3 py-2 rounded cursor-pointer">
                   Dashboard
                 </div>
-                <div class="text-surface-on text-sm px-3 py-2 rounded cursor-pointer hover:bg-surface-variant-1">
+                <div class="text-surface-on hover:bg-surface-variant-1 text-sm px-3 py-2 rounded cursor-pointer">
                   Users
                 </div>
-                <div class="text-surface-on text-sm px-3 py-2 rounded cursor-pointer hover:bg-surface-variant-1">
+                <div class="text-surface-on hover:bg-surface-variant-1 text-sm px-3 py-2 rounded cursor-pointer">
                   Settings
                 </div>
               </nav>
             </Paper>
           </template>
 
-          <div class="p-4 bg-surface-base h-full overflow-y-auto">
+          <div class="bg-surface-base p-4 h-full overflow-y-auto">
             <h4 class="text-surface-on text-lg font-medium mb-3">
               Main Content
             </h4>
@@ -68,7 +68,7 @@ const navbarWidth = ref('200px')
                 <h5 class="text-surface-on font-medium mb-2">
                   Card 1
                 </h5>
-                <p class="text-sm text-surface-dimmed">
+                <p class="text-surface-dimmed text-sm">
                   Content here
                 </p>
               </Paper>
@@ -76,7 +76,7 @@ const navbarWidth = ref('200px')
                 <h5 class="text-surface-on font-medium mb-2">
                   Card 2
                 </h5>
-                <p class="text-sm text-surface-dimmed">
+                <p class="text-surface-dimmed text-sm">
                   More content
                 </p>
               </Paper>
@@ -93,7 +93,7 @@ const navbarWidth = ref('200px')
                   <div class="text-surface-on text-sm font-medium">
                     Widget 1
                   </div>
-                  <div class="text-xs text-surface-dimmed">
+                  <div class="text-surface-dimmed text-xs">
                     Some widget content
                   </div>
                 </Paper>
@@ -101,7 +101,7 @@ const navbarWidth = ref('200px')
                   <div class="text-surface-on text-sm font-medium">
                     Widget 2
                   </div>
-                  <div class="text-xs text-surface-dimmed">
+                  <div class="text-surface-dimmed text-xs">
                     More widget content
                   </div>
                 </Paper>
@@ -111,8 +111,8 @@ const navbarWidth = ref('200px')
 
           <template #footer>
             <Paper class="flex w-full items-center justify-between">
-              <span class="text-sm text-surface-dimmed">© 2024 Application</span>
-              <span class="text-xs text-surface-dimmed">v1.0.0</span>
+              <span class="text-surface-dimmed text-sm">© 2024 Application</span>
+              <span class="text-surface-dimmed text-xs">v1.0.0</span>
             </Paper>
           </template>
         </AppShell>
@@ -151,7 +151,7 @@ const navbarWidth = ref('200px')
             </Paper>
           </template>
 
-          <div class="p-4 bg-surface-base h-full">
+          <div class="bg-surface-base p-4 h-full">
             <h4 class="text-surface-on font-medium mb-2">
               Main Content
             </h4>
@@ -200,11 +200,11 @@ const navbarWidth = ref('200px')
                 </Paper>
               </template>
 
-              <div class="p-4 bg-surface-base h-full">
+              <div class="bg-surface-base p-4 h-full">
                 <h4 class="text-surface-on font-medium mb-2">
                   Main Content
                 </h4>
-                <p class="text-sm text-surface-dimmed">
+                <p class="text-surface-dimmed text-sm">
                   Simple header + main layout
                 </p>
               </div>
@@ -239,11 +239,11 @@ const navbarWidth = ref('200px')
                 </Paper>
               </template>
 
-              <div class="p-4 bg-surface-base h-full">
+              <div class="bg-surface-base p-4 h-full">
                 <h4 class="text-surface-on font-medium mb-2">
                   Main Content
                 </h4>
-                <p class="text-sm text-surface-dimmed">
+                <p class="text-surface-dimmed text-sm">
                   Sidebar navigation layout
                 </p>
               </div>
@@ -370,11 +370,11 @@ const navbarWidth = ref('200px')
                 </Paper>
               </template>
 
-              <div class="p-4 bg-surface-base h-full">
+              <div class="bg-surface-base p-4 h-full">
                 <h4 class="text-surface-on font-medium mb-2">
                   Main Content
                 </h4>
-                <p class="text-sm text-surface-dimmed">
+                <p class="text-surface-dimmed text-sm">
                   Adjust the controls to see the layout change.
                 </p>
               </div>

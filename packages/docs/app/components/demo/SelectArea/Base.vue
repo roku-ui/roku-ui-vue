@@ -50,7 +50,7 @@ const code = computed(() => {
   <Demo :code="code">
     <template #preview>
       <div class="flex flex-col gap-4">
-        <div class="text-sm text-surface-dimmed">
+        <div class="text-surface-dimmed text-sm">
           拖拽选择区域来选择项目
         </div>
         <div class="bg-surface-base flex flex-wrap h-200px w-200px select-none relative">
@@ -69,7 +69,7 @@ const code = computed(() => {
             {{ item }}
           </div>
         </div>
-        <div class="text-sm text-surface-dimmed">
+        <div class="text-surface-dimmed text-sm">
           选中的项目: {{ selectingItems.join(', ') || '无' }}
         </div>
       </div>

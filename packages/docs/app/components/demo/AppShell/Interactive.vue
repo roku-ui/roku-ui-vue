@@ -372,7 +372,7 @@ const codeSnippet = computed(() => {
                     <h5 class="font-medium mb-1">
                       Content Block 1
                     </h5>
-                    <p class="text-sm text-surface-dimmed">
+                    <p class="text-surface-dimmed text-sm">
                       Some content here
                     </p>
                   </Paper>
@@ -384,7 +384,7 @@ const codeSnippet = computed(() => {
                     <h5 class="font-medium mb-1">
                       Content Block 2
                     </h5>
-                    <p class="text-sm text-surface-dimmed">
+                    <p class="text-surface-dimmed text-sm">
                       More content here
                     </p>
                   </Paper>
@@ -411,7 +411,7 @@ const codeSnippet = computed(() => {
                       <div class="text-sm font-medium">
                         Widget 1
                       </div>
-                      <div class="text-xs text-surface-dimmed">
+                      <div class="text-surface-dimmed text-xs">
                         Widget content
                       </div>
                     </Paper>
@@ -423,7 +423,7 @@ const codeSnippet = computed(() => {
                       <div class="text-sm font-medium">
                         Widget 2
                       </div>
-                      <div class="text-xs text-surface-dimmed">
+                      <div class="text-surface-dimmed text-xs">
                         More content
                       </div>
                     </Paper>
@@ -439,7 +439,7 @@ const codeSnippet = computed(() => {
                   with-border
                   class="flex h-full items-center"
                 >
-                  <span class="text-sm text-surface-dimmed">Footer Content</span>
+                  <span class="text-surface-dimmed text-sm">Footer Content</span>
                 </Paper>
               </template>
             </AppShell>

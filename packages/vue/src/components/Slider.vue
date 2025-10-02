@@ -382,7 +382,7 @@ const animateCls = computed(() => props.animate && !isMoving.value
     </div>
     <div
       v-if="ticks.length > 0"
-      class="text-xs text-surface-dimmed h-1em relative"
+      class="text-surface-dimmed text-xs h-1em relative"
       :class="[
         props.size === 'sm' ? 'mx-0.5' : props.size === 'lg' ? 'mx-1.5' : 'mx-1',
       ]"

@@ -422,7 +422,7 @@ const conflictTestValue = ref(50)
             :tick-num="11"
             color="error"
           />
-          <p class="text-xs text-surface-dimmed mt-2">
+          <p class="text-surface-dimmed text-xs mt-2">
             Open browser console to see warning message. The ticks array should take precedence.
           </p>
         </div>

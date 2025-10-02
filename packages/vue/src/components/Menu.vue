@@ -366,7 +366,7 @@ const dropdownPositionStyle = computed(() => {
           ref="menuDropdownRef"
           :class="[rounded.class, dropdownPositionClass]"
           :style="[rounded.style]"
-          class="p-2 border bg-surface w-64"
+          class="bg-surface p-2 border w-64"
         >
           <template
             v-for="item, i in props.data"
@@ -374,13 +374,13 @@ const dropdownPositionStyle = computed(() => {
           >
             <div
               v-if="isLabel(item)"
-              class="text-surface-variant-3 text-xs text-surface-dimmed px-2 py-1"
+              class="text-surface-variant-3 text-surface-dimmed text-xs px-2 py-1"
             >
               {{ item.title }}
             </div>
             <div
               v-else-if="isDivider(item)"
-              class="my-2 border-t border-surface"
+              class="border-surface my-2 border-t"
             />
             <template v-else>
               <component

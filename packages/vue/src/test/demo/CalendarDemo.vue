@@ -35,7 +35,7 @@ const specificDisabledDates = [
 <template>
   <div class="p-6 space-y-8">
     <div>
-      <h1 class="text-3xl text-surface font-bold mb-6">
+      <h1 class="text-surface text-3xl font-bold mb-6">
         Calendar Component
       </h1>
       <p class="text-surface-variant text-lg mb-8">
@@ -45,13 +45,13 @@ const specificDisabledDates = [
 
     <!-- Single Date Selection -->
     <section class="space-y-4">
-      <h2 class="text-2xl text-surface font-semibold">
+      <h2 class="text-surface text-2xl font-semibold">
         Single Date Selection
       </h2>
       <div class="flex flex-wrap gap-6">
         <!-- Small size -->
         <div class="space-y-2">
-          <h3 class="text-lg text-surface font-medium">
+          <h3 class="text-surface text-lg font-medium">
             Small Size
           </h3>
           <Calendar
@@ -66,7 +66,7 @@ const specificDisabledDates = [
 
         <!-- Medium size (default) -->
         <div class="space-y-2">
-          <h3 class="text-lg text-surface font-medium">
+          <h3 class="text-surface text-lg font-medium">
             Medium Size (Default)
           </h3>
           <Calendar
@@ -80,7 +80,7 @@ const specificDisabledDates = [
 
         <!-- Large size -->
         <div class="space-y-2">
-          <h3 class="text-lg text-surface font-medium">
+          <h3 class="text-surface text-lg font-medium">
             Large Size
           </h3>
           <Calendar
@@ -97,12 +97,12 @@ const specificDisabledDates = [
 
     <!-- Multiple Date Selection -->
     <section class="space-y-4">
-      <h2 class="text-2xl text-surface font-semibold">
+      <h2 class="text-surface text-2xl font-semibold">
         Multiple Date Selection
       </h2>
       <div class="flex flex-wrap gap-6">
         <div class="space-y-2">
-          <h3 class="text-lg text-surface font-medium">
+          <h3 class="text-surface text-lg font-medium">
             Select Multiple Dates
           </h3>
           <Calendar
@@ -130,12 +130,12 @@ const specificDisabledDates = [
 
     <!-- Date Range Selection -->
     <section class="space-y-4">
-      <h2 class="text-2xl text-surface font-semibold">
+      <h2 class="text-surface text-2xl font-semibold">
         Date Range Selection
       </h2>
       <div class="flex flex-wrap gap-6">
         <div class="space-y-2">
-          <h3 class="text-lg text-surface font-medium">
+          <h3 class="text-surface text-lg font-medium">
             Interactive Range Selection (With Animation)
           </h3>
           <p class="text-surface-variant text-sm max-w-80">
@@ -165,7 +165,7 @@ const specificDisabledDates = [
         </div>
 
         <div class="space-y-2">
-          <h3 class="text-lg text-surface font-medium">
+          <h3 class="text-surface text-lg font-medium">
             Range Selection (No Animation)
           </h3>
           <p class="text-surface-variant text-sm max-w-80">
@@ -198,13 +198,13 @@ const specificDisabledDates = [
 
     <!-- Calendar with Constraints -->
     <section class="space-y-4">
-      <h2 class="text-2xl text-surface font-semibold">
+      <h2 class="text-surface text-2xl font-semibold">
         Calendar with Constraints
       </h2>
       <div class="flex flex-wrap gap-6">
         <!-- Min/Max dates -->
         <div class="space-y-2">
-          <h3 class="text-lg text-surface font-medium">
+          <h3 class="text-surface text-lg font-medium">
             Min/Max Dates
           </h3>
           <p class="text-surface-variant text-sm">
@@ -220,7 +220,7 @@ const specificDisabledDates = [
 
         <!-- Disabled weekends -->
         <div class="space-y-2">
-          <h3 class="text-lg text-surface font-medium">
+          <h3 class="text-surface text-lg font-medium">
             Disabled Weekends
           </h3>
           <p class="text-surface-variant text-sm">
@@ -235,7 +235,7 @@ const specificDisabledDates = [
 
         <!-- Specific disabled dates -->
         <div class="space-y-2">
-          <h3 class="text-lg text-surface font-medium">
+          <h3 class="text-surface text-lg font-medium">
             Specific Disabled Dates
           </h3>
           <p class="text-surface-variant text-sm">
@@ -252,13 +252,13 @@ const specificDisabledDates = [
 
     <!-- Different Variants and Colors -->
     <section class="space-y-4">
-      <h2 class="text-2xl text-surface font-semibold">
+      <h2 class="text-surface text-2xl font-semibold">
         Variants and Colors
       </h2>
       <div class="flex flex-wrap gap-6">
         <!-- Default variant -->
         <div class="space-y-2">
-          <h3 class="text-lg text-surface font-medium">
+          <h3 class="text-surface text-lg font-medium">
             Default Variant
           </h3>
           <Calendar
@@ -270,7 +270,7 @@ const specificDisabledDates = [
 
         <!-- Filled variant -->
         <div class="space-y-2">
-          <h3 class="text-lg text-surface font-medium">
+          <h3 class="text-surface text-lg font-medium">
             Filled Variant
           </h3>
           <Calendar
@@ -282,7 +282,7 @@ const specificDisabledDates = [
 
         <!-- Light variant -->
         <div class="space-y-2">
-          <h3 class="text-lg text-surface font-medium">
+          <h3 class="text-surface text-lg font-medium">
             Light Variant
           </h3>
           <Calendar
@@ -296,12 +296,12 @@ const specificDisabledDates = [
 
     <!-- Different Rounded Styles -->
     <section class="space-y-4">
-      <h2 class="text-2xl text-surface font-semibold">
+      <h2 class="text-surface text-2xl font-semibold">
         Rounded Styles
       </h2>
       <div class="flex flex-wrap gap-6">
         <div class="space-y-2">
-          <h3 class="text-lg text-surface font-medium">
+          <h3 class="text-surface text-lg font-medium">
             No Rounded
           </h3>
           <Calendar
@@ -311,7 +311,7 @@ const specificDisabledDates = [
         </div>
 
         <div class="space-y-2">
-          <h3 class="text-lg text-surface font-medium">
+          <h3 class="text-surface text-lg font-medium">
             Small Rounded
           </h3>
           <Calendar
@@ -321,7 +321,7 @@ const specificDisabledDates = [
         </div>
 
         <div class="space-y-2">
-          <h3 class="text-lg text-surface font-medium">
+          <h3 class="text-surface text-lg font-medium">
             Large Rounded
           </h3>
           <Calendar
@@ -334,12 +334,12 @@ const specificDisabledDates = [
 
     <!-- Locale Examples -->
     <section class="space-y-4">
-      <h2 class="text-2xl text-surface font-semibold">
+      <h2 class="text-surface text-2xl font-semibold">
         Different Locales
       </h2>
       <div class="flex flex-wrap gap-6">
         <div class="space-y-2">
-          <h3 class="text-lg text-surface font-medium">
+          <h3 class="text-surface text-lg font-medium">
             English (US)
           </h3>
           <Calendar
@@ -350,7 +350,7 @@ const specificDisabledDates = [
         </div>
 
         <div class="space-y-2">
-          <h3 class="text-lg text-surface font-medium">
+          <h3 class="text-surface text-lg font-medium">
             Chinese (Simplified)
           </h3>
           <Calendar
@@ -361,7 +361,7 @@ const specificDisabledDates = [
         </div>
 
         <div class="space-y-2">
-          <h3 class="text-lg text-surface font-medium">
+          <h3 class="text-surface text-lg font-medium">
             German
           </h3>
           <Calendar

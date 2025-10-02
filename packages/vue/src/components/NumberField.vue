@@ -308,7 +308,7 @@ watch(
         >
           <button
             type="button"
-            class="hover:bg-surface/8 focus-visible:ring-primary border-surface/15 dark:border-surface/30 text-xs text-surface-dimmed border-b flex flex-1 transition-colors duration-150 items-center justify-center disabled:text-surface-dimmed hover:text-surface focus-visible:outline-none disabled:opacity-60 disabled:cursor-not-allowed focus-visible:ring-1"
+            class="hover:bg-surface/8 focus-visible:ring-primary border-surface/15 dark:border-surface/30 text-surface-dimmed disabled:text-surface-dimmed hover:text-surface text-xs border-b flex flex-1 transition-colors duration-150 items-center justify-center focus-visible:outline-none disabled:opacity-60 disabled:cursor-not-allowed focus-visible:ring-1"
             :class="spinnerSizeClasses.buttonPadding"
             :aria-label="incrementAriaLabel"
             :disabled="isIncrementDisabled"
@@ -323,7 +323,7 @@ watch(
           </button>
           <button
             type="button"
-            class="hover:bg-surface/8 focus-visible:ring-primary text-xs text-surface-dimmed flex flex-1 transition-colors duration-150 items-center justify-center disabled:text-surface-dimmed hover:text-surface focus-visible:outline-none disabled:opacity-60 disabled:cursor-not-allowed focus-visible:ring-1"
+            class="hover:bg-surface/8 focus-visible:ring-primary text-surface-dimmed disabled:text-surface-dimmed hover:text-surface text-xs flex flex-1 transition-colors duration-150 items-center justify-center focus-visible:outline-none disabled:opacity-60 disabled:cursor-not-allowed focus-visible:ring-1"
             :class="spinnerSizeClasses.buttonPadding"
             :aria-label="decrementAriaLabel"
             :disabled="isDecrementDisabled"

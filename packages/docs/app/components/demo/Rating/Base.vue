@@ -15,7 +15,7 @@ const code = computed(() => {
     <template #preview>
       <div class="flex flex-col gap-4">
         <Rating v-model="rating" />
-        <div class="text-sm text-surface-dimmed">
+        <div class="text-surface-dimmed text-sm">
           当前评分: {{ rating }}
         </div>
       </div>

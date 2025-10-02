@@ -88,7 +88,7 @@ provide('updateGlobalTheme', updateGlobalTheme)
       <template #header>
         <Paper class="px-6 py-4 flex w-full items-center justify-between">
           <div class="flex gap-3 items-center">
-            <h1 class="text-2xl text-surface font-bold">
+            <h1 class="text-surface text-2xl font-bold">
               Roku UI Vue
             </h1>
             <Tag
@@ -108,8 +108,8 @@ provide('updateGlobalTheme', updateGlobalTheme)
 
       <template #navbar>
         <div class="flex flex-col h-full">
-          <div class="p-4 border-b border-surface">
-            <h2 class="text-lg text-surface font-semibold">
+          <div class="border-surface p-4 border-b">
+            <h2 class="text-surface text-lg font-semibold">
               Components
             </h2>
           </div>

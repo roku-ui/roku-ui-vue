@@ -17,11 +17,8 @@ const props = withDefaults(
     skeleton?: boolean
   }>(),
   {
-    size: undefined,
     is: 'img',
     variant: 'default',
-    color: undefined,
-    rounded: undefined,
   },
 )
 

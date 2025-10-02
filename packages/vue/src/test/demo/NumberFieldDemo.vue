@@ -26,7 +26,7 @@ const disabledNumber = ref(100)
           label="Basic Number"
           placeholder="Enter a number..."
         />
-        <div class="text-sm text-surface-dimmed">
+        <div class="text-surface-dimmed text-sm">
           Value: {{ basicNumber }}
         </div>
       </Paper>
@@ -45,7 +45,7 @@ const disabledNumber = ref(100)
           :max="100"
           placeholder="Enter a number between 0-100..."
         />
-        <div class="text-sm text-surface-dimmed">
+        <div class="text-surface-dimmed text-sm">
           Value: {{ limitedNumber }} (Try entering values outside 0-100 and blur the field)
         </div>
       </Paper>
@@ -65,7 +65,7 @@ const disabledNumber = ref(100)
           :max="20"
           placeholder="Enter a decimal number..."
         />
-        <div class="text-sm text-surface-dimmed">
+        <div class="text-surface-dimmed text-sm">
           Value: {{ decimalNumber }} (Step: 0.5)
         </div>
       </Paper>
@@ -84,7 +84,7 @@ const disabledNumber = ref(100)
           :max="50"
           placeholder="Enter a number..."
         />
-        <div class="text-sm text-surface-dimmed">
+        <div class="text-surface-dimmed text-sm">
           Value: {{ negativeNumber }} (Range: -50 to 50)
         </div>
       </Paper>
@@ -107,7 +107,7 @@ const disabledNumber = ref(100)
           }"
           placeholder="Enter a large number..."
         />
-        <div class="text-sm text-surface-dimmed">
+        <div class="text-surface-dimmed text-sm">
           Value: {{ limitedNumber }} (Formatted with commas)
         </div>
       </Paper>
@@ -126,7 +126,7 @@ const disabledNumber = ref(100)
           :min="0"
           :max="200"
         />
-        <div class="text-sm text-surface-dimmed">
+        <div class="text-surface-dimmed text-sm">
           Value: {{ disabledNumber }}
         </div>
       </Paper>

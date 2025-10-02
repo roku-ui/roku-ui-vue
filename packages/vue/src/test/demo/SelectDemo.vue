@@ -52,7 +52,7 @@ const manySelected = ref(manyOptions[0])
         :options="selections"
         class="w-64"
       />
-      <div class="text-sm text-surface-dimmed mt-2">
+      <div class="text-surface-dimmed text-sm mt-2">
         当前选择：{{ selected?.label }}
       </div>
     </div>
@@ -65,7 +65,7 @@ const manySelected = ref(manyOptions[0])
         placeholder="选择一个水果"
         class="w-64"
       />
-      <div class="text-sm text-surface-dimmed mt-2">
+      <div class="text-surface-dimmed text-sm mt-2">
         当前选择：{{ stringSelected }}
       </div>
     </div>
@@ -79,7 +79,7 @@ const manySelected = ref(manyOptions[0])
         placeholder="选择用户"
         class="w-64"
       />
-      <div class="text-sm text-surface-dimmed mt-2">
+      <div class="text-surface-dimmed text-sm mt-2">
         当前选择：{{ userSelected?.name }} (ID: {{ userSelected?.userId }})
       </div>
     </div>
@@ -93,7 +93,7 @@ const manySelected = ref(manyOptions[0])
         placeholder="选择产品"
         class="w-80"
       />
-      <div class="text-sm text-surface-dimmed mt-2">
+      <div class="text-surface-dimmed text-sm mt-2">
         当前选择：{{ productSelected?.title }} (SKU: {{ productSelected?.sku }})
       </div>
     </div>
@@ -120,7 +120,7 @@ const manySelected = ref(manyOptions[0])
           </div>
         </template>
       </Select>
-      <div class="text-sm text-surface-dimmed mt-2">
+      <div class="text-surface-dimmed text-sm mt-2">
         当前选择：{{ productSelected?.title }} (SKU: {{ productSelected?.sku }})
       </div>
     </div>
@@ -134,7 +134,7 @@ const manySelected = ref(manyOptions[0])
         searchable
         class="w-80"
       />
-      <div class="text-sm text-surface-dimmed mt-2">
+      <div class="text-surface-dimmed text-sm mt-2">
         当前选择：{{ manySelected?.label }}
       </div>
     </div>

@@ -103,7 +103,7 @@ function setPresetColor(preset: { border: string, bg: string }) {
     <!-- Selection Area -->
     <div
       ref="areaRef"
-      class="border bg-surface-base grid grid-cols-2 h-200px w-200px select-none relative"
+      class="bg-surface-base border grid grid-cols-2 h-200px w-200px select-none relative"
     >
       <SelectArea
         :target="areaRef"

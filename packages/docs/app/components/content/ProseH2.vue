@@ -5,16 +5,17 @@ const props = defineProps<{ id?: string }>()
 
 const { headings } = useRuntimeConfig().public.mdc
 const generate = computed(() => {
-  if (!headings) {
+  if (!headings || !props.id) {
     return false
   }
-  if (!headings.anchorLinks) {
-    return false
-  }
-  if (headings.anchorLinks.h2 === true) {
+  const anchorLinks = headings.anchorLinks
+  if (anchorLinks === true) {
     return props.id
   }
-  return props.id && headings.anchorLinks.h2
+  if (anchorLinks && typeof anchorLinks === 'object') {
+    return anchorLinks.h2 ? props.id : false
+  }
+  return false
 })
 </script>
 

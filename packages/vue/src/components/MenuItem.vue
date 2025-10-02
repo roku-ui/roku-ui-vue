@@ -66,13 +66,13 @@ const menuPositionStyle = computed(() => {
 <template>
   <div
     v-if="isLabel(data)"
-    class="text-xs text-surface-dimmed px-2 py-1"
+    class="text-surface-dimmed text-xs px-2 py-1"
   >
     {{ data.title }}
   </div>
   <div
     v-else-if="isDivider(data)"
-    class="my-2 border-t border-surface"
+    class="border-surface my-2 border-t"
   />
   <template
     v-else
@@ -81,7 +81,7 @@ const menuPositionStyle = computed(() => {
       ref="menuItemRef"
       type="button"
       :tabindex="-1"
-      class="px-2 flex gap-2 h-8 w-full cursor-pointer items-center relative hover:bg-surface-variant-2 focus-visible:outline"
+      class="hover:bg-surface-variant-2 px-2 flex gap-2 h-8 w-full cursor-pointer items-center relative focus-visible:outline"
       :class="[
         rounded.class,
         {
@@ -116,7 +116,7 @@ const menuPositionStyle = computed(() => {
       <menu
         v-if="data.children && (hover || isOpen || isFocusing)"
         ref="menuDropdownRef"
-        class="ml-1 p-2 border border bg-surface bg-surface w-64 left-100% top-0 absolute"
+        class="bg-surface bg-surface ml-1 p-2 border border w-64 left-100% top-0 absolute"
         :class="rounded.class"
         :style="[rounded.style, menuPositionStyle]"
       >

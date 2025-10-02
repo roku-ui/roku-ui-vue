@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { TreeListItemData } from '@roku-ui/vue'
 import { NuxtLink } from '#components'
 import { Btn, TreeList } from '@roku-ui/vue'
 import { subTextCS } from '@/utils/colors'
@@ -41,12 +42,12 @@ function dir2Title(dir: string) {
   }
 }
 
-const treeListItems = computed(() => {
-  if (!contentComponents.value || !Array.isArray(contentComponents.value)) {
+const treeListItems = computed<TreeListItemData[]>(() => {
+  if (!Array.isArray(contentComponents.value)) {
     return []
   }
-  const sortedA = [...contentComponents.value].sort((a, b) => {
-    const aDir = a.stem.split('/')[1] // components/display/avatar -> display
+  const sortedComponents = [...contentComponents.value].sort((a, b) => {
+    const aDir = a.stem.split('/')[1]
     const bDir = b.stem.split('/')[1]
     if (!aDir) {
       return -1
@@ -56,38 +57,36 @@ const treeListItems = computed(() => {
     }
     return aDir.localeCompare(bDir)
   })
-  const res = sortedA.map((cc) => {
-    return {
-      value: cc.path,
-      title: cc.title,
-      is: NuxtLink,
-      attrs: {
-        to: cc.path,
-      },
-      dir: cc.stem.split('/')[1], // components/display/avatar -> display
-    }
-  })
-  let currentDir = ''
-  for (const r of res) {
-    if (r.dir !== currentDir) {
-      currentDir = r.dir
-      if (currentDir === 'components') {
-        continue
-      }
-      res.splice(res.indexOf(r), 0, {
-        title: dir2Title(currentDir),
-        value: undefined,
-        is: undefined,
-        attrs: { to: undefined },
-        dir: undefined,
+  const children: TreeListItemData[] = []
+  let currentDir: string | null = null
+  for (const component of sortedComponents) {
+    const dir = component.stem.split('/')[1] ?? ''
+    if (dir && dir !== 'components' && dir !== currentDir) {
+      currentDir = dir
+      children.push({
+        title: dir2Title(dir),
       })
     }
+    else {
+      currentDir = dir
+    }
+    const title = typeof component.title === 'string' && component.title.length > 0
+      ? component.title
+      : component.stem.split('/').at(-1) ?? component.path
+    children.push({
+      value: component.path,
+      title,
+      is: NuxtLink,
+      attrs: {
+        to: component.path,
+      },
+    })
   }
   return [
     {
       title: dir2Title('components'),
       open: true,
-      children: res,
+      children,
     },
   ]
 })
@@ -122,7 +121,8 @@ const treeListItems = computed(() => {
         <div class="flex flex-col gap-2">
           <div
             class="text-sm"
-            v-bind="subTextCS"
+            :class="subTextCS.class"
+            :style="subTextCS.style"
           >
             工具
           </div>

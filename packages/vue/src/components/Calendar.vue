@@ -24,10 +24,7 @@ const props = withDefaults(
     mode: 'single',
     firstDayOfWeek: 0,
     locale: 'en-US',
-    size: undefined,
-    color: undefined,
     variant: 'default',
-    rounded: undefined,
   },
 )
 
@@ -347,7 +344,7 @@ function getCellCS(day: any) {
 
 <template>
   <div
-    class="border-surface-variant-1 border bg-surface inline-block"
+    class="border-surface-variant-1 bg-surface border inline-block"
     :class="[
       sizeCls.container,
       rounded.class,

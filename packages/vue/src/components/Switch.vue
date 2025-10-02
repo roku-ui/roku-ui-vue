@@ -28,10 +28,8 @@ const props = withDefaults(
     offIndicatorIcon?: string | Component
   }>(),
   {
-    size: undefined,
     rounded: 'full',
     animate: true,
-    color: undefined,
   },
 )
 
