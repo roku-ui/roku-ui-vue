@@ -1,4 +1,3 @@
-import type { VNodeChild } from 'vue'
 import { shallowRef } from 'vue'
 
 export interface BaseModalDataType {
@@ -18,11 +17,6 @@ export interface AlertModalDataType extends BaseModalDataType {
   title: string
   message: string
   onConfirm: () => void
-}
-
-export interface CustomModalDataType extends BaseModalDataType {
-  type: 'custom'
-  render: () => VNodeChild
 }
 
 export type ModalDataType = ConfirmModalDataType | AlertModalDataType
