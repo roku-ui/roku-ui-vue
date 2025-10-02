@@ -21,7 +21,7 @@ export default defineConfig({
       path: ['./src/components/**/*'],
       extname: 'ts',
     }),
-    roku({ prefix: 'R' }),
+    roku(),
   ],
   build: {
     lib: {

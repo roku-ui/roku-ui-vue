@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Btn, RokuProvider, SchemeSwitch, useMergedCS, useThemeData } from '@roku-ui/vue'
+import { Btn, RokuProvider, SchemeSwitch, useMergedCS } from '@roku-ui/vue'
 import { surfaceBorderCS, surfaceCS } from '~/utils/colors'
 
 useSeoMeta({
@@ -37,13 +37,6 @@ const secondary = ref('#5999A6')
 const tertiary = ref('#F76C22')
 const error = ref('#F95858')
 const surface = ref('#121212')
-const theme = useThemeData('custom', {
-  primary,
-  secondary,
-  tertiary,
-  error,
-  surface,
-})
 provide('docThemeColor', {
   primary,
   secondary,
@@ -55,12 +48,7 @@ const mergedCS = useMergedCS(surfaceBorderCS, surfaceCS)
 </script>
 
 <template>
-  <RokuProvider
-    theme="default"
-    :themes="{
-      default: theme,
-    }"
-  >
+  <RokuProvider>
     <NuxtLoadingIndicator
       color="rgb(var(--r-color-primary-container))"
     />
@@ -93,7 +81,7 @@ const mergedCS = useMergedCS(surfaceBorderCS, surfaceCS)
     </div>
     <div class="flex min-h-100vh">
       <SideBar :is-open="sideBarOpen" />
-      <div class="px-4 flex-grow max-w-42rem w-full prose md:ml-[calc(33vw+2rem)] md:mr-8">
+      <div class="px-4 flex-grow max-w-42rem w-full prose md:ml-[calc(33vw+2rem)] md:mr-8 dark:prose-invert">
         <div class="pb-24">
           <slot />
         </div>
