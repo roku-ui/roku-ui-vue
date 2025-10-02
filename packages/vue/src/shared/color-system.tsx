@@ -18,31 +18,6 @@ import {
 } from './constants'
 import { getThemeColorString } from './theme'
 
-export const primaryColors = computed(() => {
-  return generateColorsObjMap(getThemeColorString('primary'), COLOR_LIGHTNESS_MAP).colors
-})
-
-export const secondaryColors = computed(() => {
-  return generateColorsObjMap(getThemeColorString('secondary'), COLOR_LIGHTNESS_MAP).colors
-})
-
-export const tertiaryColors = computed(() => {
-  return generateColorsObjMap(getThemeColorString('tertiary'), COLOR_LIGHTNESS_MAP).colors
-})
-
-export const errorColors = computed(() => {
-  return generateColorsObjMap(getThemeColorString('error'), COLOR_LIGHTNESS_MAP).colors
-})
-
-export const surfaceColors = computed(() => {
-  const surfaceColorString = getThemeColorString('surface')
-  const adaptiveLightnessMap = generateAdaptiveLightnessMap(surfaceColorString, 'surface')
-  return generateColorsObjMapOKLCH(surfaceColorString, adaptiveLightnessMap, {
-    strategy: 'conservative',
-    gamut: 'srgb',
-  }).colors
-})
-
 function useCuloriColor(color: MaybeRef<Color>) {
   return computed(() => {
     const colorValue = unref(color)

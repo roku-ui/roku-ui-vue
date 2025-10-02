@@ -590,27 +590,6 @@ export function generateAdvancedColorPalette(
   return result
 }
 
-// Utility function for quick color palette generation with sensible defaults
-export function createColorPalette(
-  color: string,
-  type: 'primary' | 'secondary' | 'accent' | 'surface' = 'primary',
-): ColorsTuple {
-  return generateAdvancedColorPalette(color, {
-    purpose: type,
-    strategy: 'balanced',
-    contrastTarget: 'AA',
-    gamut: 'srgb',
-  }).colors
-}
-
-// Export enhanced version of existing functions with new options
-export function generateColorsEnhanced(
-  color: ColorInput,
-  options: AdvancedColorOptions = {},
-): ColorsTuple {
-  return generateAdvancedColorPalette(color, options).colors
-}
-
 // Performance optimization with caching
 const colorCache = new Map<string, any>()
 const MAX_CACHE_SIZE = 100
@@ -638,18 +617,6 @@ function getCachedResult<T>(key: string, generator: () => T): T {
 
   colorCache.set(key, result)
   return result
-}
-
-// Cached version of generateColorsObjMapOKLCH
-export function generateColorsObjMapOKLCHCached(
-  color: ColorInput,
-  lightnessMap = COLOR_LIGHTNESS_MAP,
-  options: ColorGenerationOptions = {},
-): { baseColorIndex: number, colors: any[] } {
-  const cacheKey = getCacheKey(color, { lightnessMap, ...options })
-
-  return getCachedResult(cacheKey, () =>
-    generateColorsObjMapOKLCH(color, lightnessMap, options))
 }
 
 // Cached version of generateAdvancedColorPalette
