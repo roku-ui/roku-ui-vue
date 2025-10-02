@@ -16,6 +16,27 @@
     /* Default (light) theme colors */
     * {
         color-scheme: light;
+        
+        --r-text-primary: rgb(var(--r-color-primary-5));
+        --r-text-secondary: rgb(var(--r-color-secondary-5));
+        --r-text-success: rgb(var(--r-color-success-5));
+        --r-text-info: rgb(var(--r-color-info-5));
+        --r-text-warning: rgb(var(--r-color-warning-5));
+        --r-text-error: rgb(var(--r-color-error-5));
+
+        --r-text-dimmed: rgb(var(--r-color-surface-4));
+        --r-text-muted: rgb(var(--r-color-surface-5));
+        --r-text-default: rgb(var(--r-color-surface-7));
+        --r-text-highlight: rgb(var(--r-color-surface-9));
+        --r-text-inverted: rgb(var(--r-color-surface-1));
+
+        --r-bg: rgb(var(--color-white));
+        --r-bg-muted: rgb(var(--r-color-surface-1));
+        --r-bg-hover: rgb(var(--r-color-surface-2));
+        --r-bg-active: rgb(var(--r-color-surface-3));
+        --r-bg-inverted: rgb(var(--r-color-surface-9));
+
+
         --r-surface-background-base-color: rgb(var(--r-color-surface-0));
         --r-surface-background-color: rgb(var(--r-color-surface-1));
         --r-surface-background-variant-1-color: rgb(var(--r-color-surface-2));
@@ -40,6 +61,26 @@
     [data-scheme="dark"] *,
     [data-scheme="light"] [data-scheme="dark"] * {
         color-scheme: dark;
+
+        --r-text-primary: rgb(var(--r-color-primary-4));
+        --r-text-secondary: rgb(var(--r-color-secondary-4));
+        --r-text-success: rgb(var(--r-color-success-4));
+        --r-text-info: rgb(var(--r-color-info-4));
+        --r-text-warning: rgb(var(--r-color-warning-4));
+        --r-text-error: rgb(var(--r-color-error-4));
+
+        --r-text-dimmed: rgb(var(--r-color-surface-5));
+        --r-text-muted: rgb(var(--r-color-surface-4));
+        --r-text-default: rgb(var(--r-color-surface-3));
+        --r-text-highlight: rgb(var(--r-color-surface-1));
+        --r-text-inverted: rgb(var(--r-color-surface-9));
+
+        --r-bg: rgb(var(--r-color-surface-9));
+        --r-bg-muted: rgb(var(--r-color-surface-8));
+        --r-bg-hover: rgb(var(--r-color-surface-7));
+        --r-bg-active: rgb(var(--r-color-surface-6));
+        --r-bg-inverted: rgb(var(--r-color-surface-9));
+
         --r-surface-background-base-color: rgb(var(--r-color-surface-10));
         --r-surface-background-color: rgb(var(--r-color-surface-9));
         --r-surface-background-variant-1-color: rgb(var(--r-color-surface-8));
@@ -59,8 +100,4 @@
         --r-tertiary-text-color: rgb(var(--r-color-tertiary-3));
         --r-error-text-color: rgb(var(--r-color-error-3));
     }
-
-    /* Custom theme support - can be overridden by users */
-
-
 }

@@ -24,6 +24,7 @@ export default defineConfig({
     roku(),
   ],
   build: {
+    cssMinify: 'esbuild',
     lib: {
       entry: 'src/index.ts',
       name: 'roku-ui',

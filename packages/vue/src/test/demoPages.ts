@@ -8,6 +8,7 @@ import CalendarDemo from './demo/CalendarDemo.vue'
 import CalendarInputDemo from './demo/CalendarInputDemo.vue'
 import ChatDemo from './demo/ChatDemo.vue'
 import ComponentDefaultsDemo from './demo/ComponentDefaultsDemo.vue'
+import CSSVarDemo from './demo/CSSVarDemo.vue'
 import FormDemo from './demo/FormDemo.vue'
 import LayoutDemo from './demo/LayoutDemo.vue'
 import MediaDemo from './demo/MediaDemo.vue'
@@ -38,6 +39,7 @@ interface DemoPageRecord {
 }
 
 export const demoPages = [
+  { key: 'CSSVars', title: 'CSS Variables', component: CSSVarDemo },
   { key: 'AppShell', title: 'App Shell', component: AppShellDemo },
   { key: 'Avatar', title: 'Avatar', component: AvatarDemo },
   { key: 'Button', title: 'Button', component: ButtonDemo },

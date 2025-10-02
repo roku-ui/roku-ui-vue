@@ -1,5 +1,5 @@
-import { rokuPreset } from '@roku-ui/preset'
 import { defineConfig } from 'unocss'
+import { rokuPreset } from '../preset'
 
 export default defineConfig({
   presets: [

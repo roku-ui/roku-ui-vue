@@ -3,7 +3,7 @@ import tailwindReset from '@unocss/reset/tailwind.css'
 import { presetIcons, presetTypography, presetWind4 } from 'unocss'
 import baseStyle from './styles.css'
 
-const colorKeys = ['surface', 'primary', 'secondary', 'tertiary', 'error']
+const colorKeys = ['surface', 'primary', 'secondary', 'tertiary', 'info', 'warning', 'error']
 const colors: Record<string, Record<number, string>> = {}
 for (const key of colorKeys) {
   const obj: Record<number, string> = {}
@@ -56,41 +56,31 @@ const shortcuts = {
 function rokuPresetImpl(): Preset {
   // Dynamic rules generator - replaces many static shortcuts
   const dynamicRules: Array<[RegExp, (match: RegExpMatchArray) => Record<string, string>]> = [
-    // Color-mix transparency: bg-{color}-mix-{percentage}
-    [/^bg-([a-z]+)-mix-(\d+)$/, ([, color, percentage]) => ({
-      'background-color': `color-mix(in oklch, var(--r-${color}-background-color) ${percentage}%, transparent)`,
-    })],
-    // Color-mix transparency: text-{color}-mix-{percentage}
-    [/^text-([a-z]+)-mix-(\d+)$/, ([, color, percentage]) => ({
-      color: `color-mix(in oklch, var(--r-${color}-text-color) ${percentage}%, transparent)`,
-    })],
-    // Color-mix transparency: border-{color}-mix-{percentage}
-    [/^border-([a-z]+)-mix-(\d+)$/, ([, color, percentage]) => ({
-      'border-color': `color-mix(in oklch, var(--r-${color}-background-color) ${percentage}%, transparent)`,
-    })],
 
     // Standard color backgrounds: bg-{color}
-    [/^bg-(secondary|tertiary|error)$/, ([, color]) => ({
+    [/^bg-(secondary|tertiary|error|info|warning)$/, ([, color]) => ({
       'background-color': `var(--r-${color}-background-color)`,
     })],
+
     // Standard color text: text-{color}
-    [/^text-(secondary|tertiary|error)$/, ([, color]) => ({
+    [/^text-(dimmed|muted|default|highlight|inverted)$/, ([, variant]) => ({
+      color: `var(--r-text-${variant})`,
+    })],
+
+    [/^bg-(inverted|active|hover|muted|default)$/, ([, variant]) => ({
+      'background-color': `var(--r-bg-${variant})`,
+    })],
+
+    [/^text-(secondary|tertiary|error|info|warning)$/, ([, color]) => ({
       color: `var(--r-${color}-text-color)`,
     })],
+
     // Note: border-{color} handled via shortcuts below to avoid raw declarations
     // Standard color outlines: outline-{color}
-    [/^outline-(primary|secondary|tertiary|error)$/, ([, color]) => ({
+    [/^outline-(primary|secondary|tertiary|error|info|warning)$/, ([, color]) => ({
       'outline-color': `var(--r-${color}-background-color)`,
     })],
 
-    // Surface variants: bg-surface-variant-{number}
-    [/^bg-surface-variant-([12])$/, ([, variant]) => ({
-      'background-color': `var(--r-surface-background-variant-${variant}-color)`,
-    })],
-    // Surface border variants: border-surface-variant
-    [/^border-surface-variant$/, () => ({
-      'border-color': 'var(--r-surface-border-variant-color)',
-    })],
   ]
 
   return {
@@ -106,7 +96,7 @@ function rokuPresetImpl(): Preset {
         ...colors,
       },
     },
-    safelist: ['rounded-[--r-rounded]', ...Object.keys(shortcuts)],
+    safelist: ['rounded-[--r-rounded]'],
     rules: [
       // Dynamic rules replace many static shortcuts
       ...dynamicRules,
