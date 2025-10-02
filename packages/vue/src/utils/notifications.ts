@@ -35,7 +35,10 @@ export function useNotifications(topN?: number) {
 
       const topNotifications: NotificationData[] = []
       for (const position in groups) {
-        topNotifications.push(...groups[position].slice(-topN))
+        const list = groups[position]
+        if (Array.isArray(list)) {
+          topNotifications.push(...list.slice(-topN))
+        }
       }
       // 保持原始顺序
       return notifications.value.filter(notification =>

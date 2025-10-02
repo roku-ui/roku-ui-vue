@@ -143,7 +143,11 @@ function getLength(data: MenuData[], idx: number[]): number {
   if (idx.length <= 1) {
     return items.length
   }
-  const cur = items[idx[0]]
+  const first = idx[0]
+  if (first === undefined || first < 0 || first >= items.length) {
+    return 0
+  }
+  const cur = items[first]
   if (!isMenuItem(cur) || cur.children === undefined) {
     return 0
   }
@@ -273,7 +277,11 @@ function getMenuItemData(items: MenuData[] | undefined, idx: number[]): MenuItem
     if (cur === undefined) {
       return undefined
     }
-    const ci = cur[idx[i]]
+    const seg = idx[i]
+    if (seg === undefined || seg < 0 || seg >= cur.length) {
+      return undefined
+    }
+    const ci = cur[seg]
     if (!isMenuItem(ci) || ci.children === undefined) {
       return undefined
     }
@@ -284,6 +292,9 @@ function getMenuItemData(items: MenuData[] | undefined, idx: number[]): MenuItem
   }
   const lastIdx = idx.at(-1)
   if (lastIdx === undefined) {
+    return undefined
+  }
+  if (lastIdx < 0 || lastIdx >= cur.length) {
     return undefined
   }
   return cur[lastIdx] as MenuItemData

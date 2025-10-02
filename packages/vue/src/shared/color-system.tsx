@@ -117,12 +117,16 @@ export interface CS {
 }
 
 export function getCSInner(colors: CuloriColor[], type: CSType, darkIndex: number, lightIndex: number, alpha = 1): CS {
+  const dColor = colors[darkIndex]
+  const lColor = colors[lightIndex]
+  const safeHex8 = (c: CuloriColor | undefined, a: number) => c ? (formatHex8({ ...c, alpha: a }) || '#00000000') : '#00000000'
+  const safeHex = (c: CuloriColor | undefined) => c ? (formatHex(c) || '#000000') : '#000000'
   switch (type) {
     case 'outline': {
       return {
         style: {
-          [`--d-outline`]: formatHex8({ ...colors[darkIndex], alpha }) || '#00000000',
-          [`--l-outline`]: formatHex8({ ...colors[lightIndex], alpha }) || '#00000000',
+          [`--d-outline`]: safeHex8(dColor, alpha),
+          [`--l-outline`]: safeHex8(lColor, alpha),
         },
         class: [
           `dark:focus-visible:outline-[--d-outline]`,
@@ -133,8 +137,8 @@ export function getCSInner(colors: CuloriColor[], type: CSType, darkIndex: numbe
     case 'bg': {
       return {
         style: {
-          [`--d-bg`]: formatHex8({ ...colors[darkIndex], alpha }) || '#00000000',
-          [`--l-bg`]: formatHex8({ ...colors[lightIndex], alpha }) || '#00000000',
+          [`--d-bg`]: safeHex8(dColor, alpha),
+          [`--l-bg`]: safeHex8(lColor, alpha),
         },
         class: [
           `dark:bg-[--d-bg]`,
@@ -145,8 +149,8 @@ export function getCSInner(colors: CuloriColor[], type: CSType, darkIndex: numbe
     case 'border': {
       return {
         style: {
-          [`--d-border`]: formatHex8({ ...colors[darkIndex], alpha }) || '#00000000',
-          [`--l-border`]: formatHex8({ ...colors[lightIndex], alpha }) || '#00000000',
+          [`--d-border`]: safeHex8(dColor, alpha),
+          [`--l-border`]: safeHex8(lColor, alpha),
         },
         class: [
           `dark:border-[--d-border]`,
@@ -157,8 +161,8 @@ export function getCSInner(colors: CuloriColor[], type: CSType, darkIndex: numbe
     case 'text': {
       return {
         style: {
-          [`--d-text`]: formatHex8({ ...colors[darkIndex], alpha }) || '#00000000',
-          [`--l-text`]: formatHex8({ ...colors[lightIndex], alpha }) || '#00000000',
+          [`--d-text`]: safeHex8(dColor, alpha),
+          [`--l-text`]: safeHex8(lColor, alpha),
         },
         class: [
           `dark:text-[--d-text]`,
@@ -169,8 +173,8 @@ export function getCSInner(colors: CuloriColor[], type: CSType, darkIndex: numbe
     case 'placeholder': {
       return {
         style: {
-          [`--d-placeholder`]: formatHex8({ ...colors[darkIndex], alpha }) || '#00000000',
-          [`--l-placeholder`]: formatHex8({ ...colors[lightIndex], alpha }) || '#00000000',
+          [`--d-placeholder`]: safeHex8(dColor, alpha),
+          [`--l-placeholder`]: safeHex8(lColor, alpha),
         },
         class: [
           'dark:placeholder-[--d-placeholder]',
@@ -181,8 +185,8 @@ export function getCSInner(colors: CuloriColor[], type: CSType, darkIndex: numbe
     case 'hover:bg': {
       return {
         style: {
-          [`--d-bg-h`]: formatHex({ ...colors[darkIndex], alpha }) || '#000000',
-          [`--l-bg-h`]: formatHex({ ...colors[lightIndex], alpha }) || '#000000',
+          [`--d-bg-h`]: safeHex(dColor),
+          [`--l-bg-h`]: safeHex(lColor),
         },
         class: [
           `dark:hover:bg-[--d-bg-h]`,
@@ -193,8 +197,8 @@ export function getCSInner(colors: CuloriColor[], type: CSType, darkIndex: numbe
     case 'hover:border': {
       return {
         style: {
-          [`--d-border-h`]: formatHex({ ...colors[darkIndex], alpha }) || '#000000',
-          [`--l-border-h`]: formatHex({ ...colors[lightIndex], alpha }) || '#000000',
+          [`--d-border-h`]: safeHex(dColor),
+          [`--l-border-h`]: safeHex(lColor),
         },
         class: [
           'dark:hover:border-[--d-border-h]',
@@ -205,8 +209,8 @@ export function getCSInner(colors: CuloriColor[], type: CSType, darkIndex: numbe
     case 'hover:text': {
       return {
         style: {
-          [`--d-text-h`]: formatHex({ ...colors[darkIndex], alpha }) || '#000000',
-          [`--l-text-h`]: formatHex({ ...colors[lightIndex], alpha }) || '#000000',
+          [`--d-text-h`]: safeHex(dColor),
+          [`--l-text-h`]: safeHex(lColor),
         },
         class: [
           'dark:hover:text-[--d-text-h]',

@@ -27,6 +27,9 @@ import {
   lightTextIndex,
 } from './constants'
 import { getThemeColorString } from './theme'
+// Safe helpers (placed early to avoid TDZ issues)
+const safeHex = (c: CuloriColor | undefined) => c ? (formatHex(c) || '#000000') : '#000000'
+const safeHex8 = (c: CuloriColor | undefined, alpha: number) => c ? (formatHex8({ ...c, alpha }) || '#00000000') : '#00000000'
 
 export function useTagCS(variant: MaybeRef<BtnVariant> = 'default', color: MaybeRef<Color> = 'primary', hasInteraction: MaybeRef<boolean> = false): ComputedRef<CS> {
   return computed(() => {
@@ -135,10 +138,10 @@ function getFilledTagVariantStyle(color: CuloriColor[], hasInteraction: boolean)
 function getLightTagVariantStyle(color: CuloriColor[], hasInteraction: boolean): CS {
   const baseStyle = {
     '--d-border': 'transparent',
-    '--d-bg': formatHex8({ ...color[darkBgIndex], alpha: darkOpacity }) || '#00000000',
-    '--d-text': formatHex(color[darkTextIndex]) || '#000000',
-    '--l-bg': formatHex8({ ...color[lightBgIndex], alpha: lightOpacity }) || '#00000000',
-    '--l-text': formatHex(color[lightTextIndex]) || '#000000',
+    '--d-bg': safeHex8(color[darkBgIndex], darkOpacity),
+    '--d-text': safeHex(color[darkTextIndex]),
+    '--l-bg': safeHex8(color[lightBgIndex], lightOpacity),
+    '--l-text': safeHex(color[lightTextIndex]),
     '--l-border': 'transparent',
   }
 
@@ -155,10 +158,10 @@ function getLightTagVariantStyle(color: CuloriColor[], hasInteraction: boolean):
     return {
       style: {
         ...baseStyle,
-        '--d-bg-h': formatHex8({ ...color[darkBgIndex], alpha: darkOpacityVariant }) || '#00000000',
-        '--d-text-h': formatHex(color[darkTextIndex]) || '#000000',
-        '--l-bg-h': formatHex8({ ...color[lightBgIndex], alpha: lightOpacityVariant }) || '#00000000',
-        '--l-text-h': formatHex(color[lightTextIndex]) || '#000000',
+        '--d-bg-h': safeHex8(color[darkBgIndex], darkOpacityVariant),
+        '--d-text-h': safeHex(color[darkTextIndex]),
+        '--l-bg-h': safeHex8(color[lightBgIndex], lightOpacityVariant),
+        '--l-text-h': safeHex(color[lightTextIndex]),
       },
       class: [
         ...baseClass,
@@ -179,11 +182,11 @@ function getLightTagVariantStyle(color: CuloriColor[], hasInteraction: boolean):
 function getOutlineTagVariantStyle(color: CuloriColor[], hasInteraction: boolean): CS {
   const baseStyle = {
     '--d-bg': 'transparent',
-    '--d-text': formatHex(color[darkTextIndex]) || '#000000',
-    '--d-border': formatHex(color[darkBorderIndex]) || '#000000',
+    '--d-text': safeHex(color[darkTextIndex]),
+    '--d-border': safeHex(color[darkBorderIndex]),
     '--l-bg': 'transparent',
-    '--l-text': formatHex(color[lightTextIndex]) || '#000000',
-    '--l-border': formatHex(color[lightBorderIndex]) || '#000000',
+    '--l-text': safeHex(color[lightTextIndex]),
+    '--l-border': safeHex(color[lightBorderIndex]),
   }
 
   const baseClass = [
@@ -199,10 +202,10 @@ function getOutlineTagVariantStyle(color: CuloriColor[], hasInteraction: boolean
     return {
       style: {
         ...baseStyle,
-        '--d-bg-h': formatHex8({ ...color[darkBgVariantIndex], alpha: darkOpacity }) || '#00000000',
-        '--d-text-h': formatHex(color[darkTextIndex]) || '#000000',
-        '--l-bg-h': formatHex8({ ...color[lightBgVariantIndex], alpha: lightOpacity }) || '#00000000',
-        '--l-text-h': formatHex(color[lightTextIndex]) || '#000000',
+        '--d-bg-h': safeHex8(color[darkBgVariantIndex], darkOpacity),
+        '--d-text-h': safeHex(color[darkTextIndex]),
+        '--l-bg-h': safeHex8(color[lightBgVariantIndex], lightOpacity),
+        '--l-text-h': safeHex(color[lightTextIndex]),
       },
       class: [
         ...baseClass,
@@ -263,10 +266,10 @@ function getTransparentTagVariantStyle(color: CuloriColor[], hasInteraction: boo
 function getSubtleTagVariantStyle(color: CuloriColor[], hasInteraction: boolean): CS {
   const baseStyle = {
     '--d-bg': 'transparent',
-    '--d-text': formatHex(color[2]) || '#000000',
+    '--d-text': safeHex(color[2]),
     '--d-border': 'transparent',
     '--l-bg': 'transparent',
-    '--l-text': formatHex(color[5]) || '#000000',
+    '--l-text': safeHex(color[5]),
     '--l-border': 'transparent',
   }
 
@@ -283,10 +286,10 @@ function getSubtleTagVariantStyle(color: CuloriColor[], hasInteraction: boolean)
     return {
       style: {
         ...baseStyle,
-        '--d-bg-h': formatHex8({ ...color[3], alpha: darkOpacity }) || '#00000000',
-        '--d-text-h': formatHex(color[2]) || '#000000',
-        '--l-bg-h': formatHex8({ ...color[3], alpha: lightOpacity }) || '#00000000',
-        '--l-text-h': formatHex(color[5]) || '#000000',
+        '--d-bg-h': safeHex8(color[3], darkOpacity),
+        '--d-text-h': safeHex(color[2]),
+        '--l-bg-h': safeHex8(color[3], lightOpacity),
+        '--l-text-h': safeHex(color[5]),
       },
       class: [
         ...baseClass,
@@ -306,10 +309,10 @@ function getSubtleTagVariantStyle(color: CuloriColor[], hasInteraction: boolean)
 
 function getContrastTagVariantStyle(color: CuloriColor[], hasInteraction: boolean): CS {
   const baseStyle = {
-    '--d-text': formatHex(color[2]) || '#000000',
+    '--d-text': safeHex(color[2]),
     '--d-bg': 'transparent',
     '--d-border': 'transparent',
-    '--l-text': formatHex(color[5]) || '#000000',
+    '--l-text': safeHex(color[5]),
     '--l-bg': 'transparent',
     '--l-border': 'transparent',
   }
@@ -328,9 +331,9 @@ function getContrastTagVariantStyle(color: CuloriColor[], hasInteraction: boolea
       style: {
         ...baseStyle,
         '--d-text-h': 'white',
-        '--d-bg-h': formatHex(color[5]) || '#000000',
+        '--d-bg-h': safeHex(color[5]),
         '--l-text-h': 'white',
-        '--l-bg-h': formatHex(color[5]) || '#000000',
+        '--l-bg-h': safeHex(color[5]),
       },
       class: [
         ...baseClass,
@@ -351,10 +354,10 @@ function getContrastTagVariantStyle(color: CuloriColor[], hasInteraction: boolea
 function getWhiteTagVariantStyle(color: CuloriColor[], hasInteraction: boolean): CS {
   const baseStyle = {
     '--d-bg': 'white',
-    '--d-text': formatHex(color[4]) || '#000000',
+    '--d-text': safeHex(color[4]),
     '--d-border': 'transparent',
     '--l-bg': 'white',
-    '--l-text': formatHex(color[5]) || '#000000',
+    '--l-text': safeHex(color[5]),
     '--l-border': 'transparent',
   }
 
@@ -372,9 +375,9 @@ function getWhiteTagVariantStyle(color: CuloriColor[], hasInteraction: boolean):
       style: {
         ...baseStyle,
         '--d-bg-h': 'white',
-        '--d-text-h': formatHex(color[4]) || '#000000',
+        '--d-text-h': safeHex(color[4]),
         '--l-bg-h': 'white',
-        '--l-text-h': formatHex(color[5]) || '#000000',
+        '--l-text-h': safeHex(color[5]),
       },
       class: [
         ...baseClass,
@@ -391,3 +394,4 @@ function getWhiteTagVariantStyle(color: CuloriColor[], hasInteraction: boolean):
     class: baseClass,
   }
 }
+

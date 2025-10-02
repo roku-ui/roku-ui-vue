@@ -54,25 +54,29 @@ export function useButtonCS(variant: MaybeRef<BtnVariant> = 'default', color: Ma
   })
 }
 
+// Helper formatters to avoid unsafe spreading of possibly undefined colors
+const safeHex = (c: CuloriColor | undefined) => c ? (formatHex(c) || '#000000') : '#000000'
+const safeHex8 = (c: CuloriColor | undefined, alpha: number) => c ? (formatHex8({ ...c, alpha }) || '#00000000') : '#00000000'
+
 function getDefaultVariantStyle(surface: CuloriColor[]): Record<string, string> {
   return {
-    '--d-bg': formatHex(surface[darkSurfaceBgVariant1Index]) || '#000000',
-    '--d-bg-h': formatHex(surface[darkSurfaceBgVariant2Index]) || '#000000',
-    '--d-border': formatHex(surface[darkBorderVariantIndex]) || '#000000',
-    '--l-bg': formatHex(surface[lightSurfaceBgIndex]) || '#000000',
-    '--l-bg-h': formatHex(surface[lightSurfaceBgVariantIndex]) || '#000000',
-    '--l-border': formatHex(surface[lightBorderVariantIndex]) || '#000000',
+    '--d-bg': safeHex(surface[darkSurfaceBgVariant1Index]),
+    '--d-bg-h': safeHex(surface[darkSurfaceBgVariant2Index]),
+    '--d-border': safeHex(surface[darkBorderVariantIndex]),
+    '--l-bg': safeHex(surface[lightSurfaceBgIndex]),
+    '--l-bg-h': safeHex(surface[lightSurfaceBgVariantIndex]),
+    '--l-border': safeHex(surface[lightBorderVariantIndex]),
   }
 }
 
 function getFilledVariantStyle(color: CuloriColor[]): Record<string, string> {
   return {
     '--d-border': 'transparent',
-    '--d-bg': formatHex(color[darkBgIndex]) || '#000000',
-    '--d-bg-h': formatHex(color[darkBgVariantIndex]) || '#000000',
+    '--d-bg': safeHex(color[darkBgIndex]),
+    '--d-bg-h': safeHex(color[darkBgVariantIndex]),
     '--d-text': 'white',
-    '--l-bg': formatHex(color[lightBgIndex]) || '#000000',
-    '--l-bg-h': formatHex(color[lightBgVariantIndex]) || '#000000',
+    '--l-bg': safeHex(color[lightBgIndex]),
+    '--l-bg-h': safeHex(color[lightBgVariantIndex]),
     '--l-text': 'white',
     '--l-text-h': 'white',
     '--l-border': 'transparent',
@@ -82,14 +86,14 @@ function getFilledVariantStyle(color: CuloriColor[]): Record<string, string> {
 function getLightVariantStyle(color: CuloriColor[]): Record<string, string> {
   return {
     '--d-border': 'transparent',
-    '--d-bg': formatHex8({ ...color[darkBgIndex], alpha: darkOpacity }) || '#00000000',
-    '--d-bg-h': formatHex8({ ...color[darkBgIndex], alpha: darkOpacityVariant }) || '#00000000',
-    '--d-text': formatHex(color[darkTextIndex]) || '#000000',
-    '--d-text-h': formatHex(color[darkTextIndex]) || '#000000',
-    '--l-bg': formatHex8({ ...color[lightBgIndex], alpha: lightOpacity }) || '#00000000',
-    '--l-bg-h': formatHex8({ ...color[lightBgIndex], alpha: lightOpacityVariant }) || '#00000000',
-    '--l-text': formatHex(color[lightTextIndex]) || '#000000',
-    '--l-text-h': formatHex(color[lightTextIndex]) || '#000000',
+    '--d-bg': safeHex8(color[darkBgIndex], darkOpacity),
+    '--d-bg-h': safeHex8(color[darkBgIndex], darkOpacityVariant),
+    '--d-text': safeHex(color[darkTextIndex]),
+    '--d-text-h': safeHex(color[darkTextIndex]),
+    '--l-bg': safeHex8(color[lightBgIndex], lightOpacity),
+    '--l-bg-h': safeHex8(color[lightBgIndex], lightOpacityVariant),
+    '--l-text': safeHex(color[lightTextIndex]),
+    '--l-text-h': safeHex(color[lightTextIndex]),
     '--l-border': 'transparent',
   }
 }
@@ -97,24 +101,24 @@ function getLightVariantStyle(color: CuloriColor[]): Record<string, string> {
 function getOutlineVariantStyle(color: CuloriColor[]): Record<string, string> {
   return {
     '--d-bg': 'transparent',
-    '--d-bg-h': formatHex8({ ...color[darkBgVariantIndex], alpha: darkOpacity }) || '#00000000',
-    '--d-text': formatHex(color[darkTextIndex]) || '#000000',
-    '--d-text-h': formatHex(color[darkTextIndex]) || '#000000',
-    '--d-border': formatHex(color[darkBorderIndex]) || '#000000',
+    '--d-bg-h': safeHex8(color[darkBgVariantIndex], darkOpacity),
+    '--d-text': safeHex(color[darkTextIndex]),
+    '--d-text-h': safeHex(color[darkTextIndex]),
+    '--d-border': safeHex(color[darkBorderIndex]),
     '--l-bg': 'transparent',
-    '--l-bg-h': formatHex8({ ...color[lightBgVariantIndex], alpha: lightOpacity }) || '#00000000',
-    '--l-text': formatHex(color[lightTextIndex]) || '#000000',
-    '--l-text-h': formatHex(color[lightTextIndex]) || '#000000',
-    '--l-border': formatHex(color[lightBorderIndex]) || '#000000',
+    '--l-bg-h': safeHex8(color[lightBgVariantIndex], lightOpacity),
+    '--l-text': safeHex(color[lightTextIndex]),
+    '--l-text-h': safeHex(color[lightTextIndex]),
+    '--l-border': safeHex(color[lightBorderIndex]),
   }
 }
 
 function getTransparentVariantStyle(color: CuloriColor[]): Record<string, string> {
   return {
-    '--d-text': formatHex(color[3]) || '#000000',
-    '--d-text-h': formatHex(color[3]) || '#000000',
-    '--l-text': formatHex(color[5]) || '#000000',
-    '--l-text-h': formatHex(color[5]) || '#000000',
+    '--d-text': safeHex(color[3]),
+    '--d-text-h': safeHex(color[3]),
+    '--l-text': safeHex(color[5]),
+    '--l-text-h': safeHex(color[5]),
     '--d-bg': 'transparent',
     '--l-bg': 'transparent',
     '--d-border': 'transparent',
@@ -125,29 +129,29 @@ function getTransparentVariantStyle(color: CuloriColor[]): Record<string, string
 function getSubtleVariantStyle(color: CuloriColor[]): Record<string, string> {
   return {
     '--d-bg': 'transparent',
-    '--d-bg-h': formatHex8({ ...color[3], alpha: darkOpacity }) || '#00000000',
-    '--d-text': formatHex(color[2]) || '#000000',
-    '--d-text-h': formatHex(color[2]) || '#000000',
+    '--d-bg-h': safeHex8(color[3], darkOpacity),
+    '--d-text': safeHex(color[2]),
+    '--d-text-h': safeHex(color[2]),
     '--d-border': 'transparent',
     '--l-bg': 'transparent',
-    '--l-bg-h': formatHex8({ ...color[3], alpha: lightOpacity }) || '#00000000',
-    '--l-text': formatHex(color[5]) || '#000000',
-    '--l-text-h': formatHex(color[5]) || '#000000',
+    '--l-bg-h': safeHex8(color[3], lightOpacity),
+    '--l-text': safeHex(color[5]),
+    '--l-text-h': safeHex(color[5]),
     '--l-border': 'transparent',
   }
 }
 
 function getContrastVariantStyle(color: CuloriColor[]): Record<string, string> {
   return {
-    '--d-text': formatHex(color[2]) || '#000000',
+    '--d-text': safeHex(color[2]),
     '--d-text-h': 'white',
     '--d-bg': 'transparent',
-    '--d-bg-h': formatHex(color[5]) || '#000000',
+    '--d-bg-h': safeHex(color[5]),
     '--d-border': 'transparent',
-    '--l-text': formatHex(color[5]) || '#000000',
+    '--l-text': safeHex(color[5]),
     '--l-text-h': 'white',
     '--l-bg': 'transparent',
-    '--l-bg-h': formatHex(color[5]) || '#000000',
+    '--l-bg-h': safeHex(color[5]),
     '--l-border': 'transparent',
   }
 }
@@ -156,13 +160,13 @@ function getWhiteVariantStyle(color: CuloriColor[]): Record<string, string> {
   return {
     '--d-bg': 'white',
     '--d-bg-h': 'white',
-    '--d-text': formatHex(color[4]) || '#000000',
-    '--d-text-h': formatHex(color[4]) || '#000000',
+    '--d-text': safeHex(color[4]),
+    '--d-text-h': safeHex(color[4]),
     '--d-border': 'transparent',
     '--l-bg': 'white',
     '--l-bg-h': 'white',
-    '--l-text': formatHex(color[5]) || '#000000',
-    '--l-text-h': formatHex(color[5]) || '#000000',
+    '--l-text': safeHex(color[5]),
+    '--l-text-h': safeHex(color[5]),
     '--l-border': 'transparent',
   }
 }

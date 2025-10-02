@@ -78,9 +78,12 @@ function getPrecision(value: number): number {
   }
   const valueString = value.toString()
   if (valueString.includes('e-')) {
-    const [mantissa, exponent] = valueString.split('e-')
-    const mantissaDecimals = mantissa.includes('.') ? mantissa.split('.')[1].length : 0
-    return Number.parseInt(exponent, 10) + mantissaDecimals
+    const parts = valueString.split('e-')
+    const mantissa = parts[0]
+    const exponent = parts[1]
+    const mantissaDecimals = mantissa && mantissa.includes('.') ? (mantissa.split('.')[1]?.length ?? 0) : 0
+    const expNum = Number.parseInt(exponent || '0', 10)
+    return expNum + mantissaDecimals
   }
   const decimalPart = valueString.split('.')[1]
   return decimalPart ? decimalPart.length : 0

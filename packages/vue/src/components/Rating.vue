@@ -76,7 +76,7 @@ function unifyInput(
     const normalizedArray = input.map(item => toActiveNormal(item))
     if (normalizedArray.length === 1) {
       // If the array only contains one element, use it to fill all elements
-      baseObject = normalizedArray[0]
+      baseObject = normalizedArray[0] || { active: defaultActiveIcon, normal: defaultNormalIcon }
       return Array.from({ length: n }, () => ({ ...baseObject }))
     }
     else {
@@ -109,8 +109,12 @@ function isActive(idx: number): boolean {
 }
 
 function getCls(idx: number) {
-  const normalIcon = iconData.value[idx].normal
-  const activeIcon = iconData.value[idx].active
+  const item = iconData.value[idx]
+  if (!item) {
+    return [inactiveCls, defaultIcon]
+  }
+  const normalIcon = item.normal
+  const activeIcon = item.active
   if (isActive(idx)) {
     return [highlightSelectedOnly.value ? hoverCls : activeCls, activeIcon]
   }
@@ -150,6 +154,10 @@ function onPointerDown(i: number) {
     model.value = i + 1
   }
 }
+function getBind(i: number) {
+  const cs = containerCS[i]
+  return isActive(i) ? (cs ? cs.value : unactiveCS) : unactiveCS
+}
 const sizeCls = computed(() => {
   switch (props.size) {
     case 'sm': {
@@ -180,7 +188,7 @@ const sizeCls = computed(() => {
       @pointerdown="onPointerDown(i)"
     >
       <i
-        v-bind="isActive(i) ? containerCS[i].value : unactiveCS"
+        v-bind="getBind(i)"
         class="active:translate-y-1px"
         :class="[getCls(i)]"
       />

@@ -3,7 +3,8 @@ import { computed, ref } from 'vue'
 import { generateColors, Notifications } from '../..'
 import { AspectRatio, ColorInput, ColorSwatch, Dropzone, Image, Overlay, Paper } from '../../components'
 
-const file = ref<File | null>(null)
+// Allow undefined assignment for file selection handling
+const file = ref<File | null | undefined>(null)
 const color = ref('#5474B4')
 const colors = computed(() => generateColors(color.value))
 

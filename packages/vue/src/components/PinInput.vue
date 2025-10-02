@@ -29,13 +29,18 @@ function onInput(e: InputEvent) {
     if (currentIndex + i >= inputs.value.length) {
       break
     }
-    inputs.value[currentIndex + i].el.value = d
-    if (currentIndex + i + 1 < inputs.value.length) {
-      inputs.value[currentIndex + i + 1].el.focus()
-      inputs.value[currentIndex + i + 1].el.select()
+    const target = inputs.value[currentIndex + i]
+    if (!target) {
+      break
+    }
+    target.el.value = d
+    const next = inputs.value[currentIndex + i + 1]
+    if (next) {
+      next.el.focus()
+      next.el.select()
     }
     else {
-      inputs.value[currentIndex + i].el.blur()
+      target.el.blur()
     }
   }
 }
@@ -48,10 +53,13 @@ function onBackspace(e: KeyboardEvent) {
   if (currentIndex === 0) {
     return
   }
-  inputs.value[currentIndex - 1].el.focus()
-  inputs.value[currentIndex - 1].el.select()
+  const prev = inputs.value[currentIndex - 1]
+  if (prev) {
+    prev.el.focus()
+    prev.el.select()
+  }
   if (!alreadyFill) {
-    inputs.value[currentIndex - 1].el.value = ''
+    prev && (prev.el.value = '')
   }
 }
 
@@ -60,8 +68,11 @@ function onArrowLeft(e: KeyboardEvent) {
   e.stopPropagation()
   const currentIndex = inputs.value.findIndex(d => d.el === e.target)
   if (currentIndex > 0) {
-    inputs.value[currentIndex - 1].el.focus()
-    inputs.value[currentIndex - 1].el.select()
+    const prev = inputs.value[currentIndex - 1]
+    if (prev) {
+      prev.el.focus()
+      prev.el.select()
+    }
   }
 }
 
@@ -70,8 +81,11 @@ function onArrowRight(e: KeyboardEvent) {
   e.stopPropagation()
   const currentIndex = inputs.value.findIndex(d => d.el === e.target)
   if (currentIndex < inputs.value.length - 1) {
-    inputs.value[currentIndex + 1].el.focus()
-    inputs.value[currentIndex + 1].el.select()
+    const next = inputs.value[currentIndex + 1]
+    if (next) {
+      next.el.focus()
+      next.el.select()
+    }
   }
 }
 </script>

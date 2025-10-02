@@ -8,10 +8,10 @@ const heights = [50, 100, 200, 300, 400]
 const width = 200
 
 const items = computed(() => tmps.value.map(() => {
-  const height = heights[Math.floor(Math.random() * heights.length)]
+  const height = heights[Math.floor(Math.random() * heights.length)] ?? heights[0]
   return {
-    width,
-    height,
+    width: width as number,
+    height: height as number,
     src: `https://picsum.photos/${width}/${height}?random=${Math.random()}`,
   }
 }))

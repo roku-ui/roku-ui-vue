@@ -107,9 +107,10 @@ const processedItems = computed(() => {
 
 // Handle step click
 function handleStepClick(index: number) {
-  if (!props.clickable || processedItems.value[index].disabled) {
- return
-}
+  const item = processedItems.value[index]
+  if (!props.clickable || !item || item.disabled) {
+    return
+  }
 
   if (props.linear && index > currentStep.value + 1) {
  return
@@ -128,7 +129,8 @@ onKeyStroke('ArrowLeft', (e) => {
 
   if (props.direction === 'horizontal' && currentStep.value > 0) {
     const newIndex = currentStep.value - 1
-    if (!processedItems.value[newIndex].disabled) {
+    const item = processedItems.value[newIndex]
+    if (item && !item.disabled) {
       currentStep.value = newIndex
     }
   }
@@ -142,7 +144,8 @@ onKeyStroke('ArrowRight', (e) => {
 
   if (props.direction === 'horizontal' && currentStep.value < props.items.length - 1) {
     const newIndex = currentStep.value + 1
-    if (!processedItems.value[newIndex].disabled) {
+    const item = processedItems.value[newIndex]
+    if (item && !item.disabled) {
       currentStep.value = newIndex
     }
   }
@@ -156,7 +159,8 @@ onKeyStroke('ArrowUp', (e) => {
 
   if (props.direction === 'vertical' && currentStep.value > 0) {
     const newIndex = currentStep.value - 1
-    if (!processedItems.value[newIndex].disabled) {
+    const item = processedItems.value[newIndex]
+    if (item && !item.disabled) {
       currentStep.value = newIndex
     }
   }
@@ -170,7 +174,8 @@ onKeyStroke('ArrowDown', (e) => {
 
   if (props.direction === 'vertical' && currentStep.value < props.items.length - 1) {
     const newIndex = currentStep.value + 1
-    if (!processedItems.value[newIndex].disabled) {
+    const item = processedItems.value[newIndex]
+    if (item && !item.disabled) {
       currentStep.value = newIndex
     }
   }

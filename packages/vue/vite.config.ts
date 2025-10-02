@@ -16,7 +16,17 @@ export default defineConfig({
     vue(),
     vueJsx(),
     UnoCSS(),
-    dts(),
+    // Generate type declarations for library consumers
+    dts({
+      entryRoot: 'src',
+      include: ['src'],
+      cleanVueFileName: true,
+      copyDtsFiles: false,
+      staticImport: true,
+      outDir: 'dist',
+      insertTypesEntry: true,
+    }),
+    dts({ tsconfigPath: './tsconfig.app.json' }),
     AutoExport({
       path: ['./src/components/**/*'],
       extname: 'ts',
@@ -24,7 +34,6 @@ export default defineConfig({
     roku(),
   ],
   build: {
-    cssMinify: 'esbuild',
     lib: {
       entry: 'src/index.ts',
       name: 'roku-ui',

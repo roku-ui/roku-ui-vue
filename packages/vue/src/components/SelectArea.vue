@@ -51,7 +51,7 @@ useEventListener(target, 'pointerdown', (e) => {
     y: offsetY,
   }
   dragging.value = true
-  emit('selectStart', { target: e.target, shift: shift.value, ctrl: ctrl.value })
+  emit('selectStart', { target: e.target, shift: !!shift?.value, ctrl: !!ctrl?.value })
 })
 
 // 捕获任意元素的 mouseup 事件
@@ -62,7 +62,7 @@ useEventListener(globalThis, 'pointerup', (e) => {
     top: Math.min(startPoint.value.y, endPoint.value.y),
     right: Math.max(startPoint.value.x, endPoint.value.x),
     bottom: Math.max(startPoint.value.y, endPoint.value.y),
-  }, { target: e.target, shift: shift.value, ctrl: ctrl.value })
+  }, { target: e.target, shift: !!shift?.value, ctrl: !!ctrl?.value })
 })
 
 useEventListener(target, 'pointermove', (e) => {
@@ -80,7 +80,7 @@ useEventListener(target, 'pointermove', (e) => {
     top: Math.min(startPoint.value.y, endPoint.value.y),
     right: Math.max(startPoint.value.x, endPoint.value.x),
     bottom: Math.max(startPoint.value.y, endPoint.value.y),
-  }, { target: e.target, shift: shift.value, ctrl: ctrl.value })
+  }, { target: e.target, shift: !!shift?.value, ctrl: !!ctrl?.value })
 })
 const parent = computed(() => {
   if (!target.value) {
@@ -101,7 +101,7 @@ useEventListener(parent, 'scroll', (e) => {
     top: Math.min(startPoint.value.y, endPoint.value.y),
     right: Math.max(startPoint.value.x, endPoint.value.x),
     bottom: Math.max(startPoint.value.y, endPoint.value.y),
-  }, { target: e.target, shift: shift.value, ctrl: ctrl.value })
+  }, { target: e.target, shift: !!shift?.value, ctrl: !!ctrl?.value })
 })
 
 useEventListener(globalThis, 'dragend', () => {

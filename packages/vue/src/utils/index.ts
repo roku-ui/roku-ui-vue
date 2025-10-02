@@ -9,17 +9,18 @@ export * from './classGenerator'
 export * from './notifications'
 export * from './symbols'
 
-function getClosestLightness(color: ColorInput) {
+function getClosestLightness(color: ColorInput): number {
   const hslColor = hsl(color)
+  const fallback = COLOR_LIGHTNESS_MAP[0] ?? 0
   if (!hslColor) {
-    return COLOR_LIGHTNESS_MAP[0]
+    return fallback
   }
-
-  const lightnessGoal = hslColor.l
-  let closest = COLOR_LIGHTNESS_MAP[0]
+  const lightnessGoal = hslColor.l ?? fallback
+  let closest = fallback
   for (const curr of COLOR_LIGHTNESS_MAP) {
-    if (Math.abs(curr - lightnessGoal) < Math.abs(closest - lightnessGoal)) {
-      closest = curr
+    const c = curr ?? fallback
+    if (Math.abs(c - lightnessGoal) < Math.abs(closest - lightnessGoal)) {
+      closest = c
     }
   }
   return closest
@@ -52,7 +53,8 @@ export function generateColorsObjMapOKLCH(
   }
 
   const closestLightness = getClosestLightness(color)
-  const baseColorIndex = lightnessMap.indexOf(closestLightness)
+  const safeMap0 = lightnessMap[0] ?? 0
+  const baseColorIndex = lightnessMap.includes(closestLightness) ? lightnessMap.indexOf(closestLightness) : lightnessMap.indexOf(safeMap0)
 
   const colors = lightnessMap.map((lightness) => {
     const adjustedChroma = calculateOptimalChroma(
@@ -181,7 +183,8 @@ export function isColorInGamut(color: any, gamut: 'srgb' | 'p3' | 'rec2020'): bo
 }
 
   const { r, g, b } = rgbColor
-  const { min, max } = GAMUT_DEFINITIONS[gamut].rgbLimits
+  const gamutInfo = (GAMUT_DEFINITIONS[gamut] ?? GAMUT_DEFINITIONS.srgb)!
+  const { min, max } = gamutInfo.rgbLimits
 
   return r >= min && r <= max && g >= min && g <= max && b >= min && b <= max
 }

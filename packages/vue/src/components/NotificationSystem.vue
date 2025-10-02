@@ -48,7 +48,8 @@ watch([notificationRefs.value], () => {
 if (props.progress) {
   useRafFn(({ delta }) => {
     allNotifications.value = allNotifications.value.map((d) => {
-      if (hoverRecord.value[d.hash] && hoverRecord.value[d.hash].value) {
+      const hoverRef = hoverRecord.value[d.hash]
+      if (hoverRef?.value) {
         return d
       }
       if (!notifications.value.includes(d)) {

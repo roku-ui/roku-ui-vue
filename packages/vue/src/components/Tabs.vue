@@ -62,7 +62,10 @@ onKeyStroke('ArrowLeft', (e) => {
   if (newValue === undefined) {
     return
   }
-  const elRef = childrenElementMap.get(newValue)
+  if (newValue === undefined) {
+    return
+  }
+  const elRef = childrenElementMap.get(newValue as (string | number | symbol))
   if (elRef) {
     const el = elRef.value
     if (el) {
@@ -82,7 +85,10 @@ onKeyStroke('ArrowRight', (e) => {
   const index = model.value ? valueList.value.indexOf(model.value) : 0
   const newValue = (index < valueList.value.length - 1) ? model.value = valueList.value[index + 1] : model.value = valueList.value[0]
   model.value = newValue
-  const elRef = childrenElementMap.get(newValue)
+  if (newValue === undefined) {
+    return
+  }
+  const elRef = childrenElementMap.get(newValue as (string | number | symbol))
   if (elRef) {
     const el = elRef.value
     if (el) {
@@ -105,7 +111,10 @@ onKeyStroke('ArrowUp', (e) => {
   if (newValue === undefined) {
     return
   }
-  const elRef = childrenElementMap.get(newValue)
+  if (newValue === undefined) {
+    return
+  }
+  const elRef = childrenElementMap.get(newValue as (string | number | symbol))
   if (elRef) {
     const el = elRef.value
     if (el) {
@@ -125,7 +134,10 @@ onKeyStroke('ArrowDown', (e) => {
   const index = model.value ? valueList.value.indexOf(model.value) : 0
   const newValue = (index < valueList.value.length - 1) ? valueList.value[index + 1] : valueList.value[0]
   model.value = newValue
-  const elRef = childrenElementMap.get(newValue)
+  if (newValue === undefined) {
+    return
+  }
+  const elRef = childrenElementMap.get(newValue as (string | number | symbol))
   if (elRef) {
     const el = elRef.value
     if (el) {
