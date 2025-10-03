@@ -42,5 +42,24 @@
         </div>
       </div>
     </div>
+    <div class="children:bg-surface-muted flex gap-8 children:px-3 children:py-1 children:border children:rounded-xl">
+      <div class="bg-base border-base">
+        Base
+      </div>
+      <div class="bg-container border-container">
+        Container
+      </div>
+      <div class="bg-elevated border-elevated">
+        Elevated
+      </div>
+      <div class="bg-inverted border-inverted">
+        <div class="text-inverted">
+          Inverted
+        </div>
+      </div>
+    </div>
+    <div class="bg-[--colors-gray-50]">
+      123
+    </div>
   </div>
 </template>

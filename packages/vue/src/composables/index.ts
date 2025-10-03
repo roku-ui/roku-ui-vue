@@ -9,33 +9,20 @@ import { generateColors } from '..'
 export { generateEditorFriendlyColors, generateOKLCHString } from '../utils'
 export * from './dom'
 
+// Tailwind-inspired lightness ramp matching stops 50 through 950
 export const COLOR_LIGHTNESS_MAP = [
-  0.98,
-  0.8,
-  0.7,
-  0.6,
-  0.45,
-  0.4,
-  0.37,
-  0.28,
-  0.2,
-  0.1,
-  0.05,
+  0.985,
+  0.94,
+  0.87,
+  0.78,
+  0.68,
+  0.58,
+  0.49,
+  0.39,
+  0.29,
+  0.21,
+  0.14,
 ]
-export const SURFACE_LIGHTNESS_MAP = [
-  0.996,
-  0.995,
-  0.95,
-  0.9,
-  0.8,
-  0.5,
-  0.4,
-  0.24,
-  0.2,
-  0.1,
-  0.08,
-]
-
 function useColorTuple(color: MaybeRef<ThemeColorValue>, lightnessMap: number[] = COLOR_LIGHTNESS_MAP) {
   return computed(() => {
     const colorVal = unref(color)
@@ -47,41 +34,16 @@ function useColorTuple(color: MaybeRef<ThemeColorValue>, lightnessMap: number[] 
   })
 }
 
-export function useThemeStyles(theme: import('@/shared').ThemeData) {
-  const currentTheme = ref(theme)
-  type KeyOfThemeColors = keyof typeof currentTheme.value.colors
-  const colorVars: Record<string, string> = {}
-  for (const key of Object.keys(currentTheme.value.colors)) {
-    const color = key as KeyOfThemeColors
-    const colorValue = currentTheme.value.colors[color]
-    if (!colorValue) {
-      continue
-    }
-    const colorTuple = useColorTuple(colorValue, color === 'surface' ? SURFACE_LIGHTNESS_MAP : COLOR_LIGHTNESS_MAP)
-    const colorTupleValue = [...colorTuple.value]
-    for (const [idx, cur] of colorTupleValue.entries()) {
-      const c = rgb(cur)
-      colorVars[`--r-color-${color}-${idx}`] = c ? `${Math.round(c.r * 255)} ${Math.round(c.g * 255)} ${Math.round(c.b * 255)}` : '0 0 0'
-    }
-  }
-
-  const colorStyles = {
-    ...colorVars,
-  }
-  const themeStyles = {
-    'backgroundColor': 'var(--r-surface-background-base-color)',
-    'color': 'var(--r-surface-text-color)',
-    '--un-default-border-color': 'var(--r-border)',
-  }
-
-  return {
-    ...colorStyles,
-    ...themeStyles,
-  }
-}
-
-// Enhanced theme styles with editor-friendly variables (simplified)
-export function useEditorFriendlyThemeStyles(theme: import('@/shared').ThemeData) {
+/**
+ * Build CSS variable style object for a theme.
+ * When editorFriendly=true, embeds original color string as a comment for easier inspection in DevTools / inline styles.
+ * Usage: useThemeStyles(theme) or useThemeStyles(theme, { editorFriendly: true })
+ */
+export function useThemeStyles(
+  theme: import('@/shared').ThemeData,
+  options?: { editorFriendly?: boolean },
+) {
+  const { editorFriendly = false } = options ?? {}
   const currentTheme = ref(theme)
   type KeyOfThemeColors = keyof typeof currentTheme.value.colors
   const colorVars: Record<string, string> = {}
@@ -92,25 +54,28 @@ export function useEditorFriendlyThemeStyles(theme: import('@/shared').ThemeData
     if (!colorValue) {
       continue
     }
-    const colorTuple = useColorTuple(colorValue, color === 'surface' ? SURFACE_LIGHTNESS_MAP : COLOR_LIGHTNESS_MAP)
+
+    const colorTuple = useColorTuple(colorValue, COLOR_LIGHTNESS_MAP)
     const colorTupleValue = [...colorTuple.value]
     for (const [idx, cur] of colorTupleValue.entries()) {
       const c = rgb(cur)
-      colorVars[`--r-color-${color}-${idx}`] = c ? `${Math.round(c.r * 255)} ${Math.round(c.g * 255)} ${Math.round(c.b * 255)} /* ${cur} */` : '0 0 0'
+      const base = c
+        ? `${Math.round(c.r * 255)} ${Math.round(c.g * 255)} ${Math.round(
+            c.b * 255,
+          )}`
+        : '0 0 0'
+      colorVars[`--r-color-${color}-${idx}`] = editorFriendly ? `${base} /* ${cur} */` : base
     }
   }
 
-  const colorStyles = {
-    ...colorVars,
-  }
   const themeStyles = {
     'backgroundColor': 'var(--r-surface-background-base-color)',
     'color': 'var(--r-surface-text-color)',
-    '--un-default-border-color': 'var(--r-border)',
+    '--un-default-border-color': 'var(--r-border-base)',
   }
 
   return {
-    ...colorStyles,
+    ...colorVars,
     ...themeStyles,
   }
 }

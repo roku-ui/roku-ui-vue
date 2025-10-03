@@ -27,7 +27,7 @@ function getClosestLightness(color: ColorInput): number {
 }
 
 export function generateColorsMap(color: ColorInput, lightnessMap = COLOR_LIGHTNESS_MAP) {
-  const objMap = generateColorsObjMap(color, lightnessMap)
+  const objMap = generateColorsObjMapOKLCH(color, lightnessMap)
   return { ...objMap, colors: objMap.colors.map(c => formatHex(c) || '#000000') }
 }
 
@@ -37,6 +37,13 @@ export interface ColorGenerationOptions {
   contrastTarget?: 'AA' | 'AAA' | 'none'
   gamut?: 'srgb' | 'p3' | 'rec2020'
   customChromaCurve?: (lightness: number) => number
+  /**
+   * When true, apply a perceptual uniformity pass to the lightness map so that
+   * different hues (notably yellow vs blue) present a closer subjective brightness.
+   * This is a lightweight approximation (hue & chroma based compensation) without
+   * introducing a heavier full CAM model. It purposely keeps API impact minimal.
+   */
+  perceptualUniform?: boolean
 }
 
 // Enhanced OKLCH-based color generation with advanced algorithms
@@ -436,76 +443,97 @@ export function generateAdaptiveLightnessMap(
         0.08,
       ]
     }
-
     case 'accent': {
-      // Accent colors can be more vibrant with sharper transitions
       const boost = Math.min(0.15, (baseChroma || 0) * 0.3)
       return COLOR_LIGHTNESS_MAP.map((l) => {
-        // Boost mid-range lightness for more pop
         if (l >= 0.3 && l <= 0.7) {
           return Math.min(0.95, l + boost)
         }
         return l
       })
     }
-
     case 'secondary': {
-      // Secondary colors should be more muted
       const reduction = Math.min(0.1, (baseChroma || 0) * 0.2)
       return COLOR_LIGHTNESS_MAP.map((l) => {
-        // Slightly reduce extreme values
         if (l > 0.8) {
- return Math.max(0.75, l - reduction)
-}
+          return Math.max(0.75, l - reduction)
+        }
         if (l < 0.2) {
- return Math.min(0.25, l + reduction)
-}
+          return Math.min(0.25, l + reduction)
+        }
         return l
       })
     }
-
     case 'primary': {
-      // Primary colors get hue-specific adjustments
       if (baseHue === undefined) {
- return COLOR_LIGHTNESS_MAP
-}
-
-      // Yellow hues (45-75°) need darker variants to maintain readability
+        return COLOR_LIGHTNESS_MAP
+      }
       if (baseHue >= 45 && baseHue <= 75) {
         return COLOR_LIGHTNESS_MAP.map((l) => {
           if (l > 0.6) {
- return Math.max(0.5, l - 0.1)
-}
+            return Math.max(0.5, l - 0.1)
+          }
           return l
         })
       }
-
-      // Blue hues (200-260°) can handle lighter variants better
       if (baseHue >= 200 && baseHue <= 260) {
         return COLOR_LIGHTNESS_MAP.map((l) => {
           if (l < 0.4) {
- return Math.min(0.5, l + 0.1)
-}
+            return Math.min(0.5, l + 0.1)
+          }
           return l
         })
       }
-
       return COLOR_LIGHTNESS_MAP
     }
-
     default: {
       return COLOR_LIGHTNESS_MAP
     }
   }
 }
 
+// Perceptual uniformity helper (file-scope). See detailed JSDoc above where option is declared.
+function applyPerceptualUniformity(lightnessMap: number[], base: ReturnType<typeof oklch>): number[] {
+  if (!base) {
+ return lightnessMap
+}
+  const hue = base.h ?? 0
+  const chroma = base.c ?? 0
+  if (chroma <= 0.01) {
+ return lightnessMap
+}
+  const cNorm = Math.min(1, chroma / 0.3)
+  function gauss(h: number, center: number, sigma: number) {
+    const d = ((h - center + 720) % 360)
+    const dd = d > 360 ? d - 360 : d
+    const dist = Math.min(Math.abs(dd - 360), Math.abs(dd))
+    return Math.exp(-(dist * dist) / (2 * sigma * sigma))
+  }
+  const yellowFactor = gauss(hue, 90, 28)
+  const blueFactor = gauss(hue, 255, 32)
+  const magentaFactor = gauss(hue, 315, 25)
+  const compensation = ((-0.035 * yellowFactor) + (0.045 * blueFactor) + (0.02 * magentaFactor)) * cNorm
+  if (Math.abs(compensation) < 0.001) {
+ return lightnessMap
+}
+  return lightnessMap.map((L) => {
+    const midWeight = 1 - Math.abs(L - 0.5) * 1.4
+    const delta = compensation * midWeight
+    return Math.min(1, Math.max(0, L + delta))
+  })
+}
 // Enhanced color generation with adaptive lightness mapping
 export function generateAdaptiveColors(
   color: ColorInput,
   purpose: 'primary' | 'secondary' | 'surface' | 'accent' = 'primary',
   options: ColorGenerationOptions = {},
 ): ColorsTuple {
-  const adaptiveLightnessMap = generateAdaptiveLightnessMap(color, purpose)
+  const perceptualUniform = options.perceptualUniform !== false // default true
+  let adaptiveLightnessMap = generateAdaptiveLightnessMap(color, purpose)
+  if (perceptualUniform) {
+    const baseOkl = oklch(color)
+    adaptiveLightnessMap = applyPerceptualUniformity(adaptiveLightnessMap, baseOkl)
+  }
   return generateColorsOKLCH(color, adaptiveLightnessMap, options)
 }
 
@@ -555,7 +583,13 @@ export function generateAdvancedColorPalette(
 
   if (contrastTarget === 'none') {
     colors = generateAdaptiveColors(color, purpose, options)
-    objMap = generateColorsObjMapOKLCH(color, generateAdaptiveLightnessMap(color, purpose), options)
+    // Keep objMap consistent with the (possibly perceptually adjusted) adaptive path
+    let mapForObj = generateAdaptiveLightnessMap(color, purpose)
+    if (options.perceptualUniform !== false) {
+      const baseO = oklch(color)
+      mapForObj = applyPerceptualUniformity(mapForObj, baseO)
+    }
+    objMap = generateColorsObjMapOKLCH(color, mapForObj, options)
   }
  else {
     colors = generateContrastAwareColors(color, backgroundLightness, options)
@@ -659,7 +693,7 @@ export const ColorPalettePerformance = {
   },
 }
 
-// Keep existing function for backward compatibility
+// Keep existing function for backward compatibility while locking lightness per index
 export function generateColorsObjMap(color: ColorInput, lightnessMap = COLOR_LIGHTNESS_MAP) {
   const baseHsl = hsl(color)
   if (!baseHsl) {
@@ -669,25 +703,13 @@ export function generateColorsObjMap(color: ColorInput, lightnessMap = COLOR_LIG
   const closestLightness = getClosestLightness(color)
   const baseColorIndex = lightnessMap.indexOf(closestLightness)
 
-  const colors = lightnessMap.map((lightness) => {
-    let modifiedColor = {
-      mode: 'hsl' as const,
-      h: baseHsl.h,
-      s: baseHsl.s,
-      l: lightness,
-      alpha: baseHsl.alpha,
-    }
-
-    // Adjust the lightness for some hues (keeping legacy behavior)
-    if (baseHsl.h !== undefined && baseHsl.h >= 20 && baseHsl.h <= 200) {
-      modifiedColor = {
-        ...modifiedColor,
-        l: Math.max(0, lightness - 0.02), // darken by 2%
-      }
-    }
-
-    return modifiedColor
-  })
+  const colors = lightnessMap.map((lightness) => ({
+    mode: 'hsl' as const,
+    h: baseHsl.h,
+    s: baseHsl.s,
+    l: lightness,
+    alpha: baseHsl.alpha,
+  }))
 
   return { baseColorIndex, colors }
 }

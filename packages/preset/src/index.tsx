@@ -1,7 +1,9 @@
 import type { Preset } from 'unocss'
 import tailwindReset from '@unocss/reset/tailwind.css'
 import { presetIcons, presetTypography, presetWind4 } from 'unocss'
-import baseStyle from './styles.css'
+// 使用 ?raw 以便在 vite 开发模式下把 CSS 作为纯文本引入（无需 rollup-plugin-import-css）
+// 这样 alias 指向源码时修改 styles.css 会立即触发热更新并注入新的 preflight
+import baseStyle from './styles.css?raw'
 
 const colorKeys = ['surface', 'primary', 'secondary', 'tertiary', 'info', 'warning', 'error']
 const colors: Record<string, Record<number, string>> = {}
@@ -31,8 +33,12 @@ function rokuPresetImpl(): Preset {
       color: `var(--r-text-${variant})`,
     })],
 
-    [/^bg-(inverted|active|hover|muted|default)$/, ([, variant]) => ({
+    [/^bg-(base|container|elevated|inverted)$/, ([, variant]) => ({
       'background-color': `var(--r-bg-${variant})`,
+    })],
+
+    [/^border-(base|container|elevated|inverted)$/, ([, color]) => ({
+      'border-color': `var(--r-border-${color})`,
     })],
 
     [/^text-(primary|secondary|tertiary|success|error|info|warning)$/, ([, color]) => ({

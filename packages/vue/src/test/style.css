@@ -31,9 +31,9 @@
         --r-text-highlight: rgb(var(--r-color-surface-9));
         --r-text-inverted: rgb(var(--r-color-surface-1));
 
-        --r-bg-base: rgb(var(--r-color-surface-1));
-        --r-bg-container: rgb(var(--r-color-surface-2));
-        --r-bg-elevated: rgb(var(--r-color-surface-3));
+        --r-bg-base: rgb(var(--r-color-surface-0));
+        --r-bg-container: rgb(var(--r-color-surface-1));
+        --r-bg-elevated: rgb(var(--r-color-surface-2));
         --r-bg-inverted: rgb(var(--r-color-surface-9));
 
         --r-bg-primary: rgb(var(--r-color-primary-5));
@@ -46,7 +46,7 @@
 
         --r-border-base: rgb(var(--r-color-surface-3));
         --r-border-container: rgb(var(--r-color-surface-3));
-        --r-border-elevated: rgb(var(--r-color-surface-4));
+        --r-border-elevated: rgb(var(--r-color-surface-3));
         --r-border-inverted: rgb(var(--r-color-surface-8));
 
     }
@@ -70,9 +70,9 @@
         --r-text-highlight: rgb(var(--r-color-surface-1));
         --r-text-inverted: rgb(var(--r-color-surface-9));
 
-        --r-bg-base: rgb(var(--r-color-surface-9));
-        --r-bg-container: rgb(var(--r-color-surface-8));
-        --r-bg-elevated: rgb(var(--r-color-surface-7));
+        --r-bg-base: rgb(var(--r-color-surface-10));
+        --r-bg-container: rgb(var(--r-color-surface-9));
+        --r-bg-elevated: rgb(var(--r-color-surface-8));
         --r-bg-inverted: rgb(var(--r-color-surface-1));
 
         --r-bg-primary: rgb(var(--r-color-primary-4));
@@ -83,8 +83,8 @@
         --r-bg-warning: rgb(var(--r-color-warning-4));
         --r-bg-error: rgb(var(--r-color-error-4));
  
-        --r-border-base: rgb(var(--r-color-surface-7));
-        --r-border-container: rgb(var(--r-color-surface-6));
-        --r-border-elevated: rgb(var(--r-color-surface-5));
+        --r-border-base: rgb(var(--r-color-surface-8));
+        --r-border-container: rgb(var(--r-color-surface-7));
+        --r-border-elevated: rgb(var(--r-color-surface-6));
         --r-border-inverted: rgb(var(--r-color-surface-2));}
 }
