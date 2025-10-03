@@ -58,8 +58,5 @@
         </div>
       </div>
     </div>
-    <div class="bg-[--colors-gray-50]">
-      123
-    </div>
   </div>
 </template>

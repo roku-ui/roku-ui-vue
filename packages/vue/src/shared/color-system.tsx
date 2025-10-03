@@ -4,6 +4,7 @@ import type { Color, InputVariant } from '@/types'
 import { formatHex, rgb } from 'culori'
 import { computed, unref } from 'vue'
 import { generateAdaptiveLightnessMap, generateColorsObjMap, generateColorsObjMapOKLCH } from '@/utils'
+import { resolveTailwindPalette } from '@/utils/tailwindPalettes'
 import { COLOR_LIGHTNESS_MAP } from '..'
 import { safeHex, safeHex8 } from './color-helpers'
 import {
@@ -48,6 +49,21 @@ const colorStyleCache = new Map<string, CuloriColor[]>()
 
 export function useColors(color: MaybeRef<Color>, lightnessMap = COLOR_LIGHTNESS_MAP) {
   return computed(() => {
+    const rawColor = unref(color)
+    if (typeof rawColor === 'string') {
+      const tailwindMatch = resolveTailwindPalette(rawColor)
+      if (tailwindMatch) {
+        const cacheKey = `tailwind:${tailwindMatch.normalizedName}`
+        if (colorStyleCache.has(cacheKey)) {
+          return colorStyleCache.get(cacheKey)!
+        }
+        const parsed = tailwindMatch.palette
+          .map(hex => rgb(hex))
+          .filter((item): item is CuloriColor => Boolean(item))
+        colorStyleCache.set(cacheKey, parsed)
+        return parsed
+      }
+    }
     const colorObj = useCuloriColor(color).value
     const colorHex = formatHex(colorObj) || '#000000'
     if (colorStyleCache.has(colorHex)) {

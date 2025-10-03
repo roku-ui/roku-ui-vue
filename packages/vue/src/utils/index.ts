@@ -1,6 +1,7 @@
 import type { Color as CuloriColor } from 'culori'
 import { formatCss, formatHex, hsl, oklch, rgb } from 'culori'
 import { COLOR_LIGHTNESS_MAP } from '..'
+import { resolveTailwindPalette } from './tailwindPalettes'
 
 // Type alias for better compatibility
 type ColorInput = string | CuloriColor
@@ -52,6 +53,24 @@ export function generateColorsObjMapOKLCH(
   lightnessMap = COLOR_LIGHTNESS_MAP,
   options: ColorGenerationOptions = {},
 ) {
+  if (typeof color === 'string') {
+    const tailwindMatch = resolveTailwindPalette(color)
+    if (tailwindMatch) {
+      const parsedPalette = tailwindMatch.palette.map((hex) => {
+        const parsed = oklch(hex)
+        if (parsed) {
+          return { ...parsed, alpha: parsed.alpha ?? 1 }
+        }
+        return { mode: 'oklch' as const, l: 0, c: 0, h: 0, alpha: 1 }
+      })
+
+      return {
+        baseColorIndex: tailwindMatch.baseIndex,
+        colors: parsedPalette,
+      }
+    }
+  }
+
   const { strategy = 'balanced', gamut = 'srgb' } = options
 
   const baseOklch = oklch(color)
@@ -695,6 +714,24 @@ export const ColorPalettePerformance = {
 
 // Keep existing function for backward compatibility while locking lightness per index
 export function generateColorsObjMap(color: ColorInput, lightnessMap = COLOR_LIGHTNESS_MAP) {
+  if (typeof color === 'string') {
+    const tailwindMatch = resolveTailwindPalette(color)
+    if (tailwindMatch) {
+      const parsedPalette = tailwindMatch.palette.map((hex) => {
+        const parsed = hsl(hex)
+        if (parsed) {
+          return { ...parsed, alpha: parsed.alpha ?? 1 }
+        }
+        return { mode: 'hsl' as const, h: 0, s: 0, l: 0, alpha: 1 }
+      })
+
+      return {
+        baseColorIndex: tailwindMatch.baseIndex,
+        colors: parsedPalette,
+      }
+    }
+  }
+
   const baseHsl = hsl(color)
   if (!baseHsl) {
     return { baseColorIndex: 0, colors: [] }
