@@ -43,13 +43,13 @@ const navbarWidth = ref('200px')
                 Navigation
               </h4>
               <nav class="space-y-1">
-                <div class="text-surface-on hover:bg-surface-variant-1 text-sm px-3 py-2 rounded cursor-pointer">
+                <div class="text-surface-on hover:bg-container text-sm px-3 py-2 rounded cursor-pointer">
                   Dashboard
                 </div>
-                <div class="text-surface-on hover:bg-surface-variant-1 text-sm px-3 py-2 rounded cursor-pointer">
+                <div class="text-surface-on hover:bg-container text-sm px-3 py-2 rounded cursor-pointer">
                   Users
                 </div>
-                <div class="text-surface-on hover:bg-surface-variant-1 text-sm px-3 py-2 rounded cursor-pointer">
+                <div class="text-surface-on hover:bg-container text-sm px-3 py-2 rounded cursor-pointer">
                   Settings
                 </div>
               </nav>
@@ -89,7 +89,7 @@ const navbarWidth = ref('200px')
                 Sidebar
               </h4>
               <div class="space-y-2">
-                <Paper class="bg-surface-variant-1 p-3">
+                <Paper class="bg-container p-3">
                   <div class="text-surface-on text-sm font-medium">
                     Widget 1
                   </div>
@@ -97,7 +97,7 @@ const navbarWidth = ref('200px')
                     Some widget content
                   </div>
                 </Paper>
-                <Paper class="bg-surface-variant-1 p-3">
+                <Paper class="bg-container p-3">
                   <div class="text-surface-on text-sm font-medium">
                     Widget 2
                   </div>
@@ -169,7 +169,7 @@ const navbarWidth = ref('200px')
           </template>
 
           <template #footer>
-            <Paper class="bg-surface-variant-1 flex w-full items-center">
+            <Paper class="bg-container flex w-full items-center">
               <span class="text-surface-on font-medium">Footer</span>
             </Paper>
           </template>

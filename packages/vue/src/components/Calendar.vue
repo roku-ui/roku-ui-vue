@@ -344,7 +344,7 @@ function getCellCS(day: any) {
 
 <template>
   <div
-    class="border-surface-variant-1 bg-surface border inline-block"
+    class="bg-container border-container border inline-block"
     :class="[
       sizeCls.container,
       rounded.class,
@@ -355,7 +355,7 @@ function getCellCS(day: any) {
   >
     <!-- Header -->
     <div
-      class="border-surface-variant-1 bg-surface-variant-1 border-b flex items-center justify-between"
+      class="bg-container border-container flex items-center justify-between"
       :class="[sizeCls.header]"
     >
       <div class="flex gap-1 items-center">
@@ -405,11 +405,11 @@ function getCellCS(day: any) {
     </div>
 
     <!-- Week headers -->
-    <div class="border-surface-variant-1 bg-surface-variant-1 border-b border-l grid grid-cols-7">
+    <div class="bg-container border-container border-x border-b border-t grid grid-cols-7 divide-x">
       <div
         v-for="weekDay in weekDayNames"
         :key="weekDay"
-        class="border-surface-variant-1 text-surface-variant text-center border-r flex items-center justify-center"
+        class="text-surface-variant border-container text-center flex items-center justify-center"
         :class="sizeCls.weekHeader"
       >
         {{ weekDay }}
@@ -417,19 +417,19 @@ function getCellCS(day: any) {
     </div>
 
     <!-- Calendar grid -->
-    <div class="border-surface-variant-1 border-l grid grid-cols-7">
+    <div class="border-container border-x grid grid-cols-7 divide-x">
       <div
         v-for="day in calendarDays"
         :key="day.date.getTime()"
-        class="border-surface-variant-1 border-b border-r relative"
+        class="border-container border-b relative"
         :class="[
           sizeCls.cell,
           {
-            'bg-surface-variant-1': !day.isCurrentMonth,
+            'bg-container': !day.isCurrentMonth,
             'opacity-50': day.isDisabled,
             'cursor-not-allowed': day.isDisabled,
             'cursor-pointer': !day.isDisabled,
-            'hover:bg-surface-variant-1': !day.isDisabled && !day.isSelected,
+            'hover:bg-container': !day.isDisabled && !day.isSelected,
           },
         ]"
         @click="selectDate(day.date)"
@@ -449,8 +449,8 @@ function getCellCS(day: any) {
             :class="[
               {
                 'bg-primary text-white font-semibold': day.isSelected || day.isRangeStart || day.isRangeEnd,
-                'bg-primary-light text-primary': day.isInRange,
-                'bg-primary-light text-primary opacity-60 border-2 border-dashed border-primary': day.isPreviewRange,
+                'bg-primary text-primary': day.isInRange,
+                'bg-primary text-primary opacity-60 border-2 border-dashed border-primary': day.isPreviewRange,
                 'border-2 border-dashed border-primary text-primary font-semibold': day.isPreviewEnd,
                 'ring-2 ring-primary ring-offset-1': day.isToday && !day.isSelected && !day.isRangeStart && !day.isRangeEnd && !day.isPreviewEnd,
                 'text-primary font-semibold': day.isToday && !day.isSelected && !day.isRangeStart && !day.isRangeEnd && !day.isPreviewEnd,
@@ -467,13 +467,13 @@ function getCellCS(day: any) {
         <!-- Range background -->
         <div
           v-if="day.isInRange"
-          class="bg-primary-light opacity-20 inset-0 absolute"
+          class="bg-primary opacity-20 inset-0 absolute"
         />
 
         <!-- Preview range background -->
         <div
           v-if="day.isPreviewRange"
-          class="bg-primary-light opacity-10 inset-0 absolute"
+          class="bg-primary opacity-10 inset-0 absolute"
         />
       </div>
     </div>

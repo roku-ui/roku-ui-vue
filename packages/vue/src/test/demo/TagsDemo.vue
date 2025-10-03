@@ -4,7 +4,7 @@ import { Tag } from '@/components'
 import { Paper } from '../../components'
 
 const colors = ['default', 'primary', 'secondary', 'tertiary', 'error', 'crimson', 'darkorchid', 'dodgerblue']
-const variants: BtnVariant[] = ['default', 'filled', 'light', 'outline', 'transparent', 'subtle', 'contrast', 'white']
+const variants: BtnVariant[] = ['default', 'filled', 'light', 'outline', 'transparent', 'subtle', 'contrast']
 </script>
 
 <template>

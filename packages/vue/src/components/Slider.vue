@@ -323,7 +323,7 @@ const animateCls = computed(() => props.animate && !isMoving.value
       @touchmove.prevent
     >
       <div
-        class="bg-surface-variant-1 rounded-full"
+        class="bg-container rounded-full"
         :class="sizeCls.innerWrapper"
         :style="{
           width: '100%',

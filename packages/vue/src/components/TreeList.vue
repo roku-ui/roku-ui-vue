@@ -29,11 +29,11 @@ function isLink(item: TreeListItemData): item is TreeListLeafData {
 }
 
 const itemLeftIndicator = 'before:absolute before:left-4 before:h-full before:border-r before:content-[""]'
-const itemClass = 'relative h-8 py-1 pr-1 w-full flex items-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:bg-surface-variant-1'
-const linkNormalItemClass = computed(() => `${itemClass} hover:bg-surface-variant-1 hover:text-surface text-surface-dimmed`)
+const itemClass = 'relative h-8 py-1 pr-1 w-full flex items-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:bg-container'
+const linkNormalItemClass = computed(() => `${itemClass} hover:bg-container hover:text-surface text-surface-dimmed`)
 const linkActiveItemClass = computed(() => `${itemClass} text-primary before:border-primary bg-surface-variant-2`)
-const titleNormalItemClass = computed(() => [itemClass, 'text-surface font-bold hover:bg-surface-variant-1'])
-const titleActiveItemClass = computed(() => [itemClass, 'text-primary font-bold bg-surface-variant-1'])
+const titleNormalItemClass = computed(() => [itemClass, 'text-surface font-bold hover:bg-container'])
+const titleActiveItemClass = computed(() => [itemClass, 'text-primary font-bold bg-container'])
 const treeListRef = ref<HTMLUListElement | null>(null)
 const status = ref<Map<TreeListItemData, boolean>>(new Map())
 
@@ -117,7 +117,7 @@ function TreeListHeader({ data, level }: { data: TreeListHeaderData, level: numb
       }
     >
       <div class="border-r h-1/2 translate-y-[calc(50%+3px)] left-4 absolute" />
-      <div class="bg-surface-variant-1 border rounded-sm h-2 w-2 left-[calc(1rem+0.6px)] absolute -translate-x-1/2" />
+      <div class="bg-container border rounded-sm h-2 w-2 left-[calc(1rem+0.6px)] absolute -translate-x-1/2" />
       {
         slots.header
           ? slots.header({ data, level })

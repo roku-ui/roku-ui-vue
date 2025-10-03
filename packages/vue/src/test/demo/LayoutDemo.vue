@@ -88,8 +88,8 @@ const loading = ref(false)
         <div class="bg-surface">
           bg-surface
         </div>
-        <div class="bg-surface-variant-1">
-          bg-surface-variant-1
+        <div class="bg-container">
+          bg-container
         </div>
         <div class="border-surface border">
           border-surface

@@ -92,7 +92,7 @@ const customCheckboxValue = ref(false)
     </h2>
 
     <div class="space-y-4">
-      <section class="border-surface-variant-1 p-4 border rounded-md">
+      <section class="border-elevated p-4 border rounded-md">
         <h3 class="text-lg font-semibold mb-3">
           Normal Theme (No Component Defaults)
         </h3>
@@ -148,7 +148,7 @@ const customCheckboxValue = ref(false)
         </ThemeProvider>
       </section>
 
-      <section class="border-surface-variant-1 p-4 border rounded-md">
+      <section class="border-elevated p-4 border rounded-md">
         <h3 class="text-lg font-semibold mb-3">
           Custom Theme with Component Defaults
         </h3>
@@ -219,7 +219,7 @@ const customCheckboxValue = ref(false)
         </ThemeProvider>
       </section>
 
-      <section class="border-surface-variant-1 p-4 border rounded-md">
+      <section class="border-elevated p-4 border rounded-md">
         <h3 class="text-lg font-semibold mb-3">
           Theme Configuration
         </h3>
@@ -228,7 +228,7 @@ const customCheckboxValue = ref(false)
             <h4 class="font-medium mb-2">
               Custom Theme Component Defaults:
             </h4>
-            <pre class="bg-surface-variant-1 text-xs p-2 rounded overflow-auto"><code>componentDefaults: {
+            <pre class="bg-container text-xs p-2 rounded overflow-auto"><code>componentDefaults: {
   Btn: {
     variant: 'filled',
     size: 'lg',
@@ -242,14 +242,14 @@ const customCheckboxValue = ref(false)
             <h4 class="font-medium mb-2">
               Usage Examples:
             </h4>
-            <pre class="bg-surface-variant-1 text-xs p-2 rounded overflow-auto"><code>&lt;Btn&gt;Uses all defaults&lt;/Btn&gt;
+            <pre class="bg-container text-xs p-2 rounded overflow-auto"><code>&lt;Btn&gt;Uses all defaults&lt;/Btn&gt;
 &lt;Btn variant="outline"&gt;Override variant&lt;/Btn&gt;
 &lt;Btn size="sm"&gt;Override size&lt;/Btn&gt;</code></pre>
           </div>
         </div>
       </section>
 
-      <section class="border-surface-variant-1 p-4 border rounded-md">
+      <section class="border-elevated p-4 border rounded-md">
         <h3 class="text-lg font-semibold mb-3">
           Dynamic Theme Switching
         </h3>

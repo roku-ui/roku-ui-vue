@@ -1,15 +1,13 @@
 import type { Color as CuloriColor } from 'culori'
 import { safeHex, safeHex8 } from './color-helpers'
 
-export type PaletteSource = 'color' | 'surface'
-
 export interface PaletteCollection {
   color: CuloriColor[]
-  surface: CuloriColor[]
+  [key: string]: CuloriColor[]
 }
 
 interface PaletteTokenConfig {
-  source: PaletteSource
+  palette?: string
   index: number
   format?: 'hex' | 'hex8'
   alpha?: number
@@ -27,11 +25,15 @@ export type VariantStyleConfig = Record<string, VariantTokenConfig>
 export function buildVariantStyles(config: VariantStyleConfig, palettes: PaletteCollection): Record<string, string> {
   const style: Record<string, string> = {}
   for (const [token, entry] of Object.entries(config)) {
-    if (entry.source === 'literal') {
+    if ('source' in entry) {
       style[token] = entry.value
       continue
     }
-    const palette = palettes[entry.source]
+    const paletteKey = entry.palette ?? 'color'
+    const palette = palettes[paletteKey]
+    if (!palette) {
+      continue
+    }
     const color = palette[entry.index]
     if (entry.format === 'hex8' || entry.alpha !== undefined) {
       const alpha = entry.alpha ?? 1

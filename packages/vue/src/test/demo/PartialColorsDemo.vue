@@ -51,7 +51,7 @@ const switchValue3 = ref(false)
 
     <div class="gap-6 grid grid-cols-1 lg:grid-cols-3">
       <!-- Primary Only -->
-      <div class="border-surface-variant-1 p-6 border rounded-lg">
+      <div class="border-elevated p-6 border rounded-lg">
         <h2 class="text-xl font-semibold mb-4">
           Primary Only
         </h2>
@@ -90,7 +90,7 @@ const switchValue3 = ref(false)
       </div>
 
       <!-- Partial Colors -->
-      <div class="border-surface-variant-1 p-6 border rounded-lg">
+      <div class="border-elevated p-6 border rounded-lg">
         <h2 class="text-xl font-semibold mb-4">
           Partial Colors
         </h2>
@@ -129,7 +129,7 @@ const switchValue3 = ref(false)
       </div>
 
       <!-- Full Colors -->
-      <div class="border-surface-variant-1 p-6 border rounded-lg">
+      <div class="border-elevated p-6 border rounded-lg">
         <h2 class="text-xl font-semibold mb-4">
           Full Colors
         </h2>
@@ -168,7 +168,7 @@ const switchValue3 = ref(false)
       </div>
     </div>
 
-    <div class="border-surface-variant-1 p-6 border rounded-lg">
+    <div class="border-elevated p-6 border rounded-lg">
       <h2 class="text-xl font-semibold mb-4">
         Configuration Examples
       </h2>
@@ -177,7 +177,7 @@ const switchValue3 = ref(false)
           <h3 class="font-medium mb-2">
             Primary Only
           </h3>
-          <pre class="bg-surface-variant-1 text-xs p-3 rounded overflow-auto"><code>{
+          <pre class="bg-container text-xs p-3 rounded overflow-auto"><code>{
   colors: {
     primary: '#ff6b35'
   }
@@ -187,7 +187,7 @@ const switchValue3 = ref(false)
           <h3 class="font-medium mb-2">
             Partial Colors
           </h3>
-          <pre class="bg-surface-variant-1 text-xs p-3 rounded overflow-auto"><code>{
+          <pre class="bg-container text-xs p-3 rounded overflow-auto"><code>{
   colors: {
     primary: '#6366f1',
     secondary: '#06d6a0'
@@ -198,7 +198,7 @@ const switchValue3 = ref(false)
           <h3 class="font-medium mb-2">
             Full Colors
           </h3>
-          <pre class="bg-surface-variant-1 text-xs p-3 rounded overflow-auto"><code>{
+          <pre class="bg-container text-xs p-3 rounded overflow-auto"><code>{
   colors: {
     primary: '#e11d48',
     secondary: '#0ea5e9',

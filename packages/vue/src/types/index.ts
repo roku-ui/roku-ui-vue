@@ -1,7 +1,7 @@
 import type { Component, VNode } from 'vue'
 
-export type BtnVariant = 'filled' | 'default' | 'light' | 'outline' | 'subtle' | 'transparent' | 'contrast' | 'white'
-export type ContainerVariant = 'filled' | 'default' | 'light' | 'outline' | 'white'
+export type ContainerVariant = 'filled' | 'default' | 'light' | 'outline' | 'inverted'
+export type BtnVariant = ContainerVariant | 'subtle' | 'transparent' | 'contrast'
 export type InputVariant = 'default' | 'filled'
 export type CalendarMode = 'single' | 'multiple' | 'range'
 export type DefinedColor = 'primary' | 'secondary' | 'tertiary' | 'success' | 'error' | 'info' | 'warning'

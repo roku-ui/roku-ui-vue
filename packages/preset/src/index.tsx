@@ -25,30 +25,30 @@ function rokuPresetImpl(): Preset {
 
     // Standard color backgrounds: bg-{color}
     [/^bg-(primary|secondary|tertiary|success|error|info|warning)$/, ([, color]) => ({
-      'background-color': `var(--r-${color}-background-color)`,
+      'background-color': `rgb(var(--r-bg-${color}) / var(--un-bg-opacity, 1))`,
     })],
 
     // Standard color text: text-{color}
     [/^text-(dimmed|muted|default|highlight|inverted)$/, ([, variant]) => ({
-      color: `var(--r-text-${variant})`,
+      color: `rgb(var(--r-text-${variant}) / var(--un-text-opacity, 1))`,
     })],
 
     [/^bg-(base|container|elevated|inverted)$/, ([, variant]) => ({
-      'background-color': `var(--r-bg-${variant})`,
+      'background-color': `rgb(var(--r-bg-${variant}) / var(--un-bg-opacity, 1))`,
     })],
 
     [/^border-(base|container|elevated|inverted)$/, ([, color]) => ({
-      'border-color': `var(--r-border-${color})`,
+      'border-color': `rgb(var(--r-border-${color}) / var(--un-border-opacity, 1))`,
     })],
 
     [/^text-(primary|secondary|tertiary|success|error|info|warning)$/, ([, color]) => ({
-      color: `var(--r-text-${color})`,
+      color: `rgb(var(--r-text-${color}) / var(--un-text-opacity, 1))`,
     })],
 
     // Note: border-{color} handled via shortcuts below to avoid raw declarations
     // Standard color outlines: outline-{color}
     [/^outline-(primary|secondary|tertiary|error|info|warning)$/, ([, color]) => ({
-      'outline-color': `var(--r-${color}-background-color)`,
+      'outline-color': `rgb(var(--r-bg-${color}) / var(--un-outline-opacity, 1))`,
     })],
 
   ]

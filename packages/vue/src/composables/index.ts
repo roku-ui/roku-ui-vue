@@ -69,9 +69,9 @@ export function useThemeStyles(
   }
 
   const themeStyles = {
-    'backgroundColor': 'var(--r-surface-background-base-color)',
-    'color': 'var(--r-surface-text-color)',
-    '--un-default-border-color': 'var(--r-border-base)',
+    // 'backgroundColor': 'var(--r-surface-background-base-color)',
+    // 'color': 'var(--r-surface-text-color)',
+    '--un-default-border-color': 'rgb(var(--r-border-base))',
   }
 
   return {

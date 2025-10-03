@@ -4,19 +4,16 @@ import type { Color, ContainerVariant } from '@/types'
 import { computed, unref } from 'vue'
 import { useCS, useMergedCS } from './color-system'
 import {
-  darkBgIndex,
-  darkBorderIndex,
-  darkSurfaceBgIndex,
-  darkSurfaceBgVariant1Index,
-  darkTextIndex,
-  lightBgIndex,
-  lightBorderIndex,
-  lightSurfaceBgIndex,
-  lightTextIndex,
+  COLOR_BG,
+  COLOR_TEXT,
+  OPACITY_SCALE,
+  SURFACE_BG,
+  SURFACE_BORDER,
+  SURFACE_TEXT,
 } from './constants'
 
 interface ContainerCSRecipeEntry {
-  colorSource: 'surface' | 'variant'
+  color?: 'surface'
   type: CSType
   index: CSIndex
   alpha?: number
@@ -29,19 +26,19 @@ interface ContainerCSRecipe {
 
 function resolveContainerRecipe(recipe: ContainerCSRecipe, variantColor?: MaybeRef<Color>) {
   const csList = recipe.entries.map((entry) => {
-    if (entry.colorSource === 'variant') {
-      if (!variantColor) {
-        throw new Error('Container recipe requires a color source')
-      }
+    if (entry.color === 'surface') {
       return useCS({
-        color: variantColor,
+        color: 'surface',
         type: entry.type,
         index: entry.index,
         alpha: entry.alpha,
       })
     }
+    if (!variantColor) {
+      throw new Error('Container recipe requires a color source')
+    }
     return useCS({
-      color: 'surface',
+      color: variantColor,
       type: entry.type,
       index: entry.index,
       alpha: entry.alpha,
@@ -50,18 +47,18 @@ function resolveContainerRecipe(recipe: ContainerCSRecipe, variantColor?: MaybeR
   return useMergedCS(csList, recipe.extraClass ?? [])
 }
 
-const containerRecipes: Record<'default' | 'filled' | 'light', ContainerCSRecipe> = {
+const containerRecipes: Record<ContainerVariant, ContainerCSRecipe> = {
   default: {
     entries: [
       {
-        colorSource: 'surface',
+        color: 'surface',
         type: 'bg',
-        index: { dark: darkSurfaceBgVariant1Index, light: lightSurfaceBgIndex },
+        index: { dark: SURFACE_BG.container.dark, light: SURFACE_BG.container.light },
       },
       {
-        colorSource: 'surface',
+        color: 'surface',
         type: 'border',
-        index: { dark: darkBorderIndex, light: lightBorderIndex },
+        index: { dark: SURFACE_BORDER.base.dark, light: SURFACE_BORDER.base.light },
       },
     ],
     extraClass: ['border'],
@@ -69,17 +66,14 @@ const containerRecipes: Record<'default' | 'filled' | 'light', ContainerCSRecipe
   filled: {
     entries: [
       {
-        colorSource: 'variant',
         type: 'bg',
-        index: { dark: darkBgIndex, light: lightBgIndex },
+        index: { dark: COLOR_BG.solid.dark, light: COLOR_BG.solid.light },
       },
       {
-        colorSource: 'variant',
         type: 'border',
-        index: { dark: darkBgIndex, light: lightBgIndex },
+        index: { dark: COLOR_BG.solid.dark, light: COLOR_BG.solid.light },
       },
       {
-        colorSource: 'variant',
         type: 'text',
         index: 0,
       },
@@ -88,40 +82,73 @@ const containerRecipes: Record<'default' | 'filled' | 'light', ContainerCSRecipe
   light: {
     entries: [
       {
-        colorSource: 'variant',
         type: 'bg',
-        index: { dark: darkBgIndex, light: lightBgIndex },
-        alpha: 0.15,
+        index: { dark: COLOR_BG.solid.dark, light: COLOR_BG.solid.light },
+        alpha: OPACITY_SCALE.dark.tint,
       },
       {
-        colorSource: 'variant',
         type: 'text',
-        index: { dark: darkTextIndex, light: lightTextIndex },
+        index: { dark: COLOR_TEXT.solid.dark, light: COLOR_TEXT.solid.light },
       },
       {
-        colorSource: 'variant',
         type: 'border',
-        index: { dark: darkBgIndex, light: lightBgIndex },
+        index: { dark: COLOR_BG.solid.dark, light: COLOR_BG.solid.light },
         alpha: 0,
       },
     ],
+  },
+  outline: {
+    entries: [
+      {
+        type: 'bg',
+        index: { dark: COLOR_BG.solid.dark, light: COLOR_BG.solid.light },
+        alpha: 0,
+      },
+      {
+        type: 'border',
+        index: { dark: COLOR_BG.solid.dark, light: COLOR_BG.solid.light },
+      },
+      {
+        type: 'text',
+        index: { dark: COLOR_TEXT.solid.dark, light: COLOR_TEXT.solid.light },
+      },
+    ],
+    extraClass: ['border'],
+  },
+  inverted: {
+    entries: [
+      {
+        color: 'surface',
+        type: 'bg',
+        index: { dark: SURFACE_BG.inverted.dark, light: SURFACE_BG.inverted.light },
+      },
+      {
+        color: 'surface',
+        type: 'border',
+        index: { dark: SURFACE_BORDER.inverted.dark, light: SURFACE_BORDER.inverted.light },
+      },
+      {
+        color: 'surface',
+        type: 'text',
+        index: { dark: SURFACE_TEXT.inverted.dark, light: SURFACE_TEXT.inverted.light },
+      },
+    ],
+    extraClass: ['border'],
   },
 }
 
 const indicatorRecipe: ContainerCSRecipe = {
   entries: [
     {
-      colorSource: 'variant',
       type: 'bg',
-      index: { dark: darkBgIndex, light: lightBgIndex },
+      index: { dark: COLOR_BG.solid.dark, light: COLOR_BG.solid.light },
     },
     {
-      colorSource: 'surface',
+      color: 'surface',
       type: 'border',
-      index: { dark: darkSurfaceBgIndex, light: lightSurfaceBgIndex },
+      index: { dark: SURFACE_BORDER.base.dark, light: SURFACE_BORDER.base.light },
     },
     {
-      colorSource: 'variant',
       type: 'text',
       index: 0,
     },
@@ -132,6 +159,8 @@ export function useContainerCS(variant: MaybeRef<ContainerVariant>, color: Maybe
   const defaultCS = useContainerDefaultCS()
   const filledCS = useContainerFilledCS(color)
   const lightCS = useContainerLightCS(color)
+  const outlineCS = useContainerOutlineCS(color)
+  const invertedCS = useContainerInvertedCS()
   return computed(() => {
     switch (unref(variant)) {
       case 'filled': {
@@ -139,6 +168,12 @@ export function useContainerCS(variant: MaybeRef<ContainerVariant>, color: Maybe
       }
       case 'light': {
         return lightCS.value
+      }
+      case 'outline': {
+        return outlineCS.value
+      }
+      case 'inverted': {
+        return invertedCS.value
       }
       default: {
         return defaultCS.value
@@ -156,12 +191,12 @@ export function useContainerDefaultVariantCS() {
     const bgCS = useCS({
       color: 'surface',
       type: 'bg',
-      index: { dark: 7, light: 2 },
+      index: { dark: SURFACE_BG.containerHover.dark, light: SURFACE_BG.containerHover.light },
     })
     const borderCS = useCS({
       color: 'surface',
       type: 'border',
-      index: { dark: 6, light: 4 },
+      index: { dark: SURFACE_BORDER.subtle.dark, light: SURFACE_BORDER.subtle.light },
     })
     return useMergedCS([bgCS, borderCS]).value
   })
@@ -177,4 +212,12 @@ export function useContainerFilledCS(color: MaybeRef<Color>) {
 
 export function useContainerLightCS(color: MaybeRef<Color>) {
   return resolveContainerRecipe(containerRecipes.light, color)
+}
+
+export function useContainerOutlineCS(color: MaybeRef<Color>) {
+  return resolveContainerRecipe(containerRecipes.outline, color)
+}
+
+export function useContainerInvertedCS() {
+  return resolveContainerRecipe(containerRecipes.inverted)
 }

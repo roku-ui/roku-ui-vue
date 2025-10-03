@@ -89,7 +89,7 @@ const outlineCS = useOutlineCS(outlineColor)
       rounded.style,
     ]"
     :class="sizeCls.normalContent"
-    class="bg-surface-variant-1 rounded-md inline-block animate-pulse"
+    class="bg-container rounded-md inline-block animate-pulse"
   />
   <component
     :is="is"

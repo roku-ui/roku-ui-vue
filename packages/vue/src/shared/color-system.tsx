@@ -9,17 +9,12 @@ import { resolveTailwindPalette } from '@/utils/tailwindPalettes'
 import { COLOR_LIGHTNESS_MAP } from '..'
 import { safeHex, safeHex8 } from './color-helpers'
 import {
-  darkBgIndex,
-  darkBgVariantIndex,
-  darkBorderIndex,
-  darkSurfaceBgVariant1Index,
-  darkTextIndex,
-  darkTextVariantIndex,
-  lightBgVariantIndex,
-  lightBorderIndex,
-  lightSurfaceBgVariantIndex,
-  lightTextIndex,
-  lightTextVariantIndex,
+  COLOR_BG,
+  COLOR_TEXT,
+  COLOR_TINT_INDEX,
+  SURFACE_BG,
+  SURFACE_BORDER,
+  SURFACE_TEXT,
 } from './constants'
 import { buildVariantStyles } from './style-recipes'
 import { getThemeColorString } from './theme'
@@ -95,7 +90,7 @@ export function useSurfaceColors() {
 }
 
 export function useTextCS(color: MaybeRef<Color>) {
-  return useColorCS(color, 'text', { dark: darkTextIndex, light: lightTextIndex })
+  return useColorCS(color, 'text', { dark: COLOR_TEXT.solid.dark, light: COLOR_TEXT.solid.light })
 }
 
 export type CSType = 'bg' | 'border' | 'text' | 'placeholder' | 'hover:bg' | 'hover:border' | 'hover:text' | 'outline'
@@ -252,7 +247,7 @@ export function useOutlineCS(color: MaybeRef<Color>) {
   return useCS({
     color,
     type: 'outline',
-    index: { dark: darkBorderIndex, light: lightBorderIndex },
+    index: { dark: SURFACE_BORDER.base.dark, light: SURFACE_BORDER.base.light },
   })
 }
 
@@ -284,32 +279,29 @@ export const borderCS = computed(() => {
   return useCS({
     color: 'surface',
     type: 'border',
-    index: { dark: darkBorderIndex, light: lightBorderIndex },
+    index: { dark: SURFACE_BORDER.base.dark, light: SURFACE_BORDER.base.light },
   }).value
 })
 
-const SURFACE_LIGHT_BASE_INDEX = 0
-const LIGHT_FILLED_HOVER_INDEX = 6
-
 const inputVariantConfigs: Record<InputVariant, VariantStyleConfig> = {
   default: {
-    '--d-bg': { source: 'surface', index: darkSurfaceBgVariant1Index },
-    '--d-border-f': { source: 'color', index: darkBgIndex },
-    '--d-border': { source: 'surface', index: darkBorderIndex },
-    '--d-placeholder': { source: 'surface', index: darkTextVariantIndex },
+    '--d-bg': { palette: 'surface', index: SURFACE_BG.container.dark },
+    '--d-border-f': { index: COLOR_BG.solid.dark },
+    '--d-border': { palette: 'surface', index: SURFACE_BORDER.base.dark },
+    '--d-placeholder': { palette: 'surface', index: SURFACE_TEXT.muted.dark },
     '--d-text': { source: 'literal', value: 'white' },
-    '--l-bg': { source: 'surface', index: SURFACE_LIGHT_BASE_INDEX },
-    '--l-border-f': { source: 'color', index: lightBorderIndex },
-    '--l-border': { source: 'surface', index: lightSurfaceBgVariantIndex },
-    '--l-placeholder': { source: 'surface', index: lightTextVariantIndex },
+    '--l-bg': { palette: 'surface', index: SURFACE_BG.base.light },
+    '--l-border-f': { index: COLOR_TINT_INDEX },
+    '--l-border': { palette: 'surface', index: SURFACE_BORDER.base.light },
+    '--l-placeholder': { palette: 'surface', index: SURFACE_TEXT.muted.light },
     '--l-text': { source: 'literal', value: 'black' },
   },
   filled: {
-    '--d-bg': { source: 'color', index: darkBgIndex },
-    '--d-bg-h': { source: 'color', index: darkBgVariantIndex },
+    '--d-bg': { index: COLOR_BG.solid.dark },
+    '--d-bg-h': { index: COLOR_BG.hover.dark },
     '--d-border': { source: 'literal', value: 'transparent' },
-    '--l-bg': { source: 'color', index: lightBgVariantIndex },
-    '--l-bg-h': { source: 'color', index: LIGHT_FILLED_HOVER_INDEX },
+    '--l-bg': { index: COLOR_BG.solid.light },
+    '--l-bg-h': { index: COLOR_BG.hover.light },
     '--l-border': { source: 'literal', value: 'transparent' },
   },
 }
