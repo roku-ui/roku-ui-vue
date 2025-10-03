@@ -160,8 +160,8 @@ function getPerceptualChromaMultiplier(lightness: number, strategy: 'conservativ
 // Adjust chroma based on hue characteristics
 function getHueSpecificChromaAdjustment(hue: number): number {
   if (hue === undefined) {
- return 1
-}
+    return 1
+  }
 
   // Some hues (like yellow) appear more saturated than others (like blue/purple)
   // This adjustment compensates for perceptual differences
@@ -205,8 +205,8 @@ export const GAMUT_DEFINITIONS: Record<string, GamutInfo> = {
 export function isColorInGamut(color: any, gamut: 'srgb' | 'p3' | 'rec2020'): boolean {
   const rgbColor = rgb(color)
   if (!rgbColor || !('r' in rgbColor)) {
- return false
-}
+    return false
+  }
 
   const { r, g, b } = rgbColor
   const gamutInfo = (GAMUT_DEFINITIONS[gamut] ?? GAMUT_DEFINITIONS.srgb)!
@@ -241,7 +241,7 @@ function getMaxChromaForGamut(
       low = midChroma
       maxChroma = midChroma
     }
- else {
+    else {
       high = midChroma
     }
 
@@ -291,25 +291,25 @@ export function analyzeColorGamut(colors: any[]): {
     const inRec2020 = isColorInGamut(color, 'rec2020')
 
     if (inSrgb) {
- results.srgbCoverage++
-}
+      results.srgbCoverage++
+    }
     if (inP3) {
- results.p3Coverage++
-}
+      results.p3Coverage++
+    }
     if (inRec2020) {
- results.rec2020Coverage++
-}
+      results.rec2020Coverage++
+    }
 
     const outOfGamuts: string[] = []
     if (!inSrgb) {
- outOfGamuts.push('srgb')
-}
+      outOfGamuts.push('srgb')
+    }
     if (!inP3) {
- outOfGamuts.push('p3')
-}
+      outOfGamuts.push('p3')
+    }
     if (!inRec2020) {
- outOfGamuts.push('rec2020')
-}
+      outOfGamuts.push('rec2020')
+    }
 
     if (outOfGamuts.length > 0) {
       results.outOfGamutColors.push({ index, gamuts: outOfGamuts })
@@ -335,8 +335,8 @@ function linearize(c: number): number {
 function getRelativeLuminance(color: any): number {
   const rgbColor = rgb(color)
   if (!rgbColor || !('r' in rgbColor)) {
- return 0
-}
+    return 0
+  }
 
   const { r, g, b } = rgbColor
 
@@ -514,13 +514,13 @@ export function generateAdaptiveLightnessMap(
 // Perceptual uniformity helper (file-scope). See detailed JSDoc above where option is declared.
 function applyPerceptualUniformity(lightnessMap: number[], base: ReturnType<typeof oklch>): number[] {
   if (!base) {
- return lightnessMap
-}
+    return lightnessMap
+  }
   const hue = base.h ?? 0
   const chroma = base.c ?? 0
   if (chroma <= 0.01) {
- return lightnessMap
-}
+    return lightnessMap
+  }
   const cNorm = Math.min(1, chroma / 0.3)
   function gauss(h: number, center: number, sigma: number) {
     const d = ((h - center + 720) % 360)
@@ -533,8 +533,8 @@ function applyPerceptualUniformity(lightnessMap: number[], base: ReturnType<type
   const magentaFactor = gauss(hue, 315, 25)
   const compensation = ((-0.035 * yellowFactor) + (0.045 * blueFactor) + (0.02 * magentaFactor)) * cNorm
   if (Math.abs(compensation) < 0.001) {
- return lightnessMap
-}
+    return lightnessMap
+  }
   return lightnessMap.map((L) => {
     const midWeight = 1 - Math.abs(L - 0.5) * 1.4
     const delta = compensation * midWeight
@@ -610,7 +610,7 @@ export function generateAdvancedColorPalette(
     }
     objMap = generateColorsObjMapOKLCH(color, mapForObj, options)
   }
- else {
+  else {
     colors = generateContrastAwareColors(color, backgroundLightness, options)
     objMap = generateColorsObjMapOKLCH(color, COLOR_LIGHTNESS_MAP, options)
   }
@@ -740,7 +740,7 @@ export function generateColorsObjMap(color: ColorInput, lightnessMap = COLOR_LIG
   const closestLightness = getClosestLightness(color)
   const baseColorIndex = lightnessMap.indexOf(closestLightness)
 
-  const colors = lightnessMap.map((lightness) => ({
+  const colors = lightnessMap.map(lightness => ({
     mode: 'hsl' as const,
     h: baseHsl.h,
     s: baseHsl.s,

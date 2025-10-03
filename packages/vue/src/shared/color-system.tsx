@@ -59,7 +59,7 @@ export function useColors(color: MaybeRef<Color>, lightnessMap = COLOR_LIGHTNESS
         }
         const parsed = tailwindMatch.palette
           .map(hex => rgb(hex))
-          .filter((item): item is CuloriColor => Boolean(item))
+          .filter(c => c !== undefined) as CuloriColor[]
         colorStyleCache.set(cacheKey, parsed)
         return parsed
       }

@@ -61,8 +61,8 @@ export function useThemeStyles(
       const c = rgb(cur)
       const base = c
         ? `${Math.round(c.r * 255)} ${Math.round(c.g * 255)} ${Math.round(
-            c.b * 255,
-          )}`
+          c.b * 255,
+        )}`
         : '0 0 0'
       colorVars[`--r-color-${color}-${idx}`] = editorFriendly ? `${base} /* ${cur} */` : base
     }

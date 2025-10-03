@@ -3,7 +3,7 @@ import tailwindReset from '@unocss/reset/tailwind.css'
 import { presetIcons, presetTypography, presetWind4 } from 'unocss'
 // 使用 ?raw 以便在 vite 开发模式下把 CSS 作为纯文本引入（无需 rollup-plugin-import-css）
 // 这样 alias 指向源码时修改 styles.css 会立即触发热更新并注入新的 preflight
-import baseStyle from './styles.css?raw'
+import baseStyle from './styles.css'
 
 const colorKeys = ['surface', 'primary', 'secondary', 'tertiary', 'info', 'warning', 'error']
 const colors: Record<string, Record<number, string>> = {}
@@ -15,10 +15,10 @@ for (const key of colorKeys) {
   colors[key] = obj
 }
 const shortcuts = {
-      // Legacy component integration shortcuts (keep for backward compatibility)
-      'custom-colors': 'border dark:text-[var(--d-text)] text-[var(--l-text)] dark:bg-[var(--d-bg)] bg-[var(--l-bg)] dark:border-[var(--d-border)] border-[var(--l-border)] dark:hover:bg-[var(--d-bg-h)] hover:bg-[var(--l-bg-h)] hover:text-[var(--l-text-h)] dark:hover:text-[var(--d-text-h)] focus-visible:outline-[--l-outline] dark:focus-visible:outline-[--d-outline]',
-      'custom-input-colors': 'border bg-[var(--l-bg)] dark:bg-[var(--d-bg)] text-[var(--l-text)] dark:text-[var(--d-text)] placeholder-[var(--l-placeholder)] dark:placeholder-[var(--d-placeholder)] border-[var(--l-border)] dark:border-[var(--d-border)] focus:border-[var(--l-border-f)] dark:focus:border-[var(--d-border-f)]',
-    }
+  // Legacy component integration shortcuts (keep for backward compatibility)
+  'custom-colors': 'border dark:text-[var(--d-text)] text-[var(--l-text)] dark:bg-[var(--d-bg)] bg-[var(--l-bg)] dark:border-[var(--d-border)] border-[var(--l-border)] dark:hover:bg-[var(--d-bg-h)] hover:bg-[var(--l-bg-h)] hover:text-[var(--l-text-h)] dark:hover:text-[var(--d-text-h)] focus-visible:outline-[--l-outline] dark:focus-visible:outline-[--d-outline]',
+  'custom-input-colors': 'border bg-[var(--l-bg)] dark:bg-[var(--d-bg)] text-[var(--l-text)] dark:text-[var(--d-text)] placeholder-[var(--l-placeholder)] dark:placeholder-[var(--d-placeholder)] border-[var(--l-border)] dark:border-[var(--d-border)] focus:border-[var(--l-border-f)] dark:focus:border-[var(--d-border-f)]',
+}
 function rokuPresetImpl(): Preset {
   // Dynamic rules generator - replaces many static shortcuts
   const dynamicRules: Array<[RegExp, (match: RegExpMatchArray) => Record<string, string>]> = [

@@ -24,6 +24,7 @@ const props = withDefaults(
     disabled?: boolean
     rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full' | string | number
     size?: 'sm' | 'md' | 'lg'
+    type?: string
     password?: boolean
     placeholder?: string
     label?: string
@@ -36,6 +37,7 @@ const props = withDefaults(
     color: undefined,
     rounded: undefined,
     size: undefined,
+    type: 'text',
     visibleStart: 2,
     visibleEnd: 2,
   },
@@ -51,6 +53,15 @@ const effectiveProps = computed(() => ({
   size: props.size ?? componentDefaults?.size ?? theme.value.defaultSize,
 }))
 const model = defineModel<string | number>()
+const inputType = computed(() => {
+  if (props.password) {
+    if (props.partialVisible) {
+      return 'text'
+    }
+    return 'password'
+  }
+  return props.type
+})
 const sizeCls = computed(() => {
   switch (effectiveProps.value.size) {
     case 'sm': {
@@ -245,7 +256,7 @@ watch(
         class="outline-none bg-transparent flex-1"
         :class="[sizeCls.input]"
         :placeholder="placeholder"
-        :type="props.password && !props.partialVisible ? 'password' : 'text'"
+        :type="inputType"
         @input="handleInput"
       >
       <div

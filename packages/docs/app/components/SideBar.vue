@@ -46,7 +46,7 @@ const treeListItems = computed<TreeListItemData[]>(() => {
   if (!Array.isArray(contentComponents.value)) {
     return []
   }
-  const sortedComponents = [...contentComponents.value].sort((a, b) => {
+  const sortedComponents = contentComponents.value.toSorted((a, b) => {
     const aDir = a.stem.split('/')[1]
     const bDir = b.stem.split('/')[1]
     if (!aDir) {

@@ -40,9 +40,9 @@ const containerCS = useContainerDefaultCS()
       <div
         :class="{
           'border-r': $slots.form,
+          ...(typeof surfaceBorderCS.class === 'object' ? surfaceBorderCS.class : {}),
         }"
         class="gird-paper-background flex flex-grow min-h-56 w-full items-center justify-center"
-        :class="surfaceBorderCS.class"
         :style="surfaceBorderCS.style"
       >
         <slot name="preview" />

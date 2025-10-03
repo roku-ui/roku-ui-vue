@@ -6,8 +6,8 @@ import { formatHex, formatHex8 } from 'culori'
  */
 export function safeHex(c: CuloriColor | undefined, fallback = '#000000'): string {
   if (!c) {
- return fallback
-}
+    return fallback
+  }
   return formatHex(c) || fallback
 }
 
@@ -16,7 +16,7 @@ export function safeHex(c: CuloriColor | undefined, fallback = '#000000'): strin
  */
 export function safeHex8(c: CuloriColor | undefined, alpha: number, fallback = '#00000000'): string {
   if (!c) {
- return fallback
-}
+    return fallback
+  }
   return formatHex8({ ...c, alpha }) || fallback
 }

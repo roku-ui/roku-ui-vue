@@ -90,10 +90,10 @@ const processedItems = computed(() => {
       if (index < currentStep.value) {
         status = 'finish'
       }
- else if (index === currentStep.value) {
+      else if (index === currentStep.value) {
         status = 'process'
       }
- else {
+      else {
         status = 'wait'
       }
     }
@@ -113,8 +113,8 @@ function handleStepClick(index: number) {
   }
 
   if (props.linear && index > currentStep.value + 1) {
- return
-}
+    return
+  }
 
   currentStep.value = index
   emit('click', index)
@@ -123,8 +123,8 @@ function handleStepClick(index: number) {
 // Keyboard navigation
 onKeyStroke('ArrowLeft', (e) => {
   if (!stepRef.value?.contains(document.activeElement)) {
- return
-}
+    return
+  }
   e.preventDefault()
 
   if (props.direction === 'horizontal' && currentStep.value > 0) {
@@ -138,8 +138,8 @@ onKeyStroke('ArrowLeft', (e) => {
 
 onKeyStroke('ArrowRight', (e) => {
   if (!stepRef.value?.contains(document.activeElement)) {
- return
-}
+    return
+  }
   e.preventDefault()
 
   if (props.direction === 'horizontal' && currentStep.value < props.items.length - 1) {
@@ -153,8 +153,8 @@ onKeyStroke('ArrowRight', (e) => {
 
 onKeyStroke('ArrowUp', (e) => {
   if (!stepRef.value?.contains(document.activeElement)) {
- return
-}
+    return
+  }
   e.preventDefault()
 
   if (props.direction === 'vertical' && currentStep.value > 0) {
@@ -168,8 +168,8 @@ onKeyStroke('ArrowUp', (e) => {
 
 onKeyStroke('ArrowDown', (e) => {
   if (!stepRef.value?.contains(document.activeElement)) {
- return
-}
+    return
+  }
   e.preventDefault()
 
   if (props.direction === 'vertical' && currentStep.value < props.items.length - 1) {
@@ -327,8 +327,8 @@ function getColorSystem(status: string) {
 // Progress calculation
 const progressPercent = computed(() => {
   if (props.items.length === 0) {
- return 0
-}
+    return 0
+  }
   return ((currentStep.value + 1) / props.items.length) * 100
 })
 </script>

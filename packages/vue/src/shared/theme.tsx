@@ -29,8 +29,8 @@ export interface ComponentDefaults {
     rounded?: Rounded
   }
   Switch?: {
-      size?: Size
-      color?: Color
+    size?: Size
+    color?: Color
   }
   Select?: {
     size?: Size

@@ -23,9 +23,9 @@ const formatters = {
     format: (value: string): string => {
       const cleanValue = value.replaceAll(/[^\d.]/g, '')
       const parts = cleanValue.split('.')
-  const integerRaw = parts[0] ?? ''
-  const integerPart = integerRaw.replaceAll(/\B(?=(\d{3})+(?!\d))/g, ',')
-  return parts.length > 1 ? `${integerPart}.${parts[1] ?? ''}` : integerPart
+      const integerRaw = parts[0] ?? ''
+      const integerPart = integerRaw.replaceAll(/\B(?=(\d{3})+(?!\d))/g, ',')
+      return parts.length > 1 ? `${integerPart}.${parts[1] ?? ''}` : integerPart
     },
     parse: (value: string): string => {
       return value.replaceAll(/[^\d.]/g, '')
@@ -40,9 +40,9 @@ const formatters = {
         return ''
       }
       const parts = cleanValue.split('.')
-  const integerRaw = parts[0] ?? ''
-  const integerPart = integerRaw.replaceAll(/\B(?=(\d{3})+(?!\d))/g, ',')
-  const formatted = parts.length > 1 ? `${integerPart}.${(parts[1] ?? '').slice(0, 2)}` : integerPart
+      const integerRaw = parts[0] ?? ''
+      const integerPart = integerRaw.replaceAll(/\B(?=(\d{3})+(?!\d))/g, ',')
+      const formatted = parts.length > 1 ? `${integerPart}.${(parts[1] ?? '').slice(0, 2)}` : integerPart
       return `$${formatted}`
     },
     parse: (value: string): string => {

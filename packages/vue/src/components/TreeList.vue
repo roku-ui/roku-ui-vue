@@ -1,32 +1,8 @@
 <script setup lang="tsx">
-import type { Component, VNode } from 'vue'
-import type { Rounded } from '@/types'
+import type { Rounded, TreeListCollapseData, TreeListHeaderData, TreeListItemData, TreeListLeafData } from '@/types'
 import { computed, h, ref, watchEffect } from 'vue'
 import { useRounded } from '@/index'
 import { AutoHeightTransition } from '.'
-
-export interface TreeListLeafData {
-  icon?: string | VNode
-  title: string
-  value: string
-  attrs?: Record<string, any>
-  is?: string | Component
-}
-
-export interface TreeListHeaderData {
-  icon?: string | VNode
-  title: string
-}
-
-export interface TreeListCollapseData {
-  title: string
-  icon?: string | VNode
-  value?: string
-  children?: TreeListItemData[]
-  open?: boolean
-}
-
-export type TreeListItemData = TreeListLeafData | TreeListHeaderData | TreeListCollapseData
 
 const props = withDefaults(defineProps<{
   items: TreeListItemData[]
