@@ -1,5 +1,6 @@
 import type { Color as CuloriColor } from 'culori'
 import type { MaybeRef } from 'vue'
+import type { VariantStyleConfig } from './style-recipes'
 import type { Color, InputVariant } from '@/types'
 import { formatHex, rgb } from 'culori'
 import { computed, unref } from 'vue'
@@ -9,14 +10,18 @@ import { COLOR_LIGHTNESS_MAP } from '..'
 import { safeHex, safeHex8 } from './color-helpers'
 import {
   darkBgIndex,
+  darkBgVariantIndex,
   darkBorderIndex,
   darkSurfaceBgVariant1Index,
   darkTextIndex,
   darkTextVariantIndex,
+  lightBgVariantIndex,
   lightBorderIndex,
+  lightSurfaceBgVariantIndex,
   lightTextIndex,
   lightTextVariantIndex,
 } from './constants'
+import { buildVariantStyles } from './style-recipes'
 import { getThemeColorString } from './theme'
 
 function useCuloriColor(color: MaybeRef<Color>) {
@@ -251,11 +256,11 @@ export function useOutlineCS(color: MaybeRef<Color>) {
   })
 }
 
-export function useMergedCS(...cs: ReturnType<typeof useCS>[]) {
+export function useMergedCS(csList: ReturnType<typeof useCS>[], extraClass: string[] = []) {
   return computed(() => {
     const style: Record<string, string> = {}
     const classList: string[] = []
-    for (const c of cs) {
+    for (const c of csList) {
       Object.assign(style, c.value.style)
       const classToAdd = c.value.class
       if (Array.isArray(classToAdd)) {
@@ -264,6 +269,9 @@ export function useMergedCS(...cs: ReturnType<typeof useCS>[]) {
       else {
         classList.push(classToAdd)
       }
+    }
+    if (extraClass.length > 0) {
+      classList.push(...extraClass)
     }
     return {
       style,
@@ -280,37 +288,41 @@ export const borderCS = computed(() => {
   }).value
 })
 
+const SURFACE_LIGHT_BASE_INDEX = 0
+const LIGHT_FILLED_HOVER_INDEX = 6
+
+const inputVariantConfigs: Record<InputVariant, VariantStyleConfig> = {
+  default: {
+    '--d-bg': { source: 'surface', index: darkSurfaceBgVariant1Index },
+    '--d-border-f': { source: 'color', index: darkBgIndex },
+    '--d-border': { source: 'surface', index: darkBorderIndex },
+    '--d-placeholder': { source: 'surface', index: darkTextVariantIndex },
+    '--d-text': { source: 'literal', value: 'white' },
+    '--l-bg': { source: 'surface', index: SURFACE_LIGHT_BASE_INDEX },
+    '--l-border-f': { source: 'color', index: lightBorderIndex },
+    '--l-border': { source: 'surface', index: lightSurfaceBgVariantIndex },
+    '--l-placeholder': { source: 'surface', index: lightTextVariantIndex },
+    '--l-text': { source: 'literal', value: 'black' },
+  },
+  filled: {
+    '--d-bg': { source: 'color', index: darkBgIndex },
+    '--d-bg-h': { source: 'color', index: darkBgVariantIndex },
+    '--d-border': { source: 'literal', value: 'transparent' },
+    '--l-bg': { source: 'color', index: lightBgVariantIndex },
+    '--l-bg-h': { source: 'color', index: LIGHT_FILLED_HOVER_INDEX },
+    '--l-border': { source: 'literal', value: 'transparent' },
+  },
+}
+
 export function useInputColorStyle(color: MaybeRef<string>, variant: MaybeRef<InputVariant> = 'default') {
+  const colors = useColors(color)
+  const surfaceColors = useSurfaceColors()
   return computed(() => {
-    const colors = useColors(color).value
-    const surfaceColors = useSurfaceColors().value
-    switch (unref(variant)) {
-      case 'default': {
-        return {
-          '--d-bg': formatHex(surfaceColors[darkSurfaceBgVariant1Index]) || '#000000',
-          '--d-border-f': formatHex(colors[darkBgIndex]) || '#000000',
-          '--d-border': formatHex(surfaceColors[darkBorderIndex]) || '#000000',
-          '--d-placeholder': formatHex(surfaceColors[darkTextVariantIndex]) || '#000000',
-          '--d-text': 'white',
-
-          '--l-bg': formatHex(surfaceColors[0]) || '#000000',
-          '--l-border-f': formatHex(colors[3]) || '#000000',
-          '--l-border': formatHex(surfaceColors[2]) || '#000000',
-          '--l-placeholder': formatHex(surfaceColors[lightTextVariantIndex]) || '#000000',
-          '--l-text': 'black',
-        }
-      }
-      case 'filled': {
-        return {
-          '--d-bg': formatHex(colors[5]) || '#000000',
-          '--d-bg-h': formatHex(colors[6]) || '#000000',
-          '--d-border': 'transparent',
-          '--l-bg': formatHex(colors[5]) || '#000000',
-          '--l-bg-h': formatHex(colors[6]) || '#000000',
-          '--l-border': 'transparent',
-
-        }
-      }
-    }
+    const variantKey = unref(variant)
+    const config = inputVariantConfigs[variantKey] ?? inputVariantConfigs.default
+    return buildVariantStyles(config, {
+      color: colors.value,
+      surface: surfaceColors.value,
+    })
   })
 }

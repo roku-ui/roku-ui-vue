@@ -17,10 +17,6 @@ export default jannchie(
       'style/array-element-newline': 'off',
       'eslint-comments/no-unlimited-disable': 'off',
       'unicorn/no-abusive-eslint-disable': 'off',
-      'vue/no-duplicate-attributes': ['error', {
-        allowCoexistClass: true,
-        allowCoexistStyle: true,
-      }],
     },
   },
 )

@@ -1,11 +1,9 @@
-import type { Color as CuloriColor } from 'culori'
 import type { ComputedRef, MaybeRef } from 'vue'
 import type { CS } from './color-system'
+import type { VariantStyleConfig } from './style-recipes'
 import type { BtnVariant, Color } from '@/types'
 import { computed, unref } from 'vue'
-import { generateAdaptiveLightnessMap, generateColorsObjMapOKLCH } from '@/utils'
-import { safeHex, safeHex8 } from './color-helpers'
-import { useColors } from './color-system'
+import { useColors, useSurfaceColors } from './color-system'
 import {
   darkBgIndex,
   darkBgVariantIndex,
@@ -25,144 +23,118 @@ import {
   lightSurfaceBgIndex,
   lightSurfaceBgVariantIndex,
   lightTextIndex,
+  lightTextVariantIndex,
 } from './constants'
-import { getThemeColorString } from './theme'
+import { buildVariantStyles } from './style-recipes'
+
+const darkContrastTextIndex = 2
+const lightSubtleBgIndex = 3
+const whiteVariantTextIndex = 4
+
+const buttonVariantConfigs: Record<BtnVariant, VariantStyleConfig> = {
+  default: {
+    '--d-bg': { source: 'surface', index: darkSurfaceBgVariant1Index },
+    '--d-bg-h': { source: 'surface', index: darkSurfaceBgVariant2Index },
+    '--d-border': { source: 'surface', index: darkBorderVariantIndex },
+    '--l-bg': { source: 'surface', index: lightSurfaceBgIndex },
+    '--l-bg-h': { source: 'surface', index: lightSurfaceBgVariantIndex },
+    '--l-border': { source: 'surface', index: lightBorderVariantIndex },
+  },
+  filled: {
+    '--d-border': { source: 'literal', value: 'transparent' },
+    '--d-bg': { source: 'color', index: darkBgIndex },
+    '--d-bg-h': { source: 'color', index: darkBgVariantIndex },
+    '--d-text': { source: 'literal', value: 'white' },
+    '--l-bg': { source: 'color', index: lightBgIndex },
+    '--l-bg-h': { source: 'color', index: lightBgVariantIndex },
+    '--l-text': { source: 'literal', value: 'white' },
+    '--l-text-h': { source: 'literal', value: 'white' },
+    '--l-border': { source: 'literal', value: 'transparent' },
+  },
+  light: {
+    '--d-border': { source: 'literal', value: 'transparent' },
+    '--d-bg': { source: 'color', index: darkBgIndex, format: 'hex8', alpha: darkOpacity },
+    '--d-bg-h': { source: 'color', index: darkBgIndex, format: 'hex8', alpha: darkOpacityVariant },
+    '--d-text': { source: 'color', index: darkTextIndex },
+    '--d-text-h': { source: 'color', index: darkTextIndex },
+    '--l-bg': { source: 'color', index: lightBgIndex, format: 'hex8', alpha: lightOpacity },
+    '--l-bg-h': { source: 'color', index: lightBgIndex, format: 'hex8', alpha: lightOpacityVariant },
+    '--l-text': { source: 'color', index: lightTextIndex },
+    '--l-text-h': { source: 'color', index: lightTextIndex },
+    '--l-border': { source: 'literal', value: 'transparent' },
+  },
+  outline: {
+    '--d-bg': { source: 'literal', value: 'transparent' },
+    '--d-bg-h': { source: 'color', index: darkBgVariantIndex, format: 'hex8', alpha: darkOpacity },
+    '--d-text': { source: 'color', index: darkTextIndex },
+    '--d-text-h': { source: 'color', index: darkTextIndex },
+    '--d-border': { source: 'color', index: darkBorderIndex },
+    '--l-bg': { source: 'literal', value: 'transparent' },
+    '--l-bg-h': { source: 'color', index: lightBgVariantIndex, format: 'hex8', alpha: lightOpacity },
+    '--l-text': { source: 'color', index: lightTextIndex },
+    '--l-text-h': { source: 'color', index: lightTextIndex },
+    '--l-border': { source: 'color', index: lightBorderIndex },
+  },
+  transparent: {
+    '--d-text': { source: 'color', index: darkTextIndex },
+    '--d-text-h': { source: 'color', index: darkTextIndex },
+    '--l-text': { source: 'color', index: lightTextVariantIndex },
+    '--l-text-h': { source: 'color', index: lightTextVariantIndex },
+    '--d-bg': { source: 'literal', value: 'transparent' },
+    '--l-bg': { source: 'literal', value: 'transparent' },
+    '--d-border': { source: 'literal', value: 'transparent' },
+    '--l-border': { source: 'literal', value: 'transparent' },
+  },
+  subtle: {
+    '--d-bg': { source: 'literal', value: 'transparent' },
+    '--d-bg-h': { source: 'color', index: lightSubtleBgIndex, format: 'hex8', alpha: darkOpacity },
+    '--d-text': { source: 'color', index: darkContrastTextIndex },
+    '--d-text-h': { source: 'color', index: darkContrastTextIndex },
+    '--d-border': { source: 'literal', value: 'transparent' },
+    '--l-bg': { source: 'literal', value: 'transparent' },
+    '--l-bg-h': { source: 'color', index: lightSubtleBgIndex, format: 'hex8', alpha: lightOpacity },
+    '--l-text': { source: 'color', index: lightTextVariantIndex },
+    '--l-text-h': { source: 'color', index: lightTextVariantIndex },
+    '--l-border': { source: 'literal', value: 'transparent' },
+  },
+  contrast: {
+    '--d-text': { source: 'color', index: darkContrastTextIndex },
+    '--d-text-h': { source: 'literal', value: 'white' },
+    '--d-bg': { source: 'literal', value: 'transparent' },
+    '--d-bg-h': { source: 'color', index: lightBgVariantIndex },
+    '--d-border': { source: 'literal', value: 'transparent' },
+    '--l-text': { source: 'color', index: lightTextVariantIndex },
+    '--l-text-h': { source: 'literal', value: 'white' },
+    '--l-bg': { source: 'literal', value: 'transparent' },
+    '--l-bg-h': { source: 'color', index: lightBgVariantIndex },
+    '--l-border': { source: 'literal', value: 'transparent' },
+  },
+  white: {
+    '--d-bg': { source: 'literal', value: 'white' },
+    '--d-bg-h': { source: 'literal', value: 'white' },
+    '--d-text': { source: 'color', index: whiteVariantTextIndex },
+    '--d-text-h': { source: 'color', index: whiteVariantTextIndex },
+    '--d-border': { source: 'literal', value: 'transparent' },
+    '--l-bg': { source: 'literal', value: 'white' },
+    '--l-bg-h': { source: 'literal', value: 'white' },
+    '--l-text': { source: 'color', index: lightTextVariantIndex },
+    '--l-text-h': { source: 'color', index: lightTextVariantIndex },
+    '--l-border': { source: 'literal', value: 'transparent' },
+  },
+}
 
 export function useButtonCS(variant: MaybeRef<BtnVariant> = 'default', color: MaybeRef<Color> = 'primary'): ComputedRef<CS> {
+  const colorPalette = useColors(color)
+  const surfacePalette = useSurfaceColors()
   return computed(() => {
-    const colors = useColors(color).value
-    const surfaceColorString = getThemeColorString('surface')
-    const adaptiveLightnessMap = generateAdaptiveLightnessMap(surfaceColorString, 'surface')
-    const surface = generateColorsObjMapOKLCH(surfaceColorString, adaptiveLightnessMap, {
-      strategy: 'conservative',
-      gamut: 'srgb',
-    }).colors
-    const variantStyles: Record<BtnVariant, () => Record<string, string>> = {
-      default: () => getDefaultVariantStyle(surface),
-      filled: () => getFilledVariantStyle(colors),
-      light: () => getLightVariantStyle(colors),
-      outline: () => getOutlineVariantStyle(colors),
-      transparent: () => getTransparentVariantStyle(colors),
-      subtle: () => getSubtleVariantStyle(colors),
-      contrast: () => getContrastVariantStyle(colors),
-      white: () => getWhiteVariantStyle(colors),
-    }
+    const variantKey = unref(variant)
+    const config = buttonVariantConfigs[variantKey] ?? buttonVariantConfigs.default
     return {
-      style: variantStyles[unref(variant)](),
+      style: buildVariantStyles(config, {
+        color: colorPalette.value,
+        surface: surfacePalette.value,
+      }),
       class: 'custom-colors',
     }
   })
-}
-
-function getDefaultVariantStyle(surface: CuloriColor[]): Record<string, string> {
-  return {
-    '--d-bg': safeHex(surface[darkSurfaceBgVariant1Index]),
-    '--d-bg-h': safeHex(surface[darkSurfaceBgVariant2Index]),
-    '--d-border': safeHex(surface[darkBorderVariantIndex]),
-    '--l-bg': safeHex(surface[lightSurfaceBgIndex]),
-    '--l-bg-h': safeHex(surface[lightSurfaceBgVariantIndex]),
-    '--l-border': safeHex(surface[lightBorderVariantIndex]),
-  }
-}
-
-function getFilledVariantStyle(color: CuloriColor[]): Record<string, string> {
-  return {
-    '--d-border': 'transparent',
-    '--d-bg': safeHex(color[darkBgIndex]),
-    '--d-bg-h': safeHex(color[darkBgVariantIndex]),
-    '--d-text': 'white',
-    '--l-bg': safeHex(color[lightBgIndex]),
-    '--l-bg-h': safeHex(color[lightBgVariantIndex]),
-    '--l-text': 'white',
-    '--l-text-h': 'white',
-    '--l-border': 'transparent',
-  }
-}
-
-function getLightVariantStyle(color: CuloriColor[]): Record<string, string> {
-  return {
-    '--d-border': 'transparent',
-    '--d-bg': safeHex8(color[darkBgIndex], darkOpacity),
-    '--d-bg-h': safeHex8(color[darkBgIndex], darkOpacityVariant),
-    '--d-text': safeHex(color[darkTextIndex]),
-    '--d-text-h': safeHex(color[darkTextIndex]),
-    '--l-bg': safeHex8(color[lightBgIndex], lightOpacity),
-    '--l-bg-h': safeHex8(color[lightBgIndex], lightOpacityVariant),
-    '--l-text': safeHex(color[lightTextIndex]),
-    '--l-text-h': safeHex(color[lightTextIndex]),
-    '--l-border': 'transparent',
-  }
-}
-
-function getOutlineVariantStyle(color: CuloriColor[]): Record<string, string> {
-  return {
-    '--d-bg': 'transparent',
-    '--d-bg-h': safeHex8(color[darkBgVariantIndex], darkOpacity),
-    '--d-text': safeHex(color[darkTextIndex]),
-    '--d-text-h': safeHex(color[darkTextIndex]),
-    '--d-border': safeHex(color[darkBorderIndex]),
-    '--l-bg': 'transparent',
-    '--l-bg-h': safeHex8(color[lightBgVariantIndex], lightOpacity),
-    '--l-text': safeHex(color[lightTextIndex]),
-    '--l-text-h': safeHex(color[lightTextIndex]),
-    '--l-border': safeHex(color[lightBorderIndex]),
-  }
-}
-
-function getTransparentVariantStyle(color: CuloriColor[]): Record<string, string> {
-  return {
-    '--d-text': safeHex(color[3]),
-    '--d-text-h': safeHex(color[3]),
-    '--l-text': safeHex(color[5]),
-    '--l-text-h': safeHex(color[5]),
-    '--d-bg': 'transparent',
-    '--l-bg': 'transparent',
-    '--d-border': 'transparent',
-    '--l-border': 'transparent',
-  }
-}
-
-function getSubtleVariantStyle(color: CuloriColor[]): Record<string, string> {
-  return {
-    '--d-bg': 'transparent',
-    '--d-bg-h': safeHex8(color[3], darkOpacity),
-    '--d-text': safeHex(color[2]),
-    '--d-text-h': safeHex(color[2]),
-    '--d-border': 'transparent',
-    '--l-bg': 'transparent',
-    '--l-bg-h': safeHex8(color[3], lightOpacity),
-    '--l-text': safeHex(color[5]),
-    '--l-text-h': safeHex(color[5]),
-    '--l-border': 'transparent',
-  }
-}
-
-function getContrastVariantStyle(color: CuloriColor[]): Record<string, string> {
-  return {
-    '--d-text': safeHex(color[2]),
-    '--d-text-h': 'white',
-    '--d-bg': 'transparent',
-    '--d-bg-h': safeHex(color[5]),
-    '--d-border': 'transparent',
-    '--l-text': safeHex(color[5]),
-    '--l-text-h': 'white',
-    '--l-bg': 'transparent',
-    '--l-bg-h': safeHex(color[5]),
-    '--l-border': 'transparent',
-  }
-}
-
-function getWhiteVariantStyle(color: CuloriColor[]): Record<string, string> {
-  return {
-    '--d-bg': 'white',
-    '--d-bg-h': 'white',
-    '--d-text': safeHex(color[4]),
-    '--d-text-h': safeHex(color[4]),
-    '--d-border': 'transparent',
-    '--l-bg': 'white',
-    '--l-bg-h': 'white',
-    '--l-text': safeHex(color[5]),
-    '--l-text-h': safeHex(color[5]),
-    '--l-border': 'transparent',
-  }
 }
