@@ -23,6 +23,11 @@ const rating = ref(3)
     />
     <Rating
       v-model="rating"
+      size="lg"
+      allow-half
+    />
+    <Rating
+      v-model="rating"
       :count="4"
       size="lg"
       :icons="[

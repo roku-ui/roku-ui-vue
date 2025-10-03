@@ -25,9 +25,9 @@
         --r-text-warning: var(--r-color-warning-5);
         --r-text-error: var(--r-color-error-5);
 
-        --r-text-dimmed: var(--r-color-surface-4);
-        --r-text-muted: var(--r-color-surface-5);
-        --r-text-default: var(--r-color-surface-7);
+        --r-text-dimmed: var(--r-color-surface-1);
+        --r-text-muted: var(--r-color-surface-3);
+        --r-text-default: var(--r-color-surface-6);
         --r-text-highlight: var(--r-color-surface-9);
         --r-text-inverted: var(--r-color-surface-1);
 
@@ -64,9 +64,9 @@
         --r-text-warning: var(--r-color-warning-4);
         --r-text-error: var(--r-color-error-4);
 
-        --r-text-dimmed: var(--r-color-surface-5);
-        --r-text-muted: var(--r-color-surface-4);
-        --r-text-default: var(--r-color-surface-3);
+        --r-text-dimmed: var(--r-color-surface-7);
+        --r-text-muted: var(--r-color-surface-5);
+        --r-text-default: var(--r-color-surface-2);
         --r-text-highlight: var(--r-color-surface-1);
         --r-text-inverted: var(--r-color-surface-10);
 

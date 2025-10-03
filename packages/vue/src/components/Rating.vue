@@ -1,172 +1,240 @@
 <script setup lang="ts">
-import type { Size } from '@/types'
+// Rating 组件颜色系统重构：
+// 1. 统一使用 useCS / 主题色，与其它组件一致（参考 Step / TabItem 等）。
+// 2. 支持单色 (主题色|hex) 与 多色数组（每个星单独的颜色）。
+// 3. active / inactive / hover 三态：
+//    - inactive: surface 文本弱化 (index { dark:6, light:3 }) 对齐 Step 的 wait / muted 层级。
+//    - active:   选中或范围内使用主色文本 index { dark:5, light:4 }。
+//    - hover(仅在 highlightSelectedOnly 时突出当前星): 使用 hover:text 派生。
+// 4. highlightSelectedOnly = true 时仅高亮当前 hover / 已选星；否则高亮 <= 当前值的全部星。
+// 5. 保持向后兼容：color 允许 string | string[]；默认使用主题 warning 色（如果用户未传则 fallback）。
+
+import type { Color, Size } from '@/types'
 import { computed, ref } from 'vue'
-import { useContainerCS, useCS } from '@/shared'
+import { useCS, useTheme } from '@/shared'
+
+type IconSingle = string | { active: string, normal: string }
+type IconType = IconSingle | IconSingle[] | undefined
 
 const props = withDefaults(defineProps<{
   count?: number
   icons?: IconType
-  color?: string[] | string
+  color?: (Color | string) | (Color | string)[]
   highlightSelectedOnly?: boolean
   unselectable?: boolean
   size?: Size
+  allowHalf?: boolean
 }>(), {
-  color: '#ffeb91',
+  count: 5,
+  color: 'warning', // 主题色（黄金色系），替代硬编码 #ffeb91
+  highlightSelectedOnly: false,
+  unselectable: false,
+  allowHalf: false,
 })
-const emit = defineEmits<{
-  select: [number]
-}>()
-const defaultColor = '#ffeb91'
-const activeCls = 'text-[var(--d-text)]'
-const inactiveCls = 'text-surface-dimmed'
-const hoverCls = 'text-[var(--d-text-h)]'
-const defaultIcon = 'i-fluent-star-12-filled'
-const defaultActionIcon = 'i-fluent-star-12-filled'
 
-const count = computed(() => props.count ?? 5)
-const model = defineModel({
-  default: 0,
-})
-const highlightSelectedOnly = computed(() => {
-  return props.highlightSelectedOnly ?? false
-})
-const unselectable = computed(() => {
-  return props.unselectable ?? false
-})
-const hoverIndex = ref(-1)
+const emit = defineEmits<{ select: [number] }>()
 
-type IconType = string | { active: string, normal: string } | (string | { active: string, normal: string })[] | undefined
-const iconData = computed(() => {
-  return unifyInput(props.icons, count.value, defaultIcon, defaultActionIcon)
-})
-function unifyInput(
-  input: IconType,
-  n: number,
-  defaultNormalIcon: string,
-  defaultActiveIcon: string,
-): { active: string, normal: string }[] {
-  // Helper function to convert a string to { active, normal } object using default values
-  function toActiveNormal(value: string | { active: string, normal: string } | undefined): { active: string, normal: string } {
-    if (typeof value === 'string') {
-      return { active: value, normal: value }
-    }
-    else if (value === undefined) {
-      return { active: defaultActiveIcon, normal: defaultNormalIcon }
-    }
-    else {
-      return {
-        active: value.active || defaultActiveIcon,
-        normal: value.normal || defaultNormalIcon,
-      }
-    }
-  }
+// model 值：选中的星数量
+const model = defineModel<number>({ default: 0 })
 
-  // If input is undefined, use default values for all elements
-  if (input === undefined) {
-    return Array.from({ length: n }, () => ({ active: defaultActiveIcon, normal: defaultNormalIcon }))
-  }
+const theme = useTheme()
 
-  // Determine the base object to use for filling the array
-  let baseObject: { active: string, normal: string }
+// ============== 图标处理 ==============
+const DEFAULT_ICON = 'i-fluent-star-12-filled'
+const DEFAULT_ACTIVE_ICON = 'i-fluent-star-12-filled'
 
-  if (typeof input === 'string') {
-    baseObject = { active: input, normal: input }
+function toPair(v: IconSingle | undefined): { active: string, normal: string } {
+  if (!v) {
+    return { active: DEFAULT_ACTIVE_ICON, normal: DEFAULT_ICON }
   }
-  else if (Array.isArray(input)) {
-    const normalizedArray = input.map(item => toActiveNormal(item))
-    if (normalizedArray.length === 1) {
-      // If the array only contains one element, use it to fill all elements
-      baseObject = normalizedArray[0] || { active: defaultActiveIcon, normal: defaultNormalIcon }
-      return Array.from({ length: n }, () => ({ ...baseObject }))
-    }
-    else {
-      // If the array contains multiple elements, ensure it has exactly `n` elements
-      return [...normalizedArray
-        .slice(0, n), ...Array.from({ length: Math.max(0, n - normalizedArray.length) }, () => ({ active: defaultActiveIcon, normal: defaultNormalIcon }))]
-    }
+  if (typeof v === 'string') {
+    return { active: v, normal: v }
   }
-  else {
-    baseObject = {
-      active: input.active || defaultActiveIcon,
-      normal: input.normal || defaultNormalIcon,
-    }
+  return {
+    active: v.active || DEFAULT_ACTIVE_ICON,
+    normal: v.normal || DEFAULT_ICON,
   }
-  // 创建一个包含 `n` 个元素的数组，每个元素都是 `baseObject`
-  return Array.from({ length: n }, () => ({ ...baseObject }))
+}
+function normalizeIcons(input: IconType, n: number): { active: string, normal: string }[] {
+  if (!input) {
+    return Array.from({ length: n }, () => ({ active: DEFAULT_ACTIVE_ICON, normal: DEFAULT_ICON }))
+  }
+  if (Array.isArray(input)) {
+    if (input.length === 1) {
+      const p = toPair(input[0])
+      return Array.from({ length: n }, () => ({ ...p }))
+    }
+    const arr = input.slice(0, n).map(item => toPair(item))
+    while (arr.length < n) arr.push({ active: DEFAULT_ACTIVE_ICON, normal: DEFAULT_ICON })
+    return arr
+  }
+  const base = toPair(input)
+  return Array.from({ length: n }, () => ({ ...base }))
 }
 
-function isActive(idx: number): boolean {
-  if (highlightSelectedOnly.value) {
-    if (hoverIndex.value !== -1) {
-      return hoverIndex.value === idx + 1
-    }
-    return model.value === idx + 1
-  }
-  if (hoverIndex.value !== -1) {
-    return hoverIndex.value > idx
-  }
-  return model.value >= idx + 1
-}
+const iconPairs = computed(() => normalizeIcons(props.icons, props.count))
 
-function getCls(idx: number) {
-  const item = iconData.value[idx]
-  if (!item) {
-    return [inactiveCls, defaultIcon]
-  }
-  const normalIcon = item.normal
-  const activeIcon = item.active
-  if (isActive(idx)) {
-    return [highlightSelectedOnly.value ? hoverCls : activeCls, activeIcon]
-  }
-  return [inactiveCls, normalIcon]
-}
-const colors = computed(() => {
-  if (typeof props.color === 'string') {
-    return Array.from({ length: count.value }).map(() => props.color as string)
-  }
-  // 如果 color 是数组, 对应位置使用数组中的颜色, 其余使用默认颜色
-  const resp = Array.from({ length: count.value }).map(() => defaultColor)
-  for (const [i, d] of props.color.entries()) {
-    if (d) {
-      resp[i] = d
+// ============== 颜色系统 ==============
+// 用户可传：单色 (string) 或 数组。数组长度不足会复用第一项。
+const activeColorList = computed<(Color | string)[]>(() => {
+  const c = props.color
+  if (Array.isArray(c)) {
+    if (c.length === 0) {
+      return Array.from({ length: props.count }, () => 'warning')
     }
+    if (c.length === 1) {
+      return Array.from({ length: props.count }, () => c[0]!)
+    }
+    // 扩展 / 截断至 count
+    const arr = c.slice(0, props.count)
+    while (arr.length < props.count) arr.push(c[0]!)
+    return arr
   }
-  return resp
+  const base = c || 'warning'
+  return Array.from({ length: props.count }, () => base)
 })
 
-const containerCS = colors.value.map((color) => {
-  return useContainerCS('filled', color)
-})
-
-const unactiveCS = useCS({
+// 统一 inactive / active / hover 三种 CS：
+// inactive: surface text 弱化
+const inactiveTextCS = useCS({
   color: 'surface',
   type: 'text',
-  index: { dark: 6, light: 4 },
+  index: { dark: 6, light: 3 },
 })
 
-function onPointerDown(i: number) {
-  if (model.value === i && unselectable.value) {
-    emit('select', 0)
-    model.value = 0
+// active（每颗星可能不同颜色）
+const activeTextCSList = activeColorList.value.map(color => useCS({
+  color: color as any,
+  type: 'text',
+  index: { dark: 5, light: 4 },
+}))
+
+// hover 文本（用于 highlightSelectedOnly 模式单星悬停）
+const hoverTextCSList = activeColorList.value.map(color => useCS({
+  color: color as any,
+  type: 'hover:text',
+  index: { dark: 5, light: 4 },
+}))
+
+// ============== 行为逻辑 ==============
+const highlightSelectedOnly = computed(() => props.highlightSelectedOnly)
+const unselectable = computed(() => props.unselectable)
+const allowHalf = computed(() => props.allowHalf)
+// hoverValue: null 表示没有 hover；其它为当前预览值（可能是 n 或 n+0.5）
+const hoverValue = ref<number | null>(null)
+
+// 当前展示用的值（优先 hover）
+const displayValue = computed(() => hoverValue.value ?? model.value)
+
+function starState(idx: number): 'full' | 'half' | 'empty' {
+  const val = displayValue.value
+  if (highlightSelectedOnly.value) {
+    // 只突出当前所在的那颗星
+    if (val === 0) {
+      return 'empty'
+    }
+    if (val > idx && val <= idx + 1) {
+      if (allowHalf.value && val < idx + 1 && val >= idx + 0.5) {
+        return 'half'
+      }
+      if (val >= idx + 1) {
+        return 'full'
+      }
+      // val 在 (idx, idx+0.5) 之间（理论上不会出现，因为我们只产生 .5 增量）
+      if (allowHalf.value && val >= idx + 0.5) {
+        return 'half'
+      }
+      return 'full'
+    }
+    return 'empty'
+  }
+  // 普通模式：递进高亮
+  if (val >= idx + 1) {
+    return 'full'
+  }
+  if (allowHalf.value && val >= idx + 0.5) {
+    return 'half'
+  }
+  return 'empty'
+}
+
+function isFull(idx: number) {
+  return starState(idx) === 'full'
+}
+function isHalf(idx: number) {
+  return starState(idx) === 'half'
+}
+
+function getInactiveIcon(idx: number) {
+  const pair = iconPairs.value[idx]
+  return pair?.normal || DEFAULT_ICON
+}
+function getActiveIcon(idx: number) {
+  const pair = iconPairs.value[idx]
+  return pair?.active || DEFAULT_ACTIVE_ICON
+}
+
+function getActiveCS(idx: number) {
+  return activeTextCSList[idx]?.value || inactiveTextCS.value
+}
+function getHoverCS(idx: number) {
+  if (!highlightSelectedOnly.value) {
+    return
+  }
+  return hoverTextCSList[idx]?.value
+}
+function onPointerMove(e: PointerEvent, i: number) {
+  if (!allowHalf.value) {
+    hoverValue.value = i + 1
+    return
+  }
+  const target = e.currentTarget as HTMLElement
+  const rect = target.getBoundingClientRect()
+  const x = e.clientX - rect.left
+  const half = x < rect.width / 2
+  hoverValue.value = i + (half ? 0.5 : 1)
+}
+function onMouseLeave() {
+  hoverValue.value = null
+}
+function onPointerDown(i: number, e: PointerEvent) {
+  // 先根据当前 hoverValue / 点击位置确定值
+  let val: number
+  if (allowHalf.value) {
+    if (hoverValue.value === null) {
+      // pointerdown 早于 move 时临时计算
+      const target = e.currentTarget as HTMLElement
+      const rect = target.getBoundingClientRect()
+      const x = e.clientX - rect.left
+      val = i + (x < rect.width / 2 ? 0.5 : 1)
+    }
+    else {
+      val = hoverValue.value
+    }
   }
   else {
-    emit('select', i + 1)
-    model.value = i + 1
+    val = i + 1
+  }
+  if (unselectable.value && model.value === val) {
+    model.value = 0
+    emit('select', 0)
+  }
+  else {
+    model.value = val
+    emit('select', val)
   }
 }
-function getBind(i: number) {
-  const cs = containerCS[i]
-  return isActive(i) ? (cs ? cs.value : unactiveCS) : unactiveCS
-}
+
+// ============== 尺寸 ==============
 const sizeCls = computed(() => {
-  switch (props.size) {
+  const sz = props.size ?? theme.value.defaultSize ?? 'md'
+  switch (sz) {
     case 'sm': {
       return 'text-xs'
     }
     case 'lg': {
       return 'text-lg'
     }
-    // case 'md':
     default: {
       return 'text-base'
     }
@@ -176,21 +244,56 @@ const sizeCls = computed(() => {
 
 <template>
   <div
-    class="flex cursor-pointer"
+    class="flex cursor-pointer select-none"
     :class="sizeCls"
   >
     <div
-      v-for="_, i in count"
+      v-for="(_, i) in props.count"
       :key="i"
-      class="pr-1"
-      @mouseover="hoverIndex = i + 1"
-      @mouseleave="hoverIndex = -1"
-      @pointerdown="onPointerDown(i)"
+      class="pr-1 inline-flex relative"
+      @pointermove="onPointerMove($event, i)"
+      @mouseleave="onMouseLeave"
+      @pointerdown="onPointerDown(i, $event)"
     >
+      <!-- FULL STAR -->
       <i
-        v-bind="getBind(i)"
-        class="active:translate-y-1px"
-        :class="[getCls(i)]"
+        v-if="isFull(i)"
+        class="transition-colors duration-150 active:translate-y-1px"
+        :class="[
+          getActiveCS(i).class,
+          (highlightSelectedOnly && getHoverCS(i)) ? getHoverCS(i)?.class : '',
+          getActiveIcon(i),
+        ]"
+        :style="[getActiveCS(i).style, (highlightSelectedOnly && getHoverCS(i)) ? getHoverCS(i)?.style : {}]"
+      />
+      <!-- HALF STAR -->
+      <template v-else-if="isHalf(i)">
+        <i
+          class="transition-colors duration-150 active:translate-y-1px"
+          :class="[inactiveTextCS.class, getInactiveIcon(i)]"
+          :style="[inactiveTextCS.style]"
+        />
+        <!-- 覆盖激活星，仅左半显示（clip-path 隐藏右半） -->
+        <i
+          class="transition-colors duration-150 left-0 top-0 absolute"
+          :class="[
+            getActiveCS(i).class,
+            (highlightSelectedOnly && getHoverCS(i)) ? getHoverCS(i)?.class : '',
+            getActiveIcon(i),
+          ]"
+          :style="[
+            getActiveCS(i).style,
+            (highlightSelectedOnly && getHoverCS(i)) ? getHoverCS(i)?.style : {},
+            { clipPath: 'inset(0 50% 0 0)' },
+          ]"
+        />
+      </template>
+      <!-- EMPTY STAR -->
+      <i
+        v-else
+        class="transition-colors duration-150 active:translate-y-1px"
+        :class="[inactiveTextCS.class, getInactiveIcon(i)]"
+        :style="[inactiveTextCS.style]"
       />
     </div>
   </div>
