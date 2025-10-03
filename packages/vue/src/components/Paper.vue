@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { Component } from 'vue'
-import type { Color, Rounded } from '@/types'
+import type { Color, ContainerVariant, Rounded } from '@/types'
 import { useElementBounding, useMouse } from '@vueuse/core'
 import { formatHex } from 'culori'
 import { computed, ref } from 'vue'
-import { useColors, useComponentDefaults, useTheme } from '@/shared'
+import { useColors, useComponentDefaults, useContainerCS, useTheme } from '@/shared'
 import { useRounded } from '@/utils/classGenerator'
 
 const props = withDefaults(
@@ -13,6 +13,7 @@ const props = withDefaults(
     loading?: boolean
     is?: string | Component
     color?: Color
+    variant?: ContainerVariant
     traceAnimate?: boolean
     withBorder?: boolean
     noPadding?: boolean
@@ -40,7 +41,6 @@ const effectiveProps = computed(() => ({
   rounded: props.rounded ?? componentDefaults?.rounded ?? theme.value.rounded,
 }))
 
-const color = computed(() => effectiveProps.value.color)
 const roundedCls = useRounded(effectiveProps.value)
 const { x, y } = useMouse({ type: 'client' })
 const paperRef = ref<HTMLElement | null>(null)
@@ -80,6 +80,9 @@ const keyFrames = computed(() => {
 
 let ani: Animation | undefined
 
+const color = computed(() => effectiveProps.value.color)
+const variant = computed(() => effectiveProps.value.variant ?? 'default')
+const containerCS = useContainerCS(variant, color)
 const mainColor = computed(() => formatHex(useColors(color.value).value[5]) || '#000000')
 
 const loadingStyle = computed(() => {
@@ -96,8 +99,8 @@ const loadingStyle = computed(() => {
     return {
       '--main-color': mainColor.value,
       '--gradient': `radial-gradient(circle at center, var(--main-color) ${shortEdge.value * 0.5}px, var(--border-color) ${shortEdge.value * 0.5}px)`,
-      '--border-color': 'var(--r-border-base)',
-      '--bg': `var(--r-bg-container)`,
+      '--border-color': 'rgb(var(--r-border-container))',
+      '--bg': `rgb(var(--r-bg-container))`,
       'background': 'linear-gradient(var(--bg), var(--bg)) padding-box, var(--gradient) border-box',
       'border-color': 'transparent',
       'background-color': 'var(--bg)',
@@ -109,7 +112,7 @@ const loadingStyle = computed(() => {
       ani.pause()
     }
     return {
-      background: 'var(--r-bg-container)',
+      background: 'rgb(var(--r-bg-container))',
     }
   }
 })
@@ -165,8 +168,8 @@ const traceAnimateStyle = computed(() => {
     })
     return {
       '--main-color': mainColor.value,
-      '--border-color': 'var(--r-border-base)',
-      '--bg': `var(--r-bg-container)`,
+      '--border-color': 'rgb(var(--r-border-container))',
+      '--bg': `rgb(var(--r-bg-container))`,
       '--gradient': `radial-gradient(circle at ${points.value.x - left.value}px ${points.value.y - top.value}px, var(--main-color) ${shortEdge.value * 0.5}px, var(--border-color) ${shortEdge.value * 0.5}px)`,
       'background': 'linear-gradient(var(--bg), var(--bg)) padding-box, var(--gradient) border-box',
       'background-size': '200% 200%',
@@ -187,14 +190,16 @@ const traceAnimateStyle = computed(() => {
     :class="[
       {
         'p-4': !noPadding,
-        'border-transparent': !withBorder || traceAnimate || loading,
+        '!border-transparent': !withBorder || traceAnimate || loading,
       },
       roundedCls.class,
+      containerCS.class,
     ]"
     :style="[
       roundedCls.style,
       loadingStyle,
       traceAnimateStyle,
+      containerCS.style,
     ]"
   >
     <slot />

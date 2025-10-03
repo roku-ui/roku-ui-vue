@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useElementBounding, useEventListener } from '@vueuse/core'
+import { formatHex } from 'culori'
 import { computed, onMounted, ref, watchEffect } from 'vue'
 import { useColors, useContainerFilledCS } from '@/shared'
 
@@ -177,7 +178,10 @@ function valueToPosition(value: any, min: number, max: number, isCustomOptions: 
 
 const color = computed(() => props.color)
 const colors = useColors(color.value)
-const filledColor = computed(() => colors.value[4])
+const filledColor = computed(() => {
+  const c = colors.value[4]
+  return (c && formatHex(c)) || '#000000'
+})
 const indicatorOuterCls = 'dark:bg-white bg-[var(--i-bg)]'
 const indicatorInnerCls = 'dark:bg-[var(--i-bg)] bg-white'
 const containerFilledCS = useContainerFilledCS(color)
@@ -323,7 +327,7 @@ const animateCls = computed(() => props.animate && !isMoving.value
       @touchmove.prevent
     >
       <div
-        class="bg-container rounded-full"
+        class="bg-elevated rounded-full"
         :class="sizeCls.innerWrapper"
         :style="{
           width: '100%',
@@ -343,7 +347,7 @@ const animateCls = computed(() => props.animate && !isMoving.value
             :style="{
               left: `${props.reverse ? 100 - valueToPosition(option, props.min, props.max, props.options !== undefined) : valueToPosition(option, props.min, props.max, props.options !== undefined)}%`,
             }"
-            class="bg-surface-variant-2 rounded-full top-50% absolute"
+            class="bg-inverted rounded-full top-50% absolute"
             :class="sizeCls.tick"
           />
           <div
@@ -351,12 +355,10 @@ const animateCls = computed(() => props.animate && !isMoving.value
             ref="indicator"
             class="rounded-full cursor-pointer top-50% absolute"
             :class="[sizeCls.indicator, animateCls.indicator, indicatorOuterCls]"
-            :style="[
-              `--i-bg: ${filledColor}`,
-              {
-                left: `${props.reverse ? 100 - (length === 1 ? 0 : (currentIndex / (length - 1)) * 100) : (length === 1 ? 0 : (currentIndex / (length - 1)) * 100)}%`,
-              },
-            ]"
+            :style="{
+              '--i-bg': filledColor, // hex string
+              'left': `${props.reverse ? 100 - (length === 1 ? 0 : (currentIndex / (length - 1)) * 100) : (length === 1 ? 0 : (currentIndex / (length - 1)) * 100)}%`,
+            }"
           >
             <div
               class="rounded-full pointer-events-none left-50% top-50% absolute"

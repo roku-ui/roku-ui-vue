@@ -122,36 +122,14 @@ const calendarDays = computed(() => {
     isDisabled: boolean
   }> = []
 
-  // Previous month days
-  const prevMonth = new Date(year, month, 0)
-  const prevMonthDays = prevMonth.getDate()
-  // 填充上个月最后几天
-  for (let i = 1; i <= firstDayOfWeek; i++) {
-    const date = new Date(year, month - 1, prevMonthDays - firstDayOfWeek + i)
-    days.push({
-      date,
-      isCurrentMonth: false,
-      isToday: false,
-      isSelected: false,
-      isInRange: false,
-      isRangeStart: false,
-      isRangeEnd: false,
-      isPreviewRange: false,
-      isPreviewEnd: false,
-      isDisabled: isDateDisabled(date),
-    })
-  }
-
-  // Current month days
-  for (let day = 1; day <= daysInMonth; day++) {
-    const date = new Date(year, month, day)
+  // Helper to build a day meta (支持跨月 range 状态)
+  function buildDay(date: Date, isCurrentMonth: boolean) {
     const isToday = isSameDay(date, new Date())
     const isSelected = isDateSelected(date)
     const { isInRange, isRangeStart, isRangeEnd, isPreviewRange, isPreviewEnd } = getRangeStatus(date)
-
-    days.push({
+    return {
       date,
-      isCurrentMonth: true,
+      isCurrentMonth,
       isToday,
       isSelected,
       isInRange,
@@ -160,7 +138,21 @@ const calendarDays = computed(() => {
       isPreviewRange,
       isPreviewEnd,
       isDisabled: isDateDisabled(date),
-    })
+    }
+  }
+
+  // Previous month days (leading filler)
+  const prevMonth = new Date(year, month, 0)
+  const prevMonthDays = prevMonth.getDate()
+  for (let i = 1; i <= firstDayOfWeek; i++) {
+    const date = new Date(year, month - 1, prevMonthDays - firstDayOfWeek + i)
+    days.push(buildDay(date, false))
+  }
+
+  // Current month days
+  for (let day = 1; day <= daysInMonth; day++) {
+    const date = new Date(year, month, day)
+    days.push(buildDay(date, true))
   }
 
   // Next month days to fill the grid
@@ -170,18 +162,7 @@ const calendarDays = computed(() => {
 
   for (let day = 1; day <= remainingInWeek; day++) {
     const date = new Date(year, month + 1, day)
-    days.push({
-      date,
-      isCurrentMonth: false,
-      isToday: false,
-      isSelected: false,
-      isInRange: false,
-      isRangeStart: false,
-      isRangeEnd: false,
-      isPreviewRange: false,
-      isPreviewEnd: false,
-      isDisabled: isDateDisabled(date),
-    })
+    days.push(buildDay(date, false))
   }
 
   return days
@@ -247,7 +228,8 @@ function getRangeStatus(date: Date) {
 
   const isRangeStart = isSameDay(date, range.start)
   const isRangeEnd = isSameDay(date, range.end)
-  const isInRange = date >= range.start && date <= range.end && !isRangeStart && !isRangeEnd
+  // 修改: 现在 isInRange 包含起始与结束日期（以前不包含）
+  const isInRange = date >= range.start && date <= range.end
 
   return { isInRange, isRangeStart, isRangeEnd, isPreviewRange: false, isPreviewEnd: false }
 }
@@ -436,11 +418,23 @@ function getCellCS(day: any) {
         @mouseenter="hoveredDate = day.date"
         @mouseleave="hoveredDate = null"
       >
+        <!-- Range background (包含起止端点) -->
+        <div
+          v-if="day.isInRange"
+          class="bg-primary opacity-20 inset-0 absolute z-0"
+        />
+
+        <!-- Preview range background (hover 预览) -->
+        <div
+          v-if="day.isPreviewRange"
+          class="bg-primary opacity-10 inset-0 absolute z-0"
+        />
+
         <!-- Date number -->
         <div
-          class="flex items-center inset-0 justify-center absolute"
+          class="flex items-center inset-0 justify-center absolute z-10"
           :class="{
-            'text-surface-variant': !day.isCurrentMonth,
+            'text-dimmed': !day.isCurrentMonth,
             'font-medium': day.isCurrentMonth,
           }"
         >
@@ -449,9 +443,9 @@ function getCellCS(day: any) {
             :class="[
               {
                 'bg-primary text-white font-semibold': day.isSelected || day.isRangeStart || day.isRangeEnd,
-                'bg-primary text-primary': day.isInRange,
-                'bg-primary text-primary opacity-60 border-2 border-dashed border-primary': day.isPreviewRange,
-                'border-2 border-dashed border-primary text-primary font-semibold': day.isPreviewEnd,
+                'bg-primary text-white': day.isInRange,
+                'bg-primary text-white border-2 border-dashed border-primary': day.isPreviewRange,
+                'border-2 border-dashed border-primary text-white': day.isPreviewEnd,
                 'ring-2 ring-primary ring-offset-1': day.isToday && !day.isSelected && !day.isRangeStart && !day.isRangeEnd && !day.isPreviewEnd,
                 'text-primary font-semibold': day.isToday && !day.isSelected && !day.isRangeStart && !day.isRangeEnd && !day.isPreviewEnd,
               },
@@ -464,17 +458,7 @@ function getCellCS(day: any) {
           </span>
         </div>
 
-        <!-- Range background -->
-        <div
-          v-if="day.isInRange"
-          class="bg-primary opacity-20 inset-0 absolute"
-        />
-
-        <!-- Preview range background -->
-        <div
-          v-if="day.isPreviewRange"
-          class="bg-primary opacity-10 inset-0 absolute"
-        />
+        <!-- 背景已前置并含端点 -->
       </div>
     </div>
   </div>

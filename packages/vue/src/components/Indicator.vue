@@ -81,7 +81,7 @@ const fillCS = useIndicatorFilledCS(color)
 
 <template>
   <div
-    class="relative"
+    class="leading-0 relative"
   >
     <div
       :class="[posCls, labelCls]"
