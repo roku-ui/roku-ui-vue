@@ -43,14 +43,14 @@ function updateStackedSections() {
         </h3>
         <div class="space-y-4">
           <div class="space-y-2">
-            <p class="text-sm text-gray-600">
+            <p class="text-sm">
               Default ({{ singleValue }}%)
             </p>
             <Progress :value="singleValue" />
           </div>
 
           <div class="space-y-2">
-            <p class="text-sm text-gray-600">
+            <p class="text-sm">
               Primary Color ({{ singleValue }}%)
             </p>
             <Progress
@@ -60,7 +60,7 @@ function updateStackedSections() {
           </div>
 
           <div class="space-y-2">
-            <p class="text-sm text-gray-600">
+            <p class="text-sm">
               Success Color ({{ singleValue }}%)
             </p>
             <Progress
@@ -70,7 +70,7 @@ function updateStackedSections() {
           </div>
 
           <div class="space-y-2">
-            <p class="text-sm text-gray-600">
+            <p class="text-sm">
               Loading State
             </p>
             <Progress
@@ -104,7 +104,7 @@ function updateStackedSections() {
         </h3>
         <div class="space-y-4">
           <div class="space-y-2">
-            <p class="text-sm text-gray-600">
+            <p class="text-sm">
               Small
             </p>
             <Progress
@@ -115,7 +115,7 @@ function updateStackedSections() {
           </div>
 
           <div class="space-y-2">
-            <p class="text-sm text-gray-600">
+            <p class="text-sm">
               Medium (Default)
             </p>
             <Progress
@@ -126,7 +126,7 @@ function updateStackedSections() {
           </div>
 
           <div class="space-y-2">
-            <p class="text-sm text-gray-600">
+            <p class="text-sm">
               Large
             </p>
             <Progress
@@ -145,12 +145,12 @@ function updateStackedSections() {
         </h3>
         <div class="space-y-4">
           <div class="space-y-2">
-            <p class="text-sm text-gray-600">
+            <p class="text-sm">
               Multiple colored sections
             </p>
             <Progress :sections="stackedSections" />
             <div class="text-xs space-y-1">
-              <p class="text-gray-600">
+              <p class="">
                 Data: {{ JSON.stringify(stackedSections) }}
               </p>
               <div class="flex gap-2 items-center">
@@ -169,7 +169,7 @@ function updateStackedSections() {
           </div>
 
           <div class="space-y-2">
-            <p class="text-sm text-gray-600">
+            <p class="text-sm">
               Large stacked progress
             </p>
             <Progress
@@ -194,7 +194,7 @@ function updateStackedSections() {
         </h3>
         <div class="space-y-4">
           <div class="space-y-2">
-            <p class="text-sm text-gray-600">
+            <p class="text-sm">
               None
             </p>
             <Progress
@@ -205,7 +205,7 @@ function updateStackedSections() {
           </div>
 
           <div class="space-y-2">
-            <p class="text-sm text-gray-600">
+            <p class="text-sm">
               Small
             </p>
             <Progress
@@ -216,7 +216,7 @@ function updateStackedSections() {
           </div>
 
           <div class="space-y-2">
-            <p class="text-sm text-gray-600">
+            <p class="text-sm">
               Full (Default)
             </p>
             <Progress

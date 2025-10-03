@@ -35,6 +35,16 @@ function useCuloriColor(color: MaybeRef<Color>) {
       case 'tertiary': {
         return rgb(getThemeColorString('tertiary'))
       }
+      // Added missing predefined theme color mappings so they resolve to theme hex values
+      case 'success': {
+        return rgb(getThemeColorString('success'))
+      }
+      case 'info': {
+        return rgb(getThemeColorString('info'))
+      }
+      case 'warning': {
+        return rgb(getThemeColorString('warning'))
+      }
       case 'error': {
         return rgb(getThemeColorString('error'))
       }
