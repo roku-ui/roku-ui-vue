@@ -105,6 +105,24 @@ const processedItems = computed(() => {
   })
 })
 
+// Extra state-based utility classes for icon aesthetics (non-color-system decoration)
+function extraIconClasses(status: string) {
+  switch (status) {
+    case 'finish': {
+      return 'shadow-sm'
+    }
+    case 'process': {
+      return 'bg-primary/10 dark:bg-primary/20'
+    }
+    case 'error': {
+      return 'bg-error/10'
+    }
+    default: { // wait
+      return 'bg-surface/30 dark:bg-surface/20'
+    }
+  }
+}
+
 // Handle step click
 function handleStepClick(index: number) {
   const item = processedItems.value[index]
@@ -195,29 +213,35 @@ const sizeClasses = computed(() => {
   switch (effectiveProps.value.size) {
     case 'sm': {
       return {
-        icon: 'w-8 h-8 text-sm',
+        icon: 'w-7 h-7 text-xs',
         title: 'text-sm font-semibold',
         description: 'text-xs leading-relaxed',
         connector: props.direction === 'horizontal' ? 'h-0.5' : 'w-0.5',
-        spacing: props.direction === 'horizontal' ? 'gap-3' : 'gap-2',
+        spacing: props.direction === 'horizontal' ? 'gap-1.5' : 'gap-2',
+        connectorX: 'mx-2.5',
+        connectorOffsetV: 'ml-3.5',
       }
     }
     case 'lg': {
       return {
-        icon: 'w-12 h-12 text-lg',
+        icon: 'w-11 h-11 text-base',
         title: 'text-lg font-semibold',
         description: 'text-base leading-relaxed',
         connector: props.direction === 'horizontal' ? 'h-1' : 'w-1',
-        spacing: props.direction === 'horizontal' ? 'gap-4' : 'gap-3',
+        spacing: props.direction === 'horizontal' ? 'gap-3' : 'gap-3',
+        connectorX: 'mx-4',
+        connectorOffsetV: 'ml-5',
       }
     }
     default: {
       return {
-        icon: 'w-10 h-10 text-base',
+        icon: 'w-8.5 h-8.5 text-sm',
         title: 'text-base font-semibold',
         description: 'text-sm leading-relaxed',
         connector: props.direction === 'horizontal' ? 'h-0.5' : 'w-0.5',
-        spacing: props.direction === 'horizontal' ? 'gap-3' : 'gap-2.5',
+        spacing: props.direction === 'horizontal' ? 'gap-2' : 'gap-2.5',
+        connectorX: 'mx-3',
+        connectorOffsetV: 'ml-4',
       }
     }
   }
@@ -346,18 +370,18 @@ const progressPercent = computed(() => {
       v-if="type === 'simple'"
       class="mb-6 w-full"
     >
-      <div class="text-sm text-surface-2 mb-3 flex items-center justify-between dark:text-surface-2">
+      <div class="text-sm text-surface-2 mb-2.5 flex items-center justify-between dark:text-surface-2">
         <span class="font-medium">Step {{ currentStep + 1 }} of {{ items.length }}</span>
         <span class="font-semibold">{{ Math.round(progressPercent) }}%</span>
       </div>
       <div class="rounded-full bg-surface-3 h-2.5 w-full dark:bg-surface-6">
         <div
-          class="rounded-full h-full transition-all duration-300"
+          class="rounded-full h-full"
           v-bind="progressBarCS"
           :style="{ width: `${progressPercent}%` }"
         />
       </div>
-      <div class="text-sm text-surface-1 font-medium mt-3 dark:text-surface-1">
+      <div class="text-sm text-surface-1 font-medium mt-2 dark:text-surface-1">
         {{ processedItems[currentStep]?.title }}
       </div>
     </div>
@@ -369,13 +393,13 @@ const progressPercent = computed(() => {
     >
       <!-- Step item -->
       <div
-        class="step-item flex transition-colors duration-200 items-start relative"
+        class="step-item flex items-start relative"
         :class="[
           direction === 'vertical' ? 'mb-6 last:mb-0' : 'flex-shrink-0',
           direction === 'horizontal' && alternativeLabel ? 'flex-col items-center text-center' : '',
           clickable && !item.disabled ? 'cursor-pointer' : '',
           item.disabled ? 'opacity-40 cursor-not-allowed' : '',
-          type === 'navigation' ? 'step-navigation-item p-2 rounded-lg' : '',
+          type === 'navigation' ? 'step-navigation-item px-1.5 py-1 rounded-md' : '',
           sizeClasses.spacing,
         ]"
         role="tab"
@@ -388,11 +412,12 @@ const progressPercent = computed(() => {
       >
         <!-- Icon/Number container -->
         <div
-          class="step-icon-container rounded-full flex flex-shrink-0 transition-colors duration-200 items-center justify-center"
+          class="step-icon-container rounded-full flex flex-shrink-0 items-center justify-center relative overflow-hidden"
           :class="[
             sizeClasses.icon,
             progressDot ? 'w-4 h-4 border-0' : '',
             type === 'dot' ? 'w-3 h-3 border-0' : '',
+            extraIconClasses(item.status),
           ]"
           v-bind="getColorSystem(item.status).icon"
         >
@@ -415,14 +440,14 @@ const progressPercent = computed(() => {
           v-if="type !== 'dot' && type !== 'simple'"
           class="step-content flex-1 min-w-0"
           :class="[
-            direction === 'horizontal' && !alternativeLabel ? 'ml-4' : '',
-            direction === 'vertical' ? 'ml-0 mt-3' : '',
-            alternativeLabel && direction === 'horizontal' ? 'text-center mt-3' : '',
+            direction === 'horizontal' && !alternativeLabel ? 'ml-3 md:ml-4' : '',
+            direction === 'vertical' ? 'mt-2.5' : '',
+            alternativeLabel && direction === 'horizontal' ? 'text-center mt-2.5' : '',
           ]"
         >
           <!-- Title -->
           <div
-            class="step-title leading-tight transition-colors duration-200"
+            class="step-title leading-tight"
             :class="sizeClasses.title"
             v-bind="getColorSystem(item.status).title"
           >
@@ -432,7 +457,7 @@ const progressPercent = computed(() => {
           <!-- Description -->
           <div
             v-if="showDescription && item.description"
-            class="step-description text-surface-4 mt-1.5 transition-colors duration-200 dark:text-surface-3"
+            class="step-description text-surface-4 mt-1.5 dark:text-surface-3"
             :class="sizeClasses.description"
           >
             {{ item.description }}
@@ -443,11 +468,11 @@ const progressPercent = computed(() => {
       <!-- Connector line -->
       <div
         v-if="index < items.length - 1 && type !== 'simple'"
-        class="step-connector transition-colors duration-200"
+        class="step-connector"
         :class="[
           direction === 'horizontal'
-            ? ['flex-1 mx-4 self-center', sizeClasses.connector, 'rounded-full']
-            : ['ml-5 -mt-2 mb-2', sizeClasses.connector, 'min-h-6 rounded-full', 'w-0.5'],
+            ? ['flex-1', sizeClasses.connectorX, 'self-center', sizeClasses.connector, 'rounded-full', index < currentStep ? 'bg-primary' : 'bg-surface/30 dark:bg-surface/40']
+            : [sizeClasses.connectorOffsetV, '-mt-1.5 mb-2', sizeClasses.connector, 'min-h-5 rounded-full w-0.5', index < currentStep ? 'bg-primary' : 'bg-surface/30 dark:bg-surface/40'],
         ]"
         v-bind="index < currentStep
           ? getColorSystem('finish').connector
