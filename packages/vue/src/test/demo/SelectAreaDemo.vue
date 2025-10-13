@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Area } from '@/types'
 import { ref } from 'vue'
-import { SelectArea } from '../../components'
+import { Btn, SelectArea } from '../../components'
 
 const items = [1, 2, 3, 4]
 const areaRef = ref(null)
@@ -52,15 +52,14 @@ function setPresetColor(preset: { border: string, bg: string }) {
         Selection Box Style
       </h3>
       <div class="flex flex-wrap gap-2">
-        <button
+        <Btn
           v-for="preset in presetColors"
           :key="preset.name"
-          type="button"
-          class="px-3 py-1 border rounded hover:bg-gray-100"
+          size="sm"
           @click="setPresetColor(preset)"
         >
           {{ preset.name }}
-        </button>
+        </Btn>
       </div>
 
       <div class="text-sm gap-4 grid grid-cols-3">
@@ -116,17 +115,16 @@ function setPresetColor(preset: { border: string, bg: string }) {
       <div
         v-for="item in items"
         :key="item"
-        class="border-b border-r border-gray-300 flex h-100px w-100px items-center justify-center"
+        class="border-b border-r flex h-100px w-100px items-center justify-center"
         :class="{
           'bg-red-500 text-white': selectingItems.includes(item),
-          'bg-gray-100': !selectingItems.includes(item),
         }"
       >
         {{ item }}
       </div>
     </div>
 
-    <p class="text-sm text-gray-600">
+    <p class="text-dimmed text-sm">
       拖拽鼠标来选择方块。选中的方块会变成红色。
     </p>
   </div>
