@@ -5,10 +5,10 @@ import { defaultThemeData } from '@/shared'
 
 import {
   AppShell,
+  AppShellHeader,
   ColorInput,
   ModalSystem,
   NotificationSystem,
-  Paper,
   RokuProvider,
   SchemeSwitch,
   Tag,
@@ -83,10 +83,13 @@ provide('updateGlobalTheme', updateGlobalTheme)
       :header-spans-nav="true"
       :header-spans-aside="false"
       padding="0"
-      gap="0"
     >
       <template #header>
-        <Paper class="px-6 py-4 flex w-full items-center justify-between">
+        <AppShellHeader
+          :bordered="false"
+          padding="24px"
+          align="between"
+        >
           <div class="flex gap-3 items-center">
             <h1 class="text-surface text-2xl font-bold">
               Roku UI Vue
@@ -103,7 +106,7 @@ provide('updateGlobalTheme', updateGlobalTheme)
             <ColorInput v-model="primaryColor" />
             <ColorInput v-model="surfaceColor" />
           </div>
-        </Paper>
+        </AppShellHeader>
       </template>
 
       <template #navbar>

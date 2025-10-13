@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { AppShell, Paper } from '@roku-ui/vue'
+import { AppShell, AppShellAside, AppShellFooter, AppShellHeader, AppShellMain, AppShellNavbar } from '@roku-ui/vue'
 import { computed, ref } from 'vue'
 
 // Layout options
@@ -8,7 +8,6 @@ const footerHeight = ref('40px')
 const navbarWidth = ref('200px')
 const asideWidth = ref('160px')
 const padding = ref('8px')
-const gap = ref('8px')
 
 // Span options
 const headerSpansNav = ref(false)
@@ -28,7 +27,6 @@ const footerHeightOptions = ['30px', '40px', '50px', '60px']
 const navbarWidthOptions = ['150px', '200px', '250px', '300px']
 const asideWidthOptions = ['120px', '160px', '200px', '240px']
 const paddingOptions = ['4px', '8px', '12px', '16px']
-const gapOptions = ['4px', '8px', '12px', '16px']
 
 // Computed properties for dynamic props
 const appShellProps = computed(() => ({
@@ -37,7 +35,6 @@ const appShellProps = computed(() => ({
   navbarWidth: showNavbar.value ? navbarWidth.value : undefined,
   asideWidth: showAside.value ? asideWidth.value : undefined,
   padding: padding.value,
-  gap: gap.value,
   headerSpansNav: headerSpansNav.value,
   headerSpansAside: headerSpansAside.value,
   footerSpansNav: footerSpansNav.value,
@@ -46,60 +43,94 @@ const appShellProps = computed(() => ({
 
 // Generate code snippet
 const codeSnippet = computed(() => {
-  let code = '<AppShell\n'
-
+  const componentOrder = ['AppShell', 'AppShellHeader', 'AppShellNavbar', 'AppShellMain', 'AppShellAside', 'AppShellFooter']
+  const usedComponents = new Set<string>(['AppShell', 'AppShellMain'])
   if (showHeader.value) {
-    code += `  header-height="${headerHeight.value}"\n`
-  }
-  if (showFooter.value) {
-    code += `  footer-height="${footerHeight.value}"\n`
+    usedComponents.add('AppShellHeader')
   }
   if (showNavbar.value) {
-    code += `  navbar-width="${navbarWidth.value}"\n`
+    usedComponents.add('AppShellNavbar')
   }
   if (showAside.value) {
-    code += `  aside-width="${asideWidth.value}"\n`
+    usedComponents.add('AppShellAside')
+  }
+  if (showFooter.value) {
+    usedComponents.add('AppShellFooter')
   }
 
-  code += `  padding="${padding.value}"\n`
-  code += `  gap="${gap.value}"\n`
+  let template = '<template>\n  <AppShell\n'
+
+  if (showHeader.value) {
+    template += `    header-height="${headerHeight.value}"\n`
+  }
+  if (showFooter.value) {
+    template += `    footer-height="${footerHeight.value}"\n`
+  }
+  if (showNavbar.value) {
+    template += `    navbar-width="${navbarWidth.value}"\n`
+  }
+  if (showAside.value) {
+    template += `    aside-width="${asideWidth.value}"\n`
+  }
+
+  template += `    padding="${padding.value}"\n`
 
   if (headerSpansNav.value) {
-    code += `  :header-spans-nav="true"\n`
+    template += '    :header-spans-nav="true"\n'
   }
   if (headerSpansAside.value) {
-    code += `  :header-spans-aside="true"\n`
+    template += '    :header-spans-aside="true"\n'
   }
   if (footerSpansNav.value) {
-    code += `  :footer-spans-nav="true"\n`
+    template += '    :footer-spans-nav="true"\n'
   }
   if (footerSpansAside.value) {
-    code += `  :footer-spans-aside="true"\n`
+    template += '    :footer-spans-aside="true"\n'
   }
 
-  code += '>\n'
+  template += '  >\n'
 
   if (showHeader.value) {
-    code += '  <template #header>\n    <!-- Header content -->\n  </template>\n\n'
+    template += '    <template #header>\n'
+    template += '      <AppShellHeader>\n'
+    template += '        <!-- Header content -->\n'
+    template += '      </AppShellHeader>\n'
+    template += '    </template>\n\n'
   }
 
   if (showNavbar.value) {
-    code += '  <template #navbar>\n    <!-- Navbar content -->\n  </template>\n\n'
+    template += '    <template #navbar>\n'
+    template += '      <AppShellNavbar>\n'
+    template += '        <!-- Navbar content -->\n'
+    template += '      </AppShellNavbar>\n'
+    template += '    </template>\n\n'
   }
 
-  code += '  <!-- Main content -->\n\n'
+  template += '    <AppShellMain>\n'
+  template += '      <!-- Main content -->\n'
+  template += '    </AppShellMain>\n\n'
 
   if (showAside.value) {
-    code += '  <template #aside>\n    <!-- Aside content -->\n  </template>\n\n'
+    template += '    <template #aside>\n'
+    template += '      <AppShellAside>\n'
+    template += '        <!-- Aside content -->\n'
+    template += '      </AppShellAside>\n'
+    template += '    </template>\n\n'
   }
 
   if (showFooter.value) {
-    code += '  <template #footer>\n    <!-- Footer content -->\n  </template>\n\n'
+    template += '    <template #footer>\n'
+    template += '      <AppShellFooter>\n'
+    template += '        <!-- Footer content -->\n'
+    template += '      </AppShellFooter>\n'
+    template += '    </template>\n\n'
   }
 
-  code += '</AppShell>'
+  template += '  </AppShell>\n</template>\n'
 
-  return code
+  const importLine = `import { ${componentOrder.filter(component => usedComponents.has(component)).join(', ')} } from '@roku-ui/vue'`
+
+  return `<script setup lang="ts">\n${importLine}\n<\/script>\n\n${template}`
 })
 </script>
 
@@ -288,22 +319,6 @@ const codeSnippet = computed(() => {
                 </option>
               </select>
             </div>
-
-            <div class="space-y-1">
-              <label class="text-sm font-medium block">Gap</label>
-              <select
-                v-model="gap"
-                class="text-sm px-3 py-2 border rounded-md w-full"
-              >
-                <option
-                  v-for="size in gapOptions"
-                  :key="size"
-                  :value="size"
-                >
-                  {{ size }}
-                </option>
-              </select>
-            </div>
           </div>
         </div>
       </div>
@@ -320,23 +335,17 @@ const codeSnippet = computed(() => {
                 v-if="showHeader"
                 #header
               >
-                <Paper
-                  with-border
-                  class="flex h-full items-center"
-                >
+                <AppShellHeader>
                   <span class="font-medium">Header</span>
-                </Paper>
+                </AppShellHeader>
               </template>
 
               <template
                 v-if="showNavbar"
                 #navbar
               >
-                <Paper
-                  with-border
-                  class="h-full"
-                >
-                  <div class="font-medium mb-2">
+                <AppShellNavbar>
+                  <div class="font-medium">
                     Navbar
                   </div>
                   <nav class="space-y-1">
@@ -350,97 +359,72 @@ const codeSnippet = computed(() => {
                       Settings
                     </div>
                   </nav>
-                </Paper>
+                </AppShellNavbar>
               </template>
 
-              <Paper
-                with-border
-                class="h-full"
-              >
-                <h4 class="font-medium mb-2">
+              <AppShellMain>
+                <h4 class="font-medium mt-0">
                   Main Content
                 </h4>
-                <p class="text-surface-dimmed mb-4">
+                <p class="text-surface-dimmed">
                   This is the main content area. Adjust the controls to see the layout change.
                 </p>
                 <div class="gap-3 grid grid-cols-1 md:grid-cols-2">
-                  <Paper
-                    with-border
-                    no-padding
-                    class="p-3"
-                  >
+                  <div class="border-surface px-3 py-2 border rounded">
                     <h5 class="font-medium mb-1">
                       Content Block 1
                     </h5>
                     <p class="text-surface-dimmed text-sm">
                       Some content here
                     </p>
-                  </Paper>
-                  <Paper
-                    with-border
-                    no-padding
-                    class="p-3"
-                  >
+                  </div>
+                  <div class="border-surface px-3 py-2 border rounded">
                     <h5 class="font-medium mb-1">
                       Content Block 2
                     </h5>
                     <p class="text-surface-dimmed text-sm">
                       More content here
                     </p>
-                  </Paper>
+                  </div>
                 </div>
-              </Paper>
+              </AppShellMain>
 
               <template
                 v-if="showAside"
                 #aside
               >
-                <Paper
-                  with-border
-                  class="h-full"
-                >
-                  <div class="font-medium mb-2">
+                <AppShellAside>
+                  <div class="font-medium">
                     Aside
                   </div>
                   <div class="space-y-2">
-                    <Paper
-                      with-border
-                      no-padding
-                      class="p-2"
-                    >
+                    <div class="border-surface px-2 py-2 border rounded">
                       <div class="text-sm font-medium">
                         Widget 1
                       </div>
                       <div class="text-surface-dimmed text-xs">
                         Widget content
                       </div>
-                    </Paper>
-                    <Paper
-                      with-border
-                      no-padding
-                      class="p-2"
-                    >
+                    </div>
+                    <div class="border-surface px-2 py-2 border rounded">
                       <div class="text-sm font-medium">
                         Widget 2
                       </div>
                       <div class="text-surface-dimmed text-xs">
                         More content
                       </div>
-                    </Paper>
+                    </div>
                   </div>
-                </Paper>
+                </AppShellAside>
               </template>
 
               <template
                 v-if="showFooter"
                 #footer
               >
-                <Paper
-                  with-border
-                  class="flex h-full items-center"
-                >
+                <AppShellFooter>
                   <span class="text-surface-dimmed text-sm">Footer Content</span>
-                </Paper>
+                </AppShellFooter>
               </template>
             </AppShell>
           </div>

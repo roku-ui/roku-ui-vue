@@ -1,5 +1,10 @@
 /* eslint-disable */
 export { default as AppShell } from './AppShell.vue'
+export { default as AppShellHeader } from './AppShellHeader.vue'
+export { default as AppShellNavbar } from './AppShellNavbar.vue'
+export { default as AppShellMain } from './AppShellMain.vue'
+export { default as AppShellAside } from './AppShellAside.vue'
+export { default as AppShellFooter } from './AppShellFooter.vue'
 export { default as AspectRatio } from './AspectRatio.vue'
 export { default as AutoHeightTransition } from './AutoHeightTransition.vue'
 export { default as Avatar } from './Avatar.vue'

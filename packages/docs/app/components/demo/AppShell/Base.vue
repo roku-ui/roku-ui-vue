@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { AppShell, Paper } from '@roku-ui/vue'
+import { AppShell, AppShellAside, AppShellFooter, AppShellHeader, AppShellMain, AppShellNavbar } from '@roku-ui/vue'
 </script>
 
 <template>
@@ -11,61 +11,46 @@ import { AppShell, Paper } from '@roku-ui/vue'
     class="h-80"
   >
     <template #header>
-      <Paper
-        with-border
-        class="flex h-full w-full items-center"
-      >
+      <AppShellHeader>
         <span class="font-medium">Header</span>
-      </Paper>
+      </AppShellHeader>
     </template>
 
     <template #navbar>
-      <Paper
-        with-border
-        class="h-full"
-      >
-        <div class="font-medium mb-2">
+      <AppShellNavbar>
+        <div class="font-medium">
           Navbar
         </div>
         <div class="text-surface-dimmed text-sm">
           Navigation content
         </div>
-      </Paper>
+      </AppShellNavbar>
     </template>
 
-    <Paper
-      with-border
-      class="h-full"
-    >
-      <h4 class="font-medium mb-2">
+    <AppShellMain>
+      <h4 class="font-medium mt-0">
         Main Content
       </h4>
       <p class="text-surface-dimmed">
         This is the main content area.
       </p>
-    </Paper>
+    </AppShellMain>
 
     <template #aside>
-      <Paper
-        with-border
-        class="h-full"
-      >
-        <div class="font-medium mb-2">
+      <AppShellAside>
+        <div class="font-medium">
           Aside
         </div>
         <div class="text-surface-dimmed text-sm">
           Sidebar content
         </div>
-      </Paper>
+      </AppShellAside>
     </template>
 
     <template #footer>
-      <Paper
-        with-border
-        class="flex h-full items-center"
-      >
+      <AppShellFooter>
         <span class="text-surface-dimmed text-sm">Footer</span>
-      </Paper>
+      </AppShellFooter>
     </template>
   </AppShell>
 </template>

@@ -11,7 +11,6 @@ export interface AppShellProps {
   footerSpansNav?: boolean
   footerSpansAside?: boolean
   padding?: string | number
-  gap?: string | number
 }
 
 const props = withDefaults(defineProps<AppShellProps>(), {
@@ -23,8 +22,6 @@ const props = withDefaults(defineProps<AppShellProps>(), {
   headerSpansAside: false,
   footerSpansNav: false,
   footerSpansAside: false,
-  padding: '0px',
-  gap: '0px',
 })
 
 const slots = useSlots()
@@ -34,27 +31,30 @@ const hasNavbar = computed(() => !!slots.navbar)
 const hasAside = computed(() => !!slots.aside)
 const hasFooter = computed(() => !!slots.footer)
 
-const normalizeSize = (value: string | number) => typeof value === 'number' ? `${value}px` : value
+const normalizeSize = (value: string | number): string => typeof value === 'number' ? `${value}px` : value
 
-const containerStyle = computed(() => ({
-  padding: normalizeSize(props.padding),
-  gap: normalizeSize(props.gap),
-}))
+const containerStyle = computed(() => {
+  const style: Record<string, string> = {}
+  if (props.padding !== undefined) {
+    style.padding = normalizeSize(props.padding)
+  }
+  return style
+})
 
 const headerStyle = computed(() => ({
-  height: props.headerHeight,
+  height: normalizeSize(props.headerHeight),
 }))
 
 const footerStyle = computed(() => ({
-  height: props.footerHeight,
+  height: normalizeSize(props.footerHeight),
 }))
 
 const navbarStyle = computed(() => ({
-  width: props.navbarWidth,
+  width: normalizeSize(props.navbarWidth),
 }))
 
 const asideStyle = computed(() => ({
-  width: props.asideWidth,
+  width: normalizeSize(props.asideWidth),
 }))
 </script>
 
@@ -76,7 +76,6 @@ const asideStyle = computed(() => ({
     <div
       v-if="hasHeader && props.headerSpansNav && !props.headerSpansAside"
       class="flex flex-1 overflow-hidden"
-      :style="{ gap: normalizeSize(props.gap) }"
     >
       <!-- Left Part (Navbar + Main) with header -->
       <div class="flex flex-1 flex-col overflow-hidden">
@@ -91,7 +90,6 @@ const asideStyle = computed(() => ({
         <!-- Navbar + Main Row -->
         <div
           class="flex flex-1 overflow-hidden"
-          :style="{ gap: normalizeSize(props.gap) }"
         >
           <!-- Left Navbar -->
           <nav
@@ -146,7 +144,6 @@ const asideStyle = computed(() => ({
     <div
       v-else
       class="flex flex-1 overflow-hidden"
-      :style="{ gap: normalizeSize(props.gap) }"
     >
       <!-- Left Navbar -->
       <nav
@@ -173,7 +170,6 @@ const asideStyle = computed(() => ({
         <!-- Main + Aside Row -->
         <div
           class="flex flex-1 overflow-hidden"
-          :style="{ gap: normalizeSize(props.gap) }"
         >
           <!-- Main Content -->
           <main class="flex flex-1 flex-col overflow-hidden">
@@ -225,7 +221,7 @@ const asideStyle = computed(() => ({
 
     <!-- Footer spans nav only (navbar + main) -->
     <footer
-      v-if="hasFooter && props.footerSpansNav && !props.footerSpansAside"
+      v-if="hasFooter && props.footerSpansNav && !props.footerSpansAside && !(hasHeader && props.headerSpansNav && !props.headerSpansAside)"
       class="flex shrink-0 items-center"
       :style="footerStyle"
     >
