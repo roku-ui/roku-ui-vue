@@ -1,10 +1,10 @@
 <script lang="tsx" setup>
-import type { Rounded, Size } from '@/types'
 import type { VNodeChild } from 'vue'
-import { useRounded } from '@/utils'
-import { isDivider, isLabel, isMenuItem, someHasIcon } from '@/utils/menu'
+import type { Rounded, Size } from '@/types'
 import { onClickOutside, onKeyStroke, useElementHover, useEventListener, useToggle } from '@vueuse/core'
 import { computed, provide, ref, watchEffect } from 'vue'
+import { useRounded } from '@/utils'
+import { isDivider, isLabel, isMenuItem, someHasIcon } from '@/utils/menu'
 import { MenuItem } from '.'
 
 export type MenuData = MenuItemData | MenuDividerData | MenuLabelData
@@ -147,7 +147,7 @@ onClickOutside(menuDropdownRef, () => {
   capture: true,
 })
 
-useEventListener(window, 'contextmenu', () => {
+useEventListener(globalThis, 'contextmenu', () => {
   toggleOpen(false)
 })
 
@@ -338,7 +338,7 @@ const dropdownPositionClass = computed(() => {
   return props.trigger === 'contextmenu' ? '' : 'absolute mt-2'
 })
 
-useEventListener(window, 'scroll', () => {
+useEventListener(globalThis, 'scroll', () => {
   if (finalValue.value) {
     toggleOpen(false)
   }

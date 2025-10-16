@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { MenuData, MenuItemData, MenuProps } from './Menu.vue'
-import { useRounded } from '@/utils'
-import { isDivider, isLabel, someHasIcon } from '@/utils/menu'
 import { useElementHover } from '@vueuse/core'
 import { computed, inject, ref, watchEffect } from 'vue'
+import { useRounded } from '@/utils'
+import { isDivider, isLabel, someHasIcon } from '@/utils/menu'
 import { MenuItem, useOutlineCS } from '..'
 
 const props = withDefaults(defineProps<{
@@ -85,20 +85,21 @@ const menuPositionStyle = computed(() => {
     v-else
   >
     <button
+      v-bind="outlineCS"
       :id="itemId"
       ref="menuItemRef"
       type="button"
       :tabindex="-1"
-      class="relative inline-block h-8 w-full flex items-center gap-2 hover:bg-surface-variant-2 px-2 outline-2 focus-visible:outline":class="[
+      class="relative inline-block h-8 w-full flex items-center gap-2 hover:bg-surface-variant-2 px-2 outline-2 focus-visible:outline"
+      :class="[
         rounded.class,
         {
           'z-1': isFocusing,
           'bg-surface-variant-2': isOpen,
           'cursor-pointer': !isDisabled,
           'cursor-not-allowed opacity-60': isDisabled,
-        }]
-      v-bind="
-      outlineCS"
+        },
+      ]"
       :style="[rounded.style]"
       role="menuitem"
       :aria-haspopup="menuItemData.value.children ? 'menu' : undefined"
