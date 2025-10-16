@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { MenuData, MenuItemData, MenuProps } from './Menu.vue'
-import { useElementHover } from '@vueuse/core'
-import { computed, inject, ref, watchEffect } from 'vue'
 import { useRounded } from '@/utils'
 import { isDivider, isLabel, someHasIcon } from '@/utils/menu'
+import { useElementHover } from '@vueuse/core'
+import { computed, inject, ref, watchEffect } from 'vue'
 import { MenuItem, useOutlineCS } from '..'
 
 const props = withDefaults(defineProps<{
@@ -31,17 +31,21 @@ watchEffect(() => {
 })
 
 const isOpen = computed(() => {
-  // 如果 idx 是 menuCurrentIdx 的前缀，且不完全相等，则返回 true
   return menuCurrentIdx.value.length > props.idx.length
     && menuCurrentIdx.value.slice(0, props.idx.length).join(',') === props.idx.join(',')
 })
+const menuItemData = computed(() => props.data as MenuItemData)
+const itemId = computed(() => `menu-item-${props.idx.join('-')}`)
+const isDisabled = computed(() => menuItemData.value.disabled === true)
+const submenuId = computed(() => menuItemData.value.children ? `${itemId.value}-submenu` : undefined)
+const childHasIcon = computed(() => someHasIcon(menuItemData.value.children))
 
 const color = computed(() => {
   return props.color
 })
 const outlineCS = useOutlineCS(color)
-const select = inject<(value: number | string | symbol) => void>('selectMenuItem', () => {
-  console.error('selectMenuItem is not provided')
+const select = inject<(item: MenuItemData, event: Event) => void>('selectMenuItem', (item) => {
+  console.error('selectMenuItem is not provided', item)
 })
 const menuDropdownRef = ref<HTMLElement | null>(null)
 const menuPositionStyle = computed(() => {
@@ -66,64 +70,80 @@ const menuPositionStyle = computed(() => {
 <template>
   <div
     v-if="isLabel(data)"
-    class="text-surface-dimmed text-xs px-2 py-1"
+    class="px-2 py-1 text-xs text-surface-dimmed"
+    role="presentation"
+    aria-hidden="true"
   >
     {{ data.title }}
   </div>
   <div
     v-else-if="isDivider(data)"
-    class="border-surface my-2 border-t"
+    class="my-2 border-t border-surface"
+    role="separator"
   />
   <template
     v-else
   >
     <button
+      :id="itemId"
       ref="menuItemRef"
       type="button"
       :tabindex="-1"
-      class="hover:bg-surface-variant-2 px-2 flex gap-2 h-8 w-full cursor-pointer items-center relative focus-visible:outline"
-      :class="[
+      class="relative inline-block h-8 w-full flex items-center gap-2 hover:bg-surface-variant-2 px-2 outline-2 focus-visible:outline":class="[
         rounded.class,
         {
           'z-1': isFocusing,
           'bg-surface-variant-2': isOpen,
-        }]"
-      v-bind="outlineCS"
+          'cursor-pointer': !isDisabled,
+          'cursor-not-allowed opacity-60': isDisabled,
+        }]
+      v-bind="
+      outlineCS"
       :style="[rounded.style]"
-      @pointerdown="() => {
-        const d = (data as MenuItemData)
-        if (d.value) {
-          select(d.value)
+      role="menuitem"
+      :aria-haspopup="menuItemData.value.children ? 'menu' : undefined"
+      :aria-expanded="menuItemData.value.children ? String(isOpen.value) : undefined"
+      :aria-controls="submenuId"
+      :aria-disabled="String(isDisabled.value)"
+      @pointerdown="(event) => {
+        if (isDisabled.value) {
+          event.preventDefault()
+          return
         }
+        select(menuItemData.value, event)
       }"
     >
       <i
-        v-if="data.icon"
-        :class="data.icon"
-        class="flex-shrink-0 w-5"
+        v-if="menuItemData.value.icon"
+        :class="menuItemData.value.icon"
+        class="w-5 flex-shrink-0"
       />
       <i
         v-else-if="props.hasIcon"
-        class="flex-shrink-0 w-5"
+        class="w-5 flex-shrink-0"
       />
-      <div class="text-left flex-grow text-truncate">
-        {{ data.title }}
+      <div class="flex-grow text-truncate text-left">
+        {{ menuItemData.value.title }}
       </div>
       <i
-        v-if="data.children"
+        v-if="menuItemData.value.children"
         class="i-tabler-chevron-right flex-shrink-0"
+        aria-hidden="true"
       />
       <menu
-        v-if="data.children && (hover || isOpen || isFocusing)"
+        v-if="menuItemData.value.children && (hover || isOpen || isFocusing)"
+        :id="submenuId"
         ref="menuDropdownRef"
-        class="bg-surface bg-surface ml-1 p-2 border border w-64 left-100% top-0 absolute"
+        class="absolute left-100% top-0 ml-1 w-64 border bg-surface p-2"
         :class="rounded.class"
         :style="[rounded.style, menuPositionStyle]"
+        role="menu"
+        aria-orientation="vertical"
       >
         <MenuItem
-          v-for="child, i in data.children"
+          v-for="child, i in menuItemData.value.children"
           :key="i"
-          :has-icon="someHasIcon(data.children)"
+          :has-icon="childHasIcon"
           :data="child"
           :idx="[...idx, i]"
         />

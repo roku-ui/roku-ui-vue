@@ -1,10 +1,10 @@
 <script lang="tsx" setup>
-import type { VNodeChild } from 'vue'
 import type { Rounded, Size } from '@/types'
-import { onClickOutside, onKeyStroke, useElementHover, useEventListener, useToggle } from '@vueuse/core'
-import { computed, provide, ref, watchEffect } from 'vue'
+import type { VNodeChild } from 'vue'
 import { useRounded } from '@/utils'
 import { isDivider, isLabel, isMenuItem, someHasIcon } from '@/utils/menu'
+import { onClickOutside, onKeyStroke, useElementHover, useEventListener, useToggle } from '@vueuse/core'
+import { computed, provide, ref, watchEffect } from 'vue'
 import { MenuItem } from '.'
 
 export type MenuData = MenuItemData | MenuDividerData | MenuLabelData
@@ -16,6 +16,15 @@ export interface MenuItemData {
   render?: () => VNodeChild
   children?: MenuData[]
   size?: Size
+  disabled?: boolean
+  closeOnSelect?: boolean
+  onSelect?: (context: MenuItemSelectContext) => void
+}
+
+export interface MenuItemSelectContext {
+  value?: number | string | symbol
+  event: Event
+  data: MenuItemData
 }
 
 export interface MenuDividerData {
@@ -62,12 +71,24 @@ const model = defineModel<boolean>({
 const modelValue = computed(() => model.value)
 const [value, toggle] = useToggle()
 const finalValue = computed(() => {
-  // check model value is undefined or boolean
   if (modelValue.value === undefined) {
     return value.value
   }
   return modelValue.value
 })
+
+function setOpenState(target: boolean) {
+  if (modelValue.value === undefined) {
+    toggle(target)
+    return
+  }
+  model.value = target
+}
+
+function toggleOpen(target?: boolean) {
+  const nextValue = typeof target === 'boolean' ? target : !finalValue.value
+  setOpenState(nextValue)
+}
 
 const rounded = useRounded(props)
 const menuWrapperRef = ref<HTMLElement | null>(null)
@@ -80,7 +101,7 @@ useEventListener(menuTriggerRef, 'pointerup', (e) => {
   }
   e.stopPropagation()
   e.preventDefault()
-  toggle()
+  toggleOpen()
 })
 
 const hover = useElementHover(menuTriggerRef, {
@@ -96,10 +117,10 @@ watchEffect(() => {
     return
   }
   if (hover.value || dropdownHover.value) {
-    toggle(true)
+    toggleOpen(true)
   }
   else {
-    toggle(false)
+    toggleOpen(false)
   }
 })
 
@@ -111,7 +132,7 @@ useEventListener(menuTriggerRef, 'contextmenu', (e) => {
   }
   e.stopPropagation()
   e.preventDefault()
-  toggle()
+  toggleOpen()
   const baseDom = menuWrapperRef.value
   const rect = baseDom?.getBoundingClientRect()
   if (!rect) {
@@ -121,13 +142,13 @@ useEventListener(menuTriggerRef, 'contextmenu', (e) => {
 })
 
 onClickOutside(menuDropdownRef, () => {
-  toggle(false)
+  toggleOpen(false)
 }, {
   capture: true,
 })
 
-useEventListener(globalThis, 'contextmenu', () => {
-  toggle(false)
+useEventListener(window, 'contextmenu', () => {
+  toggleOpen(false)
 })
 
 const menuCurrentIdx = ref<number[]>([-1])
@@ -151,8 +172,7 @@ function getLength(data: MenuData[], idx: number[]): number {
   if (!isMenuItem(cur) || cur.children === undefined) {
     return 0
   }
-  const children = cur.children
-  return getLength(children, idx.slice(1))
+  return getLength(cur.children, idx.slice(1))
 }
 
 const maxIdx = computed(() => {
@@ -161,60 +181,89 @@ const maxIdx = computed(() => {
   }
   return getLength(props.data, menuCurrentIdx.value)
 })
-const items = computed(() => {
-  return props.data
+const items = computed(() => props.data)
+const currentItem = computed(() => {
+  const item = getMenuItemData(items.value, menuCurrentIdx.value)
+  return isMenuItem(item) ? item : undefined
 })
+const hasIcon = computed(() => someHasIcon(props.data))
+
+function isNavigableItem(item?: MenuData): item is MenuItemData {
+  return isMenuItem(item) && item.disabled !== true && !item.render
+}
+
+function isSelectableItem(item?: MenuData): item is MenuItemData {
+  if (!isMenuItem(item) || item.disabled) {
+    return false
+  }
+  return item.value !== undefined || typeof item.onSelect === 'function'
+}
+
+function shouldCloseOnSelect(item: MenuItemData) {
+  if (!isSelectableItem(item)) {
+    return false
+  }
+  return item.closeOnSelect !== false
+}
+
+function handleItemSelect(item: MenuItemData, event: Event) {
+  if (item.disabled) {
+    return
+  }
+  const context: MenuItemSelectContext = {
+    value: item.value,
+    event,
+    data: item,
+  }
+  item.onSelect?.(context)
+  if (item.value !== undefined) {
+    emits('select', item.value)
+  }
+  if (shouldCloseOnSelect(item)) {
+    toggleOpen(false)
+  }
+}
+
 onKeyStroke('ArrowDown', (e) => {
-  if (!finalValue.value) {
+  if (!finalValue.value || maxIdx.value === 0) {
     return
   }
   e.preventDefault()
   const idx = menuCurrentIdx.value
-
-  const lastIdx = idx.at(-1)
-  if (lastIdx === undefined || lastIdx === -1) {
-    menuCurrentIdx.value = [0]
-    return
-  }
+  const parentIdx = idx.slice(0, -1)
+  const lastIdx = idx.at(-1) ?? -1
   let nextIdx = (lastIdx + 1) % maxIdx.value
   let attempts = 0
-  while (
-    attempts < maxIdx.value
-    && (!isMenuItem(getMenuItemData(items.value, [...idx.slice(0, -1), nextIdx])) || getMenuItemData(items.value, [...idx.slice(0, -1), nextIdx])?.render)
-  ) {
+  while (attempts < maxIdx.value) {
+    const candidate = getMenuItemData(items.value, [...parentIdx, nextIdx])
+    if (isNavigableItem(candidate)) {
+      menuCurrentIdx.value = [...parentIdx, nextIdx]
+      return
+    }
     nextIdx = (nextIdx + 1) % maxIdx.value
-    attempts++
+    attempts += 1
   }
-  menuCurrentIdx.value = [...idx.slice(0, -1), nextIdx]
 })
 
 onKeyStroke('ArrowUp', (e) => {
-  if (!finalValue.value) {
+  if (!finalValue.value || maxIdx.value === 0) {
     return
   }
   e.preventDefault()
   const idx = menuCurrentIdx.value
-  const lastIdx = idx.at(-1)
-  if (lastIdx === undefined) {
-    menuCurrentIdx.value = [maxIdx.value - 1]
-    return
-  }
-  if (lastIdx === -1 && idx.length === 1) {
-    menuCurrentIdx.value = [maxIdx.value - 1]
-    return
-  }
-  let nextIdx = (lastIdx - 1 + maxIdx.value) % maxIdx.value
+  const parentIdx = idx.slice(0, -1)
+  const lastIdx = idx.at(-1) ?? -1
+  let nextIdx = lastIdx === -1 ? (maxIdx.value - 1 + maxIdx.value) % maxIdx.value : (lastIdx - 1 + maxIdx.value) % maxIdx.value
   let attempts = 0
-  // jump to the next item that is not render
-  while (
-    attempts < maxIdx.value
-    && (!isMenuItem(getMenuItemData(items.value, [...idx.slice(0, -1), nextIdx]))
-    || getMenuItemData(items.value, [...idx.slice(0, -1), nextIdx])?.render)
-  ) {
+  while (attempts < maxIdx.value) {
+    const candidate = getMenuItemData(items.value, [...parentIdx, nextIdx])
+    if (isNavigableItem(candidate)) {
+      menuCurrentIdx.value = [...parentIdx, nextIdx]
+      return
+    }
     nextIdx = (nextIdx - 1 + maxIdx.value) % maxIdx.value
-    attempts++
+    attempts += 1
   }
-  menuCurrentIdx.value = [...idx.slice(0, -1), nextIdx]
 })
 
 onKeyStroke('ArrowRight', (e) => {
@@ -222,34 +271,18 @@ onKeyStroke('ArrowRight', (e) => {
     return
   }
   e.preventDefault()
-
-  // 如果当前没有选中任何项（末尾是 -1），先选择第一项
-  if (menuCurrentIdx.value.at(-1) === -1) {
-    menuCurrentIdx.value = [0]
+  const item = currentItem.value
+  if (!item || item.children === undefined) {
     return
   }
-
-  // 获取当前选中的菜单项
-  const currentItem = getMenuItemData(items.value, menuCurrentIdx.value)
-  if (!isMenuItem(currentItem) || !currentItem.children) {
-    return
-  }
-
-  // 如果当前项有子菜单，进入子菜单的第一项
-  let nextChildIdx = 0
-  const children = currentItem.children
-
-  // 找到第一个可选择的子菜单项
-  while (nextChildIdx < children.length) {
-    const childItem = children[nextChildIdx]
-    if (isMenuItem(childItem) && !childItem.render) {
-      break
+  let childIdx = 0
+  while (childIdx < item.children.length) {
+    const child = item.children[childIdx]
+    if (isNavigableItem(child)) {
+      menuCurrentIdx.value = [...menuCurrentIdx.value, childIdx]
+      return
     }
-    nextChildIdx++
-  }
-
-  if (nextChildIdx < children.length) {
-    menuCurrentIdx.value = [...menuCurrentIdx.value, nextChildIdx]
+    childIdx += 1
   }
 })
 
@@ -258,60 +291,46 @@ onKeyStroke('ArrowLeft', (e) => {
     return
   }
   e.preventDefault()
-  // 如果当前的 Data 不是 ItemData 则什么都不做
-  if (!isMenuItem(getMenuItemData(items.value, menuCurrentIdx.value))) {
-    return
-  }
-  // 如果 menuCurrentIdx 长度 > 1，说明存在父级
   if (menuCurrentIdx.value.length > 1) {
     menuCurrentIdx.value = menuCurrentIdx.value.slice(0, -1)
   }
 })
 
-function getMenuItemData(items: MenuData[] | undefined, idx: number[]): MenuItemData | undefined {
-  if (idx.length === 0) {
+function getMenuItemData(items: MenuData[] | undefined, idx: number[]): MenuData | undefined {
+  if (idx.length === 0 || items === undefined) {
     return undefined
   }
-  let cur = items
+  let cur: MenuData[] | undefined = items
   for (let i = 0; i < idx.length - 1; i++) {
-    if (cur === undefined) {
+    const pointer = idx[i]
+    if (!cur || pointer < 0 || pointer >= cur.length) {
       return undefined
     }
-    const seg = idx[i]
-    if (seg === undefined || seg < 0 || seg >= cur.length) {
+    const node = cur[pointer]
+    if (!isMenuItem(node) || node.children === undefined) {
       return undefined
     }
-    const ci = cur[seg]
-    if (!isMenuItem(ci) || ci.children === undefined) {
-      return undefined
-    }
-    cur = ci.children
-  }
-  if (cur === undefined) {
-    return undefined
+    cur = node.children
   }
   const lastIdx = idx.at(-1)
-  if (lastIdx === undefined) {
+  if (!cur || lastIdx === undefined || lastIdx < 0 || lastIdx >= cur.length) {
     return undefined
   }
-  if (lastIdx < 0 || lastIdx >= cur.length) {
-    return undefined
-  }
-  return cur[lastIdx] as MenuItemData
+  return cur[lastIdx]
 }
-provide('selectMenuItem', (value: number | string | symbol) => {
-  emits('select', value)
-  toggle(false)
+
+provide('selectMenuItem', (item: MenuItemData, event: Event) => {
+  handleItemSelect(item, event)
 })
+
 onKeyStroke('Enter', (e) => {
   if (!finalValue.value) {
     return
   }
   e.preventDefault()
-  const val = getMenuItemData(items.value, menuCurrentIdx.value)?.value
-  if (val) {
-    emits('select', val)
-    toggle(false)
+  const item = currentItem.value
+  if (isSelectableItem(item)) {
+    handleItemSelect(item, e)
   }
 })
 
@@ -319,9 +338,9 @@ const dropdownPositionClass = computed(() => {
   return props.trigger === 'contextmenu' ? '' : 'absolute mt-2'
 })
 
-useEventListener(globalThis, 'scroll', () => {
+useEventListener(window, 'scroll', () => {
   if (finalValue.value) {
-    toggle(false)
+    toggleOpen(false)
   }
 })
 
@@ -336,13 +355,14 @@ const dropdownPositionStyle = computed(() => {
   const dropDownTop = menuDropdownRef.value?.getBoundingClientRect().top ?? 0
   const hasBottomPosition = windowHeight - dropDownTop > dropDownHeight
 
-  return props.trigger === 'contextmenu'
-    ? {
-        left: `${hasRightPosition ? openPosition.value.x : openPosition.value.x - dropDownWidth}px`,
-        top: `${hasBottomPosition ? openPosition.value.y : openPosition.value.y - dropDownHeight}px`,
-        position: 'absolute',
-      } as const
-    : {}
+  if (props.trigger === 'contextmenu') {
+    return {
+      left: `${hasRightPosition ? openPosition.value.x : openPosition.value.x - dropDownWidth}px`,
+      top: `${hasBottomPosition ? openPosition.value.y : openPosition.value.y - dropDownHeight}px`,
+      position: 'absolute',
+    } as const
+  }
+  return {}
 })
 </script>
 
@@ -370,14 +390,17 @@ const dropdownPositionStyle = computed(() => {
     >
       <menu
         v-if="finalValue && data"
-        class="flex justify-center relative z-1"
+        class="relative z-1 flex justify-center"
         :style="dropdownPositionStyle"
+        role="menu"
+        aria-orientation="vertical"
+        :aria-hidden="String(!finalValue)"
       >
         <div
           ref="menuDropdownRef"
           :class="[rounded.class, dropdownPositionClass]"
           :style="[rounded.style]"
-          class="bg-surface p-2 border w-64"
+          class="w-64 border bg-surface p-2"
         >
           <template
             v-for="item, i in props.data"
@@ -385,13 +408,16 @@ const dropdownPositionStyle = computed(() => {
           >
             <div
               v-if="isLabel(item)"
-              class="text-surface-variant-3 text-surface-dimmed text-xs px-2 py-1"
+              class="text-surface-variant-3 px-2 py-1 text-xs text-surface-dimmed"
+              role="presentation"
+              aria-hidden="true"
             >
               {{ item.title }}
             </div>
             <div
               v-else-if="isDivider(item)"
-              class="border-surface my-2 border-t"
+              class="my-2 border-t border-surface"
+              role="separator"
             />
             <template v-else>
               <component
@@ -402,7 +428,7 @@ const dropdownPositionStyle = computed(() => {
                 v-else
                 v-bind="{ ...props, data: item }"
                 :idx="[i]"
-                :has-icon="someHasIcon(props.data)"
+                :has-icon="hasIcon"
               />
             </template>
           </template>
