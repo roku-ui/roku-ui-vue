@@ -95,8 +95,8 @@ const menuWrapperRef = ref<HTMLElement | null>(null)
 const menuTriggerRef = ref<HTMLElement | null>(null)
 const menuDropdownRef = ref<HTMLElement | null>(null)
 
-useEventListener(menuTriggerRef, 'pointerup', (e) => {
-  if (props.trigger !== 'click' || e.button !== 0) {
+useEventListener(menuTriggerRef, 'click', (e) => {
+  if (props.trigger !== 'click') {
     return
   }
   e.stopPropagation()
@@ -389,18 +389,18 @@ const dropdownPositionStyle = computed(() => {
       :leave-active-class="props.leaveActiveClass"
     >
       <menu
-        v-if="finalValue && data"
-        class="relative z-1 flex justify-center"
+        v-if="finalValue && props.data?.length"
+        class="relative z-10 flex justify-center list-none p-0 m-0"
         :style="dropdownPositionStyle"
         role="menu"
         aria-orientation="vertical"
-        :aria-hidden="String(!finalValue)"
+        :aria-hidden="finalValue ? 'false' : 'true'"
       >
         <div
           ref="menuDropdownRef"
           :class="[rounded.class, dropdownPositionClass]"
           :style="[rounded.style]"
-          class="w-64 border bg-surface p-2"
+          class="w-64 border border-container bg-container p-2 shadow-lg"
         >
           <template
             v-for="item, i in props.data"

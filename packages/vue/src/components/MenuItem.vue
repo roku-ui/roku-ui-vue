@@ -3,7 +3,7 @@ import type { MenuData, MenuItemData, MenuProps } from './Menu.vue'
 import { useElementHover } from '@vueuse/core'
 import { computed, inject, ref, watchEffect } from 'vue'
 import { useRounded } from '@/utils'
-import { isDivider, isLabel, someHasIcon } from '@/utils/menu'
+import { isDivider, isLabel, isMenuItem, someHasIcon } from '@/utils/menu'
 import { MenuItem, useOutlineCS } from '..'
 
 const props = withDefaults(defineProps<{
@@ -34,11 +34,16 @@ const isOpen = computed(() => {
   return menuCurrentIdx.value.length > props.idx.length
     && menuCurrentIdx.value.slice(0, props.idx.length).join(',') === props.idx.join(',')
 })
-const menuItemData = computed(() => props.data as MenuItemData)
+const menuItemData = computed<MenuItemData | undefined>(() => {
+  if (!isMenuItem(props.data)) {
+    return
+  }
+  return props.data
+})
 const itemId = computed(() => `menu-item-${props.idx.join('-')}`)
-const isDisabled = computed(() => menuItemData.value.disabled === true)
-const submenuId = computed(() => menuItemData.value.children ? `${itemId.value}-submenu` : undefined)
-const childHasIcon = computed(() => someHasIcon(menuItemData.value.children))
+const isDisabled = computed(() => menuItemData.value?.disabled === true)
+const submenuId = computed(() => menuItemData.value?.children ? `${itemId.value}-submenu` : undefined)
+const childHasIcon = computed(() => someHasIcon(menuItemData.value?.children))
 
 const color = computed(() => {
   return props.color
@@ -65,6 +70,18 @@ const menuPositionStyle = computed(() => {
     bottom: hasBottomPosition ? 'auto' : '0',
   }
 })
+
+function handlePointerDown(event: PointerEvent) {
+  const item = menuItemData.value
+  if (!item) {
+    return
+  }
+  if (isDisabled.value) {
+    event.preventDefault()
+    return
+  }
+  select(item, event)
+}
 </script>
 
 <template>
@@ -81,68 +98,61 @@ const menuPositionStyle = computed(() => {
     class="my-2 border-t border-surface"
     role="separator"
   />
-  <template
-    v-else
-  >
+  <template v-else-if="menuItemData">
     <button
       v-bind="outlineCS"
       :id="itemId"
       ref="menuItemRef"
       type="button"
       :tabindex="-1"
-      class="relative inline-block h-8 w-full flex items-center gap-2 hover:bg-surface-variant-2 px-2 outline-2 focus-visible:outline"
+      class="relative inline-flex h-9 w-full items-center gap-2 px-2 outline-none focus-visible:outline-2 focus-visible:ring-2 focus-visible:ring-primary/40 transition-colors duration-150 hover:bg-elevated focus-visible:bg-elevated"
       :class="[
         rounded.class,
         {
           'z-1': isFocusing,
-          'bg-surface-variant-2': isOpen,
+          'bg-elevated': isOpen || isFocusing,
+          'ring-2 ring-primary/40 ring-offset-1 ring-offset-transparent': isFocusing,
           'cursor-pointer': !isDisabled,
           'cursor-not-allowed opacity-60': isDisabled,
         },
       ]"
       :style="[rounded.style]"
       role="menuitem"
-      :aria-haspopup="menuItemData.value.children ? 'menu' : undefined"
-      :aria-expanded="menuItemData.value.children ? String(isOpen.value) : undefined"
+      :aria-haspopup="menuItemData?.children ? 'menu' : undefined"
+      :aria-expanded="menuItemData?.children ? (isOpen ? 'true' : 'false') : undefined"
       :aria-controls="submenuId"
-      :aria-disabled="String(isDisabled.value)"
-      @pointerdown="(event) => {
-        if (isDisabled.value) {
-          event.preventDefault()
-          return
-        }
-        select(menuItemData.value, event)
-      }"
+      :aria-disabled="isDisabled ? 'true' : undefined"
+      @pointerdown="handlePointerDown"
     >
       <i
-        v-if="menuItemData.value.icon"
-        :class="menuItemData.value.icon"
-        class="w-5 flex-shrink-0"
+        v-if="menuItemData?.icon"
+        :class="menuItemData?.icon"
+        class="w-5 flex-shrink-0 text-surface-dimmed"
       />
       <i
         v-else-if="props.hasIcon"
-        class="w-5 flex-shrink-0"
+        class="w-5 flex-shrink-0 text-transparent"
       />
-      <div class="flex-grow text-truncate text-left">
-        {{ menuItemData.value.title }}
+      <div class="flex-grow text-left text-surface truncate">
+        {{ menuItemData?.title }}
       </div>
       <i
-        v-if="menuItemData.value.children"
-        class="i-tabler-chevron-right flex-shrink-0"
+        v-if="menuItemData?.children"
+        class="i-tabler-chevron-right flex-shrink-0 text-surface-dimmed"
         aria-hidden="true"
       />
       <menu
-        v-if="menuItemData.value.children && (hover || isOpen || isFocusing)"
+        v-if="menuItemData?.children && (hover || isOpen || isFocusing)"
         :id="submenuId"
         ref="menuDropdownRef"
-        class="absolute left-100% top-0 ml-1 w-64 border bg-surface p-2"
+        class="absolute left-full top-0 ml-1 w-64 border border-container bg-container p-2 shadow-md list-none m-0"
         :class="rounded.class"
         :style="[rounded.style, menuPositionStyle]"
         role="menu"
         aria-orientation="vertical"
       >
         <MenuItem
-          v-for="child, i in menuItemData.value.children"
+          v-for="child, i in menuItemData.children ?? []"
           :key="i"
           :has-icon="childHasIcon"
           :data="child"
@@ -150,5 +160,8 @@ const menuPositionStyle = computed(() => {
         />
       </menu>
     </button>
+  </template>
+  <template v-else>
+    <div class="hidden" />
   </template>
 </template>

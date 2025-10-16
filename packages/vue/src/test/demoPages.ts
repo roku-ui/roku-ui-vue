@@ -12,6 +12,7 @@ import CSSVarDemo from './demo/CSSVarDemo.vue'
 import FormDemo from './demo/FormDemo.vue'
 import LayoutDemo from './demo/LayoutDemo.vue'
 import MediaDemo from './demo/MediaDemo.vue'
+import MenuDemo from './demo/MenuDemo.vue'
 import ModalDemo from './demo/ModalDemo.vue'
 import ModernColorDemo from './demo/ModernColorDemo.vue'
 import NavigationDemo from './demo/NavigationDemo.vue'
@@ -50,6 +51,7 @@ export const demoPages = [
   { key: 'Form', title: 'Form Controls', component: FormDemo },
   { key: 'Layout', title: 'Layout', component: LayoutDemo },
   { key: 'Media', title: 'Media & Colors', component: MediaDemo },
+  { key: 'Menu', title: 'Menu', component: MenuDemo },
   { key: 'Modal', title: 'Modal & Drawer', component: ModalDemo },
   { key: 'NumberField', title: 'NumberField', component: NumberFieldDemo },
   { key: 'ModernColor', title: 'Modern Color System', component: ModernColorDemo },

@@ -9,6 +9,9 @@ export function isLabel(item?: MenuData): item is MenuLabelData {
 }
 
 export function isMenuItem(item?: MenuData): item is MenuItemData {
+  if (!item) {
+    return false
+  }
   return !isDivider(item) && !isLabel(item)
 }
 
