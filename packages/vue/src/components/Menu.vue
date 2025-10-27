@@ -390,7 +390,7 @@ const dropdownPositionStyle = computed(() => {
     >
       <menu
         v-if="finalValue && props.data?.length"
-        class="relative z-10 flex justify-center list-none p-0 m-0"
+        class="m-0 p-0 list-none flex justify-center relative z-10"
         :style="dropdownPositionStyle"
         role="menu"
         aria-orientation="vertical"
@@ -400,7 +400,7 @@ const dropdownPositionStyle = computed(() => {
           ref="menuDropdownRef"
           :class="[rounded.class, dropdownPositionClass]"
           :style="[rounded.style]"
-          class="w-64 border border-container bg-container p-2 shadow-lg"
+          class="bg-container border-container p-2 border w-64 shadow-lg"
         >
           <template
             v-for="item, i in props.data"
@@ -408,7 +408,7 @@ const dropdownPositionStyle = computed(() => {
           >
             <div
               v-if="isLabel(item)"
-              class="text-surface-variant-3 px-2 py-1 text-xs text-surface-dimmed"
+              class="text-surface-variant-3 text-surface-dimmed text-xs px-2 py-1"
               role="presentation"
               aria-hidden="true"
             >
@@ -416,7 +416,7 @@ const dropdownPositionStyle = computed(() => {
             </div>
             <div
               v-else-if="isDivider(item)"
-              class="my-2 border-t border-surface"
+              class="border-surface my-2 border-t"
               role="separator"
             />
             <template v-else>

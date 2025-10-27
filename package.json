@@ -26,7 +26,8 @@
     "@types/culori": "^4.0.1",
     "@unocss/eslint-config": "66.5.4",
     "@unocss/eslint-plugin": "66.5.4",
-    "eslint": "^9.37.0",
+    "eslint": "^9.38.0",
+    "eslint-import-resolver-node": "^0.3.9",
     "eslint-plugin-format": "^1.0.2"
   },
   "simple-git-hooks": {

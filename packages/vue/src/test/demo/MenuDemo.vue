@@ -104,7 +104,7 @@ function handleControlledSelect(value?: number | string | symbol) {
         </Menu>
       </div>
 
-      <p class="text-sm text-surface-dimmed">
+      <p class="text-surface-dimmed text-sm">
         Last action: {{ lastAction }}
       </p>
     </section>
@@ -119,7 +119,7 @@ function handleControlledSelect(value?: number | string | symbol) {
         :data="hoverMenu"
         @select="handleSelect"
       >
-        <Paper class="cursor-pointer px-4 py-2">
+        <Paper class="px-4 py-2 cursor-pointer">
           Hover to open
         </Paper>
       </Menu>

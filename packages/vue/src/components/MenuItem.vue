@@ -87,7 +87,7 @@ function handlePointerDown(event: PointerEvent) {
 <template>
   <div
     v-if="isLabel(data)"
-    class="px-2 py-1 text-xs text-surface-dimmed"
+    class="text-surface-dimmed text-xs px-2 py-1"
     role="presentation"
     aria-hidden="true"
   >
@@ -95,7 +95,7 @@ function handlePointerDown(event: PointerEvent) {
   </div>
   <div
     v-else-if="isDivider(data)"
-    class="my-2 border-t border-surface"
+    class="border-surface my-2 border-t"
     role="separator"
   />
   <template v-else-if="menuItemData">
@@ -105,7 +105,7 @@ function handlePointerDown(event: PointerEvent) {
       ref="menuItemRef"
       type="button"
       :tabindex="-1"
-      class="relative inline-flex h-9 w-full items-center gap-2 px-2 outline-none focus-visible:outline-2 focus-visible:ring-2 focus-visible:ring-primary/40 transition-colors duration-150 hover:bg-elevated focus-visible:bg-elevated"
+      class="focus-visible:ring-primary/40 px-2 outline-none inline-flex gap-2 h-9 w-full transition-colors duration-150 items-center relative focus-visible:bg-elevated hover:bg-elevated focus-visible:outline-2 focus-visible:ring-2"
       :class="[
         rounded.class,
         {
@@ -127,25 +127,25 @@ function handlePointerDown(event: PointerEvent) {
       <i
         v-if="menuItemData?.icon"
         :class="menuItemData?.icon"
-        class="w-5 flex-shrink-0 text-surface-dimmed"
+        class="text-surface-dimmed flex-shrink-0 w-5"
       />
       <i
         v-else-if="props.hasIcon"
-        class="w-5 flex-shrink-0 text-transparent"
+        class="text-transparent flex-shrink-0 w-5"
       />
-      <div class="flex-grow text-left text-surface truncate">
+      <div class="text-surface text-left flex-grow truncate">
         {{ menuItemData?.title }}
       </div>
       <i
         v-if="menuItemData?.children"
-        class="i-tabler-chevron-right flex-shrink-0 text-surface-dimmed"
+        class="i-tabler-chevron-right text-surface-dimmed flex-shrink-0"
         aria-hidden="true"
       />
       <menu
         v-if="menuItemData?.children && (hover || isOpen || isFocusing)"
         :id="submenuId"
         ref="menuDropdownRef"
-        class="absolute left-full top-0 ml-1 w-64 border border-container bg-container p-2 shadow-md list-none m-0"
+        class="bg-container border-container m-0 ml-1 p-2 list-none border w-64 shadow-md left-full top-0 absolute"
         :class="rounded.class"
         :style="[rounded.style, menuPositionStyle]"
         role="menu"
