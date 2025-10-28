@@ -1,6 +1,7 @@
 /* Base color scheme configuration */
 :root {
     color-scheme: light dark;
+    text-autospace: normal;
 }
 :root[data-scheme="dark"] {
     color-scheme: dark;
