@@ -94,7 +94,7 @@ const containerCS = useContainerCS(props.variant, color)
   />
   <div
     v-else
-    class="h-[--size] w-[--size] inline-block relative"
+    class="min-h-[--size] min-w-[--size] inline-block relative"
     :style="sizeStyle"
   >
     <component
