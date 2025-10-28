@@ -2,7 +2,6 @@
 :root {
     color-scheme: light dark;
 }
-
 :root[data-scheme="dark"] {
     color-scheme: dark;
 }
@@ -10,13 +9,11 @@
 :root[data-scheme="light"] {
     color-scheme: light;
 }
-
 /* Theme layer for better organization and overrides */
 @layer theme {
-    /* Default (light) theme colors */
-    * {
-        color-scheme: light;
-        
+    [data-scheme="light"] *, [data-scheme="dark"] [data-scheme="light"] * {
+        color: rgb(var(--r-text-default));
+
         --r-text-primary: var(--r-color-primary-5);
         --r-text-secondary: var(--r-color-secondary-5);
         --r-text-tertiary: var(--r-color-tertiary-5);
@@ -25,15 +22,15 @@
         --r-text-warning: var(--r-color-warning-5);
         --r-text-error: var(--r-color-error-5);
 
-        --r-text-dimmed: var(--r-color-surface-4);
+        --r-text-dimmed: var(--r-color-surface-3);
         --r-text-muted: var(--r-color-surface-5);
-        --r-text-default: var(--r-color-surface-7);
-        --r-text-highlight: var(--r-color-surface-9);
+        --r-text-default: var(--r-color-surface-8);
+        --r-text-highlight: var(--r-color-surface-10);
         --r-text-inverted: var(--r-color-surface-1);
 
-        --r-bg-base: var(--r-color-surface-1);
-        --r-bg-container: var(--r-color-surface-2);
-        --r-bg-elevated: var(--r-color-surface-3);
+        --r-bg-base: var(--r-color-surface-0);
+        --r-bg-container: var(--r-color-surface-0);
+        --r-bg-elevated: var(--r-color-surface-1);
         --r-bg-inverted: var(--r-color-surface-9);
 
         --r-bg-primary: var(--r-color-primary-5);
@@ -45,16 +42,13 @@
         --r-bg-error: var(--r-color-error-5);
 
         --r-border-base: var(--r-color-surface-3);
-        --r-border-container: var(--r-color-surface-3);
-        --r-border-elevated: var(--r-color-surface-4);
-        --r-border-inverted: var(--r-color-surface-8);
-
+        --r-border-container: var(--r-color-surface-4);
+        --r-border-elevated: var(--r-color-surface-6);
+        --r-border-inverted: var(--r-color-surface-9);
     }
 
-    /* Dark theme overrides */
-    [data-scheme="dark"] *,
-    [data-scheme="light"] [data-scheme="dark"] * {
-        color-scheme: dark;
+    [data-scheme="dark"] * {
+        color: rgb(var(--r-text-default));
 
         --r-text-primary: var(--r-color-primary-4);
         --r-text-secondary: var(--r-color-secondary-4);
@@ -65,9 +59,9 @@
         --r-text-error: var(--r-color-error-4);
 
         --r-text-dimmed: var(--r-color-surface-5);
-        --r-text-muted: var(--r-color-surface-4);
-        --r-text-default: var(--r-color-surface-3);
-        --r-text-highlight: var(--r-color-surface-1);
+        --r-text-muted: var(--r-color-surface-3);
+        --r-text-default: var(--r-color-surface-1);
+        --r-text-highlight: var(--r-color-surface-0);
         --r-text-inverted: var(--r-color-surface-9);
 
         --r-bg-base: var(--r-color-surface-9);
@@ -82,9 +76,10 @@
         --r-bg-info: var(--r-color-info-4);
         --r-bg-warning: var(--r-color-warning-4);
         --r-bg-error: var(--r-color-error-4);
- 
+
         --r-border-base: var(--r-color-surface-7);
         --r-border-container: var(--r-color-surface-6);
         --r-border-elevated: var(--r-color-surface-5);
-        --r-border-inverted: var(--r-color-surface-2);}
+        --r-border-inverted: var(--r-color-surface-2);
+    }
 }
