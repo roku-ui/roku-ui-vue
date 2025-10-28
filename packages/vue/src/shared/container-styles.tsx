@@ -146,7 +146,7 @@ const indicatorRecipe: ContainerCSRecipe = {
     {
       color: 'surface',
       type: 'border',
-      index: { dark: SURFACE_BORDER.base.dark, light: SURFACE_BORDER.base.light },
+      index: { dark: SURFACE_BG.base.dark, light: SURFACE_BG.base.light },
     },
     {
       type: 'text',

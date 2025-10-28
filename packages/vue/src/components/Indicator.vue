@@ -89,7 +89,7 @@ const fillCS = useIndicatorFilledCS(color)
     >
       <div
         v-if="props.ping"
-        class="border-2 border-transparent rounded-full box-content absolute animate-ping"
+        class="border-transparent rounded-full box-content absolute animate-ping"
         :class="[
           {
             [sizeCls]: !$slots.label,
@@ -104,7 +104,7 @@ const fillCS = useIndicatorFilledCS(color)
         />
       </div>
       <div
-        class="border-surface-low border-2 rounded-full box-content top-0"
+        class="border-2 rounded-full box-content top-0"
         :class="[
           {
             [sizeCls]: !$slots.label,
