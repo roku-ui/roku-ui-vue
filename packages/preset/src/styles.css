@@ -66,8 +66,8 @@
         --r-text-inverted: var(--r-color-surface-9);
 
         --r-bg-base: var(--r-color-surface-9);
-        --r-bg-container: var(--r-color-surface-8);
-        --r-bg-elevated: var(--r-color-surface-7);
+        --r-bg-container: var(--r-color-surface-9);
+        --r-bg-elevated: var(--r-color-surface-8);
         --r-bg-inverted: var(--r-color-surface-1);
 
         --r-bg-primary: var(--r-color-primary-4);
@@ -79,8 +79,8 @@
         --r-bg-error: var(--r-color-error-4);
 
         --r-border-base: var(--r-color-surface-7);
-        --r-border-container: var(--r-color-surface-6);
-        --r-border-elevated: var(--r-color-surface-5);
+        --r-border-container: var(--r-color-surface-7);
+        --r-border-elevated: var(--r-color-surface-6);
         --r-border-inverted: var(--r-color-surface-2);
     }
 }
