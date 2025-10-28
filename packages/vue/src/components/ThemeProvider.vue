@@ -75,9 +75,8 @@ provideTheme(resolvedTheme)
 
 <template>
   <div
-    :style="[styles]"
+    :style="[styles, { colorScheme: scheme }]"
     :data-scheme="scheme"
-    data-theme="default"
   >
     <slot />
   </div>
