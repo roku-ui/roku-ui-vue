@@ -302,12 +302,15 @@ function getMenuItemData(items: MenuData[] | undefined, idx: number[]): MenuData
   }
   let cur: MenuData[] | undefined = items
   for (let i = 0; i < idx.length - 1; i++) {
-    const pointer = idx[i]
-    if (!cur || pointer < 0 || pointer >= cur.length) {
+    if (!cur) {
       return undefined
     }
-    const node = cur[pointer]
-    if (!isMenuItem(node) || node.children === undefined) {
+    const pointer = idx[i]
+    if (pointer === undefined || pointer < 0 || pointer >= cur.length) {
+      return undefined
+    }
+    const node: MenuData | undefined = cur[pointer]
+    if (!node || !isMenuItem(node) || node.children === undefined) {
       return undefined
     }
     cur = node.children
