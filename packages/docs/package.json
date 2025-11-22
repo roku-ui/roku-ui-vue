@@ -10,30 +10,30 @@
     "preview": "nuxt preview"
   },
   "dependencies": {
-    "@iconify/json": "^2.2.400",
-    "@nuxt/image": "^1.11.0",
+    "@iconify/json": "^2.2.409",
+    "@nuxt/image": "^2.0.0",
     "@roku-ui/preset": "workspace:^",
     "@roku-ui/vue": "workspace:^",
-    "unocss": "66.5.4"
+    "unocss": "66.5.9"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^6.1.0",
+    "@antfu/eslint-config": "^6.2.0",
     "@iconify-json/tabler": "^1.2.23",
-    "@nuxt/content": "^3.7.1",
-    "@nuxt/devtools": "3.0.0-beta.1",
+    "@nuxt/content": "^3.8.2",
+    "@nuxt/devtools": "3.1.0",
     "@nuxtjs/robots": "^5.5.6",
-    "@shikijs/transformers": "^3.14.0",
-    "@unocss/eslint-config": "66.5.4",
-    "@unocss/eslint-plugin": "66.5.4",
-    "@unocss/nuxt": "66.5.4",
-    "@unocss/preset-icons": "66.5.4",
-    "@unocss/preset-typography": "66.5.4",
+    "@shikijs/transformers": "^3.15.0",
+    "@unocss/eslint-config": "66.5.9",
+    "@unocss/eslint-plugin": "66.5.9",
+    "@unocss/nuxt": "66.5.9",
+    "@unocss/preset-icons": "66.5.9",
+    "@unocss/preset-typography": "66.5.9",
     "@vueuse/nuxt": "^14.0.0",
-    "eslint": "^9.38.0",
+    "eslint": "^9.39.1",
     "eslint-plugin-format": "^1.0.2",
-    "nuxt": "^4.2.0",
-    "shiki": "^3.14.0",
-    "vue": "^3.5.22",
+    "nuxt": "^4.2.1",
+    "shiki": "^3.15.0",
+    "vue": "^3.5.24",
     "vue-router": "^4.6.3"
   }
 }
