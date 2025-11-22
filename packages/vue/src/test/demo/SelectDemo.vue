@@ -112,11 +112,11 @@ const manySelected = ref(manyOptions[0])
               <div class="font-medium">
                 {{ product.title }}
               </div>
-              <div class="text-xs text-gray-500">
+              <div class="text-surface-dimmed text-xs">
                 SKU: {{ product.sku }}
               </div>
             </div>
-            <span class="text-sm text-green-600 font-semibold">${{ product.price }}</span>
+            <span class="text-success text-sm font-semibold">${{ product.price }}</span>
           </div>
         </template>
       </Select>

@@ -1,8 +1,6 @@
 import type { Preset } from 'unocss'
 import tailwindReset from '@unocss/reset/tailwind.css'
 import { presetIcons, presetTypography, presetWind4 } from 'unocss'
-// 使用 ?raw 以便在 vite 开发模式下把 CSS 作为纯文本引入（无需 rollup-plugin-import-css）
-// 这样 alias 指向源码时修改 styles.css 会立即触发热更新并注入新的 preflight
 import baseStyle from './styles.css'
 
 const colorKeys = ['surface', 'primary', 'secondary', 'tertiary', 'info', 'warning', 'error']
@@ -16,8 +14,8 @@ for (const key of colorKeys) {
 }
 const shortcuts = {
   // Legacy component integration shortcuts (keep for backward compatibility)
-  'custom-colors': 'border dark:text-[var(--d-text)] text-[var(--l-text)] dark:bg-[var(--d-bg)] bg-[var(--l-bg)] dark:border-[var(--d-border)] border-[var(--l-border)] dark:hover:bg-[var(--d-bg-h)] hover:bg-[var(--l-bg-h)] hover:text-[var(--l-text-h)] dark:hover:text-[var(--d-text-h)] focus-visible:outline-[--l-outline] dark:focus-visible:outline-[--d-outline]',
-  'custom-input-colors': 'border bg-[var(--l-bg)] dark:bg-[var(--d-bg)] text-[var(--l-text)] dark:text-[var(--d-text)] placeholder-[var(--l-placeholder)] dark:placeholder-[var(--d-placeholder)] border-[var(--l-border)] dark:border-[var(--d-border)] focus:border-[var(--l-border-f)] dark:focus:border-[var(--d-border-f)]',
+  'custom-colors': 'border text-[var(--r-scheme-text)] bg-[var(--r-scheme-bg)] border-[var(--r-scheme-border)] hover:bg-[var(--r-scheme-bg-hover)] hover:text-[var(--r-scheme-text-hover)] focus-visible:outline-[var(--r-scheme-outline)]',
+  'custom-input-colors': 'border bg-[var(--r-scheme-bg)] text-[var(--r-scheme-text)] placeholder-[var(--r-scheme-placeholder)] border-[var(--r-scheme-border)] focus:border-[var(--r-scheme-border-focus)] hover:bg-[var(--r-scheme-bg-hover)]',
 }
 function rokuPresetImpl(): Preset {
   // Dynamic rules generator - replaces many static shortcuts

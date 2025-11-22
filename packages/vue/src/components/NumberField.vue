@@ -2,6 +2,7 @@
 import type { TextFieldFormat } from './TextField.vue'
 import type { Color } from '@/types'
 import { computed, ref, watch } from 'vue'
+import { SURFACE_BG, SURFACE_BORDER, useMergedCS, useSurfaceCS } from '@/shared'
 import TextField from './TextField.vue'
 
 interface Props {
@@ -149,6 +150,11 @@ const spinnerSizeClasses = computed(() => {
     }
   }
 })
+
+const spinnerContainerBgCS = useSurfaceCS('bg', { dark: SURFACE_BG.container.dark, light: SURFACE_BG.container.light }, { dark: 0.12, light: 0.06 })
+const spinnerContainerBorderCS = useSurfaceCS('border', { dark: SURFACE_BORDER.base.dark, light: SURFACE_BORDER.base.light }, { dark: 0.25, light: 0.2 })
+const spinnerContainerCS = useMergedCS([spinnerContainerBgCS, spinnerContainerBorderCS], ['border', 'border-l'])
+const spinnerButtonBorderCS = useSurfaceCS('border', { dark: SURFACE_BORDER.subtle.dark, light: SURFACE_BORDER.subtle.light }, { dark: 0.3, light: 0.15 })
 
 const incrementAriaLabel = computed<string>(() => {
   return props.incrementAriaLabel
@@ -306,13 +312,15 @@ watch(
         :class="spinnerSizeClasses.wrapper"
       >
         <div
-          class="border-surface/20 bg-surface/4 dark:border-surface/25 border-l rounded-r-inherit flex flex-col self-stretch overflow-hidden"
+          class="rounded-r-inherit flex flex-col self-stretch overflow-hidden"
           :class="spinnerSizeClasses.container"
+          v-bind="spinnerContainerCS"
         >
           <button
             type="button"
-            class="hover:bg-surface/8 focus-visible:ring-primary border-surface/15 dark:border-surface/30 text-surface-dimmed disabled:text-surface-dimmed hover:text-surface text-xs border-b flex flex-1 transition-colors duration-150 items-center justify-center focus-visible:outline-none disabled:opacity-60 disabled:cursor-not-allowed focus-visible:ring-1"
+            class="hover:bg-surface/8 focus-visible:ring-primary text-surface-dimmed disabled:text-surface-dimmed hover:text-surface text-xs border border-b flex flex-1 transition-colors duration-150 items-center justify-center focus-visible:outline-none disabled:opacity-60 disabled:cursor-not-allowed focus-visible:ring-1"
             :class="spinnerSizeClasses.buttonPadding"
+            v-bind="spinnerButtonBorderCS"
             :aria-label="incrementAriaLabel"
             :disabled="isIncrementDisabled"
             @click="handleStep(true)"
@@ -326,8 +334,9 @@ watch(
           </button>
           <button
             type="button"
-            class="hover:bg-surface/8 focus-visible:ring-primary text-surface-dimmed disabled:text-surface-dimmed hover:text-surface text-xs flex flex-1 transition-colors duration-150 items-center justify-center focus-visible:outline-none disabled:opacity-60 disabled:cursor-not-allowed focus-visible:ring-1"
+            class="hover:bg-surface/8 focus-visible:ring-primary text-surface-dimmed disabled:text-surface-dimmed hover:text-surface text-xs border border-t-0 flex flex-1 transition-colors duration-150 items-center justify-center focus-visible:outline-none disabled:opacity-60 disabled:cursor-not-allowed focus-visible:ring-1"
             :class="spinnerSizeClasses.buttonPadding"
+            v-bind="spinnerButtonBorderCS"
             :aria-label="decrementAriaLabel"
             :disabled="isDecrementDisabled"
             @click="handleStep(false)"

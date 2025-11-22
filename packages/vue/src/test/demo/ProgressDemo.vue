@@ -154,15 +154,15 @@ function updateStackedSections() {
                 Data: {{ JSON.stringify(stackedSections) }}
               </p>
               <div class="flex gap-2 items-center">
-                <div class="rounded-sm bg-blue-500 h-3 w-3" />
+                <div class="bg-primary rounded-sm h-3 w-3" />
                 <span>Primary: {{ stackedSections[0]?.value }}%</span>
               </div>
               <div class="flex gap-2 items-center">
-                <div class="rounded-sm bg-green-500 h-3 w-3" />
+                <div class="bg-success rounded-sm h-3 w-3" />
                 <span>Success: {{ stackedSections[1]?.value }}%</span>
               </div>
               <div class="flex gap-2 items-center">
-                <div class="rounded-sm bg-yellow-500 h-3 w-3" />
+                <div class="bg-warning rounded-sm h-3 w-3" />
                 <span>Warning: {{ stackedSections[2]?.value }}%</span>
               </div>
             </div>

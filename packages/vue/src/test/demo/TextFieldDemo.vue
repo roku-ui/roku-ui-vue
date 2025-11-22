@@ -269,7 +269,7 @@ const dateInput = ref('')
           placeholder="Email address"
         >
           <template #label>
-            <span class="text-blue-600">Email Address *</span>
+            <span class="text-primary">Email Address *</span>
           </template>
         </TextField>
         <div class="text-surface-dimmed text-sm">
@@ -332,7 +332,7 @@ const dateInput = ref('')
         <div class="text-surface-dimmed text-sm">
           Value: {{ partialPasswordInput }}
         </div>
-        <div class="text-xs text-gray-500">
+        <div class="text-surface-dimmed text-xs">
           This feature shows the first n characters and last n characters of the password, while hiding the middle part with asterisks.
         </div>
       </Paper>
@@ -457,7 +457,7 @@ const dateInput = ref('')
           type="number"
         >
           <template #rightSection>
-            <span class="text-sm text-gray-500">USD</span>
+            <span class="text-surface-dimmed text-sm">USD</span>
           </template>
         </TextField>
         <TextField
@@ -498,10 +498,10 @@ const dateInput = ref('')
           type="number"
         >
           <template #leftSection>
-            <span class="text-sm text-gray-500">$</span>
+            <span class="text-surface-dimmed text-sm">$</span>
           </template>
           <template #rightSection>
-            <span class="text-sm text-gray-500">.00</span>
+            <span class="text-surface-dimmed text-sm">.00</span>
           </template>
         </TextField>
         <TextField

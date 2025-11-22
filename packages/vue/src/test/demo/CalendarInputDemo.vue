@@ -63,7 +63,7 @@ function isWeekend(date: Date) {
           size="lg"
         />
       </div>
-      <div class="text-sm text-gray-500">
+      <div class="text-surface-dimmed text-sm">
         Selected: {{ singleDate ? singleDate.toDateString() : 'None' }}
       </div>
     </div>
@@ -80,7 +80,7 @@ function isWeekend(date: Date) {
         placeholder="Pick multiple dates"
         class="w-full md:w-80"
       />
-      <div class="text-sm text-gray-500">
+      <div class="text-surface-dimmed text-sm">
         Selected: {{ multipleDate?.map(d => d.toDateString()).join(', ') || 'None' }}
       </div>
     </div>
@@ -97,7 +97,7 @@ function isWeekend(date: Date) {
         placeholder="Pick a date range"
         class="w-full md:w-80"
       />
-      <div class="text-sm text-gray-500">
+      <div class="text-surface-dimmed text-sm">
         Selected: {{ dateRange?.start && dateRange?.end ? `${dateRange.start.toDateString()} ~ ${dateRange.end.toDateString()}` : 'None' }}
       </div>
     </div>
@@ -161,7 +161,7 @@ function isWeekend(date: Date) {
           :disabled-dates="disabledDates"
         />
       </div>
-      <div class="text-sm text-gray-500">
+      <div class="text-surface-dimmed text-sm">
         Single with validation: {{ singleDateWithValidation ? singleDateWithValidation.toDateString() : 'None' }}
         <br>
         Range with validation: {{ rangeWithValidation?.start && rangeWithValidation?.end ? `${rangeWithValidation.start.toDateString()} ~ ${rangeWithValidation.end.toDateString()}` : 'None' }}

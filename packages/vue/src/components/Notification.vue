@@ -106,7 +106,7 @@ const shapeClass = computed(() => {
         v-else-if="showLeftIndicator"
       >
         <div
-          class="rounded-full bg-[var(--d-bg)] h-[calc(100%-0.5rem)] w-1 left-[0.25rem] top-[0.25rem] absolute dark:bg-[var(--d-bg)]"
+          class="rounded-full h-[calc(100%-0.5rem)] w-1 left-[0.25rem] top-[0.25rem] absolute"
           :class="[{
             'animate-pulse': loading,
           }]"
@@ -116,7 +116,6 @@ const shapeClass = computed(() => {
       <div class="grow-1">
         <div
           v-if="title"
-          class="text-[var(--l-text)] dark:text-[var(--d-text)]"
           :style="textCS.style"
           :class="[{
             'text-xs': size === 'sm',

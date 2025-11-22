@@ -53,10 +53,8 @@ function getDefaultTagVariantStyle(surface: CuloriColor[], hasInteraction: boole
   }
 
   const baseClass = [
-    'dark:bg-[--d-bg]',
-    'bg-[--l-bg]',
-    'dark:border-[--d-border]',
-    'border-[--l-border]',
+    'bg-[var(--r-scheme-bg)]',
+    'border-[var(--r-scheme-border)]',
   ]
 
   if (hasInteraction) {
@@ -68,8 +66,7 @@ function getDefaultTagVariantStyle(surface: CuloriColor[], hasInteraction: boole
       },
       class: [
         ...baseClass,
-        'dark:hover:bg-[--d-bg-h]',
-        'hover:bg-[--l-bg-h]',
+        'hover:bg-[var(--r-scheme-bg-hover)]',
       ],
     }
   }
@@ -91,12 +88,9 @@ function getInvertedTagVariantStyle(surface: CuloriColor[], hasInteraction: bool
   }
 
   const baseClass = [
-    'dark:bg-[--d-bg]',
-    'bg-[--l-bg]',
-    'dark:border-[--d-border]',
-    'border-[--l-border]',
-    'dark:text-[--d-text]',
-    'text-[--l-text]',
+    'bg-[var(--r-scheme-bg)]',
+    'border-[var(--r-scheme-border)]',
+    'text-[var(--r-scheme-text)]',
   ]
 
   if (hasInteraction) {
@@ -108,8 +102,7 @@ function getInvertedTagVariantStyle(surface: CuloriColor[], hasInteraction: bool
       },
       class: [
         ...baseClass,
-        'dark:hover:bg-[--d-bg-h]',
-        'hover:bg-[--l-bg-h]',
+        'hover:bg-[var(--r-scheme-bg-hover)]',
       ],
     }
   }
@@ -131,12 +124,9 @@ function getFilledTagVariantStyle(color: CuloriColor[], hasInteraction: boolean)
   }
 
   const baseClass = [
-    'dark:border-[--d-border]',
-    'border-[--l-border]',
-    'dark:bg-[--d-bg]',
-    'bg-[--l-bg]',
-    'dark:text-[--d-text]',
-    'text-[--l-text]',
+    'border-[var(--r-scheme-border)]',
+    'bg-[var(--r-scheme-bg)]',
+    'text-[var(--r-scheme-text)]',
   ]
 
   if (hasInteraction) {
@@ -149,10 +139,8 @@ function getFilledTagVariantStyle(color: CuloriColor[], hasInteraction: boolean)
       },
       class: [
         ...baseClass,
-        'dark:hover:bg-[--d-bg-h]',
-        'hover:bg-[--l-bg-h]',
-        'dark:hover:text-[--d-text-h]',
-        'hover:text-[--l-text-h]',
+        'hover:bg-[var(--r-scheme-bg-hover)]',
+        'hover:text-[var(--r-scheme-text-hover)]',
       ],
     }
   }
@@ -174,12 +162,9 @@ function getLightTagVariantStyle(color: CuloriColor[], hasInteraction: boolean):
   }
 
   const baseClass = [
-    'dark:border-[--d-border]',
-    'border-[--l-border]',
-    'dark:bg-[--d-bg]',
-    'bg-[--l-bg]',
-    'dark:text-[--d-text]',
-    'text-[--l-text]',
+    'border-[var(--r-scheme-border)]',
+    'bg-[var(--r-scheme-bg)]',
+    'text-[var(--r-scheme-text)]',
   ]
 
   if (hasInteraction) {
@@ -193,10 +178,8 @@ function getLightTagVariantStyle(color: CuloriColor[], hasInteraction: boolean):
       },
       class: [
         ...baseClass,
-        'dark:hover:bg-[--d-bg-h]',
-        'hover:bg-[--l-bg-h]',
-        'dark:hover:text-[--d-text-h]',
-        'hover:text-[--l-text-h]',
+        'hover:bg-[var(--r-scheme-bg-hover)]',
+        'hover:text-[var(--r-scheme-text-hover)]',
       ],
     }
   }
@@ -218,12 +201,9 @@ function getOutlineTagVariantStyle(color: CuloriColor[], hasInteraction: boolean
   }
 
   const baseClass = [
-    'dark:bg-[--d-bg]',
-    'bg-[--l-bg]',
-    'dark:text-[--d-text]',
-    'text-[--l-text]',
-    'dark:border-[--d-border]',
-    'border-[--l-border]',
+    'bg-[var(--r-scheme-bg)]',
+    'text-[var(--r-scheme-text)]',
+    'border-[var(--r-scheme-border)]',
   ]
 
   if (hasInteraction) {
@@ -237,10 +217,8 @@ function getOutlineTagVariantStyle(color: CuloriColor[], hasInteraction: boolean
       },
       class: [
         ...baseClass,
-        'dark:hover:bg-[--d-bg-h]',
-        'hover:bg-[--l-bg-h]',
-        'dark:hover:text-[--d-text-h]',
-        'hover:text-[--l-text-h]',
+        'hover:bg-[var(--r-scheme-bg-hover)]',
+        'hover:text-[var(--r-scheme-text-hover)]',
       ],
     }
   }
@@ -262,12 +240,9 @@ function getTransparentTagVariantStyle(color: CuloriColor[], hasInteraction: boo
   }
 
   const baseClass = [
-    'dark:text-[--d-text]',
-    'text-[--l-text]',
-    'dark:bg-[--d-bg]',
-    'bg-[--l-bg]',
-    'dark:border-[--d-border]',
-    'border-[--l-border]',
+    'text-[var(--r-scheme-text)]',
+    'bg-[var(--r-scheme-bg)]',
+    'border-[var(--r-scheme-border)]',
   ]
 
   if (hasInteraction) {
@@ -279,8 +254,7 @@ function getTransparentTagVariantStyle(color: CuloriColor[], hasInteraction: boo
       },
       class: [
         ...baseClass,
-        'dark:hover:text-[--d-text-h]',
-        'hover:text-[--l-text-h]',
+        'hover:text-[var(--r-scheme-text-hover)]',
       ],
     }
   }
@@ -302,12 +276,9 @@ function getSubtleTagVariantStyle(color: CuloriColor[], hasInteraction: boolean)
   }
 
   const baseClass = [
-    'dark:bg-[--d-bg]',
-    'bg-[--l-bg]',
-    'dark:text-[--d-text]',
-    'text-[--l-text]',
-    'dark:border-[--d-border]',
-    'border-[--l-border]',
+    'bg-[var(--r-scheme-bg)]',
+    'text-[var(--r-scheme-text)]',
+    'border-[var(--r-scheme-border)]',
   ]
 
   if (hasInteraction) {
@@ -321,10 +292,8 @@ function getSubtleTagVariantStyle(color: CuloriColor[], hasInteraction: boolean)
       },
       class: [
         ...baseClass,
-        'dark:hover:bg-[--d-bg-h]',
-        'hover:bg-[--l-bg-h]',
-        'dark:hover:text-[--d-text-h]',
-        'hover:text-[--l-text-h]',
+        'hover:bg-[var(--r-scheme-bg-hover)]',
+        'hover:text-[var(--r-scheme-text-hover)]',
       ],
     }
   }
@@ -346,12 +315,9 @@ function getContrastTagVariantStyle(color: CuloriColor[], hasInteraction: boolea
   }
 
   const baseClass = [
-    'dark:text-[--d-text]',
-    'text-[--l-text]',
-    'dark:bg-[--d-bg]',
-    'bg-[--l-bg]',
-    'dark:border-[--d-border]',
-    'border-[--l-border]',
+    'text-[var(--r-scheme-text)]',
+    'bg-[var(--r-scheme-bg)]',
+    'border-[var(--r-scheme-border)]',
   ]
 
   if (hasInteraction) {
@@ -365,10 +331,8 @@ function getContrastTagVariantStyle(color: CuloriColor[], hasInteraction: boolea
       },
       class: [
         ...baseClass,
-        'dark:hover:text-[--d-text-h]',
-        'hover:text-[--l-text-h]',
-        'dark:hover:bg-[--d-bg-h]',
-        'hover:bg-[--l-bg-h]',
+        'hover:text-[var(--r-scheme-text-hover)]',
+        'hover:bg-[var(--r-scheme-bg-hover)]',
       ],
     }
   }

@@ -79,8 +79,73 @@
         --r-bg-error: var(--r-color-error-4);
 
         --r-border-base: var(--r-color-surface-7);
-        --r-border-container: var(--r-color-surface-7);
-        --r-border-elevated: var(--r-color-surface-6);
+        --r-border-container: var(--r-color-surface-6);
+        --r-border-elevated: var(--r-color-surface-5);
         --r-border-inverted: var(--r-color-surface-2);
+    }
+}
+
+@layer components {
+    :where(*, *::before, *::after) {
+        --r-scheme-bg-light: var(--l-bg, transparent);
+        --r-scheme-bg-dark: var(--d-bg, var(--r-scheme-bg-light));
+        --r-scheme-bg: var(--r-scheme-bg-light);
+
+        --r-scheme-bg-hover-light: var(--l-bg-h, var(--r-scheme-bg));
+        --r-scheme-bg-hover-dark: var(--d-bg-h, var(--r-scheme-bg-hover-light));
+        --r-scheme-bg-hover: var(--r-scheme-bg-hover-light);
+
+        --r-scheme-border-light: var(--l-border, currentColor);
+        --r-scheme-border-dark: var(--d-border, var(--r-scheme-border-light));
+        --r-scheme-border: var(--r-scheme-border-light);
+
+        --r-scheme-border-hover-light: var(--l-border-h, var(--r-scheme-border));
+        --r-scheme-border-hover-dark: var(--d-border-h, var(--r-scheme-border-hover-light));
+        --r-scheme-border-hover: var(--r-scheme-border-hover-light);
+
+        --r-scheme-border-focus-light: var(--l-border-f, var(--r-scheme-border));
+        --r-scheme-border-focus-dark: var(--d-border-f, var(--r-scheme-border-focus-light));
+        --r-scheme-border-focus: var(--r-scheme-border-focus-light);
+
+        --r-scheme-text-light: var(--l-text, inherit);
+        --r-scheme-text-dark: var(--d-text, var(--r-scheme-text-light));
+        --r-scheme-text: var(--r-scheme-text-light);
+
+        --r-scheme-text-hover-light: var(--l-text-h, var(--r-scheme-text));
+        --r-scheme-text-hover-dark: var(--d-text-h, var(--r-scheme-text-hover-light));
+        --r-scheme-text-hover: var(--r-scheme-text-hover-light);
+
+        --r-scheme-placeholder-light: var(--l-placeholder, var(--r-scheme-text));
+        --r-scheme-placeholder-dark: var(--d-placeholder, var(--r-scheme-placeholder-light));
+        --r-scheme-placeholder: var(--r-scheme-placeholder-light);
+
+        --r-scheme-outline-light: var(--l-outline, transparent);
+        --r-scheme-outline-dark: var(--d-outline, var(--r-scheme-outline-light));
+        --r-scheme-outline: var(--r-scheme-outline-light);
+    }
+
+    [data-scheme="dark"] :where(*, *::before, *::after),
+    [data-scheme="light"] [data-scheme="dark"] :where(*, *::before, *::after) {
+        --r-scheme-bg: var(--r-scheme-bg-dark);
+        --r-scheme-bg-hover: var(--r-scheme-bg-hover-dark);
+        --r-scheme-border: var(--r-scheme-border-dark);
+        --r-scheme-border-hover: var(--r-scheme-border-hover-dark);
+        --r-scheme-border-focus: var(--r-scheme-border-focus-dark);
+        --r-scheme-text: var(--r-scheme-text-dark);
+        --r-scheme-text-hover: var(--r-scheme-text-hover-dark);
+        --r-scheme-placeholder: var(--r-scheme-placeholder-dark);
+        --r-scheme-outline: var(--r-scheme-outline-dark);
+    }
+
+    [data-scheme="dark"] [data-scheme="light"] :where(*, *::before, *::after) {
+        --r-scheme-bg: var(--r-scheme-bg-light);
+        --r-scheme-bg-hover: var(--r-scheme-bg-hover-light);
+        --r-scheme-border: var(--r-scheme-border-light);
+        --r-scheme-border-hover: var(--r-scheme-border-hover-light);
+        --r-scheme-border-focus: var(--r-scheme-border-focus-light);
+        --r-scheme-text: var(--r-scheme-text-light);
+        --r-scheme-text-hover: var(--r-scheme-text-hover-light);
+        --r-scheme-placeholder: var(--r-scheme-placeholder-light);
+        --r-scheme-outline: var(--r-scheme-outline-light);
     }
 }

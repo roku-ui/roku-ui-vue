@@ -152,7 +152,7 @@ function completeStep(current: any) {
             </Btn>
           </div>
 
-          <div class="text-sm text-gray-600">
+          <div class="text-default text-sm">
             Current Step: {{ currentBasicStep + 1 }} / {{ basicSteps.length }}
           </div>
         </div>
@@ -206,7 +206,7 @@ function completeStep(current: any) {
             :clickable="true"
           />
 
-          <div class="text-sm text-gray-600">
+          <div class="text-surface-dimmed text-sm">
             Click on any step to navigate directly to it
           </div>
         </div>
@@ -227,7 +227,7 @@ function completeStep(current: any) {
             :linear="false"
           />
 
-          <div class="text-sm text-gray-600">
+          <div class="text-surface-dimmed text-sm">
             Navigation type with non-linear access
           </div>
         </div>
@@ -401,7 +401,7 @@ function completeStep(current: any) {
             :progress-dot="true"
           />
 
-          <div class="text-sm text-gray-600">
+          <div class="text-surface-dimmed text-sm">
             Minimalist dot-style progress indicator
           </div>
         </div>
@@ -421,7 +421,7 @@ function completeStep(current: any) {
             :alternative-label="true"
           />
 
-          <div class="text-sm text-gray-600">
+          <div class="text-surface-dimmed text-sm">
             Labels placed below icons for horizontal layout
           </div>
         </div>
@@ -441,7 +441,7 @@ function completeStep(current: any) {
             :show-description="false"
           />
 
-          <div class="text-sm text-gray-600">
+          <div class="text-surface-dimmed text-sm">
             Clean layout with titles only
           </div>
         </div>

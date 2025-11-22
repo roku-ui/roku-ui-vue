@@ -182,8 +182,8 @@ const filledColor = computed(() => {
   const c = colors.value[4]
   return (c && formatHex(c)) || '#000000'
 })
-const indicatorOuterCls = 'dark:bg-white bg-[var(--i-bg)]'
-const indicatorInnerCls = 'dark:bg-[var(--i-bg)] bg-white'
+const indicatorOuterCls = 'bg-[var(--r-scheme-bg)]'
+const indicatorInnerCls = 'bg-[var(--r-scheme-bg)]'
 const containerFilledCS = useContainerFilledCS(color)
 
 watchEffect(() => {
@@ -356,13 +356,18 @@ const animateCls = computed(() => props.animate && !isMoving.value
             class="rounded-full cursor-pointer top-50% absolute"
             :class="[sizeCls.indicator, animateCls.indicator, indicatorOuterCls]"
             :style="{
-              '--i-bg': filledColor, // hex string
+              '--l-bg': filledColor,
+              '--d-bg': '#ffffff',
               'left': `${props.reverse ? 100 - (length === 1 ? 0 : (currentIndex / (length - 1)) * 100) : (length === 1 ? 0 : (currentIndex / (length - 1)) * 100)}%`,
             }"
           >
             <div
               class="rounded-full pointer-events-none left-50% top-50% absolute"
               :class="[sizeCls.indicatorInner, indicatorInnerCls]"
+              :style="{
+                '--l-bg': '#ffffff',
+                '--d-bg': filledColor,
+              }"
             />
           </div>
           <div

@@ -105,12 +105,13 @@ export function useTextCS(color: MaybeRef<Color>) {
 
 export type CSType = 'bg' | 'border' | 'text' | 'placeholder' | 'hover:bg' | 'hover:border' | 'hover:text' | 'outline'
 export type CSIndex = number | { dark: number, light: number }
+export type CSAlpha = number | { dark?: number, light?: number }
 
 export interface CSOptions {
   color: MaybeRef<Color | 'surface'>
   type: CSType
   index: CSIndex
-  alpha?: number
+  alpha?: CSAlpha
 }
 
 export interface CS {
@@ -118,68 +119,55 @@ export interface CS {
   class: string[] | string
 }
 
-export function getCSInner(colors: CuloriColor[], type: CSType, darkIndex: number, lightIndex: number, alpha = 1): CS {
+export function getCSInner(colors: CuloriColor[], type: CSType, darkIndex: number, lightIndex: number, alpha: CSAlpha = 1): CS {
   const dColor = colors[darkIndex]
   const lColor = colors[lightIndex]
+  const resolvedAlphaDark = typeof alpha === 'number' ? alpha : alpha.dark ?? alpha.light ?? 1
+  const resolvedAlphaLight = typeof alpha === 'number' ? alpha : alpha.light ?? alpha.dark ?? 1
   switch (type) {
     case 'outline': {
       return {
         style: {
-          [`--d-outline`]: safeHex8(dColor, alpha),
-          [`--l-outline`]: safeHex8(lColor, alpha),
+          [`--d-outline`]: safeHex8(dColor, resolvedAlphaDark),
+          [`--l-outline`]: safeHex8(lColor, resolvedAlphaLight),
         },
-        class: [
-          `dark:focus-visible:outline-[--d-outline]`,
-          `focus-visible:outline-[--l-outline]`,
-        ],
+        class: 'focus-visible:outline-[var(--r-scheme-outline)]',
       }
     }
     case 'bg': {
       return {
         style: {
-          [`--d-bg`]: safeHex8(dColor, alpha),
-          [`--l-bg`]: safeHex8(lColor, alpha),
+          [`--d-bg`]: safeHex8(dColor, resolvedAlphaDark),
+          [`--l-bg`]: safeHex8(lColor, resolvedAlphaLight),
         },
-        class: [
-          `dark:bg-[--d-bg]`,
-          `bg-[--l-bg]`,
-        ],
+        class: 'bg-[var(--r-scheme-bg)]',
       }
     }
     case 'border': {
       return {
         style: {
-          [`--d-border`]: safeHex8(dColor, alpha),
-          [`--l-border`]: safeHex8(lColor, alpha),
+          [`--d-border`]: safeHex8(dColor, resolvedAlphaDark),
+          [`--l-border`]: safeHex8(lColor, resolvedAlphaLight),
         },
-        class: [
-          `dark:border-[--d-border]`,
-          `border-[--l-border]`,
-        ],
+        class: 'border-[var(--r-scheme-border)]',
       }
     }
     case 'text': {
       return {
         style: {
-          [`--d-text`]: safeHex8(dColor, alpha),
-          [`--l-text`]: safeHex8(lColor, alpha),
+          [`--d-text`]: safeHex8(dColor, resolvedAlphaDark),
+          [`--l-text`]: safeHex8(lColor, resolvedAlphaLight),
         },
-        class: [
-          `dark:text-[--d-text]`,
-          `text-[--l-text]`,
-        ],
+        class: 'text-[var(--r-scheme-text)]',
       }
     }
     case 'placeholder': {
       return {
         style: {
-          [`--d-placeholder`]: safeHex8(dColor, alpha),
-          [`--l-placeholder`]: safeHex8(lColor, alpha),
+          [`--d-placeholder`]: safeHex8(dColor, resolvedAlphaDark),
+          [`--l-placeholder`]: safeHex8(lColor, resolvedAlphaLight),
         },
-        class: [
-          'dark:placeholder-[--d-placeholder]',
-          'placeholder-[--l-placeholder]',
-        ],
+        class: 'placeholder-[var(--r-scheme-placeholder)]',
       }
     }
     case 'hover:bg': {
@@ -188,10 +176,7 @@ export function getCSInner(colors: CuloriColor[], type: CSType, darkIndex: numbe
           [`--d-bg-h`]: safeHex(dColor),
           [`--l-bg-h`]: safeHex(lColor),
         },
-        class: [
-          `dark:hover:bg-[--d-bg-h]`,
-          `hover:bg-[--l-bg-h]`,
-        ],
+        class: 'hover:bg-[var(--r-scheme-bg-hover)]',
       }
     }
     case 'hover:border': {
@@ -200,10 +185,7 @@ export function getCSInner(colors: CuloriColor[], type: CSType, darkIndex: numbe
           [`--d-border-h`]: safeHex(dColor),
           [`--l-border-h`]: safeHex(lColor),
         },
-        class: [
-          'dark:hover:border-[--d-border-h]',
-          'hover:border-[--l-border-h]',
-        ],
+        class: 'hover:border-[var(--r-scheme-border-hover)]',
       }
     }
     case 'hover:text': {
@@ -212,10 +194,7 @@ export function getCSInner(colors: CuloriColor[], type: CSType, darkIndex: numbe
           [`--d-text-h`]: safeHex(dColor),
           [`--l-text-h`]: safeHex(lColor),
         },
-        class: [
-          'dark:hover:text-[--d-text-h]',
-          'hover:text-[--l-text-h]',
-        ],
+        class: 'hover:text-[var(--r-scheme-text-hover)]',
       }
     }
   }
@@ -228,7 +207,7 @@ export function useCS(cs: CSOptions) {
   return useColorCS(cs.color, cs.type, cs.index, cs.alpha)
 }
 
-export function useColorCS(color: MaybeRef<Color>, type: CSType, index: CSIndex, alpha = 1) {
+export function useColorCS(color: MaybeRef<Color>, type: CSType, index: CSIndex, alpha: CSAlpha = 1) {
   return computed(() => {
     const colors = useColors(color)
     if (typeof index === 'number') {
@@ -238,7 +217,7 @@ export function useColorCS(color: MaybeRef<Color>, type: CSType, index: CSIndex,
   })
 }
 
-export function useSurfaceCS(type: CSType, index: CSIndex, alpha = 1) {
+export function useSurfaceCS(type: CSType, index: CSIndex, alpha: CSAlpha = 1) {
   return computed(() => {
     const surfaceColorString = getThemeColorString('surface')
     const adaptiveLightnessMap = generateAdaptiveLightnessMap(surfaceColorString, 'surface')

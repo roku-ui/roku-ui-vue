@@ -6,16 +6,16 @@ import { Btn, SelectArea } from '../../components'
 const items = [1, 2, 3, 4]
 const areaRef = ref(null)
 const selectingItems = ref<number[]>([])
-const borderColor = ref('rgba(59, 130, 246, 0.8)')
-const backgroundColor = ref('rgba(59, 130, 246, 0.1)')
+const borderColor = ref('rgba(44, 155, 230, 0.8)')
+const backgroundColor = ref('rgba(44, 155, 230, 0.12)')
 const borderStyle = ref<'solid' | 'dashed' | 'dotted'>('solid')
 
 const presetColors = [
-  { name: 'Blue', border: 'rgba(59, 130, 246, 0.8)', bg: 'rgba(59, 130, 246, 0.1)' },
-  { name: 'Green', border: 'rgba(34, 197, 94, 0.8)', bg: 'rgba(34, 197, 94, 0.1)' },
-  { name: 'Red', border: 'rgba(239, 68, 68, 0.8)', bg: 'rgba(239, 68, 68, 0.1)' },
-  { name: 'Purple', border: 'rgba(168, 85, 247, 0.8)', bg: 'rgba(168, 85, 247, 0.1)' },
-  { name: 'Orange', border: 'rgba(249, 115, 22, 0.8)', bg: 'rgba(249, 115, 22, 0.1)' },
+  { name: 'Primary', border: 'rgba(44, 155, 230, 0.8)', bg: 'rgba(44, 155, 230, 0.12)' },
+  { name: 'Secondary', border: 'rgba(16, 195, 231, 0.8)', bg: 'rgba(16, 195, 231, 0.12)' },
+  { name: 'Success', border: 'rgba(0, 220, 130, 0.8)', bg: 'rgba(0, 220, 130, 0.12)' },
+  { name: 'Warning', border: 'rgba(245, 166, 35, 0.8)', bg: 'rgba(245, 166, 35, 0.12)' },
+  { name: 'Error', border: 'rgba(249, 88, 88, 0.8)', bg: 'rgba(249, 88, 88, 0.12)' },
 ]
 
 function onSelectStart() {
@@ -117,7 +117,7 @@ function setPresetColor(preset: { border: string, bg: string }) {
         :key="item"
         class="border-b border-r flex h-100px w-100px items-center justify-center"
         :class="{
-          'bg-red-500 text-white': selectingItems.includes(item),
+          'bg-error text-inverted': selectingItems.includes(item),
         }"
       >
         {{ item }}
@@ -125,7 +125,7 @@ function setPresetColor(preset: { border: string, bg: string }) {
     </div>
 
     <p class="text-dimmed text-sm">
-      拖拽鼠标来选择方块。选中的方块会变成红色。
+      拖拽鼠标来选择方块。选中的方块会采用错误色背景高亮。
     </p>
   </div>
 </template>

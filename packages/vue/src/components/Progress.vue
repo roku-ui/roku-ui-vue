@@ -99,10 +99,7 @@ const normalizedSections = computed(() => {
         v-for="section in normalizedSections"
         :key="section.id"
         class="h-full absolute"
-        :class="[
-          `bg-${section.color}-4`,
-          `dark:bg-${section.color}-5`,
-        ]"
+        :class="[`bg-${section.color}-4`]"
         :style="{
           width: `${section.width}%`,
           left: `${section.left}%`,

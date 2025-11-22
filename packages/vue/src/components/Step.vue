@@ -1,8 +1,17 @@
 <script setup lang="ts">
-import type { Color } from '@/types'
+import type { Color, Rounded } from '@/types'
 import { onKeyStroke } from '@vueuse/core'
 import { computed, provide, ref } from 'vue'
-import { useContainerFilledCS, useCS, useTheme } from '@/shared'
+import { COLOR_BG, SURFACE_BG, useContainerFilledCS, useCS, useMergedCS, useSurfaceCS, useTheme } from '@/shared'
+import { useRounded } from '@/utils/classGenerator'
+
+interface StatusStyleBundle {
+  icon: { style: Record<string, string>, class: string[] | string }
+  title: { style: Record<string, string>, class: string[] | string }
+  connector: { style: Record<string, string>, class: string[] | string }
+}
+
+type StatusStyleKey = 'finish' | 'process' | 'error' | 'wait'
 
 export interface StepItem {
   title: string
@@ -26,6 +35,7 @@ const props = withDefaults(defineProps<{
   responsive?: boolean
   progressDot?: boolean
   labelPlacement?: 'horizontal' | 'vertical'
+  iconRounded?: Rounded
 }>(), {
   modelValue: 0,
   direction: 'horizontal',
@@ -39,6 +49,7 @@ const props = withDefaults(defineProps<{
   responsive: true,
   progressDot: false,
   labelPlacement: 'horizontal',
+  iconRounded: 'none',
 })
 
 const emit = defineEmits<{
@@ -55,6 +66,9 @@ const effectiveProps = computed(() => ({
   size: props.size ?? theme.value.defaultSize,
   color: props.color ?? theme.value.defaultColor,
 }))
+
+const isVertical = computed(() => props.direction === 'vertical')
+const isHorizontal = computed(() => !isVertical.value)
 
 const currentStep = computed({
   get: () => props.modelValue,
@@ -105,145 +119,142 @@ const processedItems = computed(() => {
   })
 })
 
-// Extra state-based utility classes for icon aesthetics (non-color-system decoration)
-function extraIconClasses(status: string) {
-  switch (status) {
-    case 'finish': {
-      return 'shadow-sm'
-    }
-    case 'process': {
-      return 'bg-primary/10 dark:bg-primary/20'
-    }
-    case 'error': {
-      return 'bg-error/10'
-    }
-    default: { // wait
-      return 'bg-surface/30 dark:bg-surface/20'
-    }
+function isFocusWithinStep(): boolean {
+  return Boolean(stepRef.value?.contains(document.activeElement))
+}
+
+function switchTo(index: number, reason: 'click' | 'keyboard') {
+  const target = processedItems.value[index]
+  if (!target || target.disabled) {
+    return
+  }
+  if (reason === 'click' && !props.clickable) {
+    return
+  }
+  if (props.linear && index > currentStep.value + 1) {
+    return
+  }
+  if (index === currentStep.value) {
+    return
+  }
+  currentStep.value = index
+  if (reason === 'click') {
+    emit('click', index)
   }
 }
 
 // Handle step click
 function handleStepClick(index: number) {
-  const item = processedItems.value[index]
-  if (!props.clickable || !item || item.disabled) {
-    return
-  }
-
-  if (props.linear && index > currentStep.value + 1) {
-    return
-  }
-
-  currentStep.value = index
-  emit('click', index)
+  switchTo(index, 'click')
 }
 
 // Keyboard navigation
-onKeyStroke('ArrowLeft', (e) => {
-  if (!stepRef.value?.contains(document.activeElement)) {
-    return
-  }
-  e.preventDefault()
+const navigationConfigs: Array<{
+  key: 'ArrowLeft' | 'ArrowRight' | 'ArrowUp' | 'ArrowDown'
+  allowed: () => boolean
+  target: () => number
+}> = [
+  {
+    key: 'ArrowLeft',
+    allowed: () => isHorizontal.value && currentStep.value > 0,
+    target: () => currentStep.value - 1,
+  },
+  {
+    key: 'ArrowRight',
+    allowed: () => isHorizontal.value && currentStep.value < props.items.length - 1,
+    target: () => currentStep.value + 1,
+  },
+  {
+    key: 'ArrowUp',
+    allowed: () => isVertical.value && currentStep.value > 0,
+    target: () => currentStep.value - 1,
+  },
+  {
+    key: 'ArrowDown',
+    allowed: () => isVertical.value && currentStep.value < props.items.length - 1,
+    target: () => currentStep.value + 1,
+  },
+]
 
-  if (props.direction === 'horizontal' && currentStep.value > 0) {
-    const newIndex = currentStep.value - 1
-    const item = processedItems.value[newIndex]
-    if (item && !item.disabled) {
-      currentStep.value = newIndex
+for (const { key, allowed, target } of navigationConfigs) {
+  onKeyStroke(key, (event) => {
+    if (!isFocusWithinStep() || !allowed()) {
+      return
     }
-  }
-})
-
-onKeyStroke('ArrowRight', (e) => {
-  if (!stepRef.value?.contains(document.activeElement)) {
-    return
-  }
-  e.preventDefault()
-
-  if (props.direction === 'horizontal' && currentStep.value < props.items.length - 1) {
-    const newIndex = currentStep.value + 1
-    const item = processedItems.value[newIndex]
-    if (item && !item.disabled) {
-      currentStep.value = newIndex
-    }
-  }
-})
-
-onKeyStroke('ArrowUp', (e) => {
-  if (!stepRef.value?.contains(document.activeElement)) {
-    return
-  }
-  e.preventDefault()
-
-  if (props.direction === 'vertical' && currentStep.value > 0) {
-    const newIndex = currentStep.value - 1
-    const item = processedItems.value[newIndex]
-    if (item && !item.disabled) {
-      currentStep.value = newIndex
-    }
-  }
-})
-
-onKeyStroke('ArrowDown', (e) => {
-  if (!stepRef.value?.contains(document.activeElement)) {
-    return
-  }
-  e.preventDefault()
-
-  if (props.direction === 'vertical' && currentStep.value < props.items.length - 1) {
-    const newIndex = currentStep.value + 1
-    const item = processedItems.value[newIndex]
-    if (item && !item.disabled) {
-      currentStep.value = newIndex
-    }
-  }
-})
+    event.preventDefault()
+    switchTo(target(), 'keyboard')
+  })
+}
 
 // Container classes
 const containerClasses = computed(() => {
   const base = 'step-container'
-  const direction = props.direction === 'vertical' ? 'flex-col' : 'flex-row items-center'
+  const direction = isVertical.value ? 'flex-col' : 'flex-row items-center'
   const type = props.type === 'navigation' ? 'step-navigation' : ''
 
   return [base, direction, type, 'flex'].filter(Boolean)
 })
 
 // Size classes
+const sizePresets = {
+  sm: {
+    icon: 'h-6 w-6 text-xs',
+    title: 'text-sm font-semibold',
+    description: 'text-xs leading-relaxed',
+    spacing: {
+      horizontal: 'gap-1.5',
+      vertical: 'gap-1.5',
+    },
+    connector: {
+      horizontal: 'h-0.5',
+      vertical: 'w-0.5',
+    },
+    connectorX: 'mx-2',
+    connectorOffsetV: 'ml-3',
+  },
+  md: {
+    icon: 'h-7 w-7 text-sm',
+    title: 'text-base font-semibold',
+    description: 'text-sm leading-relaxed',
+    spacing: {
+      horizontal: 'gap-1.5',
+      vertical: 'gap-2',
+    },
+    connector: {
+      horizontal: 'h-0.5',
+      vertical: 'w-0.5',
+    },
+    connectorX: 'mx-2.5',
+    connectorOffsetV: 'ml-3.5',
+  },
+  lg: {
+    icon: 'h-8 w-8 text-base',
+    title: 'text-lg font-semibold',
+    description: 'text-base leading-relaxed',
+    spacing: {
+      horizontal: 'gap-2',
+      vertical: 'gap-2.5',
+    },
+    connector: {
+      horizontal: 'h-0.5',
+      vertical: 'w-0.5',
+    },
+    connectorX: 'mx-3',
+    connectorOffsetV: 'ml-4',
+  },
+} as const
+
 const sizeClasses = computed(() => {
-  switch (effectiveProps.value.size) {
-    case 'sm': {
-      return {
-        icon: 'w-7 h-7 text-xs',
-        title: 'text-sm font-semibold',
-        description: 'text-xs leading-relaxed',
-        connector: props.direction === 'horizontal' ? 'h-0.5' : 'w-0.5',
-        spacing: props.direction === 'horizontal' ? 'gap-1.5' : 'gap-2',
-        connectorX: 'mx-2.5',
-        connectorOffsetV: 'ml-3.5',
-      }
-    }
-    case 'lg': {
-      return {
-        icon: 'w-11 h-11 text-base',
-        title: 'text-lg font-semibold',
-        description: 'text-base leading-relaxed',
-        connector: props.direction === 'horizontal' ? 'h-1' : 'w-1',
-        spacing: props.direction === 'horizontal' ? 'gap-3' : 'gap-3',
-        connectorX: 'mx-4',
-        connectorOffsetV: 'ml-5',
-      }
-    }
-    default: {
-      return {
-        icon: 'w-8.5 h-8.5 text-sm',
-        title: 'text-base font-semibold',
-        description: 'text-sm leading-relaxed',
-        connector: props.direction === 'horizontal' ? 'h-0.5' : 'w-0.5',
-        spacing: props.direction === 'horizontal' ? 'gap-2' : 'gap-2.5',
-        connectorX: 'mx-3',
-        connectorOffsetV: 'ml-4',
-      }
-    }
+  const sizeKey = effectiveProps.value.size ?? 'md'
+  const preset = sizePresets[sizeKey]
+  return {
+    icon: preset.icon,
+    title: preset.title,
+    description: preset.description,
+    spacing: isHorizontal.value ? preset.spacing.horizontal : preset.spacing.vertical,
+    connector: isHorizontal.value ? preset.connector.horizontal : preset.connector.vertical,
+    connectorX: preset.connectorX,
+    connectorOffsetV: preset.connectorOffsetV,
   }
 })
 
@@ -298,55 +309,122 @@ const errorTextCS = useCS({
   index: { dark: 5, light: 4 },
 })
 
+const finishIconCombinedCS = useMergedCS([finishIconCS], ['shadow-sm'])
+const processIconBgCS = useCS({
+  color: computed(() => effectiveProps.value.color),
+  type: 'bg',
+  index: { dark: COLOR_BG.solid.dark, light: COLOR_BG.solid.light },
+  alpha: { dark: 0.2, light: 0.1 },
+})
+const processIconCombinedCS = useMergedCS([processIconCS, processIconBgCS], ['border-2'])
+const waitIconBgCS = useCS({
+  color: 'surface',
+  type: 'bg',
+  index: { dark: SURFACE_BG.container.dark, light: SURFACE_BG.container.light },
+  alpha: { dark: 0.2, light: 0.12 },
+})
+const waitIconCombinedCS = useMergedCS([waitIconCS, waitIconBgCS], ['border-2'])
+const errorIconBgCS = useCS({
+  color: 'error',
+  type: 'bg',
+  index: { dark: COLOR_BG.solid.dark, light: COLOR_BG.solid.light },
+  alpha: { dark: 0.2, light: 0.1 },
+})
+const errorIconCombinedCS = useMergedCS([errorIconCS, errorIconBgCS], ['border-2'])
+
 // Progress bar color system
 const progressBarCS = useCS({
   color: computed(() => effectiveProps.value.color),
   type: 'bg',
   index: { dark: 5, light: 4 },
 })
+const progressTrackCS = useSurfaceCS('bg', { dark: 6, light: 3 })
+const progressMetaTextCS = useSurfaceCS('text', { dark: 3, light: 2 })
+const progressTitleTextCS = useSurfaceCS('text', { dark: 2, light: 1 })
+const descriptionTextCS = useSurfaceCS('text', { dark: 3, light: 4 })
 
-// Get color system based on status
-function getColorSystem(status: string) {
-  switch (status) {
-    case 'finish': {
-      return {
-        icon: finishIconCS.value,
-        title: finishTextCS.value,
-        connector: finishConnectorCS.value,
-      }
-    }
-    case 'process': {
-      return {
-        icon: {
-          ...processIconCS.value,
-          class: [...processIconCS.value.class, 'border-2'],
-        },
-        title: processTextCS.value,
-        connector: waitConnectorCS.value,
-      }
-    }
-    case 'error': {
-      return {
-        icon: {
-          ...errorIconCS.value,
-          class: [...errorIconCS.value.class, 'border-2'],
-        },
-        title: errorTextCS.value,
-        connector: waitConnectorCS.value,
-      }
-    }
-    default: { // wait
-      return {
-        icon: {
-          ...waitIconCS.value,
-          class: [...waitIconCS.value.class, 'border-2'],
-        },
-        title: waitTextCS.value,
-        connector: waitConnectorCS.value,
-      }
+const iconRounded = computed(() => {
+  return useRounded({
+    rounded: props.iconRounded ?? theme.value.rounded,
+  }).value
+})
+
+const isDotStyle = computed(() => props.progressDot || props.type === 'dot')
+
+const iconShape = computed(() => {
+  if (isDotStyle.value) {
+    return {
+      class: 'rounded-full',
+      style: {},
     }
   }
+  return iconRounded.value
+})
+
+const iconShapeClass = computed(() => {
+  const raw = iconShape.value.class
+  if (!raw) {
+    return []
+  }
+  return Array.isArray(raw) ? raw : [raw]
+})
+
+const iconShapeStyle = computed(() => iconShape.value.style || {})
+
+function normalizeClass(entry: string | string[] | undefined): string[] {
+  if (!entry) {
+    return []
+  }
+  return Array.isArray(entry) ? entry : [entry]
 }
+
+function normalizeStyle(entry: Record<string, string> | undefined): Record<string, string> {
+  return entry ?? {}
+}
+
+const statusStylesLookup = computed<Record<StatusStyleKey, StatusStyleBundle>>(() => ({
+  finish: {
+    icon: finishIconCombinedCS.value,
+    title: finishTextCS.value,
+    connector: finishConnectorCS.value,
+  },
+  process: {
+    icon: processIconCombinedCS.value,
+    title: processTextCS.value,
+    connector: waitConnectorCS.value,
+  },
+  error: {
+    icon: errorIconCombinedCS.value,
+    title: errorTextCS.value,
+    connector: waitConnectorCS.value,
+  },
+  wait: {
+    icon: waitIconCombinedCS.value,
+    title: waitTextCS.value,
+    connector: waitConnectorCS.value,
+  },
+}))
+
+function resolveStatusStyles(status: StepItem['status'] = 'wait'): StatusStyleBundle {
+  return statusStylesLookup.value[status]
+}
+
+const styledItems = computed(() => {
+  return processedItems.value.map((item) => {
+    const styles = resolveStatusStyles(item.status)
+    return {
+      ...item,
+      styles,
+      iconClassList: normalizeClass(styles.icon.class),
+      iconStyle: normalizeStyle(styles.icon.style),
+    }
+  })
+})
+
+const connectorStyles = computed(() => ({
+  active: statusStylesLookup.value.finish.connector,
+  idle: statusStylesLookup.value.wait.connector,
+}))
 
 // Progress calculation
 const progressPercent = computed(() => {
@@ -368,38 +446,47 @@ const progressPercent = computed(() => {
     <!-- Progress bar for simple type -->
     <div
       v-if="type === 'simple'"
-      class="mb-6 w-full"
+      class="mb-4 w-full"
     >
-      <div class="text-sm text-surface-2 mb-2.5 flex items-center justify-between dark:text-surface-2">
+      <div
+        class="text-sm mb-2 flex items-center justify-between"
+        v-bind="progressMetaTextCS"
+      >
         <span class="font-medium">Step {{ currentStep + 1 }} of {{ items.length }}</span>
         <span class="font-semibold">{{ Math.round(progressPercent) }}%</span>
       </div>
-      <div class="rounded-full bg-surface-3 h-2.5 w-full dark:bg-surface-6">
+      <div
+        class="rounded-full h-2 w-full"
+        v-bind="progressTrackCS"
+      >
         <div
           class="rounded-full h-full"
           v-bind="progressBarCS"
           :style="{ width: `${progressPercent}%` }"
         />
       </div>
-      <div class="text-sm text-surface-1 font-medium mt-2 dark:text-surface-1">
-        {{ processedItems[currentStep]?.title }}
+      <div
+        class="text-sm font-medium mt-2"
+        v-bind="progressTitleTextCS"
+      >
+        {{ styledItems[currentStep]?.title }}
       </div>
     </div>
 
     <!-- Steps -->
     <template
-      v-for="(item, index) in processedItems"
-      :key="index"
+      v-for="(item, index) in styledItems"
+      :key="item.index"
     >
       <!-- Step item -->
       <div
-        class="step-item flex items-start relative"
+        class="step-item flex relative"
         :class="[
-          direction === 'vertical' ? 'mb-6 last:mb-0' : 'flex-shrink-0',
+          direction === 'vertical' ? 'items-start mb-4 last:mb-0' : 'items-center flex-shrink-0',
           direction === 'horizontal' && alternativeLabel ? 'flex-col items-center text-center' : '',
           clickable && !item.disabled ? 'cursor-pointer' : '',
           item.disabled ? 'opacity-40 cursor-not-allowed' : '',
-          type === 'navigation' ? 'step-navigation-item px-1.5 py-1 rounded-md' : '',
+          type === 'navigation' ? 'step-navigation-item px-1 py-0.5 rounded-md' : '',
           sizeClasses.spacing,
         ]"
         role="tab"
@@ -412,14 +499,15 @@ const progressPercent = computed(() => {
       >
         <!-- Icon/Number container -->
         <div
-          class="step-icon-container rounded-full flex flex-shrink-0 items-center justify-center relative overflow-hidden"
+          class="step-icon-container flex flex-shrink-0 items-center justify-center relative overflow-hidden"
           :class="[
             sizeClasses.icon,
+            ...iconShapeClass,
             progressDot ? 'w-4 h-4 border-0' : '',
             type === 'dot' ? 'w-3 h-3 border-0' : '',
-            extraIconClasses(item.status),
+            ...item.iconClassList,
           ]"
-          v-bind="getColorSystem(item.status).icon"
+          :style="[iconShapeStyle, item.iconStyle]"
         >
           <!-- Custom icon -->
           <span
@@ -438,18 +526,18 @@ const progressPercent = computed(() => {
         <!-- Content -->
         <div
           v-if="type !== 'dot' && type !== 'simple'"
-          class="step-content flex-1 min-w-0"
+          class="step-content flex flex-1 flex-col min-w-0"
           :class="[
-            direction === 'horizontal' && !alternativeLabel ? 'ml-3 md:ml-4' : '',
-            direction === 'vertical' ? 'mt-2.5' : '',
-            alternativeLabel && direction === 'horizontal' ? 'text-center mt-2.5' : '',
+            direction === 'horizontal' && !alternativeLabel ? 'ml-3 md:ml-4 justify-center' : '',
+            direction === 'vertical' ? 'mt-2 justify-start' : '',
+            alternativeLabel && direction === 'horizontal' ? 'text-center mt-2.5 justify-start' : '',
           ]"
         >
           <!-- Title -->
           <div
             class="step-title leading-tight"
             :class="sizeClasses.title"
-            v-bind="getColorSystem(item.status).title"
+            v-bind="item.styles.title"
           >
             {{ item.title }}
           </div>
@@ -457,7 +545,8 @@ const progressPercent = computed(() => {
           <!-- Description -->
           <div
             v-if="showDescription && item.description"
-            class="step-description text-surface-4 mt-1.5 dark:text-surface-3"
+            class="step-description mt-1.5"
+            v-bind="descriptionTextCS"
             :class="sizeClasses.description"
           >
             {{ item.description }}
@@ -471,12 +560,12 @@ const progressPercent = computed(() => {
         class="step-connector"
         :class="[
           direction === 'horizontal'
-            ? ['flex-1', sizeClasses.connectorX, 'self-center', sizeClasses.connector, 'rounded-full', index < currentStep ? 'bg-primary' : 'bg-surface/30 dark:bg-surface/40']
-            : [sizeClasses.connectorOffsetV, '-mt-1.5 mb-2', sizeClasses.connector, 'min-h-5 rounded-full w-0.5', index < currentStep ? 'bg-primary' : 'bg-surface/30 dark:bg-surface/40'],
+            ? ['flex-1', sizeClasses.connectorX, 'self-center', sizeClasses.connector, 'rounded-full']
+            : [sizeClasses.connectorOffsetV, '-mt-1 mb-1.5', sizeClasses.connector, 'min-h-4 rounded'],
         ]"
         v-bind="index < currentStep
-          ? getColorSystem('finish').connector
-          : getColorSystem('wait').connector"
+          ? connectorStyles.active
+          : connectorStyles.idle"
       />
     </template>
   </div>

@@ -176,7 +176,7 @@ const disabledNumber = ref(100)
           placeholder="0.00"
         >
           <template #leftSection>
-            <span class="text-sm text-gray-500">$</span>
+            <span class="text-surface-dimmed text-sm">$</span>
           </template>
         </NumberField>
         <NumberField
@@ -187,7 +187,7 @@ const disabledNumber = ref(100)
           placeholder="0"
         >
           <template #rightSection>
-            <span class="text-sm text-gray-500">%</span>
+            <span class="text-surface-dimmed text-sm">%</span>
           </template>
         </NumberField>
       </Paper>
