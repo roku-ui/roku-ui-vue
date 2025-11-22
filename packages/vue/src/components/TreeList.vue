@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import type { Rounded, TreeListCollapseData, TreeListHeaderData, TreeListItemData, TreeListLeafData } from '@/types'
+import type { IconSource, Rounded, TreeListCollapseData, TreeListHeaderData, TreeListItemData, TreeListLeafData } from '@/types'
 import { computed, h, ref, watchEffect } from 'vue'
 import { useRounded } from '@/index'
 import { AutoHeightTransition } from '.'
@@ -26,6 +26,17 @@ function hasChildren(item: TreeListItemData): item is TreeListCollapseData {
 }
 function isLink(item: TreeListItemData): item is TreeListLeafData {
   return 'value' in item && !('children' in item)
+}
+
+function renderIcon(icon?: IconSource) {
+  if (!icon) {
+    return null
+  }
+  const baseClass = ['h-4 w-4 py-1']
+  if (typeof icon === 'string') {
+    return <i class={[...baseClass, icon]} />
+  }
+  return h(icon, { class: baseClass })
 }
 
 const itemLeftIndicator = 'before:absolute before:left-4 before:h-full before:border-r before:content-[""]'
@@ -123,16 +134,7 @@ function TreeListHeader({ data, level }: { data: TreeListHeaderData, level: numb
           ? slots.header({ data, level })
           : (
               <>
-                {
-                  data.icon && (
-                    <i
-                      class={[
-                        'h-4 w-4 py-1',
-                        data.icon,
-                      ]}
-                    />
-                  )
-                }
+                {renderIcon(data.icon)}
                 {data.title}
               </>
             )
@@ -189,14 +191,7 @@ function TreeListCollapse({ data, level }: { data: TreeListCollapseData, level: 
             ? slots.title({ data, level })
             : (
                 <>
-                  {data.icon && (
-                    <i
-                      class={[
-                        'h-4 w-4 py-1',
-                        data.icon,
-                      ]}
-                    />
-                  )}
+                  {renderIcon(data.icon)}
                   <span class="truncate">
                     {data.title}
                   </span>

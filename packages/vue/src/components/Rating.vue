@@ -9,11 +9,15 @@
 // 4. highlightSelectedOnly = true 时仅高亮当前 hover / 已选星；否则高亮 <= 当前值的全部星。
 // 5. 保持向后兼容：color 允许 string | string[]；默认使用主题 warning 色（如果用户未传则 fallback）。
 
+import type { Component } from 'vue'
 import type { Color, Size } from '@/types'
 import { computed, ref } from 'vue'
 import { useCS, useTheme } from '@/shared'
 
-type IconSingle = string | { active: string, normal: string }
+type IconValue = string | Component
+type IconSingle = IconValue | { active: IconValue, normal: IconValue }
+type IconPair = { active: IconValue, normal: IconValue }
+type IconRender = { is: string | Component, class: string }
 type IconType = IconSingle | IconSingle[] | undefined
 
 const props = withDefaults(defineProps<{
@@ -40,22 +44,25 @@ const model = defineModel<number>({ default: 0 })
 const theme = useTheme()
 
 // ============== 图标处理 ==============
-const DEFAULT_ICON = 'i-fluent-star-12-filled'
-const DEFAULT_ACTIVE_ICON = 'i-fluent-star-12-filled'
+const DEFAULT_ICON: IconValue = 'i-fluent-star-12-filled'
+const DEFAULT_ACTIVE_ICON: IconValue = 'i-fluent-star-12-filled'
 
-function toPair(v: IconSingle | undefined): { active: string, normal: string } {
+function isIconPairValue(value: IconSingle): value is { active: IconValue, normal: IconValue } {
+  return typeof value === 'object' && value !== null && ('active' in value || 'normal' in value)
+}
+function toPair(v: IconSingle | undefined): IconPair {
   if (!v) {
     return { active: DEFAULT_ACTIVE_ICON, normal: DEFAULT_ICON }
   }
-  if (typeof v === 'string') {
-    return { active: v, normal: v }
+  if (isIconPairValue(v)) {
+    return {
+      active: v.active || DEFAULT_ACTIVE_ICON,
+      normal: v.normal || DEFAULT_ICON,
+    }
   }
-  return {
-    active: v.active || DEFAULT_ACTIVE_ICON,
-    normal: v.normal || DEFAULT_ICON,
-  }
+  return { active: v, normal: v }
 }
-function normalizeIcons(input: IconType, n: number): { active: string, normal: string }[] {
+function normalizeIcons(input: IconType, n: number): IconPair[] {
   if (!input) {
     return Array.from({ length: n }, () => ({ active: DEFAULT_ACTIVE_ICON, normal: DEFAULT_ICON }))
   }
@@ -73,6 +80,20 @@ function normalizeIcons(input: IconType, n: number): { active: string, normal: s
 }
 
 const iconPairs = computed(() => normalizeIcons(props.icons, props.count))
+function resolveIconRender(icon: IconValue): IconRender {
+  return {
+    is: typeof icon === 'string' ? 'i' : icon,
+    class: typeof icon === 'string' ? icon : '',
+  }
+}
+const defaultRenderedPair: { active: IconRender, normal: IconRender } = {
+  active: resolveIconRender(DEFAULT_ACTIVE_ICON),
+  normal: resolveIconRender(DEFAULT_ICON),
+}
+const renderedIconPairs = computed(() => iconPairs.value.map(pair => ({
+  active: resolveIconRender(pair.active),
+  normal: resolveIconRender(pair.normal),
+})))
 
 // ============== 颜色系统 ==============
 // 用户可传：单色 (string) 或 数组。数组长度不足会复用第一项。
@@ -166,12 +187,12 @@ function isHalf(idx: number) {
 }
 
 function getInactiveIcon(idx: number) {
-  const pair = iconPairs.value[idx]
-  return pair?.normal || DEFAULT_ICON
+  const pair = renderedIconPairs.value[idx]
+  return pair?.normal || defaultRenderedPair.normal
 }
 function getActiveIcon(idx: number) {
-  const pair = iconPairs.value[idx]
-  return pair?.active || DEFAULT_ACTIVE_ICON
+  const pair = renderedIconPairs.value[idx]
+  return pair?.active || defaultRenderedPair.active
 }
 
 function getActiveCS(idx: number) {
@@ -256,30 +277,33 @@ const sizeCls = computed(() => {
       @pointerdown="onPointerDown(i, $event)"
     >
       <!-- FULL STAR -->
-      <i
+      <component
         v-if="isFull(i)"
+        :is="getActiveIcon(i).is"
         class="transition-colors duration-150 active:translate-y-1px"
         :class="[
           getActiveCS(i).class,
           (highlightSelectedOnly && getHoverCS(i)) ? getHoverCS(i)?.class : '',
-          getActiveIcon(i),
+          getActiveIcon(i).class,
         ]"
         :style="[getActiveCS(i).style, (highlightSelectedOnly && getHoverCS(i)) ? getHoverCS(i)?.style : {}]"
       />
       <!-- HALF STAR -->
       <template v-else-if="isHalf(i)">
-        <i
+        <component
+          :is="getInactiveIcon(i).is"
           class="transition-colors duration-150 active:translate-y-1px"
-          :class="[inactiveTextCS.class, getInactiveIcon(i)]"
+          :class="[inactiveTextCS.class, getInactiveIcon(i).class]"
           :style="[inactiveTextCS.style]"
         />
         <!-- 覆盖激活星，仅左半显示（clip-path 隐藏右半） -->
-        <i
+        <component
+          :is="getActiveIcon(i).is"
           class="transition-colors duration-150 left-0 top-0 absolute"
           :class="[
             getActiveCS(i).class,
             (highlightSelectedOnly && getHoverCS(i)) ? getHoverCS(i)?.class : '',
-            getActiveIcon(i),
+            getActiveIcon(i).class,
           ]"
           :style="[
             getActiveCS(i).style,
@@ -289,10 +313,11 @@ const sizeCls = computed(() => {
         />
       </template>
       <!-- EMPTY STAR -->
-      <i
+      <component
         v-else
+        :is="getInactiveIcon(i).is"
         class="transition-colors duration-150 active:translate-y-1px"
-        :class="[inactiveTextCS.class, getInactiveIcon(i)]"
+        :class="[inactiveTextCS.class, getInactiveIcon(i).class]"
         :style="[inactiveTextCS.style]"
       />
     </div>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Size } from '@/types'
+import type { IconSource, Size } from '@/types'
 import { computed } from 'vue'
 import { Btn, Progress } from '@/components'
 import { useContainerDefaultCS, useContainerFilledCS, useTextCS, useTheme } from '@/shared'
@@ -9,7 +9,7 @@ const props = withDefaults(
   defineProps<{
     title?: string
     message?: string
-    icon?: string
+    icon?: IconSource
     loading?: boolean
     withBorder?: boolean
     closeable?: boolean
@@ -52,6 +52,13 @@ const color = computed(() => effectiveProps.value.color)
 const containerFilledCS = useContainerFilledCS(color)
 const textCS = useTextCS(color)
 const containerSurfaceCS = useContainerDefaultCS()
+const iconComponent = computed(() => {
+  if (!props.icon) {
+    return
+  }
+  return typeof props.icon === 'string' ? 'i' : props.icon
+})
+const iconClass = computed(() => typeof props.icon === 'string' ? props.icon : '')
 const shapeClass = computed(() => {
   switch (effectiveProps.value.size) {
     case 'sm': {
@@ -96,10 +103,12 @@ const shapeClass = computed(() => {
           v-if="loading"
           class="h-container w-container i-tabler-loader-2 shrink-0 animate-spin"
         />
-        <i
+        <component
           v-else
+          :is="iconComponent"
           class="h-container w-container shrink-0"
-          :class="icon"
+          :class="[iconClass, textCS.class]"
+          :style="textCS.style"
         />
       </div>
       <div

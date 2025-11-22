@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Color, Rounded } from '@/types'
+import type { IconSource, Color, Rounded } from '@/types'
 import { onKeyStroke } from '@vueuse/core'
 import { computed, provide, ref } from 'vue'
 import { COLOR_BG, SURFACE_BG, useContainerFilledCS, useCS, useMergedCS, useSurfaceCS, useTheme } from '@/shared'
@@ -16,7 +16,7 @@ type StatusStyleKey = 'finish' | 'process' | 'error' | 'wait'
 export interface StepItem {
   title: string
   description?: string
-  icon?: string
+  icon?: IconSource
   status?: 'wait' | 'process' | 'finish' | 'error'
   disabled?: boolean
 }
@@ -510,9 +510,10 @@ const progressPercent = computed(() => {
           :style="[iconShapeStyle, item.iconStyle]"
         >
           <!-- Custom icon -->
-          <span
+          <component
             v-if="item.icon && !progressDot && type !== 'dot'"
-            :class="item.icon"
+            :is="typeof item.icon === 'string' ? 'span' : item.icon"
+            :class="typeof item.icon === 'string' ? item.icon : ''"
           />
           <!-- Number -->
           <span

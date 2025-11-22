@@ -1,10 +1,11 @@
+import type { IconSource } from '@/types'
 import { computed, shallowRef } from 'vue'
 
 export interface NotificationDataInterface {
   title: string
   message: string
   color: string
-  icon: string
+  icon?: IconSource
   durationMS: number
   position: 'top' | 'top-right' | 'top-left' | 'bottom' | 'bottom-right' | 'bottom-left'
   [key: string]: any

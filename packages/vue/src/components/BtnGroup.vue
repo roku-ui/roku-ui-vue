@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import type { IconSource } from '@/types'
 import { Btn } from '.'
 
-type T = string | { value: string, label?: string, icon?: string }
+type T = string | { value: string, label?: string, icon?: IconSource }
 const props = withDefaults(defineProps<{
   selections: T[]
   default?: T
@@ -31,6 +32,17 @@ function getValue(selection: T) {
 function getIcon(selection: T) {
   return typeof selection === 'string' ? undefined : selection.icon
 }
+function getIconComponent(selection: T) {
+  const icon = getIcon(selection)
+  if (!icon) {
+    return
+  }
+  return typeof icon === 'string' ? 'i' : icon
+}
+function getIconClass(selection: T) {
+  const icon = getIcon(selection)
+  return typeof icon === 'string' ? icon : ''
+}
 const model = defineModel<string | undefined>()
 function onClick(selection: T) {
   model.value = getValue(selection) === model.value && unselectable.value ? undefined : getValue(selection)
@@ -55,9 +67,10 @@ const childClass = computed(() => isSingle.value ? null : 'first-children:rounde
       }"
       @click="onClick(selection)"
     >
-      <i
+      <component
         v-if="getIcon(selection)"
-        :class="getIcon(selection)"
+        :is="getIconComponent(selection)"
+        :class="getIconClass(selection)"
       />
       {{ getLabel(selection) }}
     </btn>
