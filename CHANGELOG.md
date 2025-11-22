@@ -1,3 +1,62 @@
+## v0.30.0
+
+[v0.29.0...v0.30.0](https://github.com/roku-ui/roku-ui-vue/compare/v0.29.0...v0.30.0)
+
+### :rocket: Breaking Changes
+
+- **color**: remove unused color utility exports - By [Jannchie](mailto:jannchie@gmail.com) in [060c2b1](https://github.com/roku-ui/roku-ui-vue/commit/060c2b1)
+- **color-system**: simplify surface and color variant handling && unify color constants - By [Jannchie](mailto:jannchie@gmail.com) in [96b7e87](https://github.com/roku-ui/roku-ui-vue/commit/96b7e87)
+- **theme**: introduce new background and border color scheme with perceptual uniformity - By [Jannchie](mailto:jannchie@gmail.com) in [1350fec](https://github.com/roku-ui/roku-ui-vue/commit/1350fec)
+- **theme**: replace surface color vars with unified tokens && update color types and theme structure - By [Jannchie](mailto:jannchie@gmail.com) in [75640e8](https://github.com/roku-ui/roku-ui-vue/commit/75640e8)
+
+### :sparkles: Features
+
+- **app-shell**: introduce AppShell subcomponents and refactor demos - By [Jannchie](mailto:jannchie@gmail.com) in [38a489a](https://github.com/roku-ui/roku-ui-vue/commit/38a489a)
+- **color-system**: introduce runtime color-scheme variables && migrate components to scheme tokens - By [Jannchie](mailto:jannchie@gmail.com) in [93e3b78](https://github.com/roku-ui/roku-ui-vue/commit/93e3b78)
+- **color-system**: add theme color mappings for success info warning - By [Jannchie](mailto:jannchie@gmail.com) in [f1827b3](https://github.com/roku-ui/roku-ui-vue/commit/f1827b3)
+- **color-system**: add tailwind palette support - By [Jannchie](mailto:jannchie@gmail.com) in [e0aca6b](https://github.com/roku-ui/roku-ui-vue/commit/e0aca6b)
+- **menu**: improve menu accessibility and add demo page - By [Jannchie](mailto:panjianqi@preferred.jp) in [9203d87](https://github.com/roku-ui/roku-ui-vue/commit/9203d87)
+- **menu**: improve menu accessibility and selection logic - By [Jannchie](mailto:panjianqi@preferred.jp) in [d013bab](https://github.com/roku-ui/roku-ui-vue/commit/d013bab)
+- **number-field**: add mouse wheel support and aria label props - By [Jannchie](mailto:jannchie@gmail.com) in [1398826](https://github.com/roku-ui/roku-ui-vue/commit/1398826)
+- **number-field**: add NumberField component with formatting and spinner controls - By [Jannchie](mailto:jannchie@gmail.com) in [2ca1730](https://github.com/roku-ui/roku-ui-vue/commit/2ca1730)
+- **styles**: add text-autospace to root - By [Jannchie](mailto:panjianqi@preferred.jp) in [ac88083](https://github.com/roku-ui/roku-ui-vue/commit/ac88083)
+- **test-app**: add vue-router and refactor demo page routing - By [Jannchie](mailto:jannchie@gmail.com) in [ed8923a](https://github.com/roku-ui/roku-ui-vue/commit/ed8923a)
+- **theme**: add info and warning color support && introduce text/bg variable utilities - By [Jannchie](mailto:jannchie@gmail.com) in [500cf8b](https://github.com/roku-ui/roku-ui-vue/commit/500cf8b)
+- **theme-provider**: add colorScheme to style binding - By [Jannchie](mailto:panjianqi@preferred.jp) in [b475e00](https://github.com/roku-ui/roku-ui-vue/commit/b475e00)
+- **vue**: add custom vite plugin and restructure tsconfig - By [Jannchie](mailto:jannchie@gmail.com) in [3237a89](https://github.com/roku-ui/roku-ui-vue/commit/3237a89)
+
+### :adhesive_bandage: Fixes
+
+- **avatar**: use min-h and min-w for container - By [Jannchie](mailto:panjianqi@preferred.jp) in [2168c28](https://github.com/roku-ui/roku-ui-vue/commit/2168c28)
+- **indicator**: correct border and color styles - By [Jannchie](mailto:panjianqi@preferred.jp) in [ff73a99](https://github.com/roku-ui/roku-ui-vue/commit/ff73a99)
+- **menu**: prevent errors on invalid menu data - By [Jannchie](mailto:panjianqi@preferred.jp) in [9fb2a85](https://github.com/roku-ui/roku-ui-vue/commit/9fb2a85)
+- **styles**: adjust dark mode container and border colors - By [Jannchie](mailto:panjianqi@preferred.jp) in [708bd9c](https://github.com/roku-ui/roku-ui-vue/commit/708bd9c)
+- **theme**: improve componentDefaults merging and theme color value handling - By [Jannchie](mailto:jannchie@gmail.com) in [5f1ae6d](https://github.com/roku-ui/roku-ui-vue/commit/5f1ae6d)
+- **vue**: add null and undefined safety throughout components and shared utils - By [Jannchie](mailto:jannchie@gmail.com) in [72313b8](https://github.com/roku-ui/roku-ui-vue/commit/72313b8)
+
+### :art: Refactors
+
+- **calendar**: extract day builder and unify range logic - By [Jannchie](mailto:jannchie@gmail.com) in [456f1b5](https://github.com/roku-ui/roku-ui-vue/commit/456f1b5)
+- **color-helpers**: move safeHex utilities to color-helpers module - By [Jannchie](mailto:jannchie@gmail.com) in [6f37f9c](https://github.com/roku-ui/roku-ui-vue/commit/6f37f9c)
+- **preset**: improve shortcut handling and remove fs usage - By [Jannchie](mailto:jannchie@gmail.com) in [7fc1445](https://github.com/roku-ui/roku-ui-vue/commit/7fc1445)
+- **rating**: revamp color system and add half selection - By [Jannchie](mailto:jannchie@gmail.com) in [32a3552](https://github.com/roku-ui/roku-ui-vue/commit/32a3552)
+- **shared**: centralize style config with style-recipes && simplify variant style functions - By [Jannchie](mailto:jannchie@gmail.com) in [4a857e5](https://github.com/roku-ui/roku-ui-vue/commit/4a857e5)
+- **styles**: update theme variables && remove duplicate test style - By [Jannchie](mailto:panjianqi@preferred.jp) in [7450133](https://github.com/roku-ui/roku-ui-vue/commit/7450133)
+- **utils**: remove unused custom modal type and symbol - By [Jannchie](mailto:jannchie@gmail.com) in [9a38a1b](https://github.com/roku-ui/roku-ui-vue/commit/9a38a1b)
+- **vue**: clean up color demo and type definitions && improve formatting and fallback handling - By [Jannchie](mailto:jannchie@gmail.com) in [0a661d3](https://github.com/roku-ui/roku-ui-vue/commit/0a661d3)
+
+### :lipstick: Styles
+
+- **demo**: use Btn component and adjust demo styles - By [Jannchie](mailto:jannchie@gmail.com) in [2dc6e23](https://github.com/roku-ui/roku-ui-vue/commit/2dc6e23)
+- **docs-vue**: reorder utility classes for consistency - By [Jannchie](mailto:jannchie@gmail.com) in [8ef0f7c](https://github.com/roku-ui/roku-ui-vue/commit/8ef0f7c)
+- **step**: adjust sizing and spacing for step ui - By [Jannchie](mailto:jannchie@gmail.com) in [7075e92](https://github.com/roku-ui/roku-ui-vue/commit/7075e92)
+- **vue-components**: reorder app shell exports for consistency - By [Jannchie](mailto:jannchie@gmail.com) in [12f2299](https://github.com/roku-ui/roku-ui-vue/commit/12f2299)
+
+### :wrench: Chores
+
+- **deps**: bump dependencies and reorder classnames - By [Jannchie](mailto:panjianqi@preferred.jp) in [2d92228](https://github.com/roku-ui/roku-ui-vue/commit/2d92228)
+- **deps**: bump dependencies and devDependencies - By [Jannchie](mailto:panjianqi@preferred.jp) in [8725c93](https://github.com/roku-ui/roku-ui-vue/commit/8725c93)
+
 ## v0.29.0
 
 [v0.28.0...v0.29.0](https://github.com/roku-ui/roku-ui-vue/compare/v0.28.0...v0.29.0)
