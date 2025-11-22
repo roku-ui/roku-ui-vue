@@ -124,10 +124,11 @@ function handlePointerDown(event: PointerEvent) {
       :aria-disabled="isDisabled ? 'true' : undefined"
       @pointerdown="handlePointerDown"
     >
-      <i
+      <component
         v-if="menuItemData?.icon"
-        :class="menuItemData?.icon"
+        :is="typeof menuItemData.icon === 'string' ? 'i' : menuItemData.icon"
         class="text-surface-dimmed flex-shrink-0 w-5"
+        :class="typeof menuItemData.icon === 'string' ? menuItemData.icon : ''"
       />
       <i
         v-else-if="props.hasIcon"

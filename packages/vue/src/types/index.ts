@@ -1,4 +1,4 @@
-import type { Component, VNode } from 'vue'
+import type { Component } from 'vue'
 
 export type ContainerVariant = 'filled' | 'default' | 'light' | 'outline' | 'inverted'
 export type BtnVariant = ContainerVariant | 'subtle' | 'transparent' | 'contrast'
@@ -8,6 +8,7 @@ export type DefinedColor = 'primary' | 'secondary' | 'tertiary' | 'success' | 'e
 export type Color = DefinedColor | string
 export type Size = 'sm' | 'md' | 'lg'
 export type Rounded = 'none' | 'sm' | 'md' | 'lg' | 'full' | string | number
+export type IconSource = string | Component
 export interface Area {
   left: number
   top: number
@@ -16,7 +17,7 @@ export interface Area {
 }
 
 export interface TreeListLeafData {
-  icon?: string | VNode
+  icon?: IconSource
   title: string
   value: string
   attrs?: Record<string, any>
@@ -24,13 +25,13 @@ export interface TreeListLeafData {
 }
 
 export interface TreeListHeaderData {
-  icon?: string | VNode
+  icon?: IconSource
   title: string
 }
 
 export interface TreeListCollapseData {
   title: string
-  icon?: string | VNode
+  icon?: IconSource
   value?: string
   children?: TreeListItemData[]
   open?: boolean

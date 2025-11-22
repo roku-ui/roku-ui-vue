@@ -1,0 +1,6 @@
+- Prefer the Roku UI UnoCSS preset utilities: semantic colors `bg-(primary|secondary|tertiary|success|info|warning|error)`, text `text-(dimmed|muted|default|highlight|inverted|primary|secondary|tertiary|success|info|warning|error)`, outlines `outline-(primary|secondary|tertiary|error|info|warning)`, and surface layers `bg-(base|container|elevated|inverted)` plus `border-(base|container|elevated|inverted)`.
+- Avoid numbered color steps when possible; default to these semantic classes instead of `bg-surface-3`/`text-primary-6`, and never use Tailwind’s stock palette.
+- Leverage scheme variables for states instead of raw colors: `--r-scheme-bg`, `--r-scheme-bg-hover`, `--r-scheme-border`, `--r-scheme-border-hover`, `--r-scheme-border-focus`, `--r-scheme-text`, `--r-scheme-text-hover`, `--r-scheme-placeholder`, `--r-scheme-outline`.
+- Legacy shortcuts exist for compatibility: `custom-colors` and `custom-input-colors`; safelist includes `rounded-[--r-rounded]`.
+- Styling defaults prefer theme tokens (e.g., `bg-base`, `text-default`, `border-container` or `var(--r-bg-base)`) over arbitrary values; avoid gradients or heavy shadows and keep a single primary hue.
+- Code must be TypeScript-first, tests with Vitest, lint with ESLint, and package management with `pnpm`.

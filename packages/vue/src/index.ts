@@ -7,4 +7,5 @@ export * from './shared'
 export * from './types'
 export * from './utils'
 
-export { VirtualWaterfall, Waterfall } from 'vue-wf'
+export { Waterfall } from 'vue-wf'
+export { Waterfall as VirtualWaterfall } from 'vue-wf'

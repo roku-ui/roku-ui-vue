@@ -1,6 +1,6 @@
 <script lang="tsx" setup>
 import type { VNodeChild } from 'vue'
-import type { Rounded, Size } from '@/types'
+import type { IconSource, Rounded, Size } from '@/types'
 import { onClickOutside, onKeyStroke, useElementHover, useEventListener, useToggle } from '@vueuse/core'
 import { computed, provide, ref, watchEffect } from 'vue'
 import { useRounded } from '@/utils'
@@ -12,7 +12,7 @@ export type MenuData = MenuItemData | MenuDividerData | MenuLabelData
 export interface MenuItemData {
   title?: string
   value?: number | string | symbol
-  icon?: string
+  icon?: IconSource
   render?: () => VNodeChild
   children?: MenuData[]
   size?: Size
