@@ -10,6 +10,7 @@ import ChatDemo from './demo/ChatDemo.vue'
 import ComponentDefaultsDemo from './demo/ComponentDefaultsDemo.vue'
 import CSSVarDemo from './demo/CSSVarDemo.vue'
 import FormDemo from './demo/FormDemo.vue'
+import IconDemo from './demo/IconDemo.vue'
 import LayoutDemo from './demo/LayoutDemo.vue'
 import MediaDemo from './demo/MediaDemo.vue'
 import MenuDemo from './demo/MenuDemo.vue'
@@ -44,6 +45,7 @@ export const demoPages = [
   { key: 'AppShell', title: 'App Shell', component: AppShellDemo },
   { key: 'Avatar', title: 'Avatar', component: AvatarDemo },
   { key: 'Button', title: 'Button', component: ButtonDemo },
+  { key: 'Icon', title: 'Icon', component: IconDemo },
   { key: 'Calendar', title: 'Calendar', component: CalendarDemo },
   { key: 'CalendarInput', title: 'Calendar Input', component: CalendarInputDemo },
   { key: 'Chat', title: 'Chat', component: ChatDemo },

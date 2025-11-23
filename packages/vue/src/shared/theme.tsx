@@ -23,6 +23,13 @@ export interface ComponentDefaults {
     rounded?: Rounded
     pressEffect?: 'translate' | 'scale'
   }
+  Icon?: {
+    size?: Size
+    variant?: import('@/types').BtnVariant
+    color?: Color
+    rounded?: Rounded
+    outlineColor?: Color
+  }
   TextField?: {
     size?: Size
     color?: Color

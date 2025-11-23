@@ -1,4 +1,3 @@
-/* eslint-disable */
 export { default as AppShell } from './AppShell.vue'
 export { default as AppShellAside } from './AppShellAside.vue'
 export { default as AppShellFooter } from './AppShellFooter.vue'
@@ -22,6 +21,7 @@ export { default as ColorSwatch } from './ColorSwatch.vue'
 export { default as Drawer } from './Drawer.vue'
 export { default as Dropzone } from './Dropzone.vue'
 export { default as FullscreenOverlay } from './FullscreenOverlay.vue'
+export { default as Icon } from './Icon.vue'
 export { default as Image } from './Image.vue'
 export { default as Indicator } from './Indicator.vue'
 export { default as Menu } from './Menu.vue'
