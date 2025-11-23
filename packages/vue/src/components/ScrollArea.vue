@@ -129,7 +129,7 @@ defineExpose({
         v-show="scrollBarData.barHeight < clientHeight"
         ref="scrollBarIndicatorRef"
 
-        class="rounded-full bg-[--r-surface-border-variant-color] right-0 absolute"
+        class="bg-inverted rounded-full opacity-70 right-0 absolute"
         :style="{
           right: '0px',
           width: `${barWidth}px`,

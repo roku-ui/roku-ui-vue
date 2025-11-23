@@ -18,28 +18,22 @@ const items = computed(() => tmps.value.map(() => {
 </script>
 
 <template>
-  <div>
-    <ScrollArea
-      floating
-      style="height: 40vh"
+  <ScrollArea class="h-[calc(100vh-64px)] overflow-auto">
+    <Waterfall
+      :gap="4"
+      :item-width="width"
+      :items="items"
     >
-      <Waterfall
-        :gap="4"
-        :item-width="width"
-        :items="items"
-        floating
+      <img
+        v-for="item, i in items"
+        :key="i"
+        :src="item.src"
+        :style="{
+          display: 'inline-block',
+          height: `100%`,
+          backgroundImage: `url(${item.src})`,
+        }"
       >
-        <img
-          v-for="item, i in items"
-          :key="i"
-          :src="item.src"
-          :style="{
-            display: 'inline-block',
-            height: `100%`,
-            backgroundImage: `url(${item.src})`,
-          }"
-        >
-      </Waterfall>
-    </ScrollArea>
-  </div>
+    </Waterfall>
+  </ScrollArea>
 </template>
