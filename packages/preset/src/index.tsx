@@ -64,7 +64,7 @@ function rokuPresetImpl(): Preset {
         ...colors,
       },
     },
-    safelist: ['rounded-[--r-rounded]'],
+    safelist: ['rounded-[--r-rounded]', '[corner-shape:var(--r-corner-shape)]'],
     rules: [
       // Dynamic rules replace many static shortcuts
       ...dynamicRules,

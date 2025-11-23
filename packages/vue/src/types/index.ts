@@ -8,6 +8,7 @@ export type DefinedColor = 'primary' | 'secondary' | 'tertiary' | 'success' | 'e
 export type Color = DefinedColor | string
 export type Size = 'sm' | 'md' | 'lg'
 export type Rounded = 'none' | 'sm' | 'md' | 'lg' | 'full' | string | number
+export type CornerShape = 'round' | 'angle' | 'scoop' | 'notch' | 'bevel' | 'squircle' | string
 export type IconSource = string | Component
 export interface Area {
   left: number

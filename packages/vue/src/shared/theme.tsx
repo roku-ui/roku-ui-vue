@@ -1,5 +1,5 @@
 import type { ComputedRef } from 'vue'
-import type { Color, Rounded, Size } from '@/types'
+import type { Color, CornerShape, Rounded, Size } from '@/types'
 import { computed, inject, provide } from 'vue'
 
 export type ThemeColorValue = string | readonly [string, ...string[]]
@@ -70,6 +70,7 @@ export interface ComponentDefaults {
     size?: Size
     color?: Color
     rounded?: Rounded
+    cornerShape?: CornerShape
   }
   Tag?: {
     size?: Size

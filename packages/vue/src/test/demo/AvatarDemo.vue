@@ -46,6 +46,24 @@ import { Avatar, Paper } from '@/components'
       />
     </div>
 
+    <div class="flex gap-2 items-center">
+      <Avatar
+        name="Squircle"
+        corner-shape="squircle"
+      />
+      <Avatar
+        variant="light"
+        color="primary"
+        name="Squircle"
+        corner-shape="squircle"
+      />
+      <Avatar
+        size="lg"
+        name="Squircle"
+        corner-shape="squircle"
+      />
+    </div>
+
     <Paper class="flex gap-2 items-center">
       <Avatar
         size="sm"

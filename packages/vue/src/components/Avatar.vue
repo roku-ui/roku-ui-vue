@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Component } from 'vue'
-import type { Color, ContainerVariant, Rounded } from '@/types'
+import type { Color, ContainerVariant, CornerShape, Rounded } from '@/types'
 import { computed, onMounted, ref } from 'vue'
 import { useComponentDefaults, useContainerCS, useTheme } from '@/shared'
 import { useRounded } from '@/utils'
@@ -14,6 +14,7 @@ const props = withDefaults(
     variant?: ContainerVariant
     color?: Color
     rounded?: Rounded
+    cornerShape?: CornerShape
     skeleton?: boolean
   }>(),
   {
@@ -31,6 +32,7 @@ const effectiveProps = computed(() => ({
   size: props.size ?? componentDefaults?.size ?? theme.value.defaultSize,
   color: props.color ?? componentDefaults?.color ?? 'default',
   rounded: props.rounded ?? componentDefaults?.rounded ?? 'full',
+  cornerShape: props.cornerShape ?? componentDefaults?.cornerShape,
 }))
 
 const rounded = useRounded(effectiveProps.value)
@@ -38,25 +40,25 @@ const name = computed(() => props.name || '')
 const sizeStyle = computed(() => {
   switch (effectiveProps.value.size) {
     case 'xs': {
-      return '--size: 2rem; --font-size: 1rem;'
+      return '--size: 1.75rem; --font-size: 0.875rem;'
     }
     case 'sm': {
-      return '--size: 3rem; --font-size: 1.25rem;'
+      return '--size: 2.5rem; --font-size: 1.125rem;'
     }
     case 'md': {
-      return '--size: 4rem; --font-size: 2rem;'
+      return '--size: 3rem; --font-size: 1.5rem;'
     }
     case 'lg': {
-      return '--size: 6rem; --font-size: 3rem;'
+      return '--size: 4.5rem; --font-size: 2.25rem;'
     }
     case 'xl': {
-      return '--size: 8rem; --font-size: 4rem;'
+      return '--size: 6rem; --font-size: 3rem;'
     }
     default: {
       if (typeof effectiveProps.value.size === 'number' && !Number.isNaN(Number(effectiveProps.value.size))) {
         return `--size: ${effectiveProps.value.size}rem; --font-size: ${Number(effectiveProps.value.size) / 2}rem;`
       }
-      return `--size: 4rem;`
+      return '--size: 3rem; --font-size: 1.5rem;'
     }
   }
 })
@@ -89,7 +91,8 @@ const containerCS = useContainerCS(props.variant, color)
 <template>
   <div
     v-if="skeleton"
-    class="bg-container rounded-full min-h-[--size] min-w-[--size] inline-block animate-pulse"
+    class="bg-container min-h-[--size] min-w-[--size] inline-block animate-pulse"
+    :class="rounded.class"
     :style="[rounded.style, sizeStyle]"
   />
   <div
@@ -105,14 +108,14 @@ const containerCS = useContainerCS(props.variant, color)
       :class="[rounded.class, containerCS.class, { 'opacity-0': !loaded }]"
       :style="[rounded.style, containerCS.style]"
       :src="src"
-      class="rounded-full h-full w-full inset-0 absolute object-cover"
+      class="h-full w-full inset-0 absolute object-cover"
       v-bind="$attrs"
       @load="onload"
       @error="onerror"
     />
     <div
       v-if="!src || hasError || !loaded"
-      class="font-size-[--font-size] border-4 rounded-full flex h-full w-full items-center inset-0 justify-center absolute object-cover"
+      class="font-size-[--font-size] border-2 flex h-full w-full items-center inset-0 justify-center absolute object-cover"
       :class="[rounded.class, containerCS.class]"
       :style="[rounded.style, containerCS.style]"
       v-bind="$attrs"
