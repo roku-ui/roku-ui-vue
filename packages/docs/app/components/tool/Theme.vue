@@ -1,7 +1,14 @@
 <script setup lang="ts">
-import { ColorInput, errorColor, Paper, primaryColor, secondaryColor, surfaceColor, tertiaryColor, useContainerCS } from '@roku-ui/vue'
+import { ref } from 'vue'
+import { ColorInput, Paper, defaultThemeData, useContainerCS } from '@roku-ui/vue'
 
-const colors = ['surface', 'primary', 'secondary', 'tertiary', 'error']
+const surfaceColor = ref(defaultThemeData.colors.surface ?? '#121212')
+const primaryColor = ref(defaultThemeData.colors.primary ?? '#3F9CDC')
+const secondaryColor = ref(defaultThemeData.colors.secondary ?? '#5999A6')
+const tertiaryColor = ref(defaultThemeData.colors.tertiary ?? '#F76C22')
+const errorColor = ref(defaultThemeData.colors.error ?? '#F95858')
+
+const colors = ['surface', 'primary', 'secondary', 'tertiary', 'error'] as const
 const containerCSList = colors.map(d => useContainerCS('filled', d))
 </script>
 

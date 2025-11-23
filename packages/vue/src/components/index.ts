@@ -1,3 +1,4 @@
+/* eslint-disable */
 export { default as AppShell } from './AppShell.vue'
 export { default as AppShellAside } from './AppShellAside.vue'
 export { default as AppShellFooter } from './AppShellFooter.vue'

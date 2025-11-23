@@ -12,9 +12,10 @@
 }
 /* Theme layer for better organization and overrides */
 @layer theme {
-    [data-scheme="light"] *, [data-scheme="dark"] [data-scheme="light"] * {
-        color: rgb(var(--r-text-default));
-
+    :where([data-scheme="light"]),
+    :where([data-scheme="light"] *),
+    :where([data-scheme="dark"] [data-scheme="light"]),
+    :where([data-scheme="dark"] [data-scheme="light"] *) {
         --r-text-primary: var(--r-color-primary-5);
         --r-text-secondary: var(--r-color-secondary-5);
         --r-text-tertiary: var(--r-color-tertiary-5);
@@ -48,9 +49,10 @@
         --r-border-inverted: var(--r-color-surface-9);
     }
 
-    [data-scheme="dark"] * {
-        color: rgb(var(--r-text-default));
-
+    :where([data-scheme="dark"]),
+    :where([data-scheme="dark"] *),
+    :where([data-scheme="light"] [data-scheme="dark"]),
+    :where([data-scheme="light"] [data-scheme="dark"] *) {
         --r-text-primary: var(--r-color-primary-4);
         --r-text-secondary: var(--r-color-secondary-4);
         --r-text-tertiary: var(--r-color-tertiary-4);

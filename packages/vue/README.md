@@ -31,3 +31,15 @@ pnpm lint
 ```bash
 pnpm test
 ```
+
+For Nuxt usage, install `@roku-ui/nuxt` and add it to `modules` to auto-register components with the `R` prefix:
+
+```ts
+// nuxt.config.ts
+export default defineNuxtConfig({
+  modules: ['@roku-ui/nuxt'],
+  rokuUi: {
+    prefix: 'R',
+  },
+})
+```

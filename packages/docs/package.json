@@ -12,6 +12,7 @@
   "dependencies": {
     "@iconify/json": "^2.2.409",
     "@nuxt/image": "^2.0.0",
+    "@roku-ui/nuxt": "workspace:^",
     "@roku-ui/preset": "workspace:^",
     "@roku-ui/vue": "workspace:^",
     "unocss": "66.5.9"

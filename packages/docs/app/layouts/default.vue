@@ -44,7 +44,7 @@ provide('docThemeColor', {
   error,
   surface,
 })
-const mergedCS = useMergedCS(surfaceBorderCS, surfaceCS)
+const mergedCS = useMergedCS([surfaceBorderCS, surfaceCS])
 </script>
 
 <template>

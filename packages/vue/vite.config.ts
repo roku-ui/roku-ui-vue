@@ -4,7 +4,7 @@ import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import UnoCSS from 'unocss/vite'
 import AutoExport from 'unplugin-auto-export/vite'
-import { defineConfig } from 'vite'
+import { defineConfig, type UserConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 import roku from './src/vite/index'
 
@@ -14,9 +14,9 @@ const __dirname = path.dirname(__filename)
 // 为了在开发时修改 preset 后立即生效，我们在 dev 模式下把
 // @roku-ui/preset 指向其源码目录 (packages/preset/src)，避免每次手动 build。
 // 生产构建 (vite build) 仍使用打包后的 dist，确保发布行为不变。
-export default defineConfig(({ mode }) => {
-  const isDev = mode === 'development'
-  return {
+export default defineConfig(({ command, mode }) => {
+  const isDev = command === 'serve' || mode === 'development'
+  const libConfig: UserConfig = {
     plugins: [
       vue(),
       vueJsx(),
@@ -40,15 +40,25 @@ export default defineConfig(({ mode }) => {
     ],
     build: {
       lib: {
-        entry: 'src/index.ts',
+        entry: path.resolve(__dirname, 'src/index.ts'),
         name: 'roku-ui',
-        fileName: 'index',
+        formats: ['es', 'umd'],
+        fileName: (format) => format === 'umd' ? 'index.umd.cjs' : 'index.js',
       },
       rollupOptions: {
-        external: ['vue'],
+        external: ['vue', '@vueuse/core', '@vueuse/shared'],
         output: {
           globals: {
             vue: 'Vue',
+            '@vueuse/core': '__vueuse_core',
+            '@vueuse/shared': '__vueuse_shared',
+          },
+          assetFileNames: (assetInfo) => {
+            if (assetInfo.name && assetInfo.name.endsWith('.css')) {
+              return 'style.css'
+            }
+
+            return assetInfo.name ?? '[name][extname]'
           },
         },
       },
@@ -66,4 +76,6 @@ export default defineConfig(({ mode }) => {
       },
     },
   }
+
+  return libConfig
 })

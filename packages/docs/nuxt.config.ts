@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxt/content',
     '@nuxtjs/robots',
+    '@roku-ui/nuxt',
   ],
 
   components: [

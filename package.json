@@ -9,8 +9,8 @@
   "keywords": [],
   "scripts": {
     "lint": "eslint . --fix",
-    "build": "pnpm --filter @roku-ui/preset build && pnpm --filter @roku-ui/vue build",
-    "release": "pnpm --filter @roku-ui/preset publish && pnpm --filter @roku-ui/vue publish",
+    "build": "pnpm --filter @roku-ui/preset build && pnpm --filter @roku-ui/vue build && pnpm --filter @roku-ui/nuxt build",
+    "release": "pnpm --filter @roku-ui/preset publish && pnpm --filter @roku-ui/vue publish && pnpm --filter @roku-ui/nuxt publish",
     "watch:preset": "pnpm --filter @roku-ui/preset watch",
     "watch:spa": "pnpm --filter @roku-ui/vue watch",
     "watch": "pnpm --filter @roku-ui/vue watch",
