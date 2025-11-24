@@ -2,7 +2,7 @@
 import { Btn, Select, Slider, Switch } from '@roku-ui/vue'
 
 type Size = 'sm' | 'md' | 'lg'
-type Variant = 'default' | 'filled'
+type Variant = import('@roku-ui/vue').BtnVariant
 const size = ref<Size>('md')
 const disabled = ref<boolean>(false)
 
@@ -13,41 +13,40 @@ function code(props: { size?: Size, variant?: Variant, disabled?: boolean } = {}
   </Btn> // [!code highlight]
 </template>`
 }
-const variants = ['default', 'filled', 'light', 'ghost', 'outline', 'subtle', 'transparent', 'contrast']
+const variants: Variant[] = ['default', 'filled', 'tonal', 'light', 'outline', 'inverted', 'subtle', 'transparent', 'contrast']
 const variant = ref<Variant>('default')
 </script>
 
 <template>
   <Demo :code="code({ size, variant, disabled })">
     <template #form>
-      <div class="flex flex-col gap-6">
-        <div>
-          <div class="text-surface-dimmed">
-            Variant
-          </div>
-          <Select
-            v-model="variant"
-            aria-label="Variant"
-            :options="variants"
-          />
+      <div class="flex flex-col gap-2">
+        <div class="text-surface-dimmed">
+          Variant
         </div>
-        <div>
-          <div class="text-surface-dimmed">
-            Size
-          </div>
-          <Slider
-            v-model="size"
-            :options="['sm', 'md', 'lg']"
-          />
+        <Select
+          v-model="variant"
+          aria-label="Variant"
+          :options="variants"
+        />
+      </div>
+      <div class="flex flex-col gap-2">
+        <div class="text-surface-dimmed">
+          Size
         </div>
-        <div>
-          <div class="text-surface-dimmed">
-            Disabled
-          </div>
-          <Switch
-            v-model="disabled"
-          />
+        <Slider
+          v-model="size"
+          :options="['sm', 'md', 'lg']"
+          :min-width="6"
+        />
+      </div>
+      <div class="flex flex-col gap-2">
+        <div class="text-surface-dimmed">
+          Disabled
         </div>
+        <Switch
+          v-model="disabled"
+        />
       </div>
     </template>
     <template #preview>

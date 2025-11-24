@@ -23,22 +23,23 @@ const option = ref('Apple')
 <template>
   <Demo :code="code({ size, animate })">
     <template #form>
-      <div class="flex flex-col gap-6">
-        <div>
-          <div class="texttext-surface-dimmed">
-            Size
-          </div>
-          <Slider
-            v-model="size"
-            :options="['sm', 'md', 'lg']"
-          />
+      <div class="flex flex-col gap-2">
+        <div class="text-surface-dimmed">
+          Size
         </div>
-        <div>
-          <Switch
-            v-model="animate"
-            label="Animate"
-          />
+        <Slider
+          v-model="size"
+          :options="['sm', 'md', 'lg']"
+          :min-width="6"
+        />
+      </div>
+      <div class="flex flex-col gap-2">
+        <div class="text-surface-dimmed">
+          Animate
         </div>
+        <Switch
+          v-model="animate"
+        />
       </div>
     </template>
     <template #preview>

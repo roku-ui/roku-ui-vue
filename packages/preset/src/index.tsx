@@ -79,7 +79,8 @@ function rokuPresetImpl(): Preset {
       }),
       presetTypography(),
       presetIcons({
-        scale: 1.2,
+        // Keep icon size on whole pixels at 1em to avoid sub-pixel rounding artifacts at small sizes
+        scale: 1,
         extraProperties: {
           'display': 'inline-block',
           'vertical-align': 'middle',

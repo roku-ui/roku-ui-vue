@@ -1,7 +1,7 @@
 {
   "name": "@roku-ui/nuxt",
-  "version": "0.30.0",
   "type": "module",
+  "version": "0.30.0",
   "author": "Jianqi Pan <jannchie@gmail.com>",
   "repository": {
     "type": "git",
@@ -29,8 +29,8 @@
     "build": "tsc -p tsconfig.json"
   },
   "peerDependencies": {
-    "@roku-ui/vue": "workspace:^",
     "@nuxt/kit": "^3.0.0 || ^4.0.0",
+    "@roku-ui/vue": "workspace:^",
     "nuxt": "^3.0.0 || ^4.0.0"
   },
   "peerDependenciesMeta": {

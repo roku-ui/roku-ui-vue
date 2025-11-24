@@ -34,6 +34,7 @@ export function useTagCS(variant: MaybeRef<BtnVariant> = 'default', color: Maybe
       default: () => getDefaultTagVariantStyle(surface, interactive),
       inverted: () => getInvertedTagVariantStyle(surface, interactive),
       filled: () => getFilledTagVariantStyle(colors, interactive),
+      tonal: () => getTonalTagVariantStyle(colors, surface, interactive),
       light: () => getLightTagVariantStyle(colors, interactive),
       outline: () => getOutlineTagVariantStyle(colors, interactive),
       transparent: () => getTransparentTagVariantStyle(colors, interactive),
@@ -136,6 +137,45 @@ function getFilledTagVariantStyle(color: CuloriColor[], hasInteraction: boolean)
         '--d-bg-h': formatHex(color[COLOR_BG.hover.dark]) || '#000000',
         '--l-bg-h': formatHex(color[COLOR_BG.hover.light]) || '#000000',
         '--l-text-h': 'white',
+      },
+      class: [
+        ...baseClass,
+        'hover:bg-[var(--r-scheme-bg-hover)]',
+        'hover:text-[var(--r-scheme-text-hover)]',
+      ],
+    }
+  }
+
+  return {
+    style: baseStyle,
+    class: baseClass,
+  }
+}
+
+function getTonalTagVariantStyle(color: CuloriColor[], surface: CuloriColor[], hasInteraction: boolean): CS {
+  const baseStyle = {
+    '--d-border': 'transparent',
+    '--d-bg': formatHex(color[COLOR_BG.solid.dark]) || '#000000',
+    '--d-text': formatHex(surface[SURFACE_BG.base.dark]) || '#000000',
+    '--l-bg': formatHex(color[COLOR_BG.solid.light]) || '#000000',
+    '--l-text': formatHex(surface[SURFACE_BG.base.light]) || '#000000',
+    '--l-border': 'transparent',
+  }
+
+  const baseClass = [
+    'border-[var(--r-scheme-border)]',
+    'bg-[var(--r-scheme-bg)]',
+    'text-[var(--r-scheme-text)]',
+  ]
+
+  if (hasInteraction) {
+    return {
+      style: {
+        ...baseStyle,
+        '--d-bg-h': formatHex(color[COLOR_BG.hover.dark]) || '#000000',
+        '--d-text-h': formatHex(surface[SURFACE_BG.base.dark]) || '#000000',
+        '--l-bg-h': formatHex(color[COLOR_BG.hover.light]) || '#000000',
+        '--l-text-h': formatHex(surface[SURFACE_BG.base.light]) || '#000000',
       },
       class: [
         ...baseClass,

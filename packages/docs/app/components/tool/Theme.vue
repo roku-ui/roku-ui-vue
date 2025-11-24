@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { ColorInput, defaultThemeData, Paper, useContainerCS } from '@roku-ui/vue'
 import { ref } from 'vue'
-import { ColorInput, Paper, defaultThemeData, useContainerCS } from '@roku-ui/vue'
 
 const surfaceColor = ref(defaultThemeData.colors.surface ?? '#121212')
 const primaryColor = ref(defaultThemeData.colors.primary ?? '#3F9CDC')

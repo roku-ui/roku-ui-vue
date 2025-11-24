@@ -132,8 +132,9 @@ const treeListItems = computed<TreeListItemData[]>(() => {
               icon
               href="/tools/theme"
               variant="light"
+              aria-label="Theme tool"
             >
-              <i class="i-tabler-color-filter" />
+              <i class="i-tabler-palette" />
             </Btn>
           </div>
         </div>

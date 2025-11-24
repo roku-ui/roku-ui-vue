@@ -125,8 +125,8 @@ function handlePointerDown(event: PointerEvent) {
       @pointerdown="handlePointerDown"
     >
       <component
-        v-if="menuItemData?.icon"
         :is="typeof menuItemData.icon === 'string' ? 'i' : menuItemData.icon"
+        v-if="menuItemData?.icon"
         class="text-surface-dimmed flex-shrink-0 w-5"
         :class="typeof menuItemData.icon === 'string' ? menuItemData.icon : ''"
       />

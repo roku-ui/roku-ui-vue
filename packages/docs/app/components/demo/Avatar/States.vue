@@ -20,14 +20,17 @@ const code = computed(() => `<template>
 <template>
   <Demo :code="code">
     <template #preview>
-      <div class="flex flex-wrap items-center gap-3">
+      <div class="flex flex-wrap gap-3 items-center">
         <Avatar skeleton />
         <Avatar name="Initials" />
         <Avatar
           name="Broken"
           src="https://this-avatar-will-404.invalid/avatar.png"
         />
-        <Avatar variant="filled" color="primary">
+        <Avatar
+          variant="filled"
+          color="primary"
+        >
           <i class="i-tabler-robot" />
         </Avatar>
       </div>

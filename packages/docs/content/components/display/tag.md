@@ -9,3 +9,10 @@ features:
 
 ::demo-tag-base
 ::
+
+## Tonal fill text
+
+Use `variant="tonal"` when you need a filled tag but want the text to reuse the surface color instead of defaulting to white in dark mode.
+
+::demo-tag-tonal
+::

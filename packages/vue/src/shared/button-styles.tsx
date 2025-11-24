@@ -48,6 +48,18 @@ const buttonVariantConfigs: Record<BtnVariant, VariantStyleConfig> = {
     '--l-text-h': { source: 'literal', value: 'white' },
     '--l-border': { source: 'literal', value: 'transparent' },
   },
+  tonal: {
+    '--d-border': { source: 'literal', value: 'transparent' },
+    '--d-bg': { index: COLOR_BG.solid.dark },
+    '--d-bg-h': { index: COLOR_BG.hover.dark },
+    '--d-text': { palette: 'surface', index: SURFACE_BG.base.dark },
+    '--d-text-h': { palette: 'surface', index: SURFACE_BG.base.dark },
+    '--l-bg': { index: COLOR_BG.solid.light },
+    '--l-bg-h': { index: COLOR_BG.hover.light },
+    '--l-text': { palette: 'surface', index: SURFACE_BG.base.light },
+    '--l-text-h': { palette: 'surface', index: SURFACE_BG.base.light },
+    '--l-border': { source: 'literal', value: 'transparent' },
+  },
   light: {
     '--d-border': { source: 'literal', value: 'transparent' },
     '--d-bg': { index: COLOR_BG.solid.dark, format: 'hex8', alpha: OPACITY_SCALE.dark.tint },

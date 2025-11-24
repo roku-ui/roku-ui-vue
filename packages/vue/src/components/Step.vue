@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { IconSource, Color, Rounded } from '@/types'
+import type { Color, IconSource, Rounded } from '@/types'
 import { onKeyStroke } from '@vueuse/core'
 import { computed, provide, ref } from 'vue'
 import { COLOR_BG, SURFACE_BG, useContainerFilledCS, useCS, useMergedCS, useSurfaceCS, useTheme } from '@/shared'
@@ -511,8 +511,8 @@ const progressPercent = computed(() => {
         >
           <!-- Custom icon -->
           <component
-            v-if="item.icon && !progressDot && type !== 'dot'"
             :is="typeof item.icon === 'string' ? 'span' : item.icon"
+            v-if="item.icon && !progressDot && type !== 'dot'"
             :class="typeof item.icon === 'string' ? item.icon : ''"
           />
           <!-- Number -->

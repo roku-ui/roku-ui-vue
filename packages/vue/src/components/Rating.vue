@@ -16,8 +16,8 @@ import { useCS, useTheme } from '@/shared'
 
 type IconValue = string | Component
 type IconSingle = IconValue | { active: IconValue, normal: IconValue }
-type IconPair = { active: IconValue, normal: IconValue }
-type IconRender = { is: string | Component, class: string }
+interface IconPair { active: IconValue, normal: IconValue }
+interface IconRender { is: string | Component, class: string }
 type IconType = IconSingle | IconSingle[] | undefined
 
 const props = withDefaults(defineProps<{
@@ -278,8 +278,8 @@ const sizeCls = computed(() => {
     >
       <!-- FULL STAR -->
       <component
-        v-if="isFull(i)"
         :is="getActiveIcon(i).is"
+        v-if="isFull(i)"
         class="transition-colors duration-150 active:translate-y-1px"
         :class="[
           getActiveCS(i).class,
@@ -314,8 +314,8 @@ const sizeCls = computed(() => {
       </template>
       <!-- EMPTY STAR -->
       <component
-        v-else
         :is="getInactiveIcon(i).is"
+        v-else
         class="transition-colors duration-150 active:translate-y-1px"
         :class="[inactiveTextCS.class, getInactiveIcon(i).class]"
         :style="[inactiveTextCS.style]"

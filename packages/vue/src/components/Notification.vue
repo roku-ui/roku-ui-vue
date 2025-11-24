@@ -104,8 +104,8 @@ const shapeClass = computed(() => {
           class="h-container w-container i-tabler-loader-2 shrink-0 animate-spin"
         />
         <component
-          v-else
           :is="iconComponent"
+          v-else
           class="h-container w-container shrink-0"
           :class="[iconClass, textCS.class]"
           :style="textCS.style"

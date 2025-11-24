@@ -17,7 +17,6 @@ const code = computed(() => {
         'i-fluent-dismiss-circle-12-filled',
       ]"
       :color="['green', 'yellow', 'orange', 'red']"
-      highlight-selected-only
     />
   </div>
 </template>`
@@ -39,7 +38,6 @@ const code = computed(() => {
             'i-fluent-dismiss-circle-12-filled',
           ]"
           :color="['green', 'yellow', 'orange', 'red']"
-          highlight-selected-only
         />
         <div class="text-surface-dimmed text-sm">
           状态: {{ ['良好', '一般', '警告', '错误'][rating - 1] || '未选择' }}

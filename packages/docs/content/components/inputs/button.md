@@ -12,6 +12,13 @@ features:
 ::demo-button-base
 ::
 
+## Tonal fill text
+
+Use `variant="tonal"` when you want a filled background but prefer the text to borrow the surrounding surface color instead of white in dark mode.
+
+::demo-button-tonal
+::
+
 ## 动态渲染
 
 通过 `is` 属性可以动态渲染不同的组件，从而实现按钮形式的链接。

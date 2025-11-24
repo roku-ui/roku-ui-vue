@@ -26,7 +26,7 @@ const isVertical = computed<boolean>({
 <template>
   <Demo :code="code">
     <template #form>
-      <div>
+      <div class="flex flex-col gap-2">
         <div class="text-surface-dimmed">
           Direction
         </div>

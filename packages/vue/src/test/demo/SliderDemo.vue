@@ -265,7 +265,7 @@ const conflictTestValue = ref(50)
           </label>
           <Slider
             v-model="basicValue"
-            :min-width="8"
+            :min-width="6"
             :min="0"
             :max="100"
           />

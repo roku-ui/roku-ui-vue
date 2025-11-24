@@ -24,7 +24,7 @@ const code = computed(() => `<template>
 <template>
   <Demo :code="code">
     <template #preview>
-      <div class="flex flex-wrap items-center gap-3">
+      <div class="flex flex-wrap gap-3 items-center">
         <Avatar name="Full" />
         <Avatar
           name="Rounded"

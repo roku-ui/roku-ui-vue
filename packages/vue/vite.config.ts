@@ -1,10 +1,11 @@
+import type { UserConfig } from 'vite'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import UnoCSS from 'unocss/vite'
 import AutoExport from 'unplugin-auto-export/vite'
-import { defineConfig, type UserConfig } from 'vite'
+import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 import roku from './src/vite/index'
 
@@ -43,13 +44,13 @@ export default defineConfig(({ command, mode }) => {
         entry: path.resolve(__dirname, 'src/index.ts'),
         name: 'roku-ui',
         formats: ['es', 'umd'],
-        fileName: (format) => format === 'umd' ? 'index.umd.cjs' : 'index.js',
+        fileName: format => format === 'umd' ? 'index.umd.cjs' : 'index.js',
       },
       rollupOptions: {
         external: ['vue', '@vueuse/core', '@vueuse/shared'],
         output: {
           globals: {
-            vue: 'Vue',
+            'vue': 'Vue',
             '@vueuse/core': '__vueuse_core',
             '@vueuse/shared': '__vueuse_shared',
           },

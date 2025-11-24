@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import type { IconSource } from '@/types'
+import { computed } from 'vue'
 import { Btn } from '.'
 
 type T = string | { value: string, label?: string, icon?: IconSource }
@@ -68,8 +68,8 @@ const childClass = computed(() => isSingle.value ? null : 'first-children:rounde
       @click="onClick(selection)"
     >
       <component
-        v-if="getIcon(selection)"
         :is="getIconComponent(selection)"
+        v-if="getIcon(selection)"
         :class="getIconClass(selection)"
       />
       {{ getLabel(selection) }}

@@ -71,13 +71,13 @@ const hoverNeutralStyle = computed(() => {
 const sizeCls = computed(() => {
   switch (effectiveProps.value.size) {
     case 'sm': {
-      return 'h-6 w-6 p-1'
+      return 'h-6 w-6 p-1 text-base'
     }
     case 'lg': {
-      return 'h-10 w-10 p-2.5'
+      return 'h-10 w-10 p-2.5 text-2xl'
     }
     default: {
-      return 'h-8 w-8 p-2'
+      return 'h-8 w-8 p-2 text-xl'
     }
   }
 })

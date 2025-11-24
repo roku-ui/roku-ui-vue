@@ -74,7 +74,7 @@ export interface ComponentDefaults {
   }
   Tag?: {
     size?: Size
-    variant?: import('@/types').ContainerVariant
+    variant?: import('@/types').BtnVariant
     color?: string
     rounded?: Rounded
   }

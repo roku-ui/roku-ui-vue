@@ -15,16 +15,15 @@ const value = ref(false)
 <template>
   <Demo :code="code">
     <template #form>
-      <div class="flex flex-col gap-6">
-        <div>
-          <div class="texttext-surface-dimmed">
-            Size
-          </div>
-          <Slider
-            v-model="size"
-            :options="['sm', 'md', 'lg']"
-          />
+      <div class="flex flex-col gap-2">
+        <div class="text-surface-dimmed">
+          Size
         </div>
+        <Slider
+          v-model="size"
+          :options="['sm', 'md', 'lg']"
+          :min-width="6"
+        />
       </div>
     </template>
     <template #preview>
