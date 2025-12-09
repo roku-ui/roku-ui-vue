@@ -2,7 +2,7 @@
   "name": "@roku-ui/monorepo",
   "type": "module",
   "version": "0.30.0",
-  "packageManager": "pnpm@10.13.1+sha512.37ebf1a5c7a30d5fabe0c5df44ee8da4c965ca0c5af3dbab28c3a1681b70a256218d05c81c9c0dcf767ef6b8551eb5b960042b9ed4300c59242336377e01cfad",
+  "packageManager": "pnpm@10.25.0",
   "description": "",
   "author": "",
   "license": "ISC",
@@ -22,13 +22,15 @@
     "culori": "^4.0.2"
   },
   "devDependencies": {
-    "@jannchie/eslint-config": "^3.7.1",
+    "@jannchie/eslint-config": "^3.7.5",
     "@types/culori": "^4.0.1",
-    "@unocss/eslint-config": "66.5.9",
-    "@unocss/eslint-plugin": "66.5.9",
+    "@unocss/eslint-config": "66.5.10",
+    "@unocss/eslint-plugin": "66.5.10",
+    "@vue/compiler-sfc": "^3.5.25",
     "eslint": "^9.39.1",
     "eslint-import-resolver-node": "^0.3.9",
-    "eslint-plugin-format": "^1.0.2"
+    "eslint-plugin-format": "^1.1.0",
+    "unocss": "66.5.10"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm lint-staged"
