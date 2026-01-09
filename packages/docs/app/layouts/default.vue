@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Btn, RokuProvider, SchemeSwitch, useMergedCS } from '@roku-ui/vue'
+import { useMergedCS } from '@roku-ui/vue'
 import { surfaceBorderCS, surfaceCS } from '~/utils/colors'
 
 useSeoMeta({
@@ -48,7 +48,7 @@ const mergedCS = useMergedCS([surfaceBorderCS, surfaceCS])
 </script>
 
 <template>
-  <RokuProvider>
+  <RRokuProvider>
     <NuxtLoadingIndicator
       color="rgb(var(--r-color-primary-container))"
     />
@@ -57,14 +57,14 @@ const mergedCS = useMergedCS([surfaceBorderCS, surfaceCS])
       class="pl-2 pr-2 border-b flex gap-2 h-12 w-100vw items-center fixed z-10 md:pl-[calc(33vw-288px+32px)]!"
     >
       <div>
-        <Btn
+        <RBtn
           icon
           class="!hidden"
           size="sm"
           @click="toggleSideBar"
         >
           <i class="i-tabler-menu" />
-        </Btn>
+        </RBtn>
         <NuxtLink to="/">
           <img
             width="24px"
@@ -74,7 +74,7 @@ const mergedCS = useMergedCS([surfaceBorderCS, surfaceCS])
           >
         </NuxtLink>
       </div>
-      <SchemeSwitch
+      <RSchemeSwitch
         circle-translation
         animation
       />
@@ -87,7 +87,7 @@ const mergedCS = useMergedCS([surfaceBorderCS, surfaceCS])
         </div>
       </div>
     </div>
-  </RokuProvider>
+  </RRokuProvider>
 </template>
 
 <style>

@@ -41,8 +41,13 @@
       "optional": true
     }
   },
+  "dependencies": {
+    "@roku-ui/preset": "workspace:^"
+  },
   "devDependencies": {
     "@nuxt/kit": "^4.2.1",
-    "typescript": "5.9.3"
+    "@nuxt/schema": "^4.2.1",
+    "typescript": "5.9.3",
+    "unocss": "66.5.10"
   }
 }

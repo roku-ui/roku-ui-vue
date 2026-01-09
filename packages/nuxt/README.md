@@ -18,3 +18,5 @@ export default defineNuxtConfig({
   },
 })
 ```
+
+If `@unocss/nuxt` is present, this module will automatically add `rokuPreset()` to the UnoCSS configuration, so you do not need to include it manually.

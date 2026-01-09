@@ -1,4 +1,6 @@
 import { addComponent, createResolver, defineNuxtModule } from '@nuxt/kit'
+import type { UserConfig } from 'unocss'
+import { rokuPreset } from '@roku-ui/preset'
 
 export interface RokuUiNuxtOptions {
   /**
@@ -105,6 +107,22 @@ export default defineNuxtModule<RokuUiNuxtOptions>({
         path: resolve('./module.d.ts'),
       })
     })
+
+    nuxt.hook('unocss:config', (config: UserConfig) => {
+      const presets = config.presets || []
+      const filteredPresets = presets.filter((preset) => {
+        const name = (preset as { name?: string }).name
+        return !(name && name.startsWith('preset-wind'))
+      })
+      config.presets = filteredPresets
+      const hasRokuPreset = config.presets.some((preset) => {
+        const name = (preset as { name?: string }).name
+        return name === '@roku-ui/preset'
+      })
+      if (!hasRokuPreset) {
+        config.presets.push(rokuPreset())
+      }
+    })
   },
 })
 
@@ -115,5 +133,9 @@ declare module '@nuxt/schema' {
 
   interface NuxtOptions {
     rokuUi?: RokuUiNuxtOptions
+  }
+
+  interface NuxtHooks {
+    'unocss:config': (config: UserConfig) => void
   }
 }
