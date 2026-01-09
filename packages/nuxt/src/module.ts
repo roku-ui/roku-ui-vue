@@ -1,5 +1,6 @@
-import { addComponent, createResolver, defineNuxtModule } from '@nuxt/kit'
 import type { UserConfig } from 'unocss'
+import { existsSync } from 'node:fs'
+import { addComponent, createResolver, defineNuxtModule, logger } from '@nuxt/kit'
 import { rokuPreset } from '@roku-ui/preset'
 
 export interface RokuUiNuxtOptions {
@@ -77,24 +78,57 @@ export default defineNuxtModule<RokuUiNuxtOptions>({
   defaults: {
     prefix: 'R',
   },
-  setup(options, nuxt) {
+  async setup(options, nuxt) {
     const prefix = options.prefix ?? 'R'
-    const { resolve } = createResolver(import.meta.url)
+    const moduleResolver = createResolver(import.meta.url)
+    const appResolver = createResolver(nuxt.options.rootDir)
+
+    const resolvePackagePath = async (id: string): Promise<string> => {
+      const appPath = await appResolver.resolvePath(id, { fallbackToOriginal: true })
+      if (existsSync(appPath)) {
+        return appPath
+      }
+
+      const modulePath = await moduleResolver.resolvePath(id, { fallbackToOriginal: true })
+      if (existsSync(modulePath)) {
+        return modulePath
+      }
+
+      return id
+    }
+
+    const vueEntry = await resolvePackagePath('@roku-ui/vue')
+    const cssEntry = await resolvePackagePath('@roku-ui/vue/style.css')
+
+    if (vueEntry === '@roku-ui/vue') {
+      logger.warn('[roku-ui] Failed to resolve @roku-ui/vue. Please install @roku-ui/vue.')
+    }
+
+    if (cssEntry === '@roku-ui/vue/style.css') {
+      logger.warn('[roku-ui] Failed to resolve @roku-ui/vue/style.css. Please install @roku-ui/vue.')
+    }
 
     for (const component of components) {
       addComponent({
         name: `${prefix}${component}`,
         export: component,
-        filePath: '@roku-ui/vue',
+        filePath: vueEntry,
         global: true,
       })
     }
 
     const css = nuxt.options.css ?? []
-    if (!css.includes('@roku-ui/vue/style.css')) {
-      css.push('@roku-ui/vue/style.css')
-      nuxt.options.css = css
+    const cssToken = '@roku-ui/vue/style.css'
+    const cssIndex = css.indexOf(cssToken)
+    if (cssIndex === -1) {
+      if (!css.includes(cssEntry)) {
+        css.push(cssEntry)
+      }
     }
+    else if (cssEntry !== cssToken) {
+      css.splice(cssIndex, 1, cssEntry)
+    }
+    nuxt.options.css = css
 
     const transpile = nuxt.options.build.transpile ?? []
     if (!transpile.includes('@roku-ui/vue')) {
@@ -104,7 +138,7 @@ export default defineNuxtModule<RokuUiNuxtOptions>({
 
     nuxt.hook('prepare:types', ({ references }) => {
       references.push({
-        path: resolve('./module.d.ts'),
+        path: moduleResolver.resolve('./module.d.ts'),
       })
     })
 
