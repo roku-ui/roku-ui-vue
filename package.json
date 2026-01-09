@@ -1,7 +1,7 @@
 {
   "name": "@roku-ui/monorepo",
   "type": "module",
-  "version": "0.30.0",
+  "version": "0.31.0",
   "packageManager": "pnpm@10.25.0",
   "description": "",
   "author": "",

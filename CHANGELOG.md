@@ -1,3 +1,30 @@
+## v0.31.0
+
+[v0.30.0...v0.31.0](https://github.com/roku-ui/roku-ui-vue/compare/v0.30.0...v0.31.0)
+
+### :sparkles: Features
+
+- **avatar**: add cornerShape support && adjust avatar sizing and styles - By [Jannchie](mailto:jannchie@gmail.com) in [f5e9101](https://github.com/roku-ui/roku-ui-vue/commit/f5e9101)
+- **nuxt**: resolve local package entries && make vue css resolution robust - By [Jannchie](mailto:jannchie@gmail.com) in [fc4dcc2](https://github.com/roku-ui/roku-ui-vue/commit/fc4dcc2)
+- **nuxt**: auto-add rokuPreset to unocss config - By [Jannchie](mailto:jannchie@gmail.com) in [45a7ca1](https://github.com/roku-ui/roku-ui-vue/commit/45a7ca1)
+- **nuxt**: add nuxt module and avatar docs/demos - By [Jannchie](mailto:jannchie@gmail.com) in [d7fe93f](https://github.com/roku-ui/roku-ui-vue/commit/d7fe93f)
+- **ui**: add tonal variant for buttons and tags && update demos/layouts - By [Jannchie](mailto:jannchie@gmail.com) in [84703c5](https://github.com/roku-ui/roku-ui-vue/commit/84703c5)
+- **vue**: add Icon component and demo - By [Jannchie](mailto:jannchie@gmail.com) in [113933a](https://github.com/roku-ui/roku-ui-vue/commit/113933a)
+
+### :art: Refactors
+
+- **vue**: support component icons across vue components - By [Jannchie](mailto:jannchie@gmail.com) in [263c39b](https://github.com/roku-ui/roku-ui-vue/commit/263c39b)
+- **vue**: use IconSource type for icons && re-export virtual waterfall alias - By [Jannchie](mailto:jannchie@gmail.com) in [ed88047](https://github.com/roku-ui/roku-ui-vue/commit/ed88047)
+
+### :lipstick: Styles
+
+- **scrollarea**: update scroll indicator styles && adjust waterfall demo layout - By [Jannchie](mailto:jannchie@gmail.com) in [f58daf1](https://github.com/roku-ui/roku-ui-vue/commit/f58daf1)
+
+### :wrench: Chores
+
+- **deps**: update dev dependencies and pnpm version - By [Jannchie](mailto:jannchie@gmail.com) in [abe12af](https://github.com/roku-ui/roku-ui-vue/commit/abe12af)
+- bump dev/dependency versions - By [Jannchie](mailto:jannchie@gmail.com) in [f07210f](https://github.com/roku-ui/roku-ui-vue/commit/f07210f)
+
 ## v0.30.0
 
 [v0.29.0...v0.30.0](https://github.com/roku-ui/roku-ui-vue/compare/v0.29.0...v0.30.0)
